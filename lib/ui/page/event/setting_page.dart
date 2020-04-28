@@ -1,11 +1,11 @@
 import 'package:eventmanagement/bloc/event/setting/setting_bloc.dart';
 import 'package:eventmanagement/bloc/event/setting/setting_state.dart';
-import 'package:eventmanagement/ui/cliper/bubble_indication_painter.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:eventmanagement/utils/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingPage extends StatefulWidget {
@@ -65,35 +65,7 @@ class _SettingState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: HexColor(bgColor),
-        bottomNavigationBar: Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
-            child: Row(children: <Widget>[
-              Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: HexColor('#8c3ee9'),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(btnCancel,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400)))),
-              SizedBox(width: 15),
-              Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: HexColor('#8c3ee9'),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(btnNext,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400))))
-            ])),
+        backgroundColor: bgColor,
         body: ListView(shrinkWrap: true, padding: EdgeInsets.all(0), children: <
             Widget>[
           Card(
@@ -107,29 +79,35 @@ class _SettingState extends State<SettingPage> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(titlePaymentAndFees,
+                        Text(AppLocalizations
+                            .of(context)
+                            .titlePaymentAndFees,
                             textAlign: TextAlign.left,
-                            style: (TextStyle(
-                                fontSize: 18,
-                                color: colorSubHeader,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: montserratBoldFont))),
-                        SizedBox(height: 7.0),
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .title),
+                        const SizedBox(height: 7.0),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(labelConvenienceFee,
+                              Text(
+                                  AppLocalizations
+                                      .of(context)
+                                      .labelConvenienceFee,
                                   textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 16, color: Colors.grey))),
-                              SizedBox(width: 10.0),
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body1),
+                              const SizedBox(width: 10.0),
                               Switch(
                                   value: ConvenienceFeesValue,
                                   onChanged: (newVal) {
                                     onSwitchConvenienceFeeValueChanged(newVal);
                                   })
                             ]),
-                        SizedBox(height: 3.0),
+                        const SizedBox(height: 3.0),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -138,43 +116,68 @@ class _SettingState extends State<SettingPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                    Text(labelPercentageValue,
+                                        Text(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelPercentageValue,
                                         textAlign: TextAlign.left,
-                                        style: (TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: montserratBoldFont))),
-                                    SizedBox(height: 4.0),
+                                            style:
+                                            Theme
+                                                .of(context)
+                                                .textTheme
+                                                .body2),
+                                        const SizedBox(height: 4.0),
                                     widget.inputFieldRectangle(
                                         _percentageValueController,
-                                        hintText: inputHintAmount)
+                                        hintText: AppLocalizations
+                                            .of(context)
+                                            .inputHintAmount,
+                                        labelStyle:
+                                        Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1)
                                   ])),
-                              SizedBox(width: 10.0),
+                              const SizedBox(width: 10.0),
                               Expanded(
                                   child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                    Text(labelAmountValue,
+                                        Text(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelAmountValue,
                                         textAlign: TextAlign.left,
-                                        style: (TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: montserratBoldFont))),
-                                    SizedBox(height: 4.0),
+                                            style:
+                                            Theme
+                                                .of(context)
+                                                .textTheme
+                                                .body2),
+                                        const SizedBox(height: 4.0),
                                     widget.inputFieldRectangle(
                                         _ticketNameController,
-                                        hintText: inputHintPercentage)
+                                        hintText: AppLocalizations
+                                            .of(context)
+                                            .inputHintPercentage,
+                                        labelStyle:
+                                        Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1)
                                   ]))
                             ]),
-                        SizedBox(height: 7.0),
-                        Text(labelPaymentGatewayCharge,
+                        const SizedBox(height: 7.0),
+                        Text(
+                            AppLocalizations
+                                .of(context)
+                                .labelPaymentGatewayCharge,
                             textAlign: TextAlign.left,
-                            style:
-                                (TextStyle(fontSize: 14, color: Colors.grey))),
-                        SizedBox(height: 5),
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .body1),
+                        const SizedBox(height: 5),
                         Container(
                             child: BlocBuilder(
                                 bloc: _settingBloc,
@@ -213,17 +216,15 @@ class _SettingState extends State<SettingPage> {
                                                       child: Text(data.name,
                                                           textAlign:
                                                               TextAlign.center,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize:
-                                                                  12.0)))));
+                                                          style: Theme
+                                                              .of(context)
+                                                              .textTheme
+                                                              .body1
+                                                              .copyWith(
+                                                              fontSize: 12.0)))));
                                         }).toList()))))
                       ]))),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Card(
               color: Theme.of(context).cardColor,
               margin: EdgeInsets.all(5),
@@ -236,22 +237,28 @@ class _SettingState extends State<SettingPage> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(titleCustomSettings,
+                        Text(AppLocalizations
+                            .of(context)
+                            .titleCustomSettings,
                             textAlign: TextAlign.left,
-                            style: (TextStyle(
-                                fontSize: 18,
-                                color: colorSubHeader,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: montserratBoldFont))),
-                        SizedBox(height: 7.0),
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .title),
+                        const SizedBox(height: 7.0),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(labelBookingCancel,
+                              Text(
+                                  AppLocalizations
+                                      .of(context)
+                                      .labelBookingCancel,
                                   textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 15, color: Colors.grey))),
-                              SizedBox(width: 10.0),
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body1),
+                              const SizedBox(width: 10.0),
                               Switch(
                                   value: BookingCancelValue,
                                   onChanged: (newVal) {
@@ -261,11 +268,16 @@ class _SettingState extends State<SettingPage> {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(labelTicketResale,
+                              Text(
+                                  AppLocalizations
+                                      .of(context)
+                                      .labelTicketResale,
                                   textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 15, color: Colors.grey))),
-                              SizedBox(width: 10.0),
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body1),
+                              const SizedBox(width: 10.0),
                               Switch(
                                   value: TicketResaleValue,
                                   onChanged: (newVal) {
@@ -275,11 +287,16 @@ class _SettingState extends State<SettingPage> {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(labelRemainingTickets,
+                              Text(
+                                  AppLocalizations
+                                      .of(context)
+                                      .labelRemainingTickets,
                                   textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 15, color: Colors.grey))),
-                              SizedBox(width: 10.0),
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body1),
+                              const SizedBox(width: 10.0),
                               Switch(
                                   value: RemainingTicketValue,
                                   onChanged: (newVal) {
@@ -287,7 +304,7 @@ class _SettingState extends State<SettingPage> {
                                   })
                             ])
                       ]))),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Card(
               color: Theme.of(context).cardColor,
               margin: EdgeInsets.all(5),
@@ -300,24 +317,34 @@ class _SettingState extends State<SettingPage> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(titleCustomLabels,
+                        Text(AppLocalizations
+                            .of(context)
+                            .titleCustomLabels,
                             textAlign: TextAlign.left,
-                            style: (TextStyle(
-                                fontSize: 18,
-                                color: colorSubHeader,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: montserratBoldFont))),
-                        SizedBox(height: 12.0),
-                        Text(labelRegistrationButton,
-                            style: (TextStyle(
-                                fontSize: 10,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: montserratBoldFont))),
-                        SizedBox(height: 4.0),
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .title),
+                        const SizedBox(height: 12.0),
+                        Text(
+                            AppLocalizations
+                                .of(context)
+                                .labelRegistrationButton,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .body2),
+                        const SizedBox(height: 4.0),
                         widget.inputFieldRectangle(_registrationController,
-                            hintText: inputHintBookNow),
-                        SizedBox(height: 10.0),
+                            hintText:
+                            AppLocalizations
+                                .of(context)
+                                .inputHintBookNow,
+                            labelStyle: Theme
+                                .of(context)
+                                .textTheme
+                                .body1),
+                        const SizedBox(height: 10.0),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -326,38 +353,58 @@ class _SettingState extends State<SettingPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                    Text(labelFacebookLink,
+                                        Text(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelFacebookLink,
                                         textAlign: TextAlign.left,
-                                        style: (TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: montserratBoldFont))),
-                                    SizedBox(height: 4.0),
+                                            style:
+                                            Theme
+                                                .of(context)
+                                                .textTheme
+                                                .body2),
+                                        const SizedBox(height: 4.0),
                                     widget.inputFieldRectangle(
                                         _facebookLinkController,
-                                        hintText: inputHintFacebookLink)
+                                        hintText: AppLocalizations
+                                            .of(context)
+                                            .inputHintFacebookLink,
+                                        labelStyle:
+                                        Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1)
                                   ])),
-                              SizedBox(width: 10.0),
+                              const SizedBox(width: 10.0),
                               Expanded(
                                   child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                    Text(labelTwitterLink,
+                                        Text(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelTwitterLink,
                                         textAlign: TextAlign.left,
-                                        style: (TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: montserratBoldFont))),
-                                    SizedBox(height: 4.0),
+                                            style:
+                                            Theme
+                                                .of(context)
+                                                .textTheme
+                                                .body2),
+                                        const SizedBox(height: 4.0),
                                     widget.inputFieldRectangle(
                                         _twitterLinkController,
-                                        hintText: inputHintTwitterLink)
+                                        hintText: AppLocalizations
+                                            .of(context)
+                                            .inputHintTwitterLink,
+                                        labelStyle:
+                                        Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1)
                                   ]))
                             ]),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
@@ -366,38 +413,58 @@ class _SettingState extends State<SettingPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                    Text(labelLinkedInLink,
+                                        Text(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelLinkedInLink,
                                         textAlign: TextAlign.left,
-                                        style: (TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: montserratBoldFont))),
-                                    SizedBox(height: 4.0),
+                                            style:
+                                            Theme
+                                                .of(context)
+                                                .textTheme
+                                                .body2),
+                                        const SizedBox(height: 4.0),
                                     widget.inputFieldRectangle(
                                         _linkedInLinkController,
-                                        hintText: inputHintLinkedInLink)
+                                        hintText: AppLocalizations
+                                            .of(context)
+                                            .inputHintLinkedInLink,
+                                        labelStyle:
+                                        Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1)
                                   ])),
-                              SizedBox(width: 10.0),
+                              const SizedBox(width: 10.0),
                               Expanded(
                                   child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                    Text(labelWebsiteLink,
+                                        Text(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelWebsiteLink,
                                         textAlign: TextAlign.left,
-                                        style: (TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: montserratBoldFont))),
-                                    SizedBox(height: 4.0),
+                                            style:
+                                            Theme
+                                                .of(context)
+                                                .textTheme
+                                                .body2),
+                                        const SizedBox(height: 4.0),
                                     widget.inputFieldRectangle(
                                         _websiteLinkController,
-                                        hintText: inputHintWebsiteLink)
+                                        hintText: AppLocalizations
+                                            .of(context)
+                                            .inputHintWebsiteLink,
+                                        labelStyle:
+                                        Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1)
                                   ]))
                             ]),
-                        SizedBox(height: 5)
+                        const SizedBox(height: 5)
                       ])))
         ]));
   }

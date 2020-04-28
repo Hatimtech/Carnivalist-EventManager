@@ -2,7 +2,6 @@ import 'package:eventmanagement/ui/widget/flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'hexacolor.dart';
 import 'vars.dart';
 
 extension ContextExtensions on BuildContext {
@@ -23,8 +22,7 @@ extension ContextExtensions on BuildContext {
         builder: (context) => Container(
               alignment: FractionalOffset.center,
               child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      HexColor(colorProgressBar))),
+                  valueColor: AlwaysStoppedAnimation<Color>(colorProgressBar)),
             ));
   }
 
@@ -109,29 +107,30 @@ extension WidgetExtensions on Widget {
         TextInputType keyboardType,
         String hintText,
         String labelText,
+        TextStyle hintStyle,
+        TextStyle labelStyle,
         bool obscureText = false,
         InkWell inkWell,
         FormFieldValidator<String> validation}) =>
-
       TextFormField(
           validator: validation,
           onChanged: onChanged,
           keyboardType: keyboardType,
+          style: labelStyle,
           decoration: InputDecoration(
-        counterText: '',
-        focusedErrorBorder:  OutlineInputBorder(
-            borderSide: BorderSide(color:  Colors.red, width: 1)),
-        errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.red, width: 1)),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: HexColor('#8c3ee9'), width: 1)),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey, width: 1)),
-        contentPadding: EdgeInsets.all(5),
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0),
-
-      ));
+            counterText: '',
+            focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 1)),
+            errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red, width: 1)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: colorFocusedBorder, width: 1)),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey, width: 1)),
+            contentPadding: EdgeInsets.all(5),
+            hintText: hintText,
+            hintStyle: hintStyle,
+          ));
 
   customFloatForm(
           {IconData icon, VoidCallback qrCallback, bool isMini = false}) =>

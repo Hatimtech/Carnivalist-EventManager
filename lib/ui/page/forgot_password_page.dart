@@ -1,10 +1,10 @@
 import 'package:eventmanagement/bloc/forgotpassword/forgot_password_bloc.dart';
 import 'package:eventmanagement/bloc/forgotpassword/forgot_password_state.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
-import 'package:eventmanagement/utils/hexacolor.dart';
+import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
-import 'package:eventmanagement/utils/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -54,11 +54,13 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                 child: Container(
                     margin: EdgeInsets.all(15),
                     child: Column(children: <Widget>[
-                      Text(titleForgotPassword,
+                      Text(AppLocalizations
+                          .of(context)
+                          .titleForgotPassword,
                           textAlign: TextAlign.center,
                           style: (TextStyle(
                               fontSize: 19,
-                              color: HexColor(colorTitle),
+                              color: colorTitle,
                               fontFamily: montserratBoldFont))),
                       _emailInput(),
                       SizedBox(height: 15),
@@ -83,7 +85,9 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_phoneEmailController,
               onChanged: _forgotPasswordBloc.mobileInput,
-              labelText: inputHintPhoneEmail,
+              labelText: AppLocalizations
+                  .of(context)
+                  .inputHintPhoneEmail,
               validation: validatePhoneEmail,
               keyboardType: TextInputType.emailAddress)));
 
@@ -94,7 +98,10 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
           width: 110.0,
           child: Align(
               alignment: Alignment.center,
-              child: Text(btnReset.toUpperCase(),
+              child: Text(AppLocalizations
+                  .of(context)
+                  .btnReset
+                  .toUpperCase(),
                   style: new TextStyle(color: Colors.white, fontSize: 14.0))),
           decoration: buttonBg()));
 
@@ -104,7 +111,10 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
           width: 110.0,
           child: Align(
               alignment: Alignment.center,
-              child: Text(btnBack.toUpperCase(),
+              child: Text(AppLocalizations
+                  .of(context)
+                  .btnBack
+                  .toUpperCase(),
                   style: new TextStyle(color: Colors.white, fontSize: 14.0))),
           decoration: buttonBg()),
       onTap: () => Navigator.pop(context));

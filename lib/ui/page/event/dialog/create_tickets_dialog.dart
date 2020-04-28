@@ -1,12 +1,12 @@
 import 'package:eventmanagement/bloc/event/createticket/create_ticket_bloc.dart';
 import 'package:eventmanagement/bloc/event/createticket/create_ticket_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
-import 'package:eventmanagement/utils/hexacolor.dart';
-import 'package:eventmanagement/utils/vars.dart';
-import 'package:flutter/material.dart';
 import 'package:eventmanagement/utils/extensions.dart';
+import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateTicketsDialog extends StatefulWidget {
@@ -43,7 +43,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return  Dialog(
+    return Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
@@ -55,153 +55,174 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   dialogContent(BuildContext context) {
     return SingleChildScrollView(
         child: Form(
-        key: _key,
-        autovalidate: _validate,
-        child: Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(titleTicketDetails,
-                      textAlign: TextAlign.left,
-                      style: (TextStyle(
-                          fontSize: 18,
-                          color: colorSubHeader,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: montserratBoldFont))),
-                  SizedBox(height: 20.0),
-                  Text(labelTicketName,
-                      style: (TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: montserratBoldFont))),
-                  SizedBox(height: 4.0),
-                  ticketNameInput(),
-                  SizedBox(height: 10.0),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
+            key: _key,
+            autovalidate: _validate,
+            child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(AppLocalizations
+                          .of(context)
+                          .titleTicketDetails,
+                          textAlign: TextAlign.left,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .title),
+                      const SizedBox(height: 20.0),
+                      Text(AppLocalizations
+                          .of(context)
+                          .labelTicketName,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body2),
+                      const SizedBox(height: 4.0),
+                      ticketNameInput(),
+                      const SizedBox(height: 10.0),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(AppLocalizations
+                                          .of(context)
+                                          .labelPrice,
+                                          textAlign: TextAlign.left,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .body2),
+                                      SizedBox(height: 4.0),
+                                      ticketPriceInput(),
+                                    ])),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelSalesEnds,
+                                          textAlign: TextAlign.left,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .body2),
+                                      const SizedBox(height: 4.0),
+                                      salesEndDateInput(),
+                                    ]))
+                          ]),
+                      const SizedBox(height: 10.0),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelTotalAvailable,
+                                          textAlign: TextAlign.left,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .body2),
+                                      const SizedBox(height: 4.0),
+                                      totalAvailableInput(),
+                                    ])),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelMinBooking,
+                                          textAlign: TextAlign.left,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .body2),
+                                      const SizedBox(height: 4.0),
+                                      minBookingInput(),
+                                    ])),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelMaxBooking,
+                                          textAlign: TextAlign.left,
+                                          style: Theme
+                                              .of(context)
+                                              .textTheme
+                                              .body2),
+                                      const SizedBox(height: 4.0),
+                                      maxBookingInput(),
+                                    ]))
+                          ]),
+                      const SizedBox(height: 10.0),
+                      Text(AppLocalizations
+                          .of(context)
+                          .labelDescription,
+                          textAlign: TextAlign.left,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body2),
+                      const SizedBox(height: 4.0),
+                      descriptionInput(),
+                      const SizedBox(height: 15),
+                      Row(children: <Widget>[
                         Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                              Text(labelPrice,
-                                  textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: montserratBoldFont))),
-                              SizedBox(height: 4.0),
-                              ticketPriceInput(),
-                            ])),
-                        SizedBox(width: 10.0),
+                          child: RaisedButton(
+                            onPressed: () => Navigator.pop(context),
+                            padding: EdgeInsets.symmetric(vertical: 12.0),
+                            child: Text(
+                              AppLocalizations
+                                  .of(context)
+                                  .btnClose,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .button,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 15),
                         Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                              Text(labelSalesEnds,
-                                  textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: montserratBoldFont))),
-                              SizedBox(height: 4.0),
-                              salesEndDateInput(),
-                            ]))
-                      ]),
-                  SizedBox(height: 10.0),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                              Text(labelTotalAvailable,
-                                  textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: montserratBoldFont))),
-                              SizedBox(height: 4.0),
-                              totalAvailableInput(),
-                            ])),
-                        SizedBox(width: 10.0),
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                              Text(labelMinBooking,
-                                  textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: montserratBoldFont))),
-                              SizedBox(height: 4.0),
-                              minBookingInput(),
-                            ])),
-                        SizedBox(width: 10.0),
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                              Text(labelMaxBooking,
-                                  textAlign: TextAlign.left,
-                                  style: (TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.normal,
-                                      fontFamily: montserratBoldFont))),
-                              SizedBox(height: 4.0),
-                              maxBookingInput(),
-                            ]))
-                      ]),
-                  SizedBox(height: 10.0),
-                  Text(labelDescription,
-                      textAlign: TextAlign.left,
-                      style: (TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: montserratBoldFont))),
-                  SizedBox(height: 4.0),
-                  descriptionInput(),
-                  SizedBox(height: 15),
-                  Row(children: <Widget>[
-                    Expanded(
-                        child: GestureDetector(
-                            onTap: () => Navigator.pop(context),
-                            child: Container(
-                                padding: EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                    color: HexColor('#8c3ee9'),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Text(btnClose,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400))))),
-                    SizedBox(width: 15),
-                    Expanded(
-                        child: GestureDetector(
-                            onTap: () => _createTicketValidate(),
-                            child: Container(
-                                padding: EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                    color: HexColor('#8c3ee9'),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Text(btnSave,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400)))))
-                  ])
-                ]))));
+                          child: RaisedButton(
+                            onPressed: _createTicketValidate,
+                            padding: EdgeInsets.symmetric(vertical: 12.0),
+                            child: Text(
+                              AppLocalizations
+                                  .of(context)
+                                  .btnSave,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .button,
+                            ),
+                          ),
+                        )
+                      ])
+                    ]))));
   }
 
   _createTicketToApi() async {
@@ -247,7 +268,13 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
           widget.inputFieldRectangle(_ticketNameController,
               validation: validateTicketName,
               onChanged: _createTicketBloc.ticketNameInput,
-              hintText: inputHintTicketName));
+              hintText: AppLocalizations
+                  .of(context)
+                  .inputHintTicketName,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1));
 
   ticketPriceInput() => BlocBuilder(
       bloc: _createTicketBloc,
@@ -256,7 +283,13 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
               onChanged: _createTicketBloc.ticketPriceInput,
               validation: validatePrice,
               keyboardType: TextInputType.number,
-              hintText: inputHintPrice));
+              hintText: AppLocalizations
+                  .of(context)
+                  .inputHintPrice,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1));
 
   salesEndDateInput() => BlocBuilder(
       bloc: _createTicketBloc,
@@ -264,7 +297,13 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
           widget.inputFieldRectangle(_salesEndDateController,
               onChanged: _createTicketBloc.salesEndDateInput,
               validation: validateSalesEndDate,
-              hintText: inputHintSalesEndDate));
+              hintText: AppLocalizations
+                  .of(context)
+                  .inputHintSalesEndDate,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1));
 
   totalAvailableInput() => BlocBuilder(
       bloc: _createTicketBloc,
@@ -273,7 +312,13 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
               keyboardType: TextInputType.number,
               validation: validateQuantity,
               onChanged: _createTicketBloc.totalAvailableInput,
-              hintText: inputHintQuantity));
+              hintText: AppLocalizations
+                  .of(context)
+                  .inputHintQuantity,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1));
 
   minBookingInput() => BlocBuilder(
       bloc: _createTicketBloc,
@@ -282,7 +327,13 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
               onChanged: _createTicketBloc.minBookingInput,
               keyboardType: TextInputType.number,
               validation: validateQuantity,
-              hintText: inputHintQuantity));
+              hintText: AppLocalizations
+                  .of(context)
+                  .inputHintQuantity,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1));
 
   maxBookingInput() => BlocBuilder(
       bloc: _createTicketBloc,
@@ -291,12 +342,24 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
               onChanged: _createTicketBloc.maxBookingInput,
               keyboardType: TextInputType.number,
               validation: validateQuantity,
-              hintText: inputHintQuantity));
+              hintText: AppLocalizations
+                  .of(context)
+                  .inputHintQuantity,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1));
 
   descriptionInput() => BlocBuilder(
       bloc: _createTicketBloc,
       builder: (BuildContext context, CreateTicketState state) =>
           widget.inputFieldRectangle(_descriptionController,
               onChanged: _createTicketBloc.descriptionInput,
-              hintText: inputHintDescription));
+              hintText: AppLocalizations
+                  .of(context)
+                  .inputHintDescription,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1));
 }

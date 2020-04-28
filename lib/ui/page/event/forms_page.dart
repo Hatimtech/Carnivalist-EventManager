@@ -1,4 +1,4 @@
-import 'package:eventmanagement/utils/hexacolor.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,55 +19,25 @@ class _FormsState extends State<FormsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: HexColor(bgColor),
-        bottomNavigationBar: Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
-            child: Row(children: <Widget>[
-              Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: HexColor('#8c3ee9'),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(btnCancel,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400)))),
-              SizedBox(width: 15),
-              Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: HexColor('#8c3ee9'),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(btnNext,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400))))
-            ])),
+        backgroundColor: bgColor,
         body: SingleChildScrollView(
             child: Container(
                 margin: EdgeInsets.all(5),
                 child: Column(children: <Widget>[
                   Align(
                       alignment: Alignment.topRight,
-                      child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(5.0)),
-                          color: HexColor(colorCreateEventBg),
-                          textColor: Colors.white,
-                          disabledColor: Colors.grey,
-                          disabledTextColor: Colors.black,
-                          padding: EdgeInsets.all(5.0),
+                      child: RaisedButton(
                           splashColor: Colors.black.withOpacity(0.2),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 0.0),
                           onPressed: () => showDialog(
                               context: context,
                               builder: (BuildContext context) =>
                                   CreateFieldsDialog()),
-                          child: Text(btnCreateFields,
+                          child: Text(
+                              AppLocalizations
+                                  .of(context)
+                                  .btnCreateFields,
                               style: TextStyle(color: Colors.white)))),
                   ListView(shrinkWrap: true, children: <Widget>[
                     Card(
@@ -84,11 +54,23 @@ class _FormsState extends State<FormsPage> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text('Name',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              )),
                                           SizedBox(height: 5),
                                           Text('Coppon: 3 Add ons: 2',
-                                              style: TextStyle(fontSize: 12))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2
+                                                  .copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                              ))
                                         ])),
                                 Expanded(
                                     flex: 0,
@@ -98,11 +80,19 @@ class _FormsState extends State<FormsPage> {
                                         children: <Widget>[
                                           SizedBox(height: 2),
                                           Text('Mandatory',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16.0,
+                                              )),
                                           Text('Yes ',
-                                              style: TextStyle(fontSize: 10))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2)
                                         ]))
                               ])
                             ]))),
@@ -117,28 +107,48 @@ class _FormsState extends State<FormsPage> {
                                     flex: 1,
                                     child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text('Name',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              )),
                                           SizedBox(height: 5),
                                           Text('Coppon: 3 Add ons: 2',
-                                              style: TextStyle(fontSize: 12))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2
+                                                  .copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                              ))
                                         ])),
                                 Expanded(
                                     flex: 0,
                                     child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(height: 2),
                                           Text('Mandatory',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16.0,
+                                              )),
                                           Text('Yes ',
-                                              style: TextStyle(fontSize: 10))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2)
                                         ]))
                               ])
                             ]))),
@@ -153,28 +163,48 @@ class _FormsState extends State<FormsPage> {
                                     flex: 1,
                                     child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text('Name',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              )),
                                           SizedBox(height: 5),
                                           Text('Coppon: 3 Add ons: 2',
-                                              style: TextStyle(fontSize: 12))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2
+                                                  .copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                              ))
                                         ])),
                                 Expanded(
                                     flex: 0,
                                     child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(height: 2),
                                           Text('Mandatory',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16.0,
+                                              )),
                                           Text('Yes ',
-                                              style: TextStyle(fontSize: 10))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2)
                                         ]))
                               ])
                             ]))),
@@ -189,28 +219,48 @@ class _FormsState extends State<FormsPage> {
                                     flex: 1,
                                     child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text('Name',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                              )),
                                           SizedBox(height: 5),
                                           Text('Coppon: 3 Add ons: 2',
-                                              style: TextStyle(fontSize: 12))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2
+                                                  .copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                              ))
                                         ])),
                                 Expanded(
                                     flex: 0,
                                     child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                        CrossAxisAlignment.end,
                                         children: <Widget>[
                                           SizedBox(height: 2),
                                           Text('Mandatory',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 15)),
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16.0,
+                                              )),
                                           Text('Yes ',
-                                              style: TextStyle(fontSize: 10))
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .body2)
                                         ]))
                               ])
                             ])))

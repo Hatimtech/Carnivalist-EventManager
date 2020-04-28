@@ -1,0 +1,523 @@
+{
+  "@@last_modified": "2020-04-26T22:57:31.417784",
+  "appTitle": "Carnivalist",
+  "@appTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleSignUp": "Sign Up",
+  "@titleSignUp": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleForgotPassword": "Forgot Password",
+  "@titleForgotPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleSignIn": "Sign In",
+  "@titleSignIn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleDashboard": "Tableau de bord",
+  "@titleDashboard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateEvent": "Create Event",
+  "@titleCreateEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleBasicInfo": "Basic Info",
+  "@titleBasicInfo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleEventDate": "Event Date",
+  "@titleEventDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleAddress": "Address",
+  "@titleAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleDescription": "Description",
+  "@titleDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleTicketDetails": "Enter your ticket details",
+  "@titleTicketDetails": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titlePaymentAndFees": "Payments and fees",
+  "@titlePaymentAndFees": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCustomLabels": "Custom Labels",
+  "@titleCustomLabels": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCustomSettings": "Custom Settings",
+  "@titleCustomSettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCustomField": "Create your custom field",
+  "@titleCustomField": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelForgotPassword": "Forgot Password",
+  "@labelForgotPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSignUp": "Sign Up",
+  "@labelSignUp": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSignIn": "Sign In",
+  "@labelSignIn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDoNotAccount": "Dont't have an account?",
+  "@labelDoNotAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelBecomeAVendorPartner": "Become a vendor partner.",
+  "@labelBecomeAVendorPartner": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSignUpAgreement": "By signing up, you agree to our \nTerms & Privacy Policy.",
+  "@labelSignUpAgreement": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAlredyAccount": "Alredy have an account?",
+  "@labelAlredyAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventName": "Event name",
+  "@labelEventName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCarnivalName": "Carnival",
+  "@labelCarnivalName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTimeZone": "Time zone",
+  "@labelTimeZone": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTags": "Tags",
+  "@labelTags": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStartDate": "Start date",
+  "@labelStartDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStartTime": "Start time",
+  "@labelStartTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEndDate": "End date",
+  "@labelEndDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEndTime": "End time",
+  "@labelEndTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelLocation": "Location",
+  "@labelLocation": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelState": "State",
+  "@labelState": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCity": "City",
+  "@labelCity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelPostalCode": "Postal code",
+  "@labelPostalCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSelectState": "Select state",
+  "@labelSelectState": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTypeCityName": "Type city name",
+  "@labelTypeCityName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTypePostalCode": "Type postal code",
+  "@labelTypePostalCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTicketName": "Ticket Name",
+  "@labelTicketName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelPrice": "Price",
+  "@labelPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSalesEnds": "Sales Ends",
+  "@labelSalesEnds": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTotalAvailable": "Total Available",
+  "@labelTotalAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelMinBooking": "Min Booking",
+  "@labelMinBooking": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelMaxBooking": "Max Booking",
+  "@labelMaxBooking": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDescription": "Description",
+  "@labelDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelConvenienceFee": "Convenience Fee",
+  "@labelConvenienceFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelPaymentGatewayCharge": "Who will pay payment Gateway charges",
+  "@labelPaymentGatewayCharge": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelBookingCancel": "Booking Cancellation",
+  "@labelBookingCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTicketResale": "Ticket Resale",
+  "@labelTicketResale": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelRemainingTickets": "Remaining Tickets",
+  "@labelRemainingTickets": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelRegistrationButton": "Registration button label",
+  "@labelRegistrationButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelFacebookLink": "Facebook Link",
+  "@labelFacebookLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTwitterLink": "Twitter Link",
+  "@labelTwitterLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelLinkedInLink": "Linkedin Link",
+  "@labelLinkedInLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelWebsiteLink": "Website Link",
+  "@labelWebsiteLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAmountValue": "Amount Value",
+  "@labelAmountValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelPercentageValue": "Percentage Value",
+  "@labelPercentageValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelFieldName": "Field Name",
+  "@labelFieldName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelMandatory": "Mandatory",
+  "@labelMandatory": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "menuBasic": "Basic",
+  "@menuBasic": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "menuTickets": "Tickets",
+  "@menuTickets": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "menuForms": "Forms",
+  "@menuForms": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "menuGallery": "Gallery",
+  "@menuGallery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "menuSettings": "Settings",
+  "@menuSettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "msgNoData": "No Data",
+  "@msgNoData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnSignIn": "Sign In",
+  "@btnSignIn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnSignUp": "Sign Up",
+  "@btnSignUp": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnBack": "Back",
+  "@btnBack": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnReset": "Reset",
+  "@btnReset": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnSubmit": "Submit",
+  "@btnSubmit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnNext": "Next",
+  "@btnNext": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnCancel": "Cancel",
+  "@btnCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnPrevious": "Previous",
+  "@btnPrevious": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnClose": "Close",
+  "@btnClose": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnSave": "Save",
+  "@btnSave": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnLogout": "Logout",
+  "@btnLogout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnCreateTicket": "Create Ticket",
+  "@btnCreateTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnCreateFields": "Create Fields",
+  "@btnCreateFields": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintPhoneEmail": "Phone No/Email",
+  "@inputHintPhoneEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintEmail": "Email",
+  "@inputHintEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintPassword": "Password",
+  "@inputHintPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintConfirmPassword": "Confirm Password",
+  "@inputHintConfirmPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintFirstName": "First Name",
+  "@inputHintFirstName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintPhoneNo": "Phone No",
+  "@inputHintPhoneNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintEventName": "Type your event name",
+  "@inputHintEventName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintCarnival": "Select your carnival",
+  "@inputHintCarnival": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintTimeZone": "Select your zone",
+  "@inputHintTimeZone": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintTagEvent": "Tag your event",
+  "@inputHintTagEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintTag": "Tag your event",
+  "@inputHintTag": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintTime": "00:00",
+  "@inputHintTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintDate": "DD/MM/YYYY",
+  "@inputHintDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintTypeYourLocation": "Type your Location",
+  "@inputHintTypeYourLocation": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintDescription": "Description",
+  "@inputHintDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintQuantity": "Quantity",
+  "@inputHintQuantity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintPrice": "Enter ticket price",
+  "@inputHintPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintTicketName": "Type your ticket name",
+  "@inputHintTicketName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintSalesEndDate": "Sales end date",
+  "@inputHintSalesEndDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintPercentage": "Type your Percentage",
+  "@inputHintPercentage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintBookNow": "Ex:- Book Now",
+  "@inputHintBookNow": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintFacebookLink": "Ex:-https://faecbook.com/hat...",
+  "@inputHintFacebookLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintTwitterLink": "Ex:-https://twitter.com/hat...",
+  "@inputHintTwitterLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintLinkedInLink": "Ex:-https://linkedin.com/hat...",
+  "@inputHintLinkedInLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintWebsiteLink": "Ex:-https://Carnivallist.com/",
+  "@inputHintWebsiteLink": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintAmount": "Type your Amount",
+  "@inputHintAmount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintFieldName": "Type your field name",
+  "@inputHintFieldName": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

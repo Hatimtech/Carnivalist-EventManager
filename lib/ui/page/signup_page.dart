@@ -1,12 +1,11 @@
 import 'package:eventmanagement/bloc/signup/sign_up_bloc.dart';
 import 'package:eventmanagement/bloc/signup/sign_up_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
-import 'package:eventmanagement/model/login/login_response.dart';
-import 'package:eventmanagement/utils/hexacolor.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:eventmanagement/utils/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -65,11 +64,13 @@ class _SignUpState extends State<SignUpPage> {
                     margin: EdgeInsets.only(
                         top: 15, bottom: 2, right: 15, left: 15),
                     child: Column(children: <Widget>[
-                      Text(titleSignUp,
+                      Text(AppLocalizations
+                          .of(context)
+                          .titleSignUp,
                           textAlign: TextAlign.center,
                           style: (TextStyle(
                               fontSize: 19,
-                              color: HexColor(colorTitle),
+                              color: colorTitle,
                               fontFamily: montserratBoldFont))),
                       _firstNameInput(),
                       _phoneNoInput(),
@@ -80,10 +81,13 @@ class _SignUpState extends State<SignUpPage> {
                       _signUpButton(),
                       RawMaterialButton(
                           padding: EdgeInsets.all(10),
-                          child: Text(labelSignUpAgreement,
+                          child: Text(
+                              AppLocalizations
+                                  .of(context)
+                                  .labelSignUpAgreement,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: HexColor(colorTitle), fontSize: 10.0)),
+                              style:
+                              TextStyle(color: colorTitle, fontSize: 10.0)),
                           onPressed: () {})
                     ])),
                 shape: RoundedRectangleBorder(
@@ -98,7 +102,10 @@ class _SignUpState extends State<SignUpPage> {
                   padding: EdgeInsets.all(0),
                   child: Align(
                       alignment: Alignment.center,
-                      child: Text(labelAlredyAccount,
+                      child: Text(
+                          AppLocalizations
+                              .of(context)
+                              .labelAlredyAccount,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 12.0,
@@ -109,7 +116,9 @@ class _SignUpState extends State<SignUpPage> {
                   padding: EdgeInsets.all(10),
                   child: Align(
                       alignment: Alignment.center,
-                      child: Text(labelSignIn,
+                      child: Text(AppLocalizations
+                          .of(context)
+                          .labelSignIn,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 12.0,
@@ -124,7 +133,9 @@ class _SignUpState extends State<SignUpPage> {
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_firstNameController,
-              labelText: inputHintFirstName,
+              labelText: AppLocalizations
+                  .of(context)
+                  .inputHintFirstName,
               onChanged: _signUpBloc.nameInput,
               validation: validateName,
               keyboardType: TextInputType.text)));
@@ -134,7 +145,9 @@ class _SignUpState extends State<SignUpPage> {
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_phoneNoController,
-              labelText: inputHintPhoneNo,
+              labelText: AppLocalizations
+                  .of(context)
+                  .inputHintPhoneNo,
               onChanged: _signUpBloc.mobileInput,
               maxLength: 10,
               validation: validateMobile,
@@ -145,7 +158,9 @@ class _SignUpState extends State<SignUpPage> {
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_emailController,
-              labelText: inputHintEmail,
+              labelText: AppLocalizations
+                  .of(context)
+                  .inputHintEmail,
               validation: validateEmail,
               keyboardType: TextInputType.emailAddress,
               onChanged: _signUpBloc.emailInput)));
@@ -155,7 +170,9 @@ class _SignUpState extends State<SignUpPage> {
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_passwordController,
-              labelText: inputHintPassword,
+              labelText: AppLocalizations
+                  .of(context)
+                  .inputHintPassword,
               onChanged: _signUpBloc.passwordInput,
               validation: validatePassword,
               maxLength: 20,
@@ -170,7 +187,9 @@ class _SignUpState extends State<SignUpPage> {
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_confirmPasswordController,
-              labelText: inputHintConfirmPassword,
+              labelText: AppLocalizations
+                  .of(context)
+                  .inputHintConfirmPassword,
               onChanged: _signUpBloc.passwordInput,
               obscureText: visible, validation: (confirmation) {
             return confirmation.isEmpty
@@ -194,7 +213,10 @@ class _SignUpState extends State<SignUpPage> {
           width: 110.0,
           child: Align(
               alignment: Alignment.center,
-              child: Text(btnSignUp.toUpperCase(),
+              child: Text(AppLocalizations
+                  .of(context)
+                  .btnSignUp
+                  .toUpperCase(),
                   style: new TextStyle(color: Colors.white, fontSize: 14.0))),
           decoration: buttonBg()));
 

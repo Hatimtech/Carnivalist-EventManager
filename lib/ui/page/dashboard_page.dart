@@ -1,10 +1,8 @@
-import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart';
-import 'package:eventmanagement/utils/hexacolor.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:eventmanagement/utils/extensions.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -20,23 +18,34 @@ class _DashboardState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: HexColor(bgColor),
+        backgroundColor: bgColor,
         floatingActionButton: FloatingActionButton(
             heroTag: "btn1",
-            backgroundColor: HexColor(bgColorFloatingActionButton),
+            backgroundColor: bgColorFloatingActionButton,
             onPressed: () => Navigator.pushNamed(context, eventMenuRoute),
-            child: Icon(Icons.add)),
+            child: Icon(
+              isPlatformAndroid ? Icons.add : CupertinoIcons.add,
+              size: 48.0,
+            )),
         body: Column(children: <Widget>[
           Container(
               child: Center(
-                  child: Text(titleDashboard,
-                      style: TextStyle(fontSize: 16, color: colorHeaderTitle))),
+                  child: Text(AppLocalizations
+                      .of(context)
+                      .titleDashboard,
+                      style: Theme
+                          .of(context)
+                          .appBarTheme
+                          .textTheme
+                          .title)),
               height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                image: AssetImage(headerBackgroundImage),
-                fit: BoxFit.fitWidth,
+                    colorFilter:
+                    ColorFilter.mode(colorHeaderBgFilter, BlendMode.srcATop),
+                    image: AssetImage(headerBackgroundImage),
+                    fit: BoxFit.fitWidth,
               ))),
           Expanded(
               child: ListView(
@@ -49,14 +58,15 @@ class _DashboardState extends State<DashboardPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Wrap(spacing: 2.0, children: <Widget>[
-                            _category("COUPONS"),
-                            _category("ADD ONS"),
-                            _category("REPORTS"),
-                            _category("STAFF")
+                            _category(Icons.account_balance_wallet, "COUPONS"),
+                            _category(Icons.note_add, "ADD ONS"),
+                            _category(Icons.note, "REPORTS"),
+                            _category(Icons.people, "STAFF")
                           ])
                         ])),
                 Container(
                     color: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     child: Column(children: <Widget>[
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +75,7 @@ class _DashboardState extends State<DashboardPage> {
                             SizedBox(width: 10),
                             _categoryCounter('Upcoming Events', '00')
                           ]),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -78,17 +88,18 @@ class _DashboardState extends State<DashboardPage> {
                     padding: EdgeInsets.all(10),
                     child: Text(
                       'Upcoming Events',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: HexColor('#8c3ee9'),
-                          fontWeight: FontWeight.bold),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .subtitle,
                     )),
                 _upComingEvents()
               ]))
         ]));
   }
 
-  _category(String name) => Card(
+  _category(IconData iconData, String name) =>
+      Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
@@ -98,18 +109,19 @@ class _DashboardState extends State<DashboardPage> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(Icons.calendar_today,
-                    size: 18, color: HexColor('#8c3ee9')),
-                SizedBox(height: 10),
-                Text(name,
-                    style: TextStyle(
-                        fontSize: 9,
-                        color: HexColor('#8c3ee9'),
-                        fontWeight: FontWeight.bold))
+                Icon(iconData, size: 18, color: colorIconSecondary),
+                const SizedBox(height: 10),
+                Text(
+                  name,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subhead,
+                )
               ])));
 
   _categoryCounter(String name, String counter) => Card(
-      color: HexColor('#f4e6fa'),
+      color: bgColorSecondary,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
       child: Container(
@@ -118,17 +130,15 @@ class _DashboardState extends State<DashboardPage> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(counter,
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: HexColor('#8c3ee9'),
-                        fontWeight: FontWeight.bold)),
+                Text(counter, style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle),
                 SizedBox(height: 10),
-                Text(name,
-                    style: TextStyle(
-                        fontSize: 9,
-                        color: HexColor('#8c3ee9'),
-                        fontWeight: FontWeight.bold))
+                Text(name, style: Theme
+                    .of(context)
+                    .textTheme
+                    .subhead)
               ])));
 
   _upComingEvents() => Card(
@@ -140,78 +150,96 @@ class _DashboardState extends State<DashboardPage> {
       ),
       child: Container(
           padding: EdgeInsets.all(10),
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                    flex: 0,
-                    child: CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.purple,
-                        backgroundImage: NetworkImage(
-                            'https://pbs.twimg.com/profile_images/470783207642632192/Zp8-uggw.jpeg'))),
-                Expanded(
-                    flex: 1,
-                    child: Container(
-                        margin: EdgeInsets.all(5),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('Event Title',
-                                  maxLines: 2,
-                                  textAlign: TextAlign.left,
-                                  style: new TextStyle(
-                                      fontSize: 16.0,
-                                      color: HexColor('#8c3ee9'),
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(height: 2.0),
-                              Row(children: <Widget>[
-                                Icon(Icons.calendar_today,
-                                    color: HexColor('#8c3ee9'), size: 15.0),
-                                SizedBox(width: 3.0),
-                                Text('15-06-2020',
-                                    style: new TextStyle(
-                                        fontSize: 10.0,
-                                        color: HexColor('#8c3ee9')))
-                              ]),
-                              SizedBox(height: 15.0),
-                              Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(children: <Widget>[
-                                      Icon(Icons.image_aspect_ratio,
-                                          color: HexColor('#8c3ee9'),
-                                          size: 15.0),
-                                      SizedBox(width: 2.0),
-                                      Text('0/200',
-                                          style: new TextStyle(
-                                              fontSize: 10.0,
-                                              color: HexColor('#8c3ee9')))
-                                    ]),
-                                    Row(children: <Widget>[
-                                      Icon(Icons.visibility,
-                                          color: HexColor('#8c3ee9'),
-                                          size: 15.0),
-                                      SizedBox(width: 2.0),
-                                      Text('1000',
-                                          style: new TextStyle(
-                                              fontSize: 10.0,
-                                              color: HexColor('#8c3ee9')))
-                                    ]),
-                                    Row(children: <Widget>[
-                                      Icon(Icons.visibility,
-                                          color: HexColor('#8c3ee9'),
-                                          size: 15.0),
-                                      SizedBox(width: 3.0),
-                                      Align(
-                                          child: Text('00',
-                                              style: new TextStyle(
-                                                  fontSize: 10.0,
-                                                  color: HexColor('#8c3ee9'))))
-                                    ])
-                                  ])
-                            ])))
-              ])));
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <
+              Widget>[
+            Expanded(
+                flex: 0,
+                child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.purple,
+                    backgroundImage: NetworkImage(
+                        'https://pbs.twimg.com/profile_images/470783207642632192/Zp8-uggw.jpeg'))),
+            Expanded(
+                flex: 1,
+                child: Container(
+                    margin: EdgeInsets.all(5),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Event Title',
+                            maxLines: 2,
+                            textAlign: TextAlign.left,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .subtitle,
+                          ),
+                          const SizedBox(height: 2.0),
+                          Row(children: <Widget>[
+                            Icon(Icons.calendar_today, size: 15.0),
+                            const SizedBox(width: 3.0),
+                            Text(
+                              '15-06-2020',
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .body2
+                                  .copyWith(
+                                color: colorTextSubhead,
+                              ),
+                            ),
+                          ]),
+                          const SizedBox(height: 15.0),
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(children: <Widget>[
+                                  Icon(Icons.image_aspect_ratio, size: 15.0),
+                                  const SizedBox(width: 2.0),
+                                  Text(
+                                    '0/200',
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .body2
+                                        .copyWith(
+                                      color: colorTextSubhead,
+                                    ),
+                                  )
+                                ]),
+                                Row(children: <Widget>[
+                                  Icon(Icons.visibility, size: 15.0),
+                                  const SizedBox(width: 2.0),
+                                  Text(
+                                    '1000',
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .body2
+                                        .copyWith(
+                                      color: colorTextSubhead,
+                                    ),
+                                  )
+                                ]),
+                                Row(children: <Widget>[
+                                  Icon(Icons.visibility, size: 15.0),
+                                  const SizedBox(width: 3.0),
+                                  Align(
+                                    child: Text(
+                                      '00',
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .body2
+                                          .copyWith(
+                                        color: colorTextSubhead,
+                                      ),
+                                    ),
+                                  )
+                                ])
+                              ])
+                        ])))
+          ])));
 }

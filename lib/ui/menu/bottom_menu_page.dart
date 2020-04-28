@@ -1,10 +1,9 @@
+import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart';
 import 'package:eventmanagement/ui/page/dashboard_page.dart';
-import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:eventmanagement/utils/vars.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:eventmanagement/utils/extensions.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BottomMenuPage extends StatefulWidget {
   @override
@@ -30,48 +29,109 @@ class _BottomMenuState extends State<BottomMenuPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.pink,
-            onPressed: () {},
-            child: Padding(padding: EdgeInsets.all(18), child: Image(image: AssetImage(bottomMenuBarHomeImage), color: Colors.white))),
+        floatingActionButton: _buildHomeFAB(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
             clipBehavior: Clip.antiAlias,
-            shape: CircularNotchedRectangleCustom(),
+            shape: isPlatformAndroid ? CircularNotchedRectangleCustom() : null,
             //notchMargin: 4.0,
-            child: Container(color: HexColor(colorBottomBarMenu),
+            child: Container(
+                color: colorBottomBarMenu,
                 height: 50,
                 child: Container(
                     padding: EdgeInsets.only(left: 10, right: 10),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
+                          Icon(
+                            Icons.account_balance_wallet,
+                            color: colorIconBottomBar,
+                          ),
+                          Icon(
+                            Icons.note_add,
+                            color: colorIconBottomBar,
+                          ),
+                          Icon(
+                            Icons.note,
+                            color: colorIconBottomBar,
+                          ),
+                          Icon(
+                            Icons.people,
+                            color: colorIconBottomBar,
+                          ),
+                          /*InkWell(
+                              customBorder: new CircleBorder(),
+                              onTap: () {},
+                              child: Padding(
+                                  padding: EdgeInsets.all(14),
+                                  child: Image(
+                                      image:
+                                          AssetImage(bottomMenuBarEventImage),
+                                      color: HexColor('#5d5d5d')))),
                           InkWell(
                               customBorder: new CircleBorder(),
                               onTap: () {},
                               child: Padding(
                                   padding: EdgeInsets.all(14),
-                                  child: Image(image: AssetImage(bottomMenuBarEventImage),  color: HexColor('#5d5d5d')))),
-                          InkWell(
-                              customBorder: new CircleBorder(),
-                              onTap: () {},
-                              child: Padding(
-                                  padding: EdgeInsets.all(14),
-                                  child:Image(image: AssetImage(bottomMenuBarCouponsImage),  color: HexColor('#5d5d5d')))),
+                                  child: Image(
+                                      image:
+                                          AssetImage(bottomMenuBarCouponsImage),
+                                      color: HexColor('#5d5d5d')))),
                           SizedBox(width: 40),
                           InkWell(
                               customBorder: new CircleBorder(),
                               onTap: () {},
                               child: Padding(
                                   padding: EdgeInsets.all(14),
-                                  child: Image(image: AssetImage(bottomMenuBarAddImage),  color: HexColor('#5d5d5d')))),
+                                  child: Image(
+                                      image: AssetImage(bottomMenuBarAddImage),
+                                      color: HexColor('#5d5d5d')))),
                           InkWell(
                               customBorder: new CircleBorder(),
                               onTap: () {},
                               child: Padding(
                                   padding: EdgeInsets.all(14),
-                                  child: Image(image: AssetImage(bottomMenuBarUserImage),  color: HexColor('#5d5d5d'))))
+                                  child: Image(
+                                      image: AssetImage(bottomMenuBarUserImage),
+                                      color: HexColor('#5d5d5d'))))*/
                         ])))),
         body: PageStorage(child: currentScreen, bucket: bucket));
+  }
+
+  Widget _buildHomeFAB() {
+    return _buildFABDecorationByPlatform(
+      child: FloatingActionButton(
+        mini: true,
+        elevation: isPlatformAndroid ? 4.0 : 0.0,
+        backgroundColor: colorAccent,
+        onPressed: () {},
+        child: Icon(
+          Icons.home,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFABDecorationByPlatform({Widget child}) {
+    if (isPlatformAndroid)
+      return child;
+    else
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color(0xFFFDCDE2),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.white,
+            width: 2.0,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 8.0,
+            ),
+          ],
+        ),
+        child: child,
+      );
   }
 }

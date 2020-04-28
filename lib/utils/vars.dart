@@ -1,9 +1,8 @@
 import 'dart:ui';
+
 import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:flutter/material.dart';
 import 'package:string_validator/string_validator.dart';
-
-const String appName = 'White Dry Wash';
 
 //API
 int ok200 = 200;
@@ -16,75 +15,6 @@ const String redirectUrlValue =
 const String emailParam = 'email';
 
 //DRAWER
-
-//TITLE
-const String titleSignUp = 'Sign Up';
-const String titleForgotPassword = 'Forgot Password';
-const String titleSignIn = 'Sign In';
-const String titleDashboard = 'Dashboard';
-const String titleCreateEvent = 'Create Event';
-const String titleBasicInfo = 'Basic Info';
-const String titleEventDate = 'Event Date';
-const String titleAddress = 'Address';
-const String titleDescription = 'Description';
-const String titleTicketDetails = 'Enter your ticket details';
-const String titlePaymentAndFees = 'Payments and fees';
-const String titleCustomLabels = 'Custom Labels';
-const String titleCustomSettings = 'Custom Settings';
-const String titleCustomField = 'Create your custom field';
-
-//TODO LABEL
-const labelForgotPassword = 'Forgot Password';
-const labelSignUp = "Sign Up";
-const labelSignIn = "Sign In";
-const labelDoNotAccount = "Dont't have an account?";
-const labelBecomeAVendorPartner = "Become a vendor partner.";
-const labelSignUpAgreement = "By signing up, you agree to our \nTerms & Privacy Policy.";
-const labelAlredyAccount = "Alredy have an account?";
-const  labelEventName = 'Event name';
-const  labelCarnivalName = 'Carnival';
-const  labelTimeZone = 'Time zone';
-const  labelTags = 'Tags';
-const  labelStartDate = 'Start date';
-const  labelStartTime = 'Start time';
-const  labelEndDate = 'End date';
-const  labelEndTime = 'End time';
-const  labelLocation = 'Location';
-const  labelState = 'State';
-const  labelCity = 'City';
-const  labelPostalCode = 'Postal code';
-const  labelSelectState = 'Select state';
-const  labelTypeCityName = 'Type city name';
-const  labelTypePostalCode = 'Type postal code';
-const  labelTicketName = 'Ticket Name';
-const  labelPrice = 'Price';
-const  labelSalesEnds = 'Sales Ends';
-const  labelTotalAvailable = 'Total Available';
-const  labelMinBooking = 'Min Booking';
-const  labelMaxBooking = 'Max Booking';
-const  labelDescription = 'Description';
-const  labelConvenienceFee = 'Convenience Fee';
-const  labelPaymentGatewayCharge = 'Who will pay payment Gateway charges';
-const  labelBookingCancel = 'Booking Cancellation';
-const  labelTicketResale = 'Ticket Resale';
-const  labelRemainingTickets = 'Remaining Tickets';
-const  labelRegistrationButton = 'Registration button label';
-const  labelFacebookLink = 'Facebook Link';
-const  labelTwitterLink = 'Twitter Link';
-const  labelLinkedInLink = 'Linkedin Link';
-const  labelWebsiteLink = 'Website Link';
-const  labelAmountValue = 'Amount Value';
-const  labelPercentageValue = 'Percentage Value';
-const  labelFieldName = 'Field Name';
-const  labelMandatory = 'Mandatory';
-
-const String menuBasic = 'Basic';
-const String menuTickets = 'Tickets';
-const String menuForms = 'Forms';
-const String menuGallery = 'Gallery';
-const String menuSettings = 'Settings';
-
-const String msgNoData = 'No Data';
 
 //TODO IMAGE
 const String appIconImage = 'assets/images/user_profile.png';
@@ -111,49 +41,6 @@ const String dashboardRoute = '/dashboard';
 const String bottomMenuRoute = '/bottomMenu';
 const String eventMenuRoute = '/eventMenu';
 
-
-const String btnSignIn = 'Sign In';
-const String btnSignUp = 'Sign Up';
-const String btnBack = 'Back';
-const String btnReset = 'Reset';
-const String btnSubmit = 'Submit';
-const String btnNext = 'Next';
-const String btnCancel = 'Cancel';
-const String btnPrevious = 'Previous';
-const String btnClose = 'Close';
-const String btnSave = 'Save';
-const String btnLogout = 'Logout';
-const String btnCreateTicket = 'Create Ticket';
-const String btnCreateFields = 'Create Fields';
-
-const String inputHintPhoneEmail = 'Phone No/Email';
-const String inputHintEmail = 'Email';
-const String inputHintPassword = 'Password';
-const String inputHintConfirmPassword = 'Confirm Password';
-const String inputHintFirstName = 'First Name';
-const String inputHintPhoneNo = 'Phone No';
-const String inputHintEventName = 'Type your event name';
-const String inputHintCarnival= 'Select your carnival';
-const String inputHintTimeZone = 'Select your zone';
-const String inputHintTagEvent = 'Tag your event';
-const String inputHintTag= 'Tag your event';
-const String inputHintTime = '00:00';
-const String inputHintDate = 'DD/MM/YYYY';
-const String inputHintTypeYourLocation = 'Type your Location';
-const String inputHintDescription = 'Description';
-const String inputHintQuantity= 'Quantity';
-const String inputHintPrice= 'Enter ticket price';
-const String inputHintTicketName = 'Type your ticket name';
-const String inputHintSalesEndDate= 'Sales end date';
-const String inputHintPercentage = 'Type your Percentage';
-const String inputHintBookNow = 'Ex:- Book Now';
-const String inputHintFacebookLink = 'Ex:-https://faecbook.com/hat...';
-const String inputHintTwitterLink = 'Ex:-https://twitter.com/hat...';
-const String inputHintLinkedInLink = 'Ex:-https://linkedin.com/hat...';
-const String inputHintWebsiteLink = 'Ex:-https://Carnivallist.com/';
-const String inputHintAmount = 'Type your Amount';
-const String inputHintFieldName = 'Type your field name';
-
 const String profileImage = 'assets/images/user_profile.png';
 const String headerBackgroundImage = 'assets/images/header_background.png';
 
@@ -165,14 +52,35 @@ const String bottomMenuBarUserImage = 'assets/images/bottom_menu_bar_user.png';
 
 
 //TODO COLOR
-const String colorProgressBar = '#10089b';
-const String colorTitle = '#10089b';
-const String bgColorFloatingActionButton = '#af52de';
-const String bgColor = '#FFF4FF';
-const String colorBottomBarMenu = '#FEFEFE';
+const Color colorPrimary = Color(0xFF462FB6);
+const Color colorAccent = Color(0xFF9249F4);
+
+const Color colorTextTitle = Colors.black;
+const Color colorTextSubtitle = Color(0xFF8C3EE9);
+const Color colorTextSubhead = Color(0xFF8C3EE9);
+const Color colorTextBody1 = Colors.black;
+const Color colorTextBody2 = Colors.black;
+const Color colorTextButton = Colors.white;
+
+const Color bgColor = Color(0xFFFFF4FF);
+const Color bgColorSecondary = Color(0xFFF4E6FA);
+const Color cardBgColor = Color(0xFFFFFFFF);
+const Color colorBgButton = Color(0xFF8C3EE9);
+
+const Color colorIcon = Color(0xFF8C3EE9);
+const Color colorIconSecondary = Color(0xFF6700E2);
+const Color colorIconBottomBar = Color(0xFF5D5D5D);
+
+const Color colorFocusedBorder = Color(0xFF8C3EE9);
+
+const Color colorProgressBar = Color(0xFF10089b);
+const Color colorTitle = Color(0xFF10089b);
+const Color bgColorFloatingActionButton = Color(0xFFAF52DE);
+const Color colorBottomBarMenu = Color(0xFFFEFEFE);
 const Color colorHeaderTitle = Colors.white;
 const Color colorSubHeader = Colors.black;
-const String colorCreateEventBg = '#8c3ee9';
+const Color colorCreateEventBg = Color(0xFF8C3EE9);
+const Color colorHeaderBgFilter = Colors.transparent;
 
 
 List<Color> gradientsClipper = [Colors.grey.shade200, Colors.white];

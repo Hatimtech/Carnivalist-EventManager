@@ -1,7 +1,7 @@
 import 'package:eventmanagement/bloc/event/tickets/tickets_bloc.dart';
 import 'package:eventmanagement/bloc/event/tickets/tickets_state.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
-import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,54 +28,23 @@ class _TicketsState extends State<TicketsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: HexColor(bgColor),
-        bottomNavigationBar: Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
-            child: Row(children: <Widget>[
-              Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: HexColor('#8c3ee9'),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(btnCancel,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400)))),
-              SizedBox(width: 15),
-              Expanded(
-                  child: Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          color: HexColor('#8c3ee9'),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(btnNext,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400))))
-            ])),
+        backgroundColor: bgColor,
         body: Container(
             margin: EdgeInsets.all(5),
             child: Column(children: <Widget>[
               Align(
                   alignment: Alignment.topRight,
-                  child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(5.0)),
-                      color: HexColor(colorCreateEventBg),
-                      textColor: Colors.white,
-                      disabledColor: Colors.grey,
-                      disabledTextColor: Colors.black,
-                      padding: EdgeInsets.all(5.0),
+                  child: RaisedButton(
                       splashColor: Colors.black.withOpacity(0.2),
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
                       onPressed: () => showDialog(
                           context: context,
                           builder: (BuildContext context) =>
                               CreateTicketsDialog()),
-                      child: Text(btnCreateTicket,
+                      child: Text(AppLocalizations
+                          .of(context)
+                          .btnCreateTicket,
                           style: TextStyle(color: Colors.white)))),
               Expanded(
                   child: Container(
@@ -87,7 +56,7 @@ class _TicketsState extends State<TicketsPage> {
                                   alignment: FractionalOffset.center,
                                   child: CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          HexColor(colorProgressBar))))
+                                          colorProgressBar)))
                               : ticketsList(snapshot.ticketsList))))
             ])));
   }
@@ -111,7 +80,12 @@ class _TicketsState extends State<TicketsPage> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500)),
                                   SizedBox(height: 5),
-                                  Text('Coupon: 3 Add ons: ' + ticketsList[position].addons.length.toString(),
+                                  Text(
+                                      'Coupon: 3 Add ons: ' +
+                                          ticketsList[position]
+                                              .addons
+                                              .length
+                                              .toString(),
                                       style: TextStyle(fontSize: 12))
                                 ])),
                         Expanded(
@@ -126,7 +100,10 @@ class _TicketsState extends State<TicketsPage> {
                                           fontSize: 18)),
                                   Text('Sales end',
                                       style: TextStyle(fontSize: 10)),
-                                  Text(ticketsList[position].sellingEndDate.split('T')[0],
+                                  Text(
+                                      ticketsList[position]
+                                          .sellingEndDate
+                                          .split('T')[0],
                                       style: TextStyle(fontSize: 10))
                                 ]))
                       ])

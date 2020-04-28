@@ -1,11 +1,11 @@
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
-import 'package:eventmanagement/utils/hexacolor.dart';
+import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
-import 'package:eventmanagement/utils/extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -59,11 +59,13 @@ class _LoginState extends State<LoginPage> {
                           margin: EdgeInsets.only(
                               top: 15, bottom: 2, right: 15, left: 15),
                           child: Column(children: <Widget>[
-                            Text(titleSignIn,
+                            Text(AppLocalizations
+                                .of(context)
+                                .titleSignIn,
                                 textAlign: TextAlign.center,
                                 style: (TextStyle(
                                     fontSize: 19,
-                                    color: HexColor(colorTitle),
+                                    color: colorTitle,
                                     fontFamily: montserratBoldFont))),
                             _phoneEmailInput(),
                             _passwordInput(),
@@ -71,9 +73,11 @@ class _LoginState extends State<LoginPage> {
                             _signInButton(),
                             RawMaterialButton(
                                 padding: EdgeInsets.all(10),
-                                child: Text(labelForgotPassword,
+                                child: Text(AppLocalizations
+                                    .of(context)
+                                    .labelForgotPassword,
                                     style: TextStyle(
-                                        color: HexColor(colorTitle),
+                                        color: colorTitle,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12.0)),
                                 onPressed: () {
@@ -97,7 +101,9 @@ class _LoginState extends State<LoginPage> {
                             padding: EdgeInsets.all(10),
                             child: Align(
                                 alignment: Alignment.center,
-                                child: Text(labelSignUp,
+                                child: Text(AppLocalizations
+                                    .of(context)
+                                    .labelSignUp,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12.0,
@@ -113,7 +119,9 @@ class _LoginState extends State<LoginPage> {
                             padding: EdgeInsets.all(10),
                             child: Align(
                                 alignment: Alignment.center,
-                                child: Text(labelBecomeAVendorPartner,
+                                child: Text(AppLocalizations
+                                    .of(context)
+                                    .labelBecomeAVendorPartner,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12.0,
@@ -131,7 +139,9 @@ class _LoginState extends State<LoginPage> {
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
             child: widget.inputField(_phoneEmailController,
                 onChanged: _loginBloc.mobileInput,
-                labelText: inputHintPhoneEmail,
+                labelText: AppLocalizations
+                    .of(context)
+                    .inputHintPhoneEmail,
                 validation: validatePhoneEmail,
                 keyboardType: TextInputType.emailAddress));
       });
@@ -143,7 +153,9 @@ class _LoginState extends State<LoginPage> {
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
             child: widget.inputField(_passwordController,
                 onChanged: _loginBloc.passwordInput,
-                labelText: inputHintPassword,
+                labelText: AppLocalizations
+                    .of(context)
+                    .inputHintPassword,
                 obscureText: visible,
                 validation: validatePassword,
                 inkWell: InkWell(
@@ -159,7 +171,10 @@ class _LoginState extends State<LoginPage> {
           width: 110.0,
           child: Align(
               alignment: Alignment.center,
-              child: Text(btnSignIn.toUpperCase(),
+              child: Text(AppLocalizations
+                  .of(context)
+                  .btnSignIn
+                  .toUpperCase(),
                   style: new TextStyle(color: Colors.white, fontSize: 14.0))),
           decoration: buttonBg()));
 
