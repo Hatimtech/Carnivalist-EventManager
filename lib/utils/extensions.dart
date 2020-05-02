@@ -1,5 +1,8 @@
+import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/ui/widget/flushbar/flushbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'vars.dart';
@@ -20,10 +23,13 @@ extension ContextExtensions on BuildContext {
         context: context,
         barrierDismissible: false,
         builder: (context) => Container(
-              alignment: FractionalOffset.center,
-              child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(colorProgressBar)),
-            ));
+          alignment: FractionalOffset.center,
+          child: isPlatformAndroid
+              ? CircularProgressIndicator(
+              valueColor:
+              AlwaysStoppedAnimation<Color>(colorProgressBar))
+              : CupertinoActivityIndicator(),
+        ));
   }
 
   hideProgress(BuildContext context) {
@@ -40,8 +46,8 @@ extension ContextExtensions on BuildContext {
       ],
       margin: EdgeInsets.all(0),
       borderRadius: 0,
-      backgroundColor: Colors.white,
-      messageText: Text(message, style: TextStyle(color: Colors.red)),
+      backgroundColor: colorAccent,
+      messageText: Text(message, style: TextStyle(color: Colors.white)),
       duration: Duration(seconds: 3),
     )
       ..show(this);
@@ -72,21 +78,21 @@ extension WidgetExtensions on Widget {
       padding: padding);
 
   marginVisible({EdgeInsets edgeInsets, bool isVisible = true}) => Visibility(
-        visible: isVisible,
-        child: Container(
-            margin: (edgeInsets == null) ? EdgeInsets.all(0) : edgeInsets,
-            child: this),
-      );
+    visible: isVisible,
+    child: Container(
+        margin: (edgeInsets == null) ? EdgeInsets.all(0) : edgeInsets,
+        child: this),
+  );
 
   inputField(TextEditingController textEditingController,
-          {ValueChanged<String> onChanged,
-          int maxLength,
-          TextInputType keyboardType,
-          String hintText,
-          String labelText,
-          bool obscureText = false,
-          InkWell inkWell,
-          FormFieldValidator<String> validation}) =>
+      {ValueChanged<String> onChanged,
+        int maxLength,
+        TextInputType keyboardType,
+        String hintText,
+        String labelText,
+        bool obscureText = false,
+        InkWell inkWell,
+        FormFieldValidator<String> validation}) =>
       TextFormField(
           controller: textEditingController,
           obscureText: obscureText,
@@ -101,22 +107,41 @@ extension WidgetExtensions on Widget {
               suffix: inkWell),
           validator: validation);
 
-  inputFieldRectangle(TextEditingController textEditingController,
-      {ValueChanged<String> onChanged,
-        int maxLength,
-        TextInputType keyboardType,
-        String hintText,
-        String labelText,
-        TextStyle hintStyle,
-        TextStyle labelStyle,
-        bool obscureText = false,
-        InkWell inkWell,
-        FormFieldValidator<String> validation}) =>
+  inputFieldRectangle(TextEditingController textEditingController, {
+    String initialValue,
+    ValueChanged<String> onChanged,
+    int maxLength,
+    TextInputType keyboardType,
+    String hintText,
+    String labelText,
+    TextStyle hintStyle,
+    TextStyle labelStyle,
+    bool obscureText = false,
+    int maxLines = 1,
+    List<TextInputFormatter> inputFormatters,
+    InkWell inkWell,
+    TextInputAction textInputAction,
+    FocusNode focusNode,
+    FocusNode nextFocusNode,
+    FormFieldValidator<String> validation,
+  }) =>
       TextFormField(
+          initialValue: initialValue,
           validator: validation,
           onChanged: onChanged,
           keyboardType: keyboardType,
           style: labelStyle,
+          minLines: 1,
+          maxLines: maxLines,
+          maxLength: maxLength,
+          inputFormatters: inputFormatters,
+          focusNode: focusNode,
+          textInputAction: textInputAction,
+          onFieldSubmitted: (_) {
+            if (nextFocusNode != null) nextFocusNode.requestFocus();
+            if (focusNode != null) focusNode.unfocus();
+          },
+          autofocus: false,
           decoration: InputDecoration(
             counterText: '',
             focusedErrorBorder: OutlineInputBorder(
@@ -133,7 +158,7 @@ extension WidgetExtensions on Widget {
           ));
 
   customFloatForm(
-          {IconData icon, VoidCallback qrCallback, bool isMini = false}) =>
+      {IconData icon, VoidCallback qrCallback, bool isMini = false}) =>
       FloatingActionButton(
           elevation: 1,
           clipBehavior: Clip.antiAlias,
@@ -149,9 +174,9 @@ extension WidgetExtensions on Widget {
   expandStyle(int flex, Widget child) => Expanded(flex: flex, child: child);
 
   boxDecorationRectangle() => BoxDecoration(
-        border: Border.all(width: 0.5, color: Colors.grey),
-        borderRadius: BorderRadius.all(
-            Radius.circular(5.0) //                 <--- border radius here
-            ),
-      );
+    border: Border.all(width: 0.5, color: Colors.grey),
+    borderRadius: BorderRadius.all(
+        Radius.circular(5.0) //                 <--- border radius here
+    ),
+  );
 }

@@ -20,8 +20,8 @@ getPaymentType() => <MenuCustom>[
 ];
 
 getCustomField() => <MenuCustom>[
-  MenuCustom(name: 'Text'),
-  MenuCustom(name: 'Date'),
-  MenuCustom(name: 'Single Select'),
-  MenuCustom(name: 'Multi-Select'),
+  MenuCustom(name: 'Text', value: 'text'),
+  MenuCustom(name: 'Date', value: 'date'),
+  MenuCustom(name: 'Single Select', value: 'singleSelect'),
+  MenuCustom(name: 'Multi-Select', value: 'multiSelect'),
 ];

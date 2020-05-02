@@ -1,8 +1,12 @@
 import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
+import 'package:eventmanagement/bloc/event/basic/basic_state.dart';
+import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
+import 'package:eventmanagement/bloc/event/tickets/tickets_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
-import 'package:eventmanagement/ui/page/event/basic_page.dart';
+import 'package:eventmanagement/model/event/form/form_action_response.dart';
+import 'package:eventmanagement/ui/page/event/basic/basic_page.dart';
 import 'package:eventmanagement/ui/page/event/forms_page.dart';
 import 'package:eventmanagement/ui/page/event/gallery_page.dart';
 import 'package:eventmanagement/ui/page/event/setting_page.dart';
@@ -29,15 +33,22 @@ class _EventMenuState extends State<EventMenuPage>
   TextStyle tabStyle = TextStyle(fontSize: 16);
 
   BasicBloc _basicBloc;
+  TicketsBloc _ticketsBloc;
+  FormBloc _formBloc;
 
   @override
   void initState() {
     super.initState();
+    print('_EventMenuState initState');
     _tabController = TabController(length: 5, vsync: this);
     _tabController.addListener(_setActiveTabIndex);
     _setActiveTabIndex();
 
     _basicBloc = BlocProvider.of<BasicBloc>(context);
+    _ticketsBloc = BlocProvider.of<TicketsBloc>(context);
+    _formBloc = BlocProvider.of<FormBloc>(context);
+
+    //TODO(Existing Event) Get existing event data via navigator and populate all the states here
   }
 
   void _setActiveTabIndex() {
@@ -92,6 +103,26 @@ class _EventMenuState extends State<EventMenuPage>
               )
             ])),
         body: Column(children: <Widget>[
+          BlocBuilder<BasicBloc, BasicState>(
+            bloc: _basicBloc,
+            condition: (prevState, newState) => newState.errorCode != null,
+            builder: (context, BasicState state) {
+              if (state.errorCode != null) {
+                String errorMsg = getErrorMessage(state.errorCode, context);
+                if (state.errorCode == ERR_START_DATE_WEEK_DAY ||
+                    state.errorCode == ERR_END_DATE_WEEK_DAY)
+                  context.toast(
+                      '$errorMsg${uiLabelWeekday(
+                          state.eventWeekday, context)}');
+                else
+                  context.toast(errorMsg);
+
+                state.errorCode = null;
+              }
+
+              return SizedBox.shrink();
+            },
+          ),
           Container(
               child: Stack(
                 children: <Widget>[
@@ -134,55 +165,58 @@ class _EventMenuState extends State<EventMenuPage>
                     image: AssetImage(headerBackgroundImage),
                     fit: BoxFit.fitWidth,
                   ))),
-          const SizedBox(
-            height: 16.0,
-          ),
+          const SizedBox(height: 16.0),
           Expanded(
               child: DefaultTabController(
                   length: 5,
-                  child: new Scaffold(
-                      backgroundColor: bgColor,
-                      appBar: TabBar(
-                          controller: _tabController,
-                          labelColor: Colors.white,
-                          indicatorColor: Colors.transparent,
-                          labelPadding: EdgeInsets.all(4),
-                          isScrollable: false,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          tabs: [
-                            Tab(
-                                child: tabName('1', _selectedIndex, 0,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuBasic)),
-                            Tab(
-                                child: tabName('2', _selectedIndex, 1,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuTickets)),
-                            Tab(
-                                child: tabName('3', _selectedIndex, 2,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuForms)),
-                            Tab(
-                                child: tabName('4', _selectedIndex, 3,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuGallery)),
-                            Tab(
-                                child: tabName('5', _selectedIndex, 4,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuSettings))
-                          ]),
-                      body: TabBarView(controller: _tabController, children: [
-                        BasicPage(),
-                        TicketsPage(),
-                        FormsPage(),
-                        GalleryPage(),
-                        SettingPage()
-                      ]))))
+                  child: Column(children: <Widget>[
+                    TabBar(
+                        controller: _tabController,
+                        labelColor: Colors.white,
+                        indicatorColor: Colors.transparent,
+                        labelPadding: EdgeInsets.all(4),
+                        isScrollable: false,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        tabs: [
+                          Tab(
+                              child: tabName('1', _selectedIndex, 0,
+                                  AppLocalizations
+                                      .of(context)
+                                      .menuBasic)),
+                          Tab(
+                              child: tabName('2', _selectedIndex, 1,
+                                  AppLocalizations
+                                      .of(context)
+                                      .menuTickets)),
+                          Tab(
+                              child: tabName('3', _selectedIndex, 2,
+                                  AppLocalizations
+                                      .of(context)
+                                      .menuForms)),
+                          Tab(
+                              child: tabName('4', _selectedIndex, 3,
+                                  AppLocalizations
+                                      .of(context)
+                                      .menuGallery)),
+                          Tab(
+                              child: tabName('5', _selectedIndex, 4,
+                                  AppLocalizations
+                                      .of(context)
+                                      .menuSettings))
+                        ]),
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          BasicPage(),
+                          TicketsPage(),
+                          FormsPage(),
+                          GalleryPage(),
+                          SettingPage()
+                        ],
+                      ),
+                    ),
+                  ])))
         ]));
   }
 
@@ -237,19 +271,58 @@ class _EventMenuState extends State<EventMenuPage>
                     )
                   ])));
 
-  next() {
-    context.showProgress(context);
-    _basicBloc.basic((results) {
-      if (results is BasicResponse) {
-        context.hideProgress(context);
-        var basicResponse = results;
+  void next() {
+    if (_tabController.index == 0) {
+      context.showProgress(context);
 
-        if (basicResponse.code == apiCodeSuccess) {
-          context.toast(basicResponse.message);
-        } else {
-          context.toast(basicResponse.message);
+      _basicBloc.basic((results) {
+        context.hideProgress(context);
+
+        if (results is BasicResponse) {
+          var basicResponse = results;
+
+          if (basicResponse.code == apiCodeSuccess) {
+            context.toast(basicResponse.message);
+            _tabController.animateTo(1);
+          } else {
+            context.toast(basicResponse.message);
+          }
+        } else if (results is String) {
+          context.toast(results);
         }
+
+        FocusScope.of(context).requestFocus(FocusNode());
+      });
+    } else if (_tabController.index == 1) {
+      if (_ticketsBloc.state.ticketsList.length > 0) {
+        _tabController.animateTo(2);
+      } else {
+        context.toast(AppLocalizations
+            .of(context)
+            .errorTicketLength);
       }
-    });
+    } else if (_tabController.index == 2) {
+      context.showProgress(context);
+
+      _formBloc.uploadFields((results) {
+        context.hideProgress(context);
+
+        if (results is FormActionResponse) {
+          var formActionResponse = results;
+
+          if (formActionResponse.code == apiCodeSuccess) {
+            context.toast(formActionResponse.message);
+            _tabController.animateTo(3);
+          } else {
+            context.toast(formActionResponse.message);
+          }
+        } else if (results is String) {
+          if (results == 'Upload not required')
+            _tabController.animateTo(3);
+          else
+            context.toast(results);
+        }
+      });
+    }
   }
 }

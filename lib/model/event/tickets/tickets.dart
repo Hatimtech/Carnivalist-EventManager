@@ -1,11 +1,11 @@
-class Tickets {
+class Ticket {
   List<String> addons;
   bool active;
   bool isDeleted;
   String sId;
   String sellingEndDate;
   String currency;
-  int price;
+  double price;
   int quantity;
   int minOrderQuantity;
   int maxOrderQuantity;
@@ -15,16 +15,16 @@ class Tickets {
   String sellingStartDate;
   int iV;
 
-  Tickets({name, sellingEndDate, price, addons});
+  Ticket({name, sellingEndDate, price, addons});
 
-  Tickets.fromJson(Map<String, dynamic> json) {
+  Ticket.fromJson(Map<String, dynamic> json) {
     addons = json['addons'].cast<String>();
     active = json['active'];
     isDeleted = json['isDeleted'];
     sId = json['_id'];
     sellingEndDate = json['sellingEndDate'];
     currency = json['currency'];
-    price = json['price'];
+    price = json['price'].toDouble();
     quantity = json['quantity'];
     minOrderQuantity = json['minOrderQuantity'];
     maxOrderQuantity = json['maxOrderQuantity'];
@@ -33,5 +33,25 @@ class Tickets {
     event = json['event'];
     sellingStartDate = json['sellingStartDate'];
     iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['addons'] = this.addons;
+    data['active'] = this.active;
+    data['isDeleted'] = this.isDeleted;
+    data['sId'] = this.sId;
+    data['sellingEndDate'] = this.sellingEndDate;
+    data['currency'] = this.currency;
+    data['price'] = this.price;
+    data['quantity'] = this.quantity;
+    data['minOrderQuantity'] = this.minOrderQuantity;
+    data['maxOrderQuantity'] = this.maxOrderQuantity;
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['event'] = this.event;
+    data['sellingStartDate'] = this.sellingStartDate;
+    data['iV'] = this.iV;
+    return data;
   }
 }

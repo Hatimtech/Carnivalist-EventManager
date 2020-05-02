@@ -10,13 +10,19 @@ class TicketNameInput extends CreateTicketEvent {
   TicketNameInput({this.ticketName});
 }
 
+class TicketCurrencyInput extends CreateTicketEvent {
+  final String ticketCurrency, ticketCurrencyUI;
+
+  TicketCurrencyInput({this.ticketCurrency, this.ticketCurrencyUI});
+}
+
 class TicketPriceInput extends CreateTicketEvent {
   final String ticketPrice;
   TicketPriceInput({this.ticketPrice});
 }
 
 class SalesEndDateInput extends CreateTicketEvent {
-  final String salesEndDate;
+  final DateTime salesEndDate;
   SalesEndDateInput({this.salesEndDate});
 }
 

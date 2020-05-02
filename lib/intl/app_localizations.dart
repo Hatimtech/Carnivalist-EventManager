@@ -70,6 +70,10 @@ class AppLocalizations {
   String get titleCustomField => Intl.message('Create your custom field',
       name: "titleCustomField", locale: _localeName);
 
+  String get titleFieldListDetails =>
+      Intl.message('Enter list details',
+          name: "titleFieldListDetails", locale: _localeName);
+
 //TODO LABEL
   String get labelForgotPassword => Intl.message('Forgot Password',
       name: "labelForgotPassword", locale: _localeName);
@@ -97,8 +101,8 @@ class AppLocalizations {
   String get labelEventName =>
       Intl.message('Event name', name: "labelEventName", locale: _localeName);
 
-  String get labelCarnivalName =>
-      Intl.message('Carnival', name: "labelCarnivalName", locale: _localeName);
+  String get labelEventType =>
+      Intl.message('Event type', name: "labelEventType", locale: _localeName);
 
   String get labelTimeZone =>
       Intl.message('Time zone', name: "labelTimeZone", locale: _localeName);
@@ -117,6 +121,9 @@ class AppLocalizations {
 
   String get labelEndTime =>
       Intl.message('End time', name: "labelEndTime", locale: _localeName);
+
+  String get labelEventDay =>
+      Intl.message('Event Day', name: "labelEventDay", locale: _localeName);
 
   String get labelLocation =>
       Intl.message('Location', name: "labelLocation", locale: _localeName);
@@ -139,8 +146,45 @@ class AppLocalizations {
   String get labelTypePostalCode => Intl.message('Type postal code',
       name: "labelTypePostalCode", locale: _localeName);
 
+  String get labelTicketCoupons =>
+      Intl.message('Coupon: ', name: "labelTicketCoupons", locale: _localeName);
+
+  String get labelTicketAddons =>
+      Intl.message('Add ons: ', name: "labelTicketAddons", locale: _localeName);
+
+  String get labelAssignAddon =>
+      Intl.message('Assign Add-on',
+          name: "labelAssignAddon", locale: _localeName);
+
+  String get labelAssignCoupon =>
+      Intl.message('Assign Coupon',
+          name: "labelAssignCoupon", locale: _localeName);
+
+  String get labelActiveTicket =>
+      Intl.message('Active Ticket',
+          name: "labelActiveTicket", locale: _localeName);
+
+  String get labelInactiveTicket =>
+      Intl.message('Inactive Ticket',
+          name: "labelInactiveTicket", locale: _localeName);
+
+  String get labelEditTicket =>
+      Intl.message('Edit Ticket', name: "labelEditTicket", locale: _localeName);
+
+  String get labelDeleteTicket =>
+      Intl.message('Delete Ticket',
+          name: "labelDeleteTicket", locale: _localeName);
+
+  String get labelTicketSalesEnd =>
+      Intl.message('sales end:',
+          name: "labelTicketSalesEnd", locale: _localeName);
+
   String get labelTicketName =>
       Intl.message('Ticket Name', name: "labelTicketName", locale: _localeName);
+
+  String get labelTicketCurrency =>
+      Intl.message('Ticket Currency',
+          name: "labelTicketCurrency", locale: _localeName);
 
   String get labelPrice =>
       Intl.message('Price', name: "labelPrice", locale: _localeName);
@@ -156,6 +200,13 @@ class AppLocalizations {
 
   String get labelMaxBooking =>
       Intl.message('Max Booking', name: "labelMaxBooking", locale: _localeName);
+
+  String get labelEditField =>
+      Intl.message('Edit Field', name: "labelEditField", locale: _localeName);
+
+  String get labelDeleteField =>
+      Intl.message('Delete Field',
+          name: "labelDeleteField", locale: _localeName);
 
   String get labelDescription => Intl.message('Description',
       name: "labelDescription", locale: _localeName);
@@ -201,8 +252,24 @@ class AppLocalizations {
   String get labelFieldName =>
       Intl.message('Field Name', name: "labelFieldName", locale: _localeName);
 
+  String get labelFieldPlaceholder =>
+      Intl.message(
+          'Placeholder', name: "labelFieldPlaceholder", locale: _localeName);
+
   String get typeFieldName => Intl.message('Type your field name',
       name: "typeFieldName", locale: _localeName);
+
+  String get typeFieldPlaceholder =>
+      Intl.message('Type your field placeholder',
+          name: "typeFieldPlaceholder", locale: _localeName);
+
+  String get typeListItemValue =>
+      Intl.message('Type your list item value',
+          name: "typeListItemValue", locale: _localeName);
+
+  String get btnListItemAdd =>
+      Intl.message('ADD',
+          name: "btnListItemAdd", locale: _localeName);
 
   String get labelMandatory =>
       Intl.message('Mandatory', name: "labelMandatory", locale: _localeName);
@@ -255,6 +322,9 @@ class AppLocalizations {
   String get btnSave =>
       Intl.message('Save', name: "btnSave", locale: _localeName);
 
+  String get btnConfirm =>
+      Intl.message('Confirm', name: "btnConfirm", locale: _localeName);
+
   String get btnLogout =>
       Intl.message('Logout', name: "btnLogout", locale: _localeName);
 
@@ -285,8 +355,9 @@ class AppLocalizations {
   String get inputHintEventName => Intl.message('Type your event name',
       name: "inputHintEventName", locale: _localeName);
 
-  String get inputHintCarnival => Intl.message('Select your carnival',
-      name: "inputHintCarnival", locale: _localeName);
+  String get inputHintEventType =>
+      Intl.message('Select event tpye',
+          name: "inputHintEventType", locale: _localeName);
 
   String get inputHintTimeZone => Intl.message('Select your zone',
       name: "inputHintTimeZone", locale: _localeName);
@@ -301,7 +372,7 @@ class AppLocalizations {
       Intl.message('00:00', name: "inputHintTime", locale: _localeName);
 
   String get inputHintDate =>
-      Intl.message('DD/MM/YYYY', name: "inputHintDate", locale: _localeName);
+      Intl.message('MM DD, YYYY', name: "inputHintDate", locale: _localeName);
 
   String get inputHintTypeYourLocation => Intl.message('Type your Location',
       name: "inputHintTypeYourLocation", locale: _localeName);
@@ -317,6 +388,10 @@ class AppLocalizations {
 
   String get inputHintTicketName => Intl.message('Type your ticket name',
       name: "inputHintTicketName", locale: _localeName);
+
+  String get inputHintTicketCurrency =>
+      Intl.message('Select Currency',
+          name: "inputHintTicketCurrency", locale: _localeName);
 
   String get inputHintSalesEndDate => Intl.message('Sales end date',
       name: "inputHintSalesEndDate", locale: _localeName);
@@ -348,6 +423,216 @@ class AppLocalizations {
 
   String get inputHintFieldName => Intl.message('Type your field name',
       name: "inputHintFieldName", locale: _localeName);
+
+  String get labelYes =>
+      Intl.message('Yes', name: "labelYes", locale: _localeName);
+
+  String get labelNo =>
+      Intl.message('No', name: "labelNo", locale: _localeName);
+
+  /// Custom Menu Items
+  String get labelEventOnce =>
+      Intl.message('Once', name: "labelEventOnce", locale: _localeName);
+
+  String get labelEventDaily =>
+      Intl.message('Daily', name: "labelEventDaily", locale: _localeName);
+
+  String get labelEventWeekly =>
+      Intl.message('Weekly', name: "labelEventWeekly", locale: _localeName);
+
+  String get labelEventCustom =>
+      Intl.message('Custom', name: "labelEventCustom", locale: _localeName);
+
+  String get labelEventCustomButton =>
+      Intl.message('ADD THIS DATE',
+          name: "labelEventCustomButton", locale: _localeName);
+
+  String get labelEventPublic =>
+      Intl.message('Public', name: "labelEventPublic", locale: _localeName);
+
+  String get labelEventPrivate =>
+      Intl.message('Private', name: "labelEventPrivate", locale: _localeName);
+
+  String get labelEventPaymentMe =>
+      Intl.message('Me', name: "labelEventPaymentMe", locale: _localeName);
+
+  String get labelEventPaymentBuyer =>
+      Intl.message('Buyer',
+          name: "labelEventPaymentBuyer", locale: _localeName);
+
+  String get labelEventFormText =>
+      Intl.message('Text', name: "labelEventFormText", locale: _localeName);
+
+  String get labelEventFormDate =>
+      Intl.message('Date', name: "labelEventFormDate", locale: _localeName);
+
+  String get labelEventFormSingleSelect =>
+      Intl.message('Single Select',
+          name: "labelEventFormSingleSelect", locale: _localeName);
+
+  String get labelEventFormMultiSelect =>
+      Intl.message('Multi-Select',
+          name: "labelEventFormMultiSelect", locale: _localeName);
+
+  String get labelSunday =>
+      Intl.message('Sunday', name: "labelSunday", locale: _localeName);
+
+  String get labelMonday =>
+      Intl.message('Monday', name: "labelMonday", locale: _localeName);
+
+  String get labelTuesday =>
+      Intl.message('Tuesday', name: "labelTuesday", locale: _localeName);
+
+  String get labelWednesday =>
+      Intl.message('Wednesday', name: "labelWednesday", locale: _localeName);
+
+  String get labelThursday =>
+      Intl.message('Thursday', name: "labelThursday", locale: _localeName);
+
+  String get labelFriday =>
+      Intl.message('Friday', name: "labelFriday", locale: _localeName);
+
+  String get labelSaturday =>
+      Intl.message('Saturday', name: "labelSaturday", locale: _localeName);
+
+  // Error Messages
+  String get errorEventName =>
+      Intl.message('Event name can not be empty',
+          name: "errorEventName", locale: _localeName);
+
+  String get errorEventDesc =>
+      Intl.message('Event description can not be empty',
+          name: "errorEventDesc", locale: _localeName);
+
+  String get errorEventType =>
+      Intl.message('Event type can not be empty',
+          name: "errorEventType", locale: _localeName);
+
+  String get errorEventTimezone =>
+      Intl.message('Timezone can not be empty',
+          name: "errorEventTimezone", locale: _localeName);
+
+  String get errorEventAddress =>
+      Intl.message('Address can not be empty',
+          name: "errorEventAddress", locale: _localeName);
+
+  String get errorEventState =>
+      Intl.message('State can not be empty',
+          name: "errorEventState", locale: _localeName);
+
+  String get errorEventCity =>
+      Intl.message('City can not be empty',
+          name: "errorEventCity", locale: _localeName);
+
+  String get errorEventPostal =>
+      Intl.message('Postal code can be empty',
+          name: "errorEventPostal", locale: _localeName);
+
+  String get errorStartDate =>
+      Intl.message('Start date can not be empty',
+          name: "errorStartDate", locale: _localeName);
+
+  String get errorStartTime =>
+      Intl.message('Start time can not be empty',
+          name: "errorStartTime", locale: _localeName);
+
+  String get errorEndDate =>
+      Intl.message('End date can not be empty',
+          name: "errorEndDate", locale: _localeName);
+
+  String get errorEndTime =>
+      Intl.message('End time can not be empty',
+          name: "errorEndTime", locale: _localeName);
+
+  String get errorEndTimeLess =>
+      Intl.message('End time can not be less than start time',
+          name: "errorEndTimeLess", locale: _localeName);
+
+  String get errorWeekday =>
+      Intl.message('Weekday can not be empty',
+          name: "errorWeekday", locale: _localeName);
+
+  String get errorStartDateWeekday =>
+      Intl.message('Start date should be on ',
+          name: "errorStartDateWeekday", locale: _localeName);
+
+  String get errorEndDateWeekday =>
+      Intl.message('End date should be on ',
+          name: "errorEndDateWeekday", locale: _localeName);
+
+  String get errorTwoDateReq =>
+      Intl.message('Atleast 2 custom dates are required',
+          name: "errorTwoDateReq", locale: _localeName);
+
+  String get errorDuplicateTag =>
+      Intl.message('Duplicate Tag',
+          name: "errorDuplicateTag", locale: _localeName);
+
+  String get errorTicketLength =>
+      Intl.message('Please create atleast 1 ticket.',
+          name: "errorTicketLength", locale: _localeName);
+
+  String get errorTicketName =>
+      Intl.message('Ticket name can not be empty',
+          name: "errorTicketName", locale: _localeName);
+
+  String get errorTicketCurrency =>
+      Intl.message('Ticket currency can not be empty',
+          name: "errorTicketCurrency", locale: _localeName);
+
+  String get errorTicketSaleEnd =>
+      Intl.message('Sale end date can not be empty',
+          name: "errorTicketSaleEnd", locale: _localeName);
+
+  String get errorTicketAvailableQua =>
+      Intl.message('Available quantity can not be empty',
+          name: "errorTicketAvailableQua", locale: _localeName);
+
+  String get errorTicketMinQua =>
+      Intl.message('Min quantity can not be empty',
+          name: "errorTicketMinQua", locale: _localeName);
+
+  String get errorTicketMaxQua =>
+      Intl.message('Max quantity can not be empty',
+          name: "errorTicketMaxQua", locale: _localeName);
+
+  String get errorTicketMinQuaLess =>
+      Intl.message('Min quantity should be less than Max quantity',
+          name: "errorTicketMinQuaLess", locale: _localeName);
+
+  String get errorTicketMinMaxBet =>
+      Intl.message(
+          'Min and Max quantity should be less than or equal to Availabe quantity',
+          name: "errorTicketMinMaxBet",
+          locale: _localeName);
+
+  String get errorFieldLabel =>
+      Intl.message(
+          'Field name can not be empty',
+          name: "errorFieldLabel",
+          locale: _localeName);
+
+  String get errorFieldPlaceholder =>
+      Intl.message(
+          'Placeholder can not be empty',
+          name: "errorFieldPlaceholder",
+          locale: _localeName);
+
+  String get errorDuplicateListItem =>
+      Intl.message(
+          'Duplicate list item is not allowed',
+          name: "errorDuplicateListItem",
+          locale: _localeName);
+
+  String get errorNoListItem =>
+      Intl.message(
+          'Add atleast 1 list item',
+          name: "errorNoListItem",
+          locale: _localeName);
+
+  String get errorSomethingWrong =>
+      Intl.message('Something went wrong',
+          name: "errorSomethingWrong", locale: _localeName);
 }
 
 class AppTranslationsDelegate extends LocalizationsDelegate<AppLocalizations> {

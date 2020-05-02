@@ -1,6 +1,7 @@
-import 'package:eventmanagement/model/event/basic/basic_json.dart';
+import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
 import 'package:eventmanagement/service/di/dependency_injection.dart';
+
 import '../network_service_response.dart';
 
 class ApiProvider {
@@ -12,7 +13,7 @@ class ApiProvider {
     this.apiResult = result;
   }
 
-  getLoginDetail(String authToken) async{
+  getLoginDetail(String authToken) async {
     NetworkServiceResponse result = await apiService.loginDetail(authToken);
     this.apiResult = result;
   }
@@ -22,27 +23,51 @@ class ApiProvider {
     this.apiResult = result;
   }
 
-  getForgotPassword(Map<String, dynamic> param) async{
+  getForgotPassword(Map<String, dynamic> param) async {
     NetworkServiceResponse result = await apiService.forgotPassword(param);
     this.apiResult = result;
   }
 
-  getTickets(String authToken) async{
+  getBasic(String authToken, EventData basicJson, {String eventDataId}) async {
+    NetworkServiceResponse result =
+    await apiService.basic(authToken, basicJson, eventDataId: eventDataId);
+    this.apiResult = result;
+  }
+
+  getCarnival() async {
+    NetworkServiceResponse result = await apiService.carnivals();
+    this.apiResult = result;
+  }
+
+  getTickets(String authToken) async {
     NetworkServiceResponse result = await apiService.tickets(authToken);
     this.apiResult = result;
   }
 
-  getCreateTickets(String authToken, Map<String, dynamic> param) async{
-    NetworkServiceResponse result = await apiService.createTicket(authToken, param);
+  getCreateTickets(String authToken, Map<String, dynamic> param,
+      {String ticketId}) async {
+    NetworkServiceResponse result =
+    await apiService.createTicket(authToken, param, ticketId: ticketId);
     this.apiResult = result;
   }
 
-  getBasic(String authToken, BasicJson basicJson) async{
-    NetworkServiceResponse result = await apiService.basic(authToken, basicJson);
+  activeInactiveTickets(String authToken, bool active, String ticketId) async {
+    NetworkServiceResponse result =
+    await apiService.activeInactiveTicket(authToken, active, ticketId);
     this.apiResult = result;
   }
-  getCarnival() async{
-    NetworkServiceResponse result = await apiService.carnivals();
+
+  deleteTicket(String authToken, String ticketId) async {
+    NetworkServiceResponse result =
+    await apiService.deleteTicket(authToken, ticketId);
+    this.apiResult = result;
+  }
+
+  createNewFormFields(String authToken, EventData basicJson,
+      {String eventDataId}) async {
+    NetworkServiceResponse result =
+    await apiService.createNewFormField(
+        authToken, basicJson, eventDataId: eventDataId);
     this.apiResult = result;
   }
 

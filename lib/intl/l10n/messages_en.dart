@@ -21,15 +21,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
 
-  static _notInlinedMessages(_) => <String, Function>{
+  static _notInlinedMessages(_) =>
+      <String, Function>{
         "appTitle": MessageLookupByLibrary.simpleMessage("Carnivalist"),
         "btnBack": MessageLookupByLibrary.simpleMessage("Back"),
         "btnCancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "btnClose": MessageLookupByLibrary.simpleMessage("Close"),
-        "btnCreateFields":
-            MessageLookupByLibrary.simpleMessage("Create Fields"),
-        "btnCreateTicket":
-            MessageLookupByLibrary.simpleMessage("Create Ticket"),
+        "btnCreateFields": MessageLookupByLibrary.simpleMessage(
+            "Create Fields"),
+        "btnCreateTicket": MessageLookupByLibrary.simpleMessage(
+            "Create Ticket"),
         "btnLogout": MessageLookupByLibrary.simpleMessage("Logout"),
         "btnNext": MessageLookupByLibrary.simpleMessage("Next"),
         "btnPrevious": MessageLookupByLibrary.simpleMessage("Previous"),
@@ -38,95 +39,109 @@ class MessageLookup extends MessageLookupByLibrary {
         "btnSignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "btnSignUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "btnSubmit": MessageLookupByLibrary.simpleMessage("Submit"),
-        "inputHintAmount":
-            MessageLookupByLibrary.simpleMessage("Type your Amount"),
-        "inputHintBookNow":
-            MessageLookupByLibrary.simpleMessage("Ex:- Book Now"),
-        "inputHintCarnival":
-            MessageLookupByLibrary.simpleMessage("Select your carnival"),
-        "inputHintConfirmPassword":
-            MessageLookupByLibrary.simpleMessage("Confirm Password"),
-        "inputHintDate": MessageLookupByLibrary.simpleMessage("DD/MM/YYYY"),
-        "inputHintDescription":
-            MessageLookupByLibrary.simpleMessage("Description"),
+        "inputHintAmount": MessageLookupByLibrary.simpleMessage(
+            "Type your Amount"),
+        "inputHintBookNow": MessageLookupByLibrary.simpleMessage(
+            "Ex:- Book Now"),
+        "inputHintCarnival": MessageLookupByLibrary.simpleMessage(
+            "Select your carnival"),
+        "inputHintConfirmPassword": MessageLookupByLibrary.simpleMessage(
+            "Confirm Password"),
+        "inputHintDate": MessageLookupByLibrary.simpleMessage("MM DD, YYYY"),
+        "inputHintDescription": MessageLookupByLibrary.simpleMessage(
+            "Description"),
         "inputHintEmail": MessageLookupByLibrary.simpleMessage("Email"),
-        "inputHintEventName":
-            MessageLookupByLibrary.simpleMessage("Type your event name"),
+        "inputHintEventName": MessageLookupByLibrary.simpleMessage(
+            "Type your event name"),
         "inputHintFacebookLink": MessageLookupByLibrary.simpleMessage(
             "Ex:-https://faecbook.com/hat..."),
-        "inputHintFieldName":
-            MessageLookupByLibrary.simpleMessage("Type your field name"),
-        "inputHintFirstName":
-            MessageLookupByLibrary.simpleMessage("First Name"),
+        "inputHintFieldName": MessageLookupByLibrary.simpleMessage(
+            "Type your field name"),
+        "inputHintFirstName": MessageLookupByLibrary.simpleMessage(
+            "First Name"),
         "inputHintLinkedInLink": MessageLookupByLibrary.simpleMessage(
             "Ex:-https://linkedin.com/hat..."),
         "inputHintPassword": MessageLookupByLibrary.simpleMessage("Password"),
-        "inputHintPercentage":
-            MessageLookupByLibrary.simpleMessage("Type your Percentage"),
-        "inputHintPhoneEmail":
-            MessageLookupByLibrary.simpleMessage("Phone No/Email"),
+        "inputHintPercentage": MessageLookupByLibrary.simpleMessage(
+            "Type your Percentage"),
+        "inputHintPhoneEmail": MessageLookupByLibrary.simpleMessage(
+            "Phone No/Email"),
         "inputHintPhoneNo": MessageLookupByLibrary.simpleMessage("Phone No"),
-        "inputHintPrice":
-            MessageLookupByLibrary.simpleMessage("Enter ticket price"),
+        "inputHintPrice": MessageLookupByLibrary.simpleMessage(
+            "Enter ticket price"),
         "inputHintQuantity": MessageLookupByLibrary.simpleMessage("Quantity"),
-        "inputHintSalesEndDate":
-            MessageLookupByLibrary.simpleMessage("Sales end date"),
+        "inputHintSalesEndDate": MessageLookupByLibrary.simpleMessage(
+            "Sales end date"),
         "inputHintTag": MessageLookupByLibrary.simpleMessage("Tag your event"),
-        "inputHintTagEvent":
-            MessageLookupByLibrary.simpleMessage("Tag your event"),
-        "inputHintTicketName":
-            MessageLookupByLibrary.simpleMessage("Type your ticket name"),
+        "inputHintTagEvent": MessageLookupByLibrary.simpleMessage(
+            "Tag your event"),
+        "inputHintTicketName": MessageLookupByLibrary.simpleMessage(
+            "Type your ticket name"),
         "inputHintTime": MessageLookupByLibrary.simpleMessage("00:00"),
-        "inputHintTimeZone":
-            MessageLookupByLibrary.simpleMessage("Select your zone"),
+        "inputHintTimeZone": MessageLookupByLibrary.simpleMessage(
+            "Select your zone"),
         "inputHintTwitterLink": MessageLookupByLibrary.simpleMessage(
             "Ex:-https://twitter.com/hat..."),
-        "inputHintTypeYourLocation":
-            MessageLookupByLibrary.simpleMessage("Type your Location"),
+        "inputHintTypeYourLocation": MessageLookupByLibrary.simpleMessage(
+            "Type your Location"),
         "inputHintWebsiteLink": MessageLookupByLibrary.simpleMessage(
             "Ex:-https://Carnivallist.com/"),
-        "labelAlredyAccount":
-            MessageLookupByLibrary.simpleMessage("Alredy have an account?"),
-        "labelAmountValue":
-            MessageLookupByLibrary.simpleMessage("Amount Value"),
-        "labelBecomeAVendorPartner":
-            MessageLookupByLibrary.simpleMessage("Become a vendor partner."),
-        "labelBookingCancel":
-            MessageLookupByLibrary.simpleMessage("Booking Cancellation"),
+        "labelAlredyAccount": MessageLookupByLibrary.simpleMessage(
+            "Alredy have an account?"),
+        "labelAmountValue": MessageLookupByLibrary.simpleMessage(
+            "Amount Value"),
+        "labelBecomeAVendorPartner": MessageLookupByLibrary.simpleMessage(
+            "Become a vendor partner."),
+        "labelBookingCancel": MessageLookupByLibrary.simpleMessage(
+            "Booking Cancellation"),
         "labelCarnivalName": MessageLookupByLibrary.simpleMessage("Carnival"),
         "labelCity": MessageLookupByLibrary.simpleMessage("City"),
-        "labelConvenienceFee":
-            MessageLookupByLibrary.simpleMessage("Convenience Fee"),
+        "labelConvenienceFee": MessageLookupByLibrary.simpleMessage(
+            "Convenience Fee"),
         "labelDescription": MessageLookupByLibrary.simpleMessage("Description"),
-        "labelDoNotAccount":
-            MessageLookupByLibrary.simpleMessage("Dont\'t have an account?"),
+        "labelDoNotAccount": MessageLookupByLibrary.simpleMessage(
+            "Dont\'t have an account?"),
         "labelEndDate": MessageLookupByLibrary.simpleMessage("End date"),
         "labelEndTime": MessageLookupByLibrary.simpleMessage("End time"),
+        "labelEventCustom": MessageLookupByLibrary.simpleMessage("Custom"),
+        "labelEventDaily": MessageLookupByLibrary.simpleMessage("Daily"),
+        "labelEventFormDate": MessageLookupByLibrary.simpleMessage("Date"),
+        "labelEventFormMultiSelect": MessageLookupByLibrary.simpleMessage(
+            "Multi-Select"),
+        "labelEventFormSingleSelect": MessageLookupByLibrary.simpleMessage(
+            "Single Select"),
+        "labelEventFormText": MessageLookupByLibrary.simpleMessage("Text"),
         "labelEventName": MessageLookupByLibrary.simpleMessage("Event name"),
-        "labelFacebookLink":
-            MessageLookupByLibrary.simpleMessage("Facebook Link"),
+        "labelEventOnce": MessageLookupByLibrary.simpleMessage("Once"),
+        "labelEventPaymentBuyer": MessageLookupByLibrary.simpleMessage("Buyer"),
+        "labelEventPaymentMe": MessageLookupByLibrary.simpleMessage("Me"),
+        "labelEventPrivate": MessageLookupByLibrary.simpleMessage("Private"),
+        "labelEventPublic": MessageLookupByLibrary.simpleMessage("Public"),
+        "labelEventWeekly": MessageLookupByLibrary.simpleMessage("Weekly"),
+        "labelFacebookLink": MessageLookupByLibrary.simpleMessage(
+            "Facebook Link"),
         "labelFieldName": MessageLookupByLibrary.simpleMessage("Field Name"),
-        "labelForgotPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot Password"),
-        "labelLinkedInLink":
-            MessageLookupByLibrary.simpleMessage("Linkedin Link"),
+        "labelForgotPassword": MessageLookupByLibrary.simpleMessage(
+            "Forgot Password"),
+        "labelLinkedInLink": MessageLookupByLibrary.simpleMessage(
+            "Linkedin Link"),
         "labelLocation": MessageLookupByLibrary.simpleMessage("Location"),
         "labelMandatory": MessageLookupByLibrary.simpleMessage("Mandatory"),
         "labelMaxBooking": MessageLookupByLibrary.simpleMessage("Max Booking"),
         "labelMinBooking": MessageLookupByLibrary.simpleMessage("Min Booking"),
         "labelPaymentGatewayCharge": MessageLookupByLibrary.simpleMessage(
             "Who will pay payment Gateway charges"),
-        "labelPercentageValue":
-            MessageLookupByLibrary.simpleMessage("Percentage Value"),
+        "labelPercentageValue": MessageLookupByLibrary.simpleMessage(
+            "Percentage Value"),
         "labelPostalCode": MessageLookupByLibrary.simpleMessage("Postal code"),
         "labelPrice": MessageLookupByLibrary.simpleMessage("Price"),
-        "labelRegistrationButton":
-            MessageLookupByLibrary.simpleMessage("Registration button label"),
-        "labelRemainingTickets":
-            MessageLookupByLibrary.simpleMessage("Remaining Tickets"),
+        "labelRegistrationButton": MessageLookupByLibrary.simpleMessage(
+            "Registration button label"),
+        "labelRemainingTickets": MessageLookupByLibrary.simpleMessage(
+            "Remaining Tickets"),
         "labelSalesEnds": MessageLookupByLibrary.simpleMessage("Sales Ends"),
-        "labelSelectState":
-            MessageLookupByLibrary.simpleMessage("Select state"),
+        "labelSelectState": MessageLookupByLibrary.simpleMessage(
+            "Select state"),
         "labelSignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "labelSignUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "labelSignUpAgreement": MessageLookupByLibrary.simpleMessage(
@@ -136,19 +151,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelState": MessageLookupByLibrary.simpleMessage("State"),
         "labelTags": MessageLookupByLibrary.simpleMessage("Tags"),
         "labelTicketName": MessageLookupByLibrary.simpleMessage("Ticket Name"),
-        "labelTicketResale":
-            MessageLookupByLibrary.simpleMessage("Ticket Resale"),
+        "labelTicketResale": MessageLookupByLibrary.simpleMessage(
+            "Ticket Resale"),
         "labelTimeZone": MessageLookupByLibrary.simpleMessage("Time zone"),
-        "labelTotalAvailable":
-            MessageLookupByLibrary.simpleMessage("Total Available"),
-        "labelTwitterLink":
-            MessageLookupByLibrary.simpleMessage("Twitter Link"),
-        "labelTypeCityName":
-            MessageLookupByLibrary.simpleMessage("Type city name"),
-        "labelTypePostalCode":
-            MessageLookupByLibrary.simpleMessage("Type postal code"),
-        "labelWebsiteLink":
-            MessageLookupByLibrary.simpleMessage("Website Link"),
+        "labelTotalAvailable": MessageLookupByLibrary.simpleMessage(
+            "Total Available"),
+        "labelTwitterLink": MessageLookupByLibrary.simpleMessage(
+            "Twitter Link"),
+        "labelTypeCityName": MessageLookupByLibrary.simpleMessage(
+            "Type city name"),
+        "labelTypePostalCode": MessageLookupByLibrary.simpleMessage(
+            "Type postal code"),
+        "labelWebsiteLink": MessageLookupByLibrary.simpleMessage(
+            "Website Link"),
         "menuBasic": MessageLookupByLibrary.simpleMessage("Basic"),
         "menuForms": MessageLookupByLibrary.simpleMessage("Forms"),
         "menuGallery": MessageLookupByLibrary.simpleMessage("Gallery"),
@@ -157,24 +172,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "msgNoData": MessageLookupByLibrary.simpleMessage("No Data"),
         "titleAddress": MessageLookupByLibrary.simpleMessage("Address"),
         "titleBasicInfo": MessageLookupByLibrary.simpleMessage("Basic Info"),
-        "titleCreateEvent":
-            MessageLookupByLibrary.simpleMessage("Create Event"),
-        "titleCustomField":
-            MessageLookupByLibrary.simpleMessage("Create your custom field"),
-        "titleCustomLabels":
-            MessageLookupByLibrary.simpleMessage("Custom Labels"),
-        "titleCustomSettings":
-            MessageLookupByLibrary.simpleMessage("Custom Settings"),
+        "titleCreateEvent": MessageLookupByLibrary.simpleMessage(
+            "Create Event"),
+        "titleCustomField": MessageLookupByLibrary.simpleMessage(
+            "Create your custom field"),
+        "titleCustomLabels": MessageLookupByLibrary.simpleMessage(
+            "Custom Labels"),
+        "titleCustomSettings": MessageLookupByLibrary.simpleMessage(
+            "Custom Settings"),
         "titleDashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
         "titleDescription": MessageLookupByLibrary.simpleMessage("Description"),
         "titleEventDate": MessageLookupByLibrary.simpleMessage("Event Date"),
-        "titleForgotPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot Password"),
-        "titlePaymentAndFees":
-            MessageLookupByLibrary.simpleMessage("Payments and fees"),
+        "titleForgotPassword": MessageLookupByLibrary.simpleMessage(
+            "Forgot Password"),
+        "titlePaymentAndFees": MessageLookupByLibrary.simpleMessage(
+            "Payments and fees"),
         "titleSignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "titleSignUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
-        "titleTicketDetails":
-            MessageLookupByLibrary.simpleMessage("Enter your ticket details")
+        "titleTicketDetails": MessageLookupByLibrary.simpleMessage(
+            "Enter your ticket details"),
+        "typeFieldName": MessageLookupByLibrary.simpleMessage(
+            "Type your field name")
       };
 }

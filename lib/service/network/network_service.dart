@@ -1,12 +1,17 @@
 import 'dart:convert';
-import 'package:eventmanagement/model/event/basic/basic_json.dart';
+
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
 import 'package:eventmanagement/model/event/carnivals/carnival_resonse.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
+import 'package:eventmanagement/model/event/event_data.dart';
+import 'package:eventmanagement/model/event/form/form_action_response.dart';
+import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
+import 'package:eventmanagement/utils/vars.dart';
+
 import '../network_service_response.dart';
 import '../network_type.dart';
 import '../restclient.dart';
@@ -22,8 +27,16 @@ class NetworkService extends NetworkType implements APIService {
   //TODO EVENT
   final _ticketsListUrl = _baseUrl + _subUrl + 'tickets';
   final _createTicketsUrl = _baseUrl + _subUrl + 'tickets';
+  final _updateTicketsUrl = _baseUrl + _subUrl + 'ticket';
   final _basicUrl = _baseUrl + _subUrl + 'events';
-  final _carnivalListUrl = _baseUrl + _subUrl + 'website-settings/show-categories';
+  final _carnivalListUrl =
+      _baseUrl + _subUrl + 'website-settings/show-categories';
+
+  final _activeInactiveTicketUrl =
+      _baseUrl + _subUrl + 'toggle-active-tickets/';
+
+  final _deleteTicketUrl =
+      _baseUrl + _subUrl + 'tickets/delete-tickets/';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -79,6 +92,39 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
+  basic(String authToken, EventData basicJson, {String eventDataId}) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<BasicResponse>(
+        '$_basicUrl${eventDataId != null ? '/$eventDataId' : ''}',
+        body: json.encode(basicJson),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = BasicResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  @override
+  carnivals() async {
+    var result = await rest.getwithoutHeader<CarnivalResonse>(_carnivalListUrl);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = CarnivalResonse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  @override
   tickets(String authToken) async {
     var headers = {
       'Authorization': authToken,
@@ -94,14 +140,20 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
-  createTicket(String authToken, Map<String, dynamic> param) async {
+  createTicket(String authToken, Map<String, dynamic> param,
+      {String ticketId}) async {
     var headers = {
       'Authorization': authToken,
       "Content-Type": "application/json"
     };
 
-    var result = await rest.post<CreateTicketResponse>(_createTicketsUrl,
-        body: json.encode(param), encoding: Encoding.getByName("utf-8"), headers: headers);
+    var result = await rest.post<CreateTicketResponse>(
+        '${ticketId != null
+            ? _updateTicketsUrl
+            : _createTicketsUrl}${ticketId != null ? '/$ticketId' : ''}',
+        body: json.encode(param),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
 
     var res = CreateTicketResponse.fromJson(json.decode(result.mappedResult));
     return new NetworkServiceResponse(
@@ -111,15 +163,16 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
-  basic(String authToken, BasicJson basicJson) async {
+  activeInactiveTicket(String authToken, bool isActive, String ticketId) async {
     var headers = {
       'Authorization': authToken,
       "Content-Type": "application/json"
     };
 
-    var result = await rest.post<BasicResponse>(_basicUrl,
-        body: json.encode(basicJson), encoding: Encoding.getByName("utf-8"), headers: headers);
-    var res = BasicResponse.fromJson(json.decode(result.mappedResult));
+    var result = await rest.get<TicketActionResponse>(
+        '$_activeInactiveTicketUrl$ticketId/$isActive', headers);
+
+    var res = TicketActionResponse.fromJson(json.decode(result.mappedResult));
     return new NetworkServiceResponse(
       response: res,
       responseCode: result.networkServiceResponse.responseCode,
@@ -127,15 +180,41 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
-  carnivals() async {
+  deleteTicket(String authToken, String ticketId) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
 
-    var result = await rest.getwithoutHeader<CarnivalResonse>(_carnivalListUrl);
-    var res = CarnivalResonse.fromJson(json.decode(result.mappedResult));
+    var result = await rest.get<TicketActionResponse>(
+        '$_deleteTicketUrl$ticketId', headers);
 
+    var res = TicketActionResponse.fromJson(json.decode(result.mappedResult));
     return new NetworkServiceResponse(
       response: res,
       responseCode: result.networkServiceResponse.responseCode,
     );
   }
 
+  @override
+  createNewFormField(String authToken, EventData eventDataWithForm,
+      {String eventDataId}) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<FormActionResponse>(
+        '$_basicUrl${eventDataId != null ? '/$eventDataId' : ''}',
+        body: json.encode(eventDataWithForm),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = FormActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
 }

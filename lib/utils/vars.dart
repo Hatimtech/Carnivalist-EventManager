@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:string_validator/string_validator.dart';
 
 //API
@@ -46,13 +48,13 @@ const String headerBackgroundImage = 'assets/images/header_background.png';
 
 const String bottomMenuBarHomeImage = 'assets/images/bottom_menu_bar_home.png';
 const String bottomMenuBarEventImage = 'assets/images/bottom_menu_bar_user.png';
-const String bottomMenuBarCouponsImage = 'assets/images/bottom_menu_bar_user.png';
+const String bottomMenuBarCouponsImage =
+    'assets/images/bottom_menu_bar_user.png';
 const String bottomMenuBarAddImage = 'assets/images/bottom_menu_bar_user.png';
 const String bottomMenuBarUserImage = 'assets/images/bottom_menu_bar_user.png';
 
-
 //TODO COLOR
-const Color colorPrimary = Color(0xFF462FB6);
+const Color colorPrimary = Color(0xFF0713D1);
 const Color colorAccent = Color(0xFF9249F4);
 
 const Color colorTextTitle = Colors.black;
@@ -61,6 +63,7 @@ const Color colorTextSubhead = Color(0xFF8C3EE9);
 const Color colorTextBody1 = Colors.black;
 const Color colorTextBody2 = Colors.black;
 const Color colorTextButton = Colors.white;
+const Color colorTextAction = Color(0xFF0713D1);
 
 const Color bgColor = Color(0xFFFFF4FF);
 const Color bgColorSecondary = Color(0xFFF4E6FA);
@@ -81,7 +84,6 @@ const Color colorHeaderTitle = Colors.white;
 const Color colorSubHeader = Colors.black;
 const Color colorCreateEventBg = Color(0xFF8C3EE9);
 const Color colorHeaderBgFilter = Colors.transparent;
-
 
 List<Color> gradientsClipper = [Colors.grey.shade200, Colors.white];
 
@@ -241,41 +243,151 @@ String validateAddress(String value) {
   return null;
 }
 
-String validateEditAddress(String value) {
-  String pattern = r'(^[a-zA-Z0-9-, ]*$)';
-  RegExp regExp = RegExp(pattern);
-  if (value.isEmpty) {
-    return null;
-  } else if (!regExp.hasMatch(value)) {
-    return 'Address must be text and numeric';
-  }
-  return null;
+bool isValid(String value) =>
+    value != null && value
+        .trim()
+        .isNotEmpty;
+
+String formatDateTime(DateFormat dateFormat, DateTime dateTime) {
+  return dateFormat.format(dateTime);
 }
 
-String validateTicketName(String value) {
-  if (value.isEmpty) {
-    return 'Ticket name is required';
+String uiLabelWeekday(String label, BuildContext context) {
+  final appLoc = AppLocalizations.of(context);
+  switch (label) {
+    case 'Sunday':
+      return appLoc.labelSunday;
+    case 'Monday':
+      return appLoc.labelMonday;
+    case 'Tuesday':
+      return appLoc.labelTuesday;
+    case 'Wednesday':
+      return appLoc.labelWednesday;
+    case 'Thursday':
+      return appLoc.labelThursday;
+    case 'Friday':
+      return appLoc.labelFriday;
+    case 'Saturday':
+      return appLoc.labelSaturday;
   }
-  return null;
 }
 
-String validatePrice(String value) {
-  if (value.isEmpty) {
-    return 'Price is required';
+// Error Codes
+const int ERR_EVENT_NAME = 1;
+const int ERR_EVENT_TYPE = 2;
+const int ERR_EVENT_TIMEZONE = 3;
+
+const int ERR_EVENT_ADDRESS = 4;
+const int ERR_EVENT_STATE = 5;
+const int ERR_EVENT_CITY = 6;
+const int ERR_EVENT_POSTAL = 7;
+
+const int ERR_EVENT_DESC = 8;
+
+const int ERR_START_DATE = 9;
+const int ERR_START_TIME = 10;
+const int ERR_END_DATE = 11;
+const int ERR_END_TIME = 12;
+const int ERR_END_TIME_LESS = 13;
+const int ERR_WEEK_DAY = 14;
+const int ERR_START_DATE_WEEK_DAY = 15;
+const int ERR_END_DATE_WEEK_DAY = 16;
+const int ERR_TWO_DATES_REQ = 17;
+
+const int ERR_DUPLICATE_TAG = 18;
+
+const int ERR_TICKET_NAME = 19;
+const int ERR_TICKET_CURRENCY = 20;
+const int ERR_TICKET_SALE_END = 21;
+const int ERR_TICKET_AVAILABLE_QUA = 22;
+const int ERR_TICKET_MIN_QUA = 23;
+const int ERR_TICKET_MAX_QUA = 24;
+const int ERR_TICKET_MIN_QUA_LESS = 25;
+const int ERR_TICKET_MIN_MAX_BET = 26;
+
+const int ERR_FIELD_LABEL = 27;
+const int ERR_FIELD_PLACEHOLDER = 28;
+
+const int ERR_DUPLICATE_LIST_ITEM = 29;
+const int ERR_NO_LIST_ITEM = 30;
+
+const int ERR_SOMETHING_WENT_WRONG = 100;
+
+String getErrorMessage(int errorCode, BuildContext context) {
+  final appLoc = AppLocalizations.of(context);
+  switch (errorCode) {
+    case ERR_EVENT_NAME:
+      return appLoc.errorEventName;
+    case ERR_EVENT_TYPE:
+      return appLoc.errorEventType;
+    case ERR_EVENT_TIMEZONE:
+      return appLoc.errorEventTimezone;
+    case ERR_EVENT_ADDRESS:
+      return appLoc.errorEventAddress;
+    case ERR_EVENT_STATE:
+      return appLoc.errorEventState;
+    case ERR_EVENT_CITY:
+      return appLoc.errorEventCity;
+    case ERR_EVENT_POSTAL:
+      return appLoc.errorEventPostal;
+    case ERR_EVENT_DESC:
+      return appLoc.errorEventDesc;
+    case ERR_START_DATE:
+      return appLoc.errorStartDate;
+    case ERR_START_TIME:
+      return appLoc.errorStartTime;
+    case ERR_END_DATE:
+      return appLoc.errorEndDate;
+    case ERR_END_TIME:
+      return appLoc.errorEndTime;
+    case ERR_END_TIME_LESS:
+      return appLoc.errorEndTimeLess;
+    case ERR_WEEK_DAY:
+      return appLoc.errorWeekday;
+    case ERR_START_DATE_WEEK_DAY:
+      return appLoc.errorStartDateWeekday;
+    case ERR_END_DATE_WEEK_DAY:
+      return appLoc.errorEndDateWeekday;
+    case ERR_TWO_DATES_REQ:
+      return appLoc.errorTwoDateReq;
+    case ERR_DUPLICATE_TAG:
+      return appLoc.errorDuplicateTag;
+
+    case ERR_TICKET_NAME:
+      return appLoc.errorTicketName;
+    case ERR_TICKET_CURRENCY:
+      return appLoc.errorTicketCurrency;
+    case ERR_TICKET_SALE_END:
+      return appLoc.errorTicketSaleEnd;
+    case ERR_TICKET_AVAILABLE_QUA:
+      return appLoc.errorTicketAvailableQua;
+    case ERR_TICKET_MIN_QUA:
+      return appLoc.errorTicketMinQua;
+    case ERR_TICKET_MAX_QUA:
+      return appLoc.errorTicketMaxQua;
+    case ERR_TICKET_MIN_QUA_LESS:
+      return appLoc.errorTicketMinQuaLess;
+    case ERR_TICKET_MIN_MAX_BET:
+      return appLoc.errorTicketMinMaxBet;
+    case ERR_SOMETHING_WENT_WRONG:
+      return appLoc.errorSomethingWrong;
+
+    case ERR_FIELD_LABEL:
+      return appLoc.errorFieldLabel;
+    case ERR_FIELD_PLACEHOLDER:
+      return appLoc.errorFieldPlaceholder;
+
+    case ERR_DUPLICATE_LIST_ITEM:
+      return appLoc.errorDuplicateListItem;
+    case ERR_NO_LIST_ITEM:
+      return appLoc.errorNoListItem;
+
+    default:
+      return appLoc.errorSomethingWrong;
   }
-  return null;
 }
 
-String validateSalesEndDate(String value) {
-  if (value.isEmpty) {
-    return 'Sales end date is required';
-  }
-  return null;
-}
-
-String validateQuantity(String value) {
-  if (value.isEmpty) {
-    return 'Quantity is required';
-  }
-  return null;
+void printWrapped(String text) {
+  final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+  pattern.allMatches(text).forEach((match) => print(match.group(0)));
 }

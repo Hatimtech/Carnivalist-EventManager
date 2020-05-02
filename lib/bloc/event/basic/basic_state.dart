@@ -1,48 +1,56 @@
 import 'package:eventmanagement/model/event/carnivals/carnivals.dart';
 import 'package:eventmanagement/model/menu_custom.dart';
+import 'package:flutter/material.dart';
 
 class BasicState {
-  String authToken;
-  String eventMenuName, postType;
-  List<MenuCustom> eventMenuList;
-  List<MenuCustom> postTypeList;
+  final String authToken;
+  final String eventMenuName, postType;
+  final List<MenuCustom> eventMenuList;
+  final List<MenuCustom> postTypeList;
   final String eventName;
-  final String eventEndDate;
-  final String eventEndTime;
-  final String eventCarnival;
+  final String eventType;
   final String eventTimeZone;
-  final String eventTags;
-  final String eventStartDate;
-  final String eventStartTime;
+  final List<String> eventTags;
+  final DateTime eventStartDate;
+  final TimeOfDay eventStartTime;
+  final DateTime eventEndDate;
+  final TimeOfDay eventEndTime;
+  final String eventWeekday;
   final String eventLocation;
   final String eventState;
   final String eventCity;
   final String eventPostalCode;
   final String eventDescription;
-  final List<Carnivals> carnivalList;
-  bool loading;
+  final List<Carnivals> eventTypeList;
+  final List<EventCustomDate> eventCustomDateTimeList;
+  final bool loading;
+  int errorCode;
 
-  BasicState(
-      {this.authToken,
-      this.eventMenuName,
-      this.eventMenuList,
-      this.postType,
-      this.postTypeList,
-      this.eventName,
-      this.eventEndDate,
-      this.eventEndTime,
-        this.eventCarnival,
-      this.eventTimeZone,
-      this.eventTags,
-      this.eventStartDate,
-      this.eventStartTime,
-      this.eventLocation,
-      this.eventState,
-      this.eventCity,
-      this.eventPostalCode,
-      this.eventDescription,
-      this.carnivalList,
-      this.loading});
+  BasicState({
+    this.authToken,
+    this.eventMenuName,
+    this.eventMenuList,
+    this.postType,
+    this.postTypeList,
+    this.eventName,
+    this.eventType,
+    this.eventTimeZone,
+    this.eventTags,
+    this.eventStartDate,
+    this.eventStartTime,
+    this.eventEndDate,
+    this.eventEndTime,
+    this.eventWeekday,
+    this.eventLocation,
+    this.eventState,
+    this.eventCity,
+    this.eventPostalCode,
+    this.eventDescription,
+    this.eventTypeList,
+    this.eventCustomDateTimeList,
+    this.loading,
+    this.errorCode,
+  });
 
   /* BasicState(
       {this.loading,
@@ -51,51 +59,87 @@ class BasicState {
       this.postType,
       this.postTypeList});*/
 
+  /*factory BasicState.initial() {
+    return BasicState(
+      authToken: '',
+      eventMenuName: '',
+      eventMenuList: List(),
+      postType: '',
+      postTypeList: List(),
+      eventName: '',
+      eventType: '',
+      eventTimeZone: '',
+      eventTags: [],
+      eventStartDate: null,
+      eventStartTime: null,
+      eventEndDate: null,
+      eventEndTime: null,
+      eventWeekday: null,
+      eventLocation: '',
+      eventState: '',
+      eventCity: '',
+      eventPostalCode: '',
+      eventDescription: '',
+      eventTypeList: List(),
+      eventCustomDateTimeList: [],
+      loading: false,
+      errorCode: null,
+    );
+  }*/
+
   factory BasicState.initial() {
     return BasicState(
-        authToken: '',
-        eventMenuName: '',
-        eventMenuList: List(),
-        postType: '',
-        postTypeList: List(),
-        eventName: '',
-        eventEndDate: '',
-        eventEndTime: '',
-        eventCarnival:'',
-        eventTimeZone: '',
-        eventTags: '',
-        eventStartDate: '',
-        eventStartTime: '',
-        eventLocation: '',
-        eventState: '',
-        eventCity: '',
-        eventPostalCode: '',
-        eventDescription: '',
-        carnivalList: List(),
-        loading: false);
+      authToken: '',
+      eventMenuName: '',
+      eventMenuList: List(),
+      postType: '',
+      postTypeList: List(),
+      eventName: 'Mobile Event',
+      eventType: 'Winter Carnival',
+      eventTimeZone: '(+11:00) Australia/Hobart',
+      eventTags: ['mob 1', 'mob 2'],
+      eventStartDate: DateTime(2020, 30, 4),
+      eventStartTime: TimeOfDay(hour: 17, minute: 00),
+      eventEndDate: DateTime(2020, 30, 4),
+      eventEndTime: TimeOfDay(hour: 18, minute: 00),
+      eventWeekday: null,
+      eventLocation: 'Kolar Road',
+      eventState: 'MP',
+      eventCity: 'Bhopal',
+      eventPostalCode: '462042',
+      eventDescription: 'Mobile Event Description',
+      eventTypeList: List(),
+      eventCustomDateTimeList: [],
+      loading: false,
+      errorCode: null,
+    );
   }
 
-  BasicState copyWith(
-      {String authToken,
-      String eventMenuName,
-      List<MenuCustom> eventMenuList,
-      String postType,
-      List<MenuCustom> postTypeList,
-      String eventName,
-      String eventEndDate,
-      String eventEndTime,
-        String eventCarnival,
-      String eventTimeZone,
-      String eventTags,
-      String eventStartDate,
-      String eventStartTime,
-      String eventLocation,
-      String eventState,
-      String eventCity,
-      String eventPostalCode,
-      String eventDescription,
-      List<Carnivals> carnivalList,
-      bool loading}) {
+  BasicState copyWith({
+    String authToken,
+    String eventMenuName,
+    List<MenuCustom> eventMenuList,
+    String postType,
+    List<MenuCustom> postTypeList,
+    String eventName,
+    String eventCarnival,
+    String eventTimeZone,
+    List<String> eventTags,
+    DateTime eventStartDate,
+    TimeOfDay eventStartTime,
+    DateTime eventEndDate,
+    TimeOfDay eventEndTime,
+    String eventWeekday,
+    String eventLocation,
+    String eventState,
+    String eventCity,
+    String eventPostalCode,
+    String eventDescription,
+    List<Carnivals> eventTypeList,
+    List<EventCustomDate> eventCustomDateTimeList,
+    bool loading,
+    int errorCode = null,
+  }) {
     return BasicState(
       authToken: authToken ?? this.authToken,
       eventMenuName: eventMenuName ?? this.eventMenuName,
@@ -103,20 +147,34 @@ class BasicState {
       postType: postType ?? this.postType,
       postTypeList: postTypeList ?? this.postTypeList,
       eventName: eventName ?? this.eventName,
-      eventEndDate: eventEndDate ?? this.eventEndDate,
-      eventEndTime: eventEndTime ?? this.eventEndTime,
-      eventCarnival: eventCarnival ?? this.eventCarnival,
+      eventType: eventCarnival ?? this.eventType,
       eventTimeZone: eventTimeZone ?? this.eventTimeZone,
       eventTags: eventTags ?? this.eventTags,
       eventStartDate: eventStartDate ?? this.eventStartDate,
       eventStartTime: eventStartTime ?? this.eventStartTime,
+      eventEndDate: eventEndDate ?? this.eventEndDate,
+      eventEndTime: eventEndTime ?? this.eventEndTime,
+      eventWeekday: eventWeekday ?? this.eventWeekday,
       eventLocation: eventLocation ?? this.eventLocation,
       eventState: eventState ?? this.eventState,
       eventCity: eventCity ?? this.eventCity,
       eventPostalCode: eventPostalCode ?? this.eventPostalCode,
       eventDescription: eventDescription ?? this.eventDescription,
-      carnivalList: carnivalList ?? this.carnivalList,
+      eventTypeList: eventTypeList ?? this.eventTypeList,
+      eventCustomDateTimeList:
+      eventCustomDateTimeList ?? this.eventCustomDateTimeList,
       loading: loading ?? this.loading,
+      errorCode: errorCode,
     );
   }
+}
+
+class EventCustomDate {
+  final DateTime eventStartDateTime;
+  final DateTime eventEndDateTime;
+
+  EventCustomDate({
+    this.eventStartDateTime,
+    this.eventEndDateTime,
+  });
 }

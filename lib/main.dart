@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/menu/event_menu_page.dart';
@@ -12,8 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/event/basic/basic_bloc.dart';
-import 'bloc/event/createfield/create_field_bloc.dart';
-import 'bloc/event/createticket/create_ticket_bloc.dart';
 import 'bloc/event/setting/setting_bloc.dart';
 import 'bloc/event/tickets/tickets_bloc.dart';
 import 'bloc/forgotpassword/forgot_password_bloc.dart';
@@ -51,31 +50,7 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
     super.build(context);
     return BlocProvider(
       create: (context) => UserBloc(),
-      child: BlocProvider(
-        create: (context) => LoginBloc(),
-        child: BlocProvider(
-          create: (context) => SignUpBloc(),
-          child: BlocProvider(
-            create: (context) => ForgotPasswordBloc(),
-            child: BlocProvider(
-              create: (context) => BasicBloc(),
-              child: BlocProvider(
-                create: (context) => SettingBloc(),
-                child: BlocProvider(
-                  create: (context) => CreateFieldBloc(),
-                  child: BlocProvider(
-                    create: (context) => TicketsBloc(),
-                    child: BlocProvider(
-                      create: (context) => CreateTicketBloc(),
-                      child: _buildPlatformApp(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      child: _buildPlatformApp(),
     );
   }
 
@@ -102,14 +77,53 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
         //routes
         routes: <String, WidgetBuilder>{
           '/': (context) => SplashPage(),
-          loginRoute: (BuildContext context) => LoginPage(),
-          signUpRoute: (BuildContext context) => SignUpPage(),
-          forgotPasswordRoute: (BuildContext context) => ForgotPasswordPage(),
+          loginRoute: (BuildContext context) => loginPageRoute,
+          signUpRoute: (BuildContext context) => signupPageRoute,
+          forgotPasswordRoute: (BuildContext context) =>
+          forgotPasswordPageRoute,
           bottomMenuRoute: (BuildContext context) => BottomMenuPage(),
           dashboardRoute: (BuildContext context) => DashboardPage(),
-          eventMenuRoute: (BuildContext context) => EventMenuPage()
+          eventMenuRoute: (BuildContext context) => createEventPageRoute,
         });
   }
+
+  Widget get loginPageRoute =>
+      BlocProvider(
+        create: (context) => LoginBloc(),
+        child: LoginPage(),
+      );
+
+  Widget get signupPageRoute =>
+      BlocProvider(
+        create: (context) => SignUpBloc(),
+        child: SignUpPage(),
+      );
+
+  Widget get forgotPasswordPageRoute =>
+      BlocProvider(
+        create: (context) => ForgotPasswordBloc(),
+        child: ForgotPasswordPage(),
+      );
+
+  Widget get createEventPageRoute =>
+      BlocProvider(
+        create: (context) => BasicBloc(),
+        child: BlocProvider(
+          create: (context) => SettingBloc(),
+          child: BlocProvider(
+            create: (context) =>
+                TicketsBloc(
+                  BlocProvider.of<BasicBloc>(context),
+                ),
+            child: BlocProvider(
+                create: (context) =>
+                    FormBloc(
+                      BlocProvider.of<BasicBloc>(context),
+                    ),
+                child: EventMenuPage()),
+          ),
+        ),
+      );
 }
 
 bool get isPlatformAndroid {

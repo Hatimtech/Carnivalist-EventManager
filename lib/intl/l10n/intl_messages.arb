@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-04-26T22:57:31.417784",
+  "@@last_modified": "2020-04-28T14:21:55.007705",
   "appTitle": "Carnivalist",
   "@appTitle": {
     "type": "text",
@@ -285,6 +285,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "typeFieldName": "Type your field name",
+  "@typeFieldName": {
+    "type": "text",
+    "placeholders": {}
+  },
   "labelMandatory": "Mandatory",
   "@labelMandatory": {
     "type": "text",
@@ -445,7 +450,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "inputHintDate": "DD/MM/YYYY",
+  "inputHintDate": "MM DD, YYYY",
   "@inputHintDate": {
     "type": "text",
     "placeholders": {}
@@ -517,6 +522,66 @@
   },
   "inputHintFieldName": "Type your field name",
   "@inputHintFieldName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventOnce": "Once",
+  "@labelEventOnce": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventDaily": "Daily",
+  "@labelEventDaily": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventWeekly": "Weekly",
+  "@labelEventWeekly": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventCustom": "Custom",
+  "@labelEventCustom": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventPublic": "Public",
+  "@labelEventPublic": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventPrivate": "Private",
+  "@labelEventPrivate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventPaymentMe": "Me",
+  "@labelEventPaymentMe": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventPaymentBuyer": "Buyer",
+  "@labelEventPaymentBuyer": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventFormText": "Text",
+  "@labelEventFormText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventFormDate": "Date",
+  "@labelEventFormDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventFormSingleSelect": "Single Select",
+  "@labelEventFormSingleSelect": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventFormMultiSelect": "Multi-Select",
+  "@labelEventFormMultiSelect": {
     "type": "text",
     "placeholders": {}
   }

@@ -1,44 +1,49 @@
-import 'package:eventmanagement/model/event/tickets/tickets.dart';
+import 'package:eventmanagement/model/event/field_data.dart';
 import 'package:meta/meta.dart';
 
-class TicketsState {
+class FormState {
   final String authToken;
-  final List<Ticket> ticketsList;
+  final List<FieldData> fieldList;
   bool loading;
   int errorCode;
   String toastMsg;
+  bool uploadRequired;
 
-  TicketsState({
+  FormState({
     @required this.authToken,
-    @required this.ticketsList,
+    @required this.fieldList,
     this.loading,
     this.errorCode,
     this.toastMsg,
+    this.uploadRequired,
   });
 
-  factory TicketsState.initial() {
-    return TicketsState(
+  factory FormState.initial() {
+    return FormState(
       authToken: "",
-      ticketsList: List(),
+      fieldList: List(),
       loading: false,
       errorCode: null,
       toastMsg: null,
+      uploadRequired: false,
     );
   }
 
-  TicketsState copyWith({
+  FormState copyWith({
     bool loading,
     String authToken,
-    List<Ticket> ticketsList,
+    List<FieldData> fieldList,
     int errorCode = null,
     String toastMsg = null,
+    bool uploadRequired,
   }) {
-    return TicketsState(
+    return FormState(
       authToken: authToken ?? this.authToken,
       loading: loading ?? this.loading,
-      ticketsList: ticketsList ?? this.ticketsList,
+      fieldList: fieldList ?? this.fieldList,
       errorCode: errorCode,
       toastMsg: toastMsg,
+      uploadRequired: uploadRequired ?? this.uploadRequired,
     );
   }
 }
