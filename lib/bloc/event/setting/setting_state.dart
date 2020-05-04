@@ -5,6 +5,7 @@ class SettingState {
   String paymentTypeName;
   List<MenuCustom> paymentTypeList;
 
+
   SettingState({
     this.loading,
     this.paymentTypeName,

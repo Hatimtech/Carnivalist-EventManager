@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 abstract class PlatformWidget<I extends Widget, A extends Widget>
     extends StatelessWidget {
+
+  const PlatformWidget();
+
   @override
   Widget build(BuildContext context) {
     bool isAndroid = isPlatformAndroid;

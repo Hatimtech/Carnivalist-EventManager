@@ -1,0 +1,39 @@
+import 'package:eventmanagement/model/event/gallery/gallery_data.dart';
+
+abstract class GalleryEvent {}
+
+class AuthTokenSave extends GalleryEvent {
+  final String authToken;
+
+  AuthTokenSave({this.authToken});
+}
+
+class AddBanner extends GalleryEvent {
+  final String banner;
+
+  AddBanner({this.banner});
+}
+
+class RemoveBanner extends GalleryEvent {
+  final String banner;
+
+  RemoveBanner({this.banner});
+}
+
+class AddGalleryItem extends GalleryEvent {
+  final GalleryData galleryData;
+
+  AddGalleryItem({this.galleryData});
+}
+
+class RemoveGalleryItem extends GalleryEvent {
+  final GalleryData galleryData;
+
+  RemoveGalleryItem({this.galleryData});
+}
+
+class UploadGallery extends GalleryEvent {
+  final Function callback;
+
+  UploadGallery({this.callback});
+}

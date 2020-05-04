@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
+import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/menu/event_menu_page.dart';
@@ -120,7 +121,12 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
                     FormBloc(
                       BlocProvider.of<BasicBloc>(context),
                     ),
-                child: EventMenuPage()),
+                child: BlocProvider(
+                    create: (context) =>
+                        GalleryBloc(
+                          BlocProvider.of<BasicBloc>(context),
+                        ),
+                    child: EventMenuPage())),
           ),
         ),
       );

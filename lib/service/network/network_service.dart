@@ -5,12 +5,16 @@ import 'package:eventmanagement/model/event/carnivals/carnival_resonse.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/form/form_action_response.dart';
+import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
+import 'package:eventmanagement/model/event/gallery/media_upload_response.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
 import 'package:eventmanagement/utils/vars.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/src/media_type.dart';
 
 import '../network_service_response.dart';
 import '../network_type.dart';
@@ -35,8 +39,9 @@ class NetworkService extends NetworkType implements APIService {
   final _activeInactiveTicketUrl =
       _baseUrl + _subUrl + 'toggle-active-tickets/';
 
-  final _deleteTicketUrl =
-      _baseUrl + _subUrl + 'tickets/delete-tickets/';
+  final _deleteTicketUrl = _baseUrl + _subUrl + 'tickets/delete-tickets/';
+
+  final _uploadMediaUrl = _baseUrl + _subUrl + 'upload-media';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -212,6 +217,64 @@ class NetworkService extends NetworkType implements APIService {
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = FormActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  uploadGalleryMedia(String authToken, String mediaPath) async {
+    //create multipart request for POST or PATCH method
+    var request = http.MultipartRequest("POST", Uri.parse(_uploadMediaUrl));
+
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "multipart/form-data;"
+    };
+
+    request.headers.addAll(headers);
+
+    String mediaName;
+
+    if (isValid(mediaPath)) {
+      mediaName = mediaPath
+          .split("/")
+          .last;
+
+      //create multipart using filepath, string or bytes
+      var multipartFile = await http.MultipartFile.fromPath("file", mediaPath,
+          filename: mediaName, contentType: MediaType.parse('image/jpeg'));
+
+      //add multipart to request
+      request.files.add(multipartFile);
+    }
+
+    var result = await rest.multipartUpload<MediaUploadResponse>(request);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = MediaUploadResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  @override
+  createGalleryData(String authToken, EventData eventData,
+      {String eventDataId}) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<GalleryResponse>(
+        '$_basicUrl${eventDataId != null ? '/$eventDataId' : ''}',
+        body: json.encode(eventData),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = GalleryResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
 

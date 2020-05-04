@@ -21,6 +21,11 @@ abstract class APIService {
 
   deleteTicket(String authToken, String ticketId);
 
-  createNewFormField(String authToken, EventData basicJson,
+  createNewFormField(String authToken, EventData eventData,
+      {String eventDataId});
+
+  uploadGalleryMedia(String authToken, String mediaPath);
+
+  createGalleryData(String authToken, EventData eventData,
       {String eventDataId});
 }

@@ -63,6 +63,51 @@ class RestClient {
     }
   }
 
+  multipartUpload<T>(http.MultipartRequest multipartRequest) async {
+    try {
+      var response = await multipartRequest.send();
+
+      var responseData = await response.stream.toBytes();
+      var responseString = String.fromCharCodes(responseData);
+
+      print('Media Upload Response--->$responseString');
+
+      if (response.statusCode > ok200) {
+        if (responseString != null && responseString.isNotEmpty) {
+          try {
+            var parsedResponse = json.decode(responseString);
+            return new MappedNetworkServiceResponse<T>(
+                networkServiceResponse: new NetworkServiceResponse<T>(
+                    errorMessage:
+                    ApiResponse
+                        .fromJson(parsedResponse)
+                        .responseMessage,
+                    responseCode: response.statusCode));
+          } on FormatException catch (e) {
+            print('FormatException parsing response data--->$e');
+          }
+        }
+        return new MappedNetworkServiceResponse<T>(
+            networkServiceResponse: new NetworkServiceResponse<T>(
+                errorMessage: 'Something went wrong',
+                responseCode: response.statusCode));
+      } else {
+        return new MappedNetworkServiceResponse<T>(
+            mappedResult: responseString,
+            networkServiceResponse:
+            NetworkServiceResponse<T>(responseCode: response.statusCode));
+      }
+    } catch (e) {
+      print(e.toString());
+      return new MappedNetworkServiceResponse<T>(
+          networkServiceResponse: new NetworkServiceResponse<T>(
+              responseCode: 0,
+              errorMessage: e.toString().contains('SocketException')
+                  ? 'Please check your internet.'
+                  : e.toString()));
+    }
+  }
+
   processResponse<T>(http.Response response) {
     if (response.statusCode > ok200) {
       if (response.body != null && response.body.isNotEmpty) {

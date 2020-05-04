@@ -63,12 +63,23 @@ class ApiProvider {
     this.apiResult = result;
   }
 
-  createNewFormFields(String authToken, EventData basicJson,
+  createNewFormFields(String authToken, EventData eventData,
       {String eventDataId}) async {
-    NetworkServiceResponse result =
-    await apiService.createNewFormField(
-        authToken, basicJson, eventDataId: eventDataId);
+    NetworkServiceResponse result = await apiService
+        .createNewFormField(authToken, eventData, eventDataId: eventDataId);
     this.apiResult = result;
   }
 
+  uploadMedia(String authToken, String mediaPath) async {
+    NetworkServiceResponse result =
+    await apiService.uploadGalleryMedia(authToken, mediaPath);
+    this.apiResult = result;
+  }
+
+  createGalleryData(String authToken, EventData eventData,
+      {String eventDataId}) async {
+    NetworkServiceResponse result = await apiService
+        .createGalleryData(authToken, eventData, eventDataId: eventDataId);
+    this.apiResult = result;
+  }
 }

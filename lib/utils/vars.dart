@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:string_validator/string_validator.dart';
 
 //API
@@ -42,6 +44,7 @@ const String contactRoute = '/contact';
 const String dashboardRoute = '/dashboard';
 const String bottomMenuRoute = '/bottomMenu';
 const String eventMenuRoute = '/eventMenu';
+const String videoPlayerMenuRoute = '/videoPlayerMenu';
 
 const String profileImage = 'assets/images/user_profile.png';
 const String headerBackgroundImage = 'assets/images/header_background.png';
@@ -66,7 +69,7 @@ const Color colorTextButton = Colors.white;
 const Color colorTextAction = Color(0xFF0713D1);
 
 const Color bgColor = Color(0xFFFFF4FF);
-const Color bgColorSecondary = Color(0xFFF4E6FA);
+const Color bgColorSecondary = Color(0xFFF7E4FC);
 const Color cardBgColor = Color(0xFFFFFFFF);
 const Color colorBgButton = Color(0xFF8C3EE9);
 
@@ -100,7 +103,7 @@ buttonBg() {
         Radius.circular(10.0),
       ),
       gradient:
-          LinearGradient(colors: [HexColor('#0408a4'), HexColor('#eb0a0b')]));
+      LinearGradient(colors: [HexColor('#0408a4'), HexColor('#eb0a0b')]));
 }
 
 //TODO WIDGET
@@ -385,6 +388,13 @@ String getErrorMessage(int errorCode, BuildContext context) {
     default:
       return appLoc.errorSomethingWrong;
   }
+}
+
+Future<String> getSystemDirPath() async {
+  Directory externalFilesDir = Platform.isIOS
+      ? await getApplicationSupportDirectory()
+      : await getExternalStorageDirectory();
+  return externalFilesDir.path;
 }
 
 void printWrapped(String text) {

@@ -1,16 +1,18 @@
 import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/basic/basic_state.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
+import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/event/tickets/tickets_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
 import 'package:eventmanagement/model/event/form/form_action_response.dart';
+import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
 import 'package:eventmanagement/ui/page/event/basic/basic_page.dart';
-import 'package:eventmanagement/ui/page/event/forms_page.dart';
-import 'package:eventmanagement/ui/page/event/gallery_page.dart';
-import 'package:eventmanagement/ui/page/event/setting_page.dart';
-import 'package:eventmanagement/ui/page/event/tickets_page.dart';
+import 'package:eventmanagement/ui/page/event/forms/forms_page.dart';
+import 'package:eventmanagement/ui/page/event/gallery/gallery_page.dart';
+import 'package:eventmanagement/ui/page/event/settings/setting_page.dart';
+import 'package:eventmanagement/ui/page/event/ticket/tickets_page.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,6 +37,7 @@ class _EventMenuState extends State<EventMenuPage>
   BasicBloc _basicBloc;
   TicketsBloc _ticketsBloc;
   FormBloc _formBloc;
+  GalleryBloc _galleryBloc;
 
   @override
   void initState() {
@@ -47,6 +50,7 @@ class _EventMenuState extends State<EventMenuPage>
     _basicBloc = BlocProvider.of<BasicBloc>(context);
     _ticketsBloc = BlocProvider.of<TicketsBloc>(context);
     _formBloc = BlocProvider.of<FormBloc>(context);
+    _galleryBloc = BlocProvider.of<GalleryBloc>(context);
 
     //TODO(Existing Event) Get existing event data via navigator and populate all the states here
   }
@@ -319,6 +323,27 @@ class _EventMenuState extends State<EventMenuPage>
         } else if (results is String) {
           if (results == 'Upload not required')
             _tabController.animateTo(3);
+          else
+            context.toast(results);
+        }
+      });
+    } else if (_tabController.index == 3) {
+      context.showProgress(context);
+
+      _galleryBloc.uploadGallery((results) {
+        context.hideProgress(context);
+
+        if (results is GalleryResponse) {
+          var galleryResponse = results;
+          if (galleryResponse.code == apiCodeSuccess) {
+            context.toast(galleryResponse.message);
+            _tabController.animateTo(4);
+          } else {
+            context.toast(galleryResponse.message);
+          }
+        } else if (results is String) {
+          if (results == 'Upload not required')
+            _tabController.animateTo(4);
           else
             context.toast(results);
         }

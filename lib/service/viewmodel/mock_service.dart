@@ -58,4 +58,16 @@ class MockService implements APIService {
       {String eventDataId}) {
     return null;
   }
+
+  @override
+  createGalleryData(String authToken, EventData eventData,
+      {String eventDataId}) {
+    return null;
+  }
+
+  @override
+  uploadGalleryMedia(String authToken, String mediaPath) {
+    return null;
+  }
+
 }

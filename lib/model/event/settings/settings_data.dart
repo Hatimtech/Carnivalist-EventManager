@@ -7,7 +7,12 @@ class GalleryData {
   bool ownedByApp;
 
   GalleryData(
-      {this.id, this.link, this.localFilePath = '', this.type, this.uploadRequired, this.ownedByApp});
+      {this.id,
+      this.link,
+      this.localFilePath = '',
+      this.type,
+      this.uploadRequired,
+      this.ownedByApp});
 
   GalleryData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

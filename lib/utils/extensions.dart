@@ -1,4 +1,4 @@
-import 'package:eventmanagement/main.dart';
+import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
 import 'package:eventmanagement/ui/widget/flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +24,7 @@ extension ContextExtensions on BuildContext {
         barrierDismissible: false,
         builder: (context) => Container(
           alignment: FractionalOffset.center,
-          child: isPlatformAndroid
-              ? CircularProgressIndicator(
-              valueColor:
-              AlwaysStoppedAnimation<Color>(colorProgressBar))
-              : CupertinoActivityIndicator(),
+          child: const PlatformProgressIndicator(),
         ));
   }
 

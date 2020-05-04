@@ -430,6 +430,28 @@ class AppLocalizations {
   String get labelNo =>
       Intl.message('No', name: "labelNo", locale: _localeName);
 
+  String get labelUploadBanner =>
+      Intl.message(
+          'Click to Upload Your Banner Image', name: "labelUploadBanner",
+          locale: _localeName);
+
+  String get labelUpdateBanner =>
+      Intl.message(
+          'Click to Update Your Banner Image', name: "labelUpdateBanner",
+          locale: _localeName);
+
+  String get labelUploadEventGallery =>
+      Intl.message('Upload your event gallery', name: "labelUploadEventGallery",
+          locale: _localeName);
+
+  String get labelUploadImage =>
+      Intl.message(
+          'Upload Image', name: "labelUploadImage", locale: _localeName);
+
+  String get labelUploadVideo =>
+      Intl.message(
+          'Upload Video', name: "labelUploadVideo", locale: _localeName);
+
   /// Custom Menu Items
   String get labelEventOnce =>
       Intl.message('Once', name: "labelEventOnce", locale: _localeName);
@@ -494,6 +516,12 @@ class AppLocalizations {
 
   String get labelSaturday =>
       Intl.message('Saturday', name: "labelSaturday", locale: _localeName);
+
+  String get labelCamera =>
+      Intl.message('Camera', name: "labelCamera", locale: _localeName);
+
+  String get labelGallery =>
+      Intl.message('Gallery', name: "labelGallery", locale: _localeName);
 
   // Error Messages
   String get errorEventName =>
