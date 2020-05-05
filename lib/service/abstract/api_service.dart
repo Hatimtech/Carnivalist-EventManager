@@ -1,4 +1,5 @@
 import 'package:eventmanagement/model/event/event_data.dart';
+import 'package:eventmanagement/model/event/settings/settings_data.dart';
 
 abstract class APIService {
   login(Map<String, dynamic> param);
@@ -27,5 +28,8 @@ abstract class APIService {
   uploadGalleryMedia(String authToken, String mediaPath);
 
   createGalleryData(String authToken, EventData eventData,
+      {String eventDataId});
+
+  uploadSetting(String authToken, SettingData settingData,
       {String eventDataId});
 }

@@ -308,7 +308,7 @@ class _GalleryState extends State<GalleryPage> {
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
         elevation: 0.0,
-        color: colorBgButton.withAlpha(100),
+        color: bgColorButton.withAlpha(100),
         icon: Icon(
           Icons.image,
           color: colorIcon,
@@ -328,7 +328,7 @@ class _GalleryState extends State<GalleryPage> {
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
         elevation: 0.0,
-        color: colorBgButton.withAlpha(100),
+        color: bgColorButton.withAlpha(100),
         icon: Icon(
           Icons.video_library,
           color: colorIcon,

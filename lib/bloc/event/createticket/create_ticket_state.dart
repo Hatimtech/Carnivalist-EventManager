@@ -30,7 +30,7 @@ class CreateTicketState {
     this.errorCode,
   });
 
-  /*factory CreateTicketState.initial() {
+  factory CreateTicketState.initial() {
     return CreateTicketState(
       authToken: '',
       ticketName: '',
@@ -44,9 +44,9 @@ class CreateTicketState {
       description: '',
       errorCode: null,
     );
-  }*/
+  }
 
-  factory CreateTicketState.initial() {
+  /*factory CreateTicketState.initial() {
     return CreateTicketState(
       authToken: '',
       ticketName: 'Mobile Ticket',
@@ -60,7 +60,7 @@ class CreateTicketState {
       description: 'My Mobile Ticket Desc',
       errorCode: null,
     );
-  }
+  }*/
 
   factory CreateTicketState.copyWith(Ticket ticket, String currencyUI) {
     return CreateTicketState(

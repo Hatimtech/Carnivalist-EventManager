@@ -63,195 +63,184 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
     return SingleChildScrollView(
         child: Container(
             padding: EdgeInsets.all(10),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  BlocBuilder<CreateTicketBloc, CreateTicketState>(
-                    bloc: _createTicketBloc,
-                    condition: (prevState, newState) =>
-                    newState.errorCode != null,
-                    builder: (context, CreateTicketState state) {
-                      if (state.errorCode != null) {
-                        String errorMsg =
-                        getErrorMessage(state.errorCode, context);
-                        context.toast(errorMsg);
-                        state.errorCode = null;
-                      }
+            child:
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+                Widget>[
+              BlocBuilder<CreateTicketBloc, CreateTicketState>(
+                bloc: _createTicketBloc,
+                condition: (prevState, newState) => newState.errorCode != null,
+                builder: (context, CreateTicketState state) {
+                  if (state.errorCode != null) {
+                    String errorMsg = getErrorMessage(state.errorCode, context);
+                    context.toast(errorMsg);
+                    state.errorCode = null;
+                  }
 
-                      return SizedBox.shrink();
-                    },
-                  ),
-                  Text(AppLocalizations
+                  return SizedBox.shrink();
+                },
+              ),
+              Text(AppLocalizations
+                  .of(context)
+                  .titleTicketDetails,
+                  textAlign: TextAlign.left,
+                  style: Theme
                       .of(context)
-                      .titleTicketDetails,
-                      textAlign: TextAlign.left,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .title),
-                  const SizedBox(height: 20.0),
-                  Text(AppLocalizations
+                      .textTheme
+                      .title),
+              const SizedBox(height: 20.0),
+              Text(AppLocalizations
+                  .of(context)
+                  .labelTicketName,
+                  style: Theme
                       .of(context)
-                      .labelTicketName,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .body2),
-                  const SizedBox(height: 4.0),
-                  ticketNameInput(),
-                  const SizedBox(height: 10.0),
-                  Text(AppLocalizations
+                      .textTheme
+                      .body2),
+              const SizedBox(height: 4.0),
+              ticketNameInput(),
+              const SizedBox(height: 10.0),
+              Text(AppLocalizations
+                  .of(context)
+                  .labelTicketCurrency,
+                  style: Theme
                       .of(context)
-                      .labelTicketCurrency,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .body2),
-                  const SizedBox(height: 4.0),
-                  ticketCurrency(),
-                  const SizedBox(height: 10.0),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(AppLocalizations
+                      .textTheme
+                      .body2),
+              const SizedBox(height: 4.0),
+              ticketCurrency(),
+              const SizedBox(height: 10.0),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(AppLocalizations
+                                  .of(context)
+                                  .labelPrice,
+                                  textAlign: TextAlign.left,
+                                  style: Theme
                                       .of(context)
-                                      .labelPrice,
-                                      textAlign: TextAlign.left,
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .body2),
-                                  SizedBox(height: 4.0),
-                                  ticketPriceInput(),
-                                ])),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelSalesEnds,
-                                      textAlign: TextAlign.left,
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .body2),
-                                  const SizedBox(height: 4.0),
-                                  saleEndDateInput(),
-                                ]))
-                      ]),
-                  const SizedBox(height: 10.0),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelTotalAvailable,
-                                      textAlign: TextAlign.left,
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .body2),
-                                  const SizedBox(height: 4.0),
-                                  totalAvailableInput(),
-                                ])),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelMinBooking,
-                                      textAlign: TextAlign.left,
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .body2),
-                                  const SizedBox(height: 4.0),
-                                  minBookingInput(),
-                                ])),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelMaxBooking,
-                                      textAlign: TextAlign.left,
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .body2),
-                                  const SizedBox(height: 4.0),
-                                  maxBookingInput(),
-                                ]))
-                      ]),
-                  const SizedBox(height: 10.0),
-                  Text(AppLocalizations
+                                      .textTheme
+                                      .body2),
+                              SizedBox(height: 4.0),
+                              ticketPriceInput(),
+                            ])),
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(AppLocalizations
+                                  .of(context)
+                                  .labelSalesEnds,
+                                  textAlign: TextAlign.left,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body2),
+                              const SizedBox(height: 4.0),
+                              saleEndDateInput(),
+                            ]))
+                  ]),
+              const SizedBox(height: 10.0),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(AppLocalizations
+                                  .of(context)
+                                  .labelTotalAvailable,
+                                  textAlign: TextAlign.left,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body2),
+                              const SizedBox(height: 4.0),
+                              totalAvailableInput(),
+                            ])),
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(AppLocalizations
+                                  .of(context)
+                                  .labelMinBooking,
+                                  textAlign: TextAlign.left,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body2),
+                              const SizedBox(height: 4.0),
+                              minBookingInput(),
+                            ])),
+                    const SizedBox(width: 10.0),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(AppLocalizations
+                                  .of(context)
+                                  .labelMaxBooking,
+                                  textAlign: TextAlign.left,
+                                  style: Theme
+                                      .of(context)
+                                      .textTheme
+                                      .body2),
+                              const SizedBox(height: 4.0),
+                              maxBookingInput(),
+                            ]))
+                  ]),
+              const SizedBox(height: 10.0),
+              Text(AppLocalizations
+                  .of(context)
+                  .labelDescription,
+                  textAlign: TextAlign.left,
+                  style: Theme
                       .of(context)
-                      .labelDescription,
-                      textAlign: TextAlign.left,
+                      .textTheme
+                      .body2),
+              const SizedBox(height: 4.0),
+              descriptionInput(),
+              const SizedBox(height: 15),
+              Row(children: <Widget>[
+                Expanded(
+                  child: RaisedButton(
+                    onPressed: () => Navigator.pop(context),
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: Text(
+                      AppLocalizations
+                          .of(context)
+                          .btnClose,
                       style: Theme
                           .of(context)
                           .textTheme
-                          .body2),
-                  const SizedBox(height: 4.0),
-                  descriptionInput(),
-                  const SizedBox(height: 15),
-                  Row(children: <Widget>[
-                    Expanded(
-                      child: RaisedButton(
-                        onPressed: () => Navigator.pop(context),
-                        padding: EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          AppLocalizations
-                              .of(context)
-                              .btnClose,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .button,
-                        ),
-                      ),
+                          .button,
                     ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: RaisedButton(
-                        onPressed: _createTicketToApi,
-                        padding: EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          AppLocalizations
-                              .of(context)
-                              .btnSave,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .button,
-                        ),
-                      ),
-                    )
-                  ])
-                ])));
+                  ),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: RaisedButton(
+                    onPressed: _createTicketToApi,
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: Text(
+                      AppLocalizations
+                          .of(context)
+                          .btnSave,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .button,
+                    ),
+                  ),
+                )
+              ])
+            ])));
   }
 
   _createTicketToApi() async {
@@ -280,6 +269,10 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
         }
       } else if (results is String) {
         context.toast(results);
+      } else {
+        context.toast(AppLocalizations
+            .of(context)
+            .errorSomethingWrong);
       }
     });
   }

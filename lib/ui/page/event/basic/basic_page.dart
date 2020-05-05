@@ -21,7 +21,6 @@ class _BasicState extends State<BasicPage> {
   @override
   void initState() {
     super.initState();
-    print('_BasicState: initState');
     _basicBloc = BlocProvider.of<BasicBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
     _userBloc.getLoginDetails();

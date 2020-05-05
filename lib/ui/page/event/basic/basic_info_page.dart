@@ -368,7 +368,6 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
   @override
   void initState() {
     super.initState();
-    print('_BasicInfoPageState: initState');
     _basicBloc = BlocProvider.of<BasicBloc>(context);
     _basicBloc.carnival();
   }
@@ -662,50 +661,103 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
                   child: CircularProgressIndicator(
                       valueColor:
                           AlwaysStoppedAnimation<Color>(colorProgressBar)))
-              : eventTypeList(snapshot.eventTypeList);
+              : (snapshot.eventTypeList?.length ?? 0) > 0
+              ? eventTypeList(snapshot.eventTypeList)
+              : Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 12.0,
+              horizontal: 8.0,
+            ),
+            child: Text(
+              AppLocalizations
+                  .of(context)
+                  .errorNoEventTypesAvailable,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle
+                  .copyWith(
+                color: colorTextAction,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          );
         });
   }
 
   Widget _buildCupertinoEventTypeActionSheet() {
     return BlocBuilder<BasicBloc, BasicState>(
-        condition: (prevState, newState) =>
-            prevState.eventTypeList != newState.eventTypeList ||
-            prevState.eventTypeList.length != newState.eventTypeList.length,
-        bloc: _basicBloc,
-        builder: (context, BasicState snapshot) => snapshot.loading
-            ? Container(
-                alignment: FractionalOffset.center,
-                child: CupertinoActivityIndicator())
-            : CupertinoActionSheet(
-                actions: snapshot.eventTypeList.map<Widget>((carnival) {
-                  return CupertinoActionSheetAction(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _basicBloc.eventTypeInput(carnival.category);
-                      print(carnival.category);
-                    },
-                    child: Text(
-                      carnival.category,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: colorTextAction,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  );
-                }).toList(),
-                cancelButton: CupertinoActionSheetAction(
-                  child: Text(
-                    AppLocalizations.of(context).btnCancel,
-                    style: Theme.of(context).textTheme.title.copyWith(
-                          color: colorTextAction,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ));
+      condition: (prevState, newState) =>
+      prevState.eventTypeList != newState.eventTypeList ||
+          prevState.eventTypeList.length != newState.eventTypeList.length,
+      bloc: _basicBloc,
+      builder: (context, BasicState snapshot) =>
+      snapshot.loading
+          ? Container(
+          alignment: FractionalOffset.center,
+          child: CupertinoActivityIndicator())
+          : (snapshot.eventTypeList?.length ?? 0) > 0
+          ? CupertinoActionSheet(
+        actions: snapshot.eventTypeList.map<Widget>((carnival) {
+          return CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.pop(context);
+              _basicBloc.eventTypeInput(carnival.category);
+              print(carnival.category);
+            },
+            child: Text(
+              carnival.category,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle
+                  .copyWith(
+                color: colorTextAction,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          );
+        }).toList(),
+        cancelButton: CupertinoActionSheetAction(
+          child: Text(
+            AppLocalizations
+                .of(context)
+                .btnCancel,
+            style: Theme
+                .of(context)
+                .textTheme
+                .title
+                .copyWith(
+              color: colorTextAction,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      )
+          : CupertinoActionSheet(
+        actions: <Widget>[
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              AppLocalizations
+                  .of(context)
+                  .errorNoEventTypesAvailable,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subtitle
+                  .copyWith(
+                color: colorTextAction,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
 //  _eventTagInput() => BlocBuilder(

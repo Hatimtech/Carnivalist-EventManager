@@ -15,8 +15,8 @@ getBasicEventPostType() => <MenuCustom>[
 ];
 
 getPaymentType() => <MenuCustom>[
-  MenuCustom(name: 'Me'),
-  MenuCustom(name: 'Buyer')
+  MenuCustom(name: 'Me', value: 'me'),
+  MenuCustom(name: 'Buyer', value: 'buyer')
 ];
 
 getCustomField() => <MenuCustom>[

@@ -1,4 +1,5 @@
 import 'package:eventmanagement/model/event/event_data.dart';
+import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
 
 class MockService implements APIService {
@@ -67,6 +68,12 @@ class MockService implements APIService {
 
   @override
   uploadGalleryMedia(String authToken, String mediaPath) {
+    return null;
+  }
+
+  @override
+  uploadSetting(String authToken, SettingData settingData,
+      {String eventDataId}) {
     return null;
   }
 

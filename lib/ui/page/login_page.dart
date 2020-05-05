@@ -73,9 +73,10 @@ class _LoginState extends State<LoginPage> {
                             _signInButton(),
                             RawMaterialButton(
                                 padding: EdgeInsets.all(10),
-                                child: Text(AppLocalizations
-                                    .of(context)
-                                    .labelForgotPassword,
+                                child: Text(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelForgotPassword,
                                     style: TextStyle(
                                         color: colorTitle,
                                         fontWeight: FontWeight.bold,
@@ -101,9 +102,10 @@ class _LoginState extends State<LoginPage> {
                             padding: EdgeInsets.all(10),
                             child: Align(
                                 alignment: Alignment.center,
-                                child: Text(AppLocalizations
-                                    .of(context)
-                                    .labelSignUp,
+                                child: Text(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelSignUp,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12.0,
@@ -119,9 +121,10 @@ class _LoginState extends State<LoginPage> {
                             padding: EdgeInsets.all(10),
                             child: Align(
                                 alignment: Alignment.center,
-                                child: Text(AppLocalizations
-                                    .of(context)
-                                    .labelBecomeAVendorPartner,
+                                child: Text(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelBecomeAVendorPartner,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 12.0,
@@ -142,6 +145,10 @@ class _LoginState extends State<LoginPage> {
                 labelText: AppLocalizations
                     .of(context)
                     .inputHintPhoneEmail,
+                labelStyle: Theme
+                    .of(context)
+                    .textTheme
+                    .body1,
                 validation: validatePhoneEmail,
                 keyboardType: TextInputType.emailAddress));
       });
@@ -156,6 +163,10 @@ class _LoginState extends State<LoginPage> {
                 labelText: AppLocalizations
                     .of(context)
                     .inputHintPassword,
+                labelStyle: Theme
+                    .of(context)
+                    .textTheme
+                    .body1,
                 obscureText: visible,
                 validation: validatePassword,
                 inkWell: InkWell(

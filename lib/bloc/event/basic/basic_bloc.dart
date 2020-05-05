@@ -18,6 +18,10 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
     add(AuthTokenSave(authToken: authToken));
   }
 
+  void selectedTabChange(index) {
+    add(SelectedTabChange(index: index));
+  }
+
   void eventNameInput(eventName) {
     add(EventNameInput(eventName: eventName));
   }
@@ -118,22 +122,39 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
     if (event is AuthTokenSave) {
       yield state.copyWith(authToken: event.authToken);
     }
+
+    if (event is SelectedTabChange) {
+      yield state.copyWith(selectedTab: event.index);
+    }
+
     if (event is EventNameInput) {
-      yield state.copyWith(eventName: event.eventName);
+      yield state.copyWith(
+        eventName: event.eventName,
+        uploadRequired: true,
+      );
     }
 
     if (event is EventTimeZoneInput) {
-      yield state.copyWith(eventTimeZone: event.eventTimeZone);
+      yield state.copyWith(
+        eventTimeZone: event.eventTimeZone,
+        uploadRequired: true,
+      );
     }
     if (event is EventTypeInput) {
-      yield state.copyWith(eventCarnival: event.eventType);
+      yield state.copyWith(
+        eventCarnival: event.eventType,
+        uploadRequired: true,
+      );
     }
     if (event is EventTagsInput) {
       if (!state.eventTags.contains(event.eventTag)) {
         state.eventTags.add(event.eventTag);
         final List<String> eventTagList = [];
         eventTagList.addAll(state.eventTags);
-        yield state.copyWith(eventTags: eventTagList);
+        yield state.copyWith(
+          eventTags: eventTagList,
+          uploadRequired: true,
+        );
       } else {
         yield state.copyWith(errorCode: ERR_DUPLICATE_TAG);
       }
@@ -142,24 +163,42 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       state.eventTags.remove(event.eventTag);
       final List<String> eventTagList = [];
       eventTagList.addAll(state.eventTags);
-      yield state.copyWith(eventTags: eventTagList);
+      yield state.copyWith(
+        eventTags: eventTagList,
+        uploadRequired: true,
+      );
     }
     if (event is EventStartDateInput) {
-      yield state.copyWith(eventStartDate: event.eventStartDate);
+      yield state.copyWith(
+        eventStartDate: event.eventStartDate,
+        uploadRequired: true,
+      );
     }
     if (event is EventStartTimeInput) {
-      yield state.copyWith(eventStartTime: event.eventStartTime);
+      yield state.copyWith(
+        eventStartTime: event.eventStartTime,
+        uploadRequired: true,
+      );
     }
     if (event is EventEndDateInput) {
-      yield state.copyWith(eventEndDate: event.eventEndDate);
+      yield state.copyWith(
+        eventEndDate: event.eventEndDate,
+        uploadRequired: true,
+      );
       print('${event.eventEndDate}');
     }
     if (event is EventEndTimeInput) {
-      yield state.copyWith(eventEndTime: event.eventEndTime);
+      yield state.copyWith(
+        eventEndTime: event.eventEndTime,
+        uploadRequired: true,
+      );
       print('${event.eventEndTime}');
     }
     if (event is EventWeekdayInput) {
-      yield state.copyWith(eventWeekday: event.eventWeekday);
+      yield state.copyWith(
+        eventWeekday: event.eventWeekday,
+        uploadRequired: true,
+      );
     }
     if (event is EventAddCustomDate) {
       if (state.eventStartDate == null) {
@@ -194,7 +233,10 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
         eventEndDateTime: endDateTime,
       ));
 
-      yield state.copyWith(eventCustomDateTimeList: eventCustomDateTimeList);
+      yield state.copyWith(
+        eventCustomDateTimeList: eventCustomDateTimeList,
+        uploadRequired: true,
+      );
     }
     if (event is EventRemoveCustomDate) {
       state.eventCustomDateTimeList.remove(event.eventCustomDate);
@@ -202,22 +244,40 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       final List<EventCustomDate> eventCustomDateTimeList = [];
       eventCustomDateTimeList.addAll(state.eventCustomDateTimeList);
 
-      yield state.copyWith(eventCustomDateTimeList: eventCustomDateTimeList);
+      yield state.copyWith(
+        eventCustomDateTimeList: eventCustomDateTimeList,
+        uploadRequired: true,
+      );
     }
     if (event is EventLocationInput) {
-      yield state.copyWith(eventLocation: event.eventLocation);
+      yield state.copyWith(
+        eventLocation: event.eventLocation,
+        uploadRequired: true,
+      );
     }
     if (event is EventStateInput) {
-      yield state.copyWith(eventState: event.eventState);
+      yield state.copyWith(
+        eventState: event.eventState,
+        uploadRequired: true,
+      );
     }
     if (event is EventCityInput) {
-      yield state.copyWith(eventCity: event.eventCity);
+      yield state.copyWith(
+        eventCity: event.eventCity,
+        uploadRequired: true,
+      );
     }
     if (event is EventPostalCodeInput) {
-      yield state.copyWith(eventPostalCode: event.eventPostalCode);
+      yield state.copyWith(
+        eventPostalCode: event.eventPostalCode,
+        uploadRequired: true,
+      );
     }
     if (event is EventDescriptionInput) {
-      yield state.copyWith(eventDescription: event.eventDescription);
+      yield state.copyWith(
+        eventDescription: event.eventDescription,
+        uploadRequired: true,
+      );
     }
     if (event is Carnival) {
       yield state.copyWith(loading: true);
@@ -231,12 +291,12 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
           if (carnivalResponse.code == apiCodeSuccess) {
             yield state.copyWith(
               eventTypeList: carnivalResponse.carnivalList,
+              loading: false,
             );
-            print(carnivalResponse.carnivalList);
-          }
-          yield state.copyWith(
-            loading: false,
-          );
+          } else
+            yield state.copyWith(
+              loading: false,
+            );
         } else {
           yield state.copyWith(
             loading: false,
@@ -247,25 +307,32 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       }
     }
     if (event is Basic) {
-      int errorCode = validateBasicInfo();
+      try {
+        int errorCode = validateBasicInfo();
 
-      if (errorCode > 0) {
-        yield state.copyWith(errorCode: errorCode);
+        if (errorCode > 0) {
+          yield state.copyWith(errorCode: errorCode);
+          event.callback(null);
+          return;
+        }
+
+        await apiProvider.getBasic(state.authToken, eventDataToUpload,
+            eventDataId: eventDataId);
+
+        yield state.copyWith(loading: false);
+
+        if (apiProvider.apiResult.responseCode == ok200) {
+          var basicResponse = apiProvider.apiResult.response;
+          if (basicResponse.id != null) eventDataId = basicResponse.id;
+          state.uploadRequired = false;
+          event.callback(basicResponse);
+        } else {
+          event.callback(apiProvider.apiResult.errorMessage);
+        }
+      } catch (error) {
+        print('Exception Occured--->$error');
+        yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
         event.callback(null);
-        return;
-      }
-
-      await apiProvider.getBasic(state.authToken, eventDataToUpload,
-          eventDataId: eventDataId);
-
-      yield state.copyWith(loading: false);
-
-      if (apiProvider.apiResult.responseCode == ok200) {
-        var basicResponse = apiProvider.apiResult.response;
-        if (basicResponse.id != null) eventDataId = basicResponse.id;
-        event.callback(basicResponse);
-      } else {
-        event.callback(apiProvider.apiResult.errorMessage);
       }
     }
 

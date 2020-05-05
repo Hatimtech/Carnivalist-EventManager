@@ -49,11 +49,14 @@ class CreateFieldBloc extends Bloc<CreateFieldEvent, CreateFieldState> {
 
   @override
   CreateFieldState get initialState {
-    if (fieldId != null)
+    if (fieldId != null) {
       return CreateFieldState.copyWith(
           formBloc.state.fieldList.firstWhere((field) => field.id == fieldId));
-    else
-      return CreateFieldState.initial();
+    } else {
+      CreateFieldState createFieldState = CreateFieldState.initial();
+      createFieldState.type = getCustomField()[0].value;
+      return createFieldState;
+    }
   }
 
   @override
@@ -89,8 +92,7 @@ class CreateFieldBloc extends Bloc<CreateFieldEvent, CreateFieldState> {
     }
 
     if (event is SelectCustomFieldName) {
-      if (fieldId == null)
-        yield state.copyWith(type: event.customFieldName.value);
+      yield state.copyWith(type: event.customFieldName.value);
 
       int id = state.customFieldMeuList
           .indexWhere((item) => item.value == state.type);
@@ -120,6 +122,7 @@ class CreateFieldBloc extends Bloc<CreateFieldEvent, CreateFieldState> {
         placeholder: state.placeholder,
         required: state.required,
         type: state.type,
+        configurations: state.configurations,
       );
 
       if (fieldId != null) {

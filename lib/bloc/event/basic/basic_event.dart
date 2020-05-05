@@ -11,6 +11,12 @@ class AuthTokenSave extends BasicEvent {
   AuthTokenSave({this.authToken});
 }
 
+class SelectedTabChange extends BasicEvent {
+  final int index;
+
+  SelectedTabChange({this.index});
+}
+
 class SelectEventMenu extends BasicEvent {
   final String eventMenuName;
 

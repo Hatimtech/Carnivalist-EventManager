@@ -54,11 +54,12 @@ class _SignUpState extends State<SignUpPage> {
   }
 
   _signUpBody() => ListView(children: <Widget>[
-        SizedBox(height: 40),
         Image.asset(logoImage, scale: 2.0),
-        SizedBox(height: 40),
         Container(
-            margin: EdgeInsets.all(20),
+            margin: EdgeInsets.symmetric(
+              horizontal: 20.0,
+              vertical: 0.0,
+            ),
             child: Card(
                 child: Container(
                     margin: EdgeInsets.only(
@@ -136,6 +137,10 @@ class _SignUpState extends State<SignUpPage> {
               labelText: AppLocalizations
                   .of(context)
                   .inputHintFirstName,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
               onChanged: _signUpBloc.nameInput,
               validation: validateName,
               keyboardType: TextInputType.text)));
@@ -148,6 +153,10 @@ class _SignUpState extends State<SignUpPage> {
               labelText: AppLocalizations
                   .of(context)
                   .inputHintPhoneNo,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
               onChanged: _signUpBloc.mobileInput,
               maxLength: 10,
               validation: validateMobile,
@@ -161,6 +170,10 @@ class _SignUpState extends State<SignUpPage> {
               labelText: AppLocalizations
                   .of(context)
                   .inputHintEmail,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
               validation: validateEmail,
               keyboardType: TextInputType.emailAddress,
               onChanged: _signUpBloc.emailInput)));
@@ -173,6 +186,10 @@ class _SignUpState extends State<SignUpPage> {
               labelText: AppLocalizations
                   .of(context)
                   .inputHintPassword,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
               onChanged: _signUpBloc.passwordInput,
               validation: validatePassword,
               maxLength: 20,
@@ -190,6 +207,10 @@ class _SignUpState extends State<SignUpPage> {
               labelText: AppLocalizations
                   .of(context)
                   .inputHintConfirmPassword,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
               onChanged: _signUpBloc.passwordInput,
               obscureText: visible, validation: (confirmation) {
             return confirmation.isEmpty

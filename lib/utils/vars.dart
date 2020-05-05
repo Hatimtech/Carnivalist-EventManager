@@ -70,8 +70,10 @@ const Color colorTextAction = Color(0xFF0713D1);
 
 const Color bgColor = Color(0xFFFFF4FF);
 const Color bgColorSecondary = Color(0xFFF7E4FC);
-const Color cardBgColor = Color(0xFFFFFFFF);
-const Color colorBgButton = Color(0xFF8C3EE9);
+const Color bgColorCard = Color(0xFFFFFFFF);
+const Color bgColorButton = Color(0xFF8C3EE9);
+const Color bgColorFAB = Color(0xFF9249F4);
+const Color bgColorFABHome = Color(0xFFF5066E);
 
 const Color colorIcon = Color(0xFF8C3EE9);
 const Color colorIconSecondary = Color(0xFF6700E2);
@@ -81,11 +83,8 @@ const Color colorFocusedBorder = Color(0xFF8C3EE9);
 
 const Color colorProgressBar = Color(0xFF10089b);
 const Color colorTitle = Color(0xFF10089b);
-const Color bgColorFloatingActionButton = Color(0xFFAF52DE);
 const Color colorBottomBarMenu = Color(0xFFFEFEFE);
 const Color colorHeaderTitle = Colors.white;
-const Color colorSubHeader = Colors.black;
-const Color colorCreateEventBg = Color(0xFF8C3EE9);
 const Color colorHeaderBgFilter = Colors.transparent;
 
 List<Color> gradientsClipper = [Colors.grey.shade200, Colors.white];
@@ -314,6 +313,10 @@ const int ERR_FIELD_PLACEHOLDER = 28;
 const int ERR_DUPLICATE_LIST_ITEM = 29;
 const int ERR_NO_LIST_ITEM = 30;
 
+const int ERR_CANCELLATION_DESC = 31;
+const int ERR_CANCELLATION_OPTION = 32;
+const int ERR_TNC = 33;
+
 const int ERR_SOMETHING_WENT_WRONG = 100;
 
 String getErrorMessage(int errorCode, BuildContext context) {
@@ -384,6 +387,13 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorDuplicateListItem;
     case ERR_NO_LIST_ITEM:
       return appLoc.errorNoListItem;
+
+    case ERR_CANCELLATION_DESC:
+      return appLoc.errorCancellationDesc;
+    case ERR_CANCELLATION_OPTION:
+      return appLoc.errorNoCancellationOption;
+    case ERR_TNC:
+      return appLoc.errorTnc;
 
     default:
       return appLoc.errorSomethingWrong;

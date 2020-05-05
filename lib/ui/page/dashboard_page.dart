@@ -1,5 +1,4 @@
 import 'package:eventmanagement/intl/app_localizations.dart';
-import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +20,10 @@ class _DashboardState extends State<DashboardPage> {
         backgroundColor: bgColor,
         floatingActionButton: FloatingActionButton(
             heroTag: "btn1",
-            backgroundColor: bgColorFloatingActionButton,
+            backgroundColor: bgColorFAB,
             onPressed: () => Navigator.pushNamed(context, eventMenuRoute),
             child: Icon(
-              isPlatformAndroid ? Icons.add : CupertinoIcons.add,
+              Icons.add,
               size: 48.0,
             )),
         body: Column(children: <Widget>[

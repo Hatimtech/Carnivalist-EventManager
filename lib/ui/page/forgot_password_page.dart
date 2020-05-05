@@ -88,6 +88,10 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
               labelText: AppLocalizations
                   .of(context)
                   .inputHintPhoneEmail,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
               validation: validatePhoneEmail,
               keyboardType: TextInputType.emailAddress)));
 

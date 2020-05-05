@@ -49,7 +49,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
 
     if (event is InitSolidFields) {
       if ((state.fieldList?.length ?? 0) == 0) {
-        final fieldList = state.fieldList;
+        final fieldList = List.of(state.fieldList);
         fieldList.addAll(FieldData.solidFields);
         yield state.copyWith(
           fieldList: fieldList,
@@ -79,37 +79,43 @@ class FormBloc extends Bloc<FormEvent, FormState> {
 
     if (event is UploadFields) {
       if (state.uploadRequired) {
-        EventData eventDataToUpload = basicBloc.eventDataToUpload;
+        try {
+          EventData eventDataToUpload = basicBloc.eventDataToUpload;
 
-        final formFieldsToUpload = state.fieldList.map((field) {
-          if (!(field.solid ?? false) && int.tryParse(field.id) != null)
-            return FieldData(
-              field.idWith_,
-              id: null,
-              name: field.name,
-              label: field.label,
-              placeholder: field.placeholder,
-              required: field.required,
-              type: field.type,
-              solid: field.solid,
-              configurations: field.configurations,
-            );
-          return field;
-        }).toList();
+          final formFieldsToUpload = state.fieldList.map((field) {
+            if (!(field.solid ?? false) && int.tryParse(field.id) != null)
+              return FieldData(
+                field.idWith_,
+                id: null,
+                name: field.name,
+                label: field.label,
+                placeholder: field.placeholder,
+                required: field.required,
+                type: field.type,
+                solid: field.solid,
+                configurations: field.configurations,
+              );
+            return field;
+          }).toList();
 
-        eventDataToUpload.formStructure = formFieldsToUpload;
+          eventDataToUpload.formStructure = formFieldsToUpload;
 
-        await apiProvider.createNewFormFields(
-            state.authToken, eventDataToUpload,
-            eventDataId: basicBloc.eventDataId);
+          await apiProvider.createNewFormFields(
+              state.authToken, eventDataToUpload,
+              eventDataId: basicBloc.eventDataId);
 
-        if (apiProvider.apiResult.responseCode == ok200) {
-          var formResponse =
-              apiProvider.apiResult.response as FormActionResponse;
-          event.callback(formResponse);
-          state.uploadRequired = false;
-        } else {
-          event.callback(apiProvider.apiResult.errorMessage);
+          if (apiProvider.apiResult.responseCode == ok200) {
+            var formResponse =
+            apiProvider.apiResult.response as FormActionResponse;
+            event.callback(formResponse);
+            state.uploadRequired = false;
+          } else {
+            event.callback(apiProvider.apiResult.errorMessage);
+          }
+        } catch (error) {
+          print('Exception Occured--->$error');
+          yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
+          event.callback(null);
         }
       } else {
         event.callback('Upload not required');

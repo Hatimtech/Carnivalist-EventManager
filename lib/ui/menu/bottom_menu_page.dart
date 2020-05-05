@@ -103,7 +103,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
       child: FloatingActionButton(
         mini: true,
         elevation: isPlatformAndroid ? 4.0 : 0.0,
-        backgroundColor: colorAccent,
+        backgroundColor: bgColorFABHome,
         onPressed: () {},
         child: Icon(
           Icons.home,
@@ -116,13 +116,16 @@ class _BottomMenuState extends State<BottomMenuPage> {
     if (isPlatformAndroid)
       return child;
     else
-      return DecoratedBox(
+      return Container(
+        width: 48.0,
+        height: 48.0,
+        padding: const EdgeInsets.all(2.0),
         decoration: BoxDecoration(
-          color: Color(0xFFFDCDE2),
+          color: bgColorSecondary,
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.white,
-            width: 2.0,
+            width: 1.0,
           ),
           boxShadow: [
             BoxShadow(

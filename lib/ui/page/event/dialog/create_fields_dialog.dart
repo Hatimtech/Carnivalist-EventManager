@@ -29,7 +29,7 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
     super.initState();
     _createFieldBloc = BlocProvider.of<CreateFieldBloc>(context);
     _createFieldBloc.customFieldMenu();
-    _createFieldBloc.selectCustomFieldName(getCustomField()[0]);
+//    _createFieldBloc.selectCustomFieldName(getCustomField()[0]);
   }
 
   @override
@@ -148,7 +148,7 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
                   condition: (prevState, newState) =>
                   prevState.required != newState.required,
                   builder: (BuildContext context, state) =>
-                      Switch(
+                      Switch.adaptive(
                         value: _createFieldBloc.state.required,
                         onChanged: _createFieldBloc.mandatoryInput,
                       ),

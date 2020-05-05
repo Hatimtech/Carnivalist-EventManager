@@ -40,7 +40,7 @@ class PlatformApp extends PlatformWidget<Theme, MaterialApp> {
       primaryColor: colorPrimary,
       primarySwatch: Colors.indigo,
       fontFamily: montserratFont,
-      cardColor: cardBgColor,
+      cardColor: bgColorCard,
       textTheme: ThemeData.light().textTheme.copyWith(
             title: const TextStyle(
               fontSize: 18,
@@ -71,7 +71,7 @@ class PlatformApp extends PlatformWidget<Theme, MaterialApp> {
             caption: const TextStyle(),
           ),
       buttonTheme: ThemeData.light().buttonTheme.copyWith(
-            buttonColor: colorBgButton,
+        buttonColor: bgColorButton,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12.0)),
             ),

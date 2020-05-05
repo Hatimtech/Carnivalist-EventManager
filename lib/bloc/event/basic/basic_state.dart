@@ -25,6 +25,8 @@ class BasicState {
   final List<EventCustomDate> eventCustomDateTimeList;
   final bool loading;
   int errorCode;
+  int selectedTab;
+  bool uploadRequired;
 
   BasicState({
     this.authToken,
@@ -50,6 +52,8 @@ class BasicState {
     this.eventCustomDateTimeList,
     this.loading,
     this.errorCode,
+    this.selectedTab,
+    this.uploadRequired,
   });
 
   /* BasicState(
@@ -59,7 +63,7 @@ class BasicState {
       this.postType,
       this.postTypeList});*/
 
-  /*factory BasicState.initial() {
+  factory BasicState.initial() {
     return BasicState(
       authToken: '',
       eventMenuName: '',
@@ -84,10 +88,12 @@ class BasicState {
       eventCustomDateTimeList: [],
       loading: false,
       errorCode: null,
+      selectedTab: 0,
+      uploadRequired: false,
     );
-  }*/
+  }
 
-  factory BasicState.initial() {
+  /*factory BasicState.initial() {
     return BasicState(
       authToken: '',
       eventMenuName: '',
@@ -112,8 +118,10 @@ class BasicState {
       eventCustomDateTimeList: [],
       loading: false,
       errorCode: null,
+      selectedTab: 0,
+      uploadRequired: false,
     );
-  }
+  }*/
 
   BasicState copyWith({
     String authToken,
@@ -139,6 +147,8 @@ class BasicState {
     List<EventCustomDate> eventCustomDateTimeList,
     bool loading,
     int errorCode = null,
+    int selectedTab,
+    bool uploadRequired,
   }) {
     return BasicState(
       authToken: authToken ?? this.authToken,
@@ -165,6 +175,8 @@ class BasicState {
       eventCustomDateTimeList ?? this.eventCustomDateTimeList,
       loading: loading ?? this.loading,
       errorCode: errorCode,
+      selectedTab: selectedTab ?? this.selectedTab,
+      uploadRequired: uploadRequired ?? this.uploadRequired,
     );
   }
 }

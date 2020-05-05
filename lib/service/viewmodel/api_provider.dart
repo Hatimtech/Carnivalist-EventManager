@@ -1,4 +1,5 @@
 import 'package:eventmanagement/model/event/event_data.dart';
+import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
 import 'package:eventmanagement/service/di/dependency_injection.dart';
 
@@ -80,6 +81,14 @@ class ApiProvider {
       {String eventDataId}) async {
     NetworkServiceResponse result = await apiService
         .createGalleryData(authToken, eventData, eventDataId: eventDataId);
+    this.apiResult = result;
+  }
+
+  uploadSettings(String authToken, SettingData settingData,
+      {String eventDataId}) async {
+    NetworkServiceResponse result =
+    await apiService.uploadSetting(
+        authToken, settingData, eventDataId: eventDataId);
     this.apiResult = result;
   }
 }

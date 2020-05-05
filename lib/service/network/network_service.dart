@@ -7,6 +7,8 @@ import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/form/form_action_response.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
 import 'package:eventmanagement/model/event/gallery/media_upload_response.dart';
+import 'package:eventmanagement/model/event/settings/setting_response.dart';
+import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
@@ -275,6 +277,28 @@ class NetworkService extends NetworkType implements APIService {
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = GalleryResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  @override
+  uploadSetting(String authToken, SettingData settingData,
+      {String eventDataId}) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<SettingResponse>(
+        '$_basicUrl${eventDataId != null ? '/$eventDataId' : ''}',
+        body: json.encode(settingData),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = SettingResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
 

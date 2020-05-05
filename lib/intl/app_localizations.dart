@@ -67,6 +67,10 @@ class AppLocalizations {
   String get titleCustomSettings => Intl.message('Custom Settings',
       name: "titleCustomSettings", locale: _localeName);
 
+  String get subtitleCancellationPolicy =>
+      Intl.message('Cancellation Policy',
+          name: "subtitleCancellationPolicy", locale: _localeName);
+
   String get titleCustomField => Intl.message('Create your custom field',
       name: "titleCustomField", locale: _localeName);
 
@@ -221,6 +225,30 @@ class AppLocalizations {
   String get labelBookingCancel => Intl.message('Booking Cancellation',
       name: "labelBookingCancel", locale: _localeName);
 
+  String get labelCancellationDeductAmount =>
+      Intl.message('Deduct amount in fixed value',
+          name: "labelCancellationDeductAmount", locale: _localeName);
+
+  String get labelCancellationDeductPercentage =>
+      Intl.message('Deduct amount in percentage',
+          name: "labelCancellationDeductPercentage", locale: _localeName);
+
+  String get labelCancellationDeductAmountInput =>
+      Intl.message('Amount will be deducted',
+          name: "labelCancellationDeductAmountInput", locale: _localeName);
+
+  String get labelCancellationDeductPercentageInput =>
+      Intl.message('Percentage will be deducted',
+          name: "labelCancellationDeductPercentageInput", locale: _localeName);
+
+  String get labelCancellationEndDate =>
+      Intl.message('Cancellation End Date',
+          name: "labelCancellationEndDate", locale: _localeName);
+
+  String get labelCancellationEndDateInput =>
+      Intl.message('End Date',
+          name: "labelCancellationEndDateInput", locale: _localeName);
+
   String get labelTicketResale => Intl.message('Ticket Resale',
       name: "labelTicketResale", locale: _localeName);
 
@@ -289,6 +317,10 @@ class AppLocalizations {
   String get menuSettings =>
       Intl.message('Settings', name: "menuSettings", locale: _localeName);
 
+  String get validateStep1 =>
+      Intl.message('Please complete the current step.', name: "validateStep1",
+          locale: _localeName);
+
   String get msgNoData =>
       Intl.message('No Data', name: "msgNoData", locale: _localeName);
 
@@ -333,6 +365,10 @@ class AppLocalizations {
 
   String get btnCreateFields => Intl.message('Create Fields',
       name: "btnCreateFields", locale: _localeName);
+
+  String get btnAddCancellationOption =>
+      Intl.message('ADD MORE',
+          name: "btnAddCancellationOption", locale: _localeName);
 
   String get inputHintPhoneEmail => Intl.message('Phone No/Email',
       name: "inputHintPhoneEmail", locale: _localeName);
@@ -398,6 +434,10 @@ class AppLocalizations {
 
   String get inputHintPercentage => Intl.message('Type your Percentage',
       name: "inputHintPercentage", locale: _localeName);
+
+  String get inputHintCancellationDesc =>
+      Intl.message('Cancellation Policy Description',
+          name: "inputHintCancellationDesc", locale: _localeName);
 
   String get inputHintBookNow => Intl.message('Ex:- Book Now',
       name: "inputHintBookNow", locale: _localeName);
@@ -522,6 +562,9 @@ class AppLocalizations {
 
   String get labelGallery =>
       Intl.message('Gallery', name: "labelGallery", locale: _localeName);
+
+  String get inputValue =>
+      Intl.message('Input Value', name: "inputValue", locale: _localeName);
 
   // Error Messages
   String get errorEventName =>
@@ -656,6 +699,48 @@ class AppLocalizations {
       Intl.message(
           'Add atleast 1 list item',
           name: "errorNoListItem",
+          locale: _localeName);
+
+  String get errorCancellationDesc =>
+      Intl.message(
+          'Cancellation description can not be empty',
+          name: "errorCancellationDesc",
+          locale: _localeName);
+
+  String get errorNoCancellationOption =>
+      Intl.message(
+          'Add atleast 1 cancellation option',
+          name: "errorNoCancellationOption",
+          locale: _localeName);
+
+  String get errorTnc =>
+      Intl.message(
+          'Please review and accept terms of use and privacy policy.',
+          name: "errorTnc",
+          locale: _localeName);
+
+  String get errorUnsavedBasic =>
+      Intl.message(
+          'You have unsaved changes in \'Basic\' section. Please submit them first.',
+          name: "errorUnsavedBasic",
+          locale: _localeName);
+
+  String get errorUnsavedForm =>
+      Intl.message(
+          'You have unsaved changes in \'Forms\'. Please submit them first.',
+          name: "errorUnsavedForm",
+          locale: _localeName);
+
+  String get errorUnsavedGallery =>
+      Intl.message(
+          'You have unsaved changes in \'Gallery\'. Please submit them first.',
+          name: "errorUnsavedGallery",
+          locale: _localeName);
+
+  String get errorNoEventTypesAvailable =>
+      Intl.message(
+          'No event types available',
+          name: "errorNoEventTypesAvailable",
           locale: _localeName);
 
   String get errorSomethingWrong =>

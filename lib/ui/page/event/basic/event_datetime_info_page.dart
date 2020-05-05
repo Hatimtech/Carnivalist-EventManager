@@ -85,7 +85,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
                   child: Container(
                       decoration: BoxDecoration(
                           color: selectedMenu == data.name
-                              ? colorBgButton
+                              ? bgColorButton
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.all(8),

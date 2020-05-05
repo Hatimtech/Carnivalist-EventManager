@@ -110,7 +110,10 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
       BlocProvider(
         create: (context) => BasicBloc(),
         child: BlocProvider(
-          create: (context) => SettingBloc(),
+          create: (context) =>
+              SettingBloc(
+                BlocProvider.of<BasicBloc>(context),
+              ),
           child: BlocProvider(
             create: (context) =>
                 TicketsBloc(

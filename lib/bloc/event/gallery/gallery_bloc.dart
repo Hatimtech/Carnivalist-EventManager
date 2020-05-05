@@ -86,40 +86,41 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
 
     if (event is UploadGallery) {
       if (state.uploadRequired) {
-        if (state.bannerUploadRequired) {
-          await apiProvider.uploadMedia(state.authToken, state.banner);
-          if (apiProvider.apiResult.responseCode == ok200) {
-            final newBannerLink =
-                apiProvider.apiResult.response.fileLink as String;
-            print('New Banner Link--->$newBannerLink');
-
-            if (isValid(newBannerLink)) {
-              state.bannerUploadRequired = false;
-
-              await renameFile(state.banner,
-                  newBannerLink.substring(newBannerLink.lastIndexOf('/')));
-
-              state.banner = newBannerLink;
-            }
-          } else {
-            event.callback(apiProvider.apiResult.errorMessage);
-          }
-        }
-
-        for (int galleryCount = 0;
-            galleryCount < state.galleryList.length;
-            galleryCount++) {
-          final galleryData = state.galleryList[galleryCount];
-          if (galleryData.uploadRequired) {
-            await apiProvider.uploadMedia(
-                state.authToken, galleryData.localFilePath);
+        try {
+          if (state.bannerUploadRequired) {
+            await apiProvider.uploadMedia(state.authToken, state.banner);
             if (apiProvider.apiResult.responseCode == ok200) {
-              final newGalleryDataLink =
-                  apiProvider.apiResult.response.fileLink as String;
-              print('New Gallery Data Link--->$newGalleryDataLink');
+              final newBannerLink =
+              apiProvider.apiResult.response.fileLink as String;
+              print('New Banner Link--->$newBannerLink');
 
-              if (isValid(newGalleryDataLink)) {
-                galleryData.uploadRequired = false;
+              if (isValid(newBannerLink)) {
+                state.bannerUploadRequired = false;
+
+                await renameFile(state.banner,
+                    newBannerLink.substring(newBannerLink.lastIndexOf('/')));
+
+                state.banner = newBannerLink;
+              }
+            } else {
+              event.callback(apiProvider.apiResult.errorMessage);
+            }
+          }
+
+          for (int galleryCount = 0;
+          galleryCount < state.galleryList.length;
+          galleryCount++) {
+            final galleryData = state.galleryList[galleryCount];
+            if (galleryData.uploadRequired) {
+              await apiProvider.uploadMedia(
+                  state.authToken, galleryData.localFilePath);
+              if (apiProvider.apiResult.responseCode == ok200) {
+                final newGalleryDataLink =
+                apiProvider.apiResult.response.fileLink as String;
+                print('New Gallery Data Link--->$newGalleryDataLink');
+
+                if (isValid(newGalleryDataLink)) {
+                  galleryData.uploadRequired = false;
 
 //                if (galleryData.ownedByApp) {
 //                  await renameFile(
@@ -148,28 +149,34 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
 //                      '${newGalleryDataLink.substring(newGalleryDataLink.lastIndexOf('/') + 1, newGalleryDataLink.lastIndexOf('.'))}.jpg');
 //                }
 
-                galleryData.link = newGalleryDataLink;
+                  galleryData.link = newGalleryDataLink;
+                }
+              } else {
+                event.callback(apiProvider.apiResult.errorMessage);
               }
-            } else {
-              event.callback(apiProvider.apiResult.errorMessage);
             }
           }
-        }
 
-        EventData eventDataToUpload = basicBloc.eventDataToUpload;
-        eventDataToUpload.banner = state.banner;
-        eventDataToUpload.gallery = state.galleryList;
+          EventData eventDataToUpload = basicBloc.eventDataToUpload;
+          eventDataToUpload.banner = state.banner;
+          eventDataToUpload.gallery = state.galleryList;
 
-        await apiProvider.createGalleryData(state.authToken, eventDataToUpload,
-            eventDataId: basicBloc.eventDataId);
+          await apiProvider.createGalleryData(
+              state.authToken, eventDataToUpload,
+              eventDataId: basicBloc.eventDataId);
 
-        if (apiProvider.apiResult.responseCode == ok200) {
-          var galleryResponse =
-              apiProvider.apiResult.response as GalleryResponse;
-          event.callback(galleryResponse);
-          state.uploadRequired = false;
-        } else {
-          event.callback(apiProvider.apiResult.errorMessage);
+          if (apiProvider.apiResult.responseCode == ok200) {
+            var galleryResponse =
+            apiProvider.apiResult.response as GalleryResponse;
+            event.callback(galleryResponse);
+            state.uploadRequired = false;
+          } else {
+            event.callback(apiProvider.apiResult.errorMessage);
+          }
+        } catch (error) {
+          print('Exception Occured--->$error');
+          yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
+          event.callback(null);
         }
       } else {
         event.callback('Upload not required');

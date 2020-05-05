@@ -86,6 +86,7 @@ extension WidgetExtensions on Widget {
         TextInputType keyboardType,
         String hintText,
         String labelText,
+        TextStyle labelStyle,
         bool obscureText = false,
         InkWell inkWell,
         FormFieldValidator<String> validation}) =>
@@ -95,7 +96,7 @@ extension WidgetExtensions on Widget {
           keyboardType: keyboardType,
           maxLength: maxLength,
           onChanged: onChanged,
-          style: TextStyle(fontSize: 15.0),
+          style: labelStyle,
           decoration: InputDecoration(
               counterText: '',
               hintText: hintText,
