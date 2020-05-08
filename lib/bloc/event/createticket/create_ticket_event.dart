@@ -46,7 +46,15 @@ class DescriptionInput extends CreateTicketEvent {
   DescriptionInput({this.description});
 }
 
-class CreateTicket extends CreateTicketEvent {
+class CreateUpdateTicket extends CreateTicketEvent {
   Function callback;
-  CreateTicket({this.callback});
+
+  CreateUpdateTicket({this.callback});
+}
+
+class CreateUpdateTicketResult extends CreateTicketEvent {
+  final bool success;
+  final dynamic uiMsg;
+
+  CreateUpdateTicketResult(this.success, {this.uiMsg});
 }

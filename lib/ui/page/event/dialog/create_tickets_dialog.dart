@@ -71,19 +71,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
             child:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
                 Widget>[
-              BlocBuilder<CreateTicketBloc, CreateTicketState>(
-                bloc: _createTicketBloc,
-                condition: (prevState, newState) => newState.errorCode != null,
-                builder: (context, CreateTicketState state) {
-                  if (state.errorCode != null) {
-                    String errorMsg = getErrorMessage(state.errorCode, context);
-                    context.toast(errorMsg);
-                    state.errorCode = null;
-                  }
-
-                  return SizedBox.shrink();
-                },
-              ),
+              _buildErrorReceiverEmptyBloc(),
               Text(AppLocalizations
                   .of(context)
                   .titleTicketDetails,
@@ -248,17 +236,33 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
             ])));
   }
 
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<CreateTicketBloc, CreateTicketState>(
+        bloc: _createTicketBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
+
   _createTicketToApi() async {
     FocusScope.of(context).requestFocus(FocusNode());
     context.showProgress(context);
 
-    _createTicketBloc.createTicket((results) {
+    _createTicketBloc.createOrUpdateTicket((results) {
       context.hideProgress(context);
       if (results is CreateTicketResponse) {
-        var createTicketResponse = results;
-
-        if (createTicketResponse.code == apiCodeSuccess) {
-          context.toast(createTicketResponse.message);
+        if (results.code == apiCodeSuccess) {
+//          context.toast(createTicketResponse.message);
 
 //          _ticketNameController.clear();
 //          _priceController.clear();
@@ -269,15 +273,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 //          _descriptionController.clear();
 
           Navigator.pop(context);
-        } else {
-          context.toast(createTicketResponse.message);
         }
-      } else if (results is String) {
-        context.toast(results);
-      } else {
-        context.toast(AppLocalizations
-            .of(context)
-            .errorSomethingWrong);
       }
     });
   }

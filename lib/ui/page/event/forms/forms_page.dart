@@ -36,22 +36,7 @@ class _FormsState extends State<FormsPage> {
     return Container(
         margin: EdgeInsets.all(5),
         child: Column(children: <Widget>[
-          BlocBuilder<FormBloc, FS.FormState>(
-            bloc: _formBloc,
-            condition: (prevState, newState) =>
-            newState.toastMsg != null || newState.errorCode != null,
-            builder: (context, FS.FormState state) {
-              if (state.toastMsg != null) {
-                context.toast(state.toastMsg);
-                state.toastMsg = null;
-              } else if (state.errorCode != null) {
-                String errorMsg = getErrorMessage(state.errorCode, context);
-                context.toast(errorMsg);
-                state.errorCode = null;
-              }
-              return const SizedBox.shrink();
-            },
-          ),
+          _buildErrorReceiverEmptyBloc(),
           Align(
               alignment: Alignment.topRight,
               child: RaisedButton(
@@ -82,6 +67,24 @@ class _FormsState extends State<FormsPage> {
                       }))),
         ]));
   }
+
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<FormBloc, FS.FormState>(
+        bloc: _formBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
 
   formsList(List<FieldData> fieldDataList) =>
       PlatformScrollbar(

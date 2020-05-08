@@ -126,7 +126,10 @@ class _EventMenuState extends State<EventMenuPage>
         .state
         .authToken);
     if (_eventData != null) {
-      _formBloc.populateExistingEvent(_eventData.formStructure);
+      if (_eventData.formStructure.isNotEmpty)
+        _formBloc.populateExistingEvent(_eventData.formStructure);
+      else
+        _formBloc.initSolidFields();
       _formBloc.eventDataId = _eventData.id;
     } else {
       _formBloc.initSolidFields();
@@ -451,19 +454,11 @@ class _EventMenuState extends State<EventMenuPage>
       context.hideProgress(context);
 
       if (results is FormActionResponse) {
-        var formActionResponse = results;
-
-        if (formActionResponse.code == apiCodeSuccess) {
-          context.toast(formActionResponse.message);
+        if (results.code == apiCodeSuccess) {
           _tabController.animateTo(3);
-        } else {
-          context.toast(formActionResponse.message);
         }
-      } else if (results is String) {
-        if (results == 'Upload not required')
-          _tabController.animateTo(3);
-        else
-          context.toast(results);
+      } else if (results is String && results == 'Upload not required') {
+        _tabController.animateTo(3);
       }
     });
   }
@@ -479,14 +474,9 @@ class _EventMenuState extends State<EventMenuPage>
         if (galleryResponse.code == apiCodeSuccess) {
           context.toast(galleryResponse.message);
           _tabController.animateTo(4);
-        } else {
-          context.toast(galleryResponse.message);
         }
       } else if (results is String) {
-        if (results == 'Upload not required')
-          _tabController.animateTo(4);
-        else
-          context.toast(results);
+        if (results == 'Upload not required') _tabController.animateTo(4);
       }
     });
   }
@@ -526,15 +516,9 @@ class _EventMenuState extends State<EventMenuPage>
       context.hideProgress(context);
 
       if (results is SettingResponse) {
-        var settingResponse = results;
-        if (settingResponse.code == apiCodeSuccess) {
-          context.toast(settingResponse.message);
+        if (results.code == apiCodeSuccess) {
           Navigator.of(context).pop();
-        } else {
-          context.toast(settingResponse.message);
         }
-      } else if (results is String) {
-        context.toast(results);
       }
     });
   }

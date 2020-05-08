@@ -13,7 +13,7 @@ class CreateTicketState {
       description;
   DateTime salesEndDate;
   bool loading;
-  int errorCode;
+  dynamic uiMsg;
 
   CreateTicketState({
     this.authToken,
@@ -27,7 +27,7 @@ class CreateTicketState {
     this.maxBooking,
     this.description,
     bool loading,
-    this.errorCode,
+    this.uiMsg,
   });
 
   factory CreateTicketState.initial() {
@@ -42,7 +42,7 @@ class CreateTicketState {
       minBooking: '',
       maxBooking: '',
       description: '',
-      errorCode: null,
+      uiMsg: null,
     );
   }
 
@@ -75,7 +75,7 @@ class CreateTicketState {
       minBooking: ticket.minOrderQuantity?.toString() ?? '',
       maxBooking: ticket.maxOrderQuantity?.toString() ?? '',
       description: ticket.description?.toString() ?? '',
-      errorCode: null,
+      uiMsg: null,
     );
   }
 
@@ -97,7 +97,7 @@ class CreateTicketState {
     String minBooking,
     String maxBooking,
     String description,
-    int errorCode = null,
+    dynamic uiMsg,
   }) {
     return CreateTicketState(
       authToken: authToken ?? this.authToken,
@@ -110,7 +110,7 @@ class CreateTicketState {
       minBooking: minBooking ?? this.minBooking,
       maxBooking: maxBooking ?? this.maxBooking,
       description: description ?? this.description,
-      errorCode: errorCode,
+      uiMsg: uiMsg,
     );
   }
 }

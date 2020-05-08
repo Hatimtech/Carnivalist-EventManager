@@ -8,6 +8,7 @@ import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_data.dart';
 import 'package:eventmanagement/ui/page/event/gallery/video_thumbnail.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_scroll_bar.dart';
+import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class _GalleryState extends State<GalleryPage> {
     return PlatformScrollbar(
       child: Stack(
         children: <Widget>[
+          _buildErrorReceiverEmptyBloc(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomScrollView(
@@ -58,6 +60,24 @@ class _GalleryState extends State<GalleryPage> {
       ),
     );
   }
+
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<GalleryBloc, GalleryState>(
+        bloc: _galleryBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
 
   Widget _buildBannerImage() => FutureBuilder(
       key: _bannerViewKey,

@@ -54,20 +54,23 @@ class _SettingState extends State<SettingPage> {
     );
   }
 
-  Widget _buildErrorCodeHandleView() {
-    return BlocBuilder<SettingBloc, SettingState>(
-      bloc: _settingBloc,
-      condition: (prevState, newState) => newState.errorCode != null,
-      builder: (context, SettingState state) {
-        if (state.errorCode != null) {
-          String errorMsg = getErrorMessage(state.errorCode, context);
-          context.toast(errorMsg);
-          state.errorCode = null;
-        }
-        return const SizedBox.shrink();
-      },
-    );
-  }
+  Widget _buildErrorCodeHandleView() =>
+      BlocBuilder<SettingBloc, SettingState>(
+        bloc: _settingBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
 
   Card _buildPaymentAndFeesCard() {
     return Card(
@@ -882,7 +885,8 @@ class _SettingState extends State<SettingPage> {
       final eventStartTime = _basicBloc.startDateTime;
       pickedDate = await showDatePicker(
         context: context,
-        firstDate: DateTime.now(),
+        firstDate:
+        currentTime.isBefore(eventStartTime) ? currentTime : eventStartTime,
         lastDate: eventStartTime,
         initialDate: eventStartTime,
       );
@@ -911,6 +915,7 @@ class _SettingState extends State<SettingPage> {
         builder: (context) {
           final eventStartTime = _basicBloc.startDateTime;
           DateTime localPickedTime = eventStartTime;
+          final currentTime = DateTime.now();
           return SizedBox(
             height: MediaQuery
                 .of(context)
@@ -946,7 +951,9 @@ class _SettingState extends State<SettingPage> {
                       },
                       initialDateTime: eventStartTime,
                       maximumDate: eventStartTime,
-                      minimumDate: DateTime.now(),
+                      minimumDate: currentTime.isBefore(eventStartTime)
+                          ? currentTime
+                          : eventStartTime,
                       mode: CupertinoDatePickerMode.dateAndTime,
                     ),
                   ),

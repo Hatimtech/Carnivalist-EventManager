@@ -26,6 +26,8 @@ class _LoginState extends State<LoginPage> {
   LoginBloc _loginBloc;
   UserBloc _userBloc;
 
+  final _focusNodePassword = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -48,109 +50,137 @@ class _LoginState extends State<LoginPage> {
         Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.black.withOpacity(0.2),
-            body: ListView(children: <Widget>[
-              SizedBox(height: 40),
-              Image.asset(logoImage, scale: 2.0),
-              SizedBox(height: 40),
-              Container(
-                  margin: EdgeInsets.all(20),
-                  child: Card(
-                      child: Container(
-                          margin: EdgeInsets.only(
-                              top: 15, bottom: 2, right: 15, left: 15),
-                          child: Column(children: <Widget>[
-                            Text(AppLocalizations
-                                .of(context)
-                                .titleSignIn,
-                                textAlign: TextAlign.center,
-                                style: (TextStyle(
-                                    fontSize: 19,
-                                    color: colorTitle,
-                                    fontFamily: montserratBoldFont))),
-                            _phoneEmailInput(),
-                            _passwordInput(),
-                            SizedBox(height: 15),
-                            _signInButton(),
-                            RawMaterialButton(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelForgotPassword,
-                                    style: TextStyle(
+            body: Center(
+              child: SingleChildScrollView(
+                child: Column(children: <Widget>[
+                  _buildErrorReceiverEmptyBloc(),
+                  SizedBox(height: 40),
+                  Image.asset(logoImage, scale: 2.0),
+                  SizedBox(height: 40),
+                  Container(
+                      margin: EdgeInsets.all(20),
+                      child: Card(
+                          child: Container(
+                              margin: EdgeInsets.only(
+                                  top: 15, bottom: 2, right: 15, left: 15),
+                              child: Column(children: <Widget>[
+                                Text(AppLocalizations
+                                    .of(context)
+                                    .titleSignIn,
+                                    textAlign: TextAlign.center,
+                                    style: (TextStyle(
+                                        fontSize: 19,
                                         color: colorTitle,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12.0)),
-                                onPressed: () {
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-                                  Navigator.pushNamed(
-                                      context, forgotPasswordRoute);
-                                })
-                          ])),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ))),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    InkWell(
-                        child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelSignUp,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.normal),
-                                    textAlign: TextAlign.center))),
-                        onTap: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          Navigator.pushNamed(context, signUpRoute);
-                        }),
-                    Container(width: 1, height: 10, color: Colors.white),
-                    InkWell(
-                        child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelBecomeAVendorPartner,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.normal),
-                                    textAlign: TextAlign.center))),
-                        onTap: () {})
-                  ])
-            ]))
+                                        fontFamily: montserratBoldFont))),
+                                _phoneEmailInput(),
+                                _passwordInput(),
+                                SizedBox(height: 15),
+                                _signInButton(),
+                                RawMaterialButton(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                        AppLocalizations
+                                            .of(context)
+                                            .labelForgotPassword,
+                                        style: TextStyle(
+                                            color: colorTitle,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0)),
+                                    onPressed: () {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                      Navigator.pushNamed(
+                                          context, forgotPasswordRoute);
+                                    })
+                              ])),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1.0,
+                            ),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10.0)),
+                          ))),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                            child: Container(
+                                padding: EdgeInsets.all(10),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                        AppLocalizations
+                                            .of(context)
+                                            .labelSignUp,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.normal),
+                                        textAlign: TextAlign.center))),
+                            onTap: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              Navigator.pushNamed(context, signUpRoute);
+                            }),
+                        Container(width: 1, height: 10, color: Colors.white),
+                        InkWell(
+                            child: Container(
+                                padding: EdgeInsets.all(10),
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                        AppLocalizations
+                                            .of(context)
+                                            .labelBecomeAVendorPartner,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.normal),
+                                        textAlign: TextAlign.center))),
+                            onTap: () {})
+                      ])
+                ]),
+              ),
+            ))
       ]);
+
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<LoginBloc, LoginState>(
+        bloc: _loginBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
 
   _phoneEmailInput() => BlocBuilder(
       bloc: _loginBloc,
       builder: (BuildContext context, LoginState state) {
         return Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-            child: widget.inputField(_phoneEmailController,
-                onChanged: _loginBloc.mobileInput,
-                labelText: AppLocalizations
-                    .of(context)
-                    .inputHintPhoneEmail,
-                labelStyle: Theme
-                    .of(context)
-                    .textTheme
-                    .body1,
-                validation: validatePhoneEmail,
-                keyboardType: TextInputType.emailAddress));
+            child: widget.inputField(
+              _phoneEmailController,
+              onChanged: _loginBloc.mobileInput,
+              labelText: AppLocalizations
+                  .of(context)
+                  .inputHintPhoneEmail,
+              labelStyle: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
+              validation: validatePhoneEmail,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              nextFocusNode: _focusNodePassword,
+            ));
       });
 
   _passwordInput() => BlocBuilder(
@@ -169,6 +199,7 @@ class _LoginState extends State<LoginPage> {
                     .body1,
                 obscureText: visible,
                 validation: validatePassword,
+                focusNode: _focusNodePassword,
                 inkWell: InkWell(
                     child:
                         Icon(visible ? Icons.visibility_off : Icons.visibility),
@@ -213,10 +244,10 @@ class _LoginState extends State<LoginPage> {
               bottomMenuRoute, (Route<dynamic> route) => false);
         }
       } else if (results is String) {
-        context.toast(results);
+//        context.toast(results);
 
-        _phoneEmailController.clear();
-        _passwordController.clear();
+//        _phoneEmailController.clear();
+//        _passwordController.clear();
       }
     });
   }

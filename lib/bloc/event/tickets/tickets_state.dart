@@ -27,7 +27,7 @@ class TicketsState {
     bool loading,
     String authToken,
     List<Ticket> ticketsList,
-    String uiMsg,
+    dynamic uiMsg,
   }) {
     return TicketsState(
       authToken: authToken ?? this.authToken,

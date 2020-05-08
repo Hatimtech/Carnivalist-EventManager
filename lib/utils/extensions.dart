@@ -22,10 +22,14 @@ extension ContextExtensions on BuildContext {
     showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Container(
-          alignment: FractionalOffset.center,
-          child: const PlatformProgressIndicator(),
-        ));
+        builder: (context) =>
+            WillPopScope(
+              onWillPop: () async => false,
+              child: Container(
+                alignment: FractionalOffset.center,
+                child: const PlatformProgressIndicator(),
+              ),
+            ));
   }
 
   hideProgress(BuildContext context) {
@@ -89,6 +93,9 @@ extension WidgetExtensions on Widget {
         TextStyle labelStyle,
         bool obscureText = false,
         InkWell inkWell,
+        TextInputAction textInputAction,
+        FocusNode focusNode,
+        FocusNode nextFocusNode,
         FormFieldValidator<String> validation}) =>
       TextFormField(
           controller: textEditingController,
@@ -97,6 +104,12 @@ extension WidgetExtensions on Widget {
           maxLength: maxLength,
           onChanged: onChanged,
           style: labelStyle,
+          textInputAction: textInputAction,
+          onFieldSubmitted: (_) {
+            if (nextFocusNode != null) nextFocusNode.requestFocus();
+            if (focusNode != null) focusNode.unfocus();
+          },
+          focusNode: focusNode,
           decoration: InputDecoration(
               counterText: '',
               hintText: hintText,

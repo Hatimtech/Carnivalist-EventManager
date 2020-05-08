@@ -150,9 +150,15 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
       String paymentGatewayPayBy =
           eventData.websiteSettings?.paymentGatewayPayPerson;
-      MenuCustom paymentGatewayPayPerson = state.paymentTypeList.firstWhere(
-              (menu) => menu.value == paymentGatewayPayBy,
-          orElse: () => null);
+
+      MenuCustom paymentGatewayPayPerson;
+      if (isValid(paymentGatewayPayBy)) {
+        paymentGatewayPayPerson = state.paymentTypeList.firstWhere(
+                (menu) => menu.value == paymentGatewayPayBy,
+            orElse: () => null);
+      } else {
+        paymentGatewayPayPerson = state.paymentTypeList[0];
+      }
       String bookButtonLabel = eventData.websiteSettings?.bookButtonLabel;
 
       String cancellationPolicyDesc = eventData.cancellationPolicy?.description;
@@ -289,33 +295,51 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     }
 
     if (event is UploadSettings) {
-      try {
-        int errorCode = validateSettingsInfo();
+      yield* uploadSettingsApi(event);
+    }
 
-        if (errorCode > 0) {
-          yield state.copyWith(errorCode: errorCode);
-          event.callback(null);
-          return;
-        }
+    if (event is SettingDataUploadResult) {
+      yield state.copyWith(
+        loading: false,
+        uiMsg: event.uiMsg,
+      );
+    }
+  }
 
-        await apiProvider.uploadSettings(state.authToken, settingDataToUpload,
-            eventDataId: eventDataId);
+  Stream<SettingState> uploadSettingsApi(UploadSettings event) async* {
+    int errorCode = validateSettingsInfo();
 
-        yield state.copyWith(loading: false);
+    if (errorCode > 0) {
+      yield state.copyWith(uiMsg: errorCode);
+      event.callback(null);
+      return;
+    }
 
-        if (apiProvider.apiResult.responseCode == ok200) {
-          var settingResponse =
-          apiProvider.apiResult.response as SettingResponse;
+    apiProvider
+        .uploadSettings(state.authToken, settingDataToUpload,
+        eventDataId: eventDataId)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        final settingResponse =
+        networkServiceResponse.response as SettingResponse;
+        if (settingResponse.code == apiCodeSuccess) {
+          add(SettingDataUploadResult(true, uiMsg: settingResponse.message));
           event.callback(settingResponse);
         } else {
-          event.callback(apiProvider.apiResult.error);
+          add(SettingDataUploadResult(false,
+              uiMsg: settingResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(settingResponse.message);
         }
-      } catch (error) {
-        print('Exception Occured--->$error');
-        yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
-        event.callback(null);
+      } else {
+        add(SettingDataUploadResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
       }
-    }
+    }).catchError((error) {
+      print('Error in uploadSettingsApi--->$error');
+      add(SettingDataUploadResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(ERR_SOMETHING_WENT_WRONG);
+    });
   }
 
   int validateSettingsInfo() {

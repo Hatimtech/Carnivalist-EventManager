@@ -40,22 +40,7 @@ class _DashboardState extends State<DashboardPage> {
               size: 48.0,
             )),
         body: Column(children: <Widget>[
-          BlocBuilder<EventBloc, EventState>(
-            bloc: _eventBloc,
-            condition: (prevState, newState) =>
-            newState.toastMsg != null || newState.errorCode != null,
-            builder: (context, EventState state) {
-              if (state.toastMsg != null) {
-                context.toast(state.toastMsg);
-                state.toastMsg = null;
-              } else if (state.errorCode != null) {
-                String errorMsg = getErrorMessage(state.errorCode, context);
-                context.toast(errorMsg);
-                state.errorCode = null;
-              }
-              return SizedBox.shrink();
-            },
-          ),
+          _buildErrorReceiverEmptyBloc(),
           Container(
               child: Stack(
                 children: <Widget>[
@@ -327,4 +312,22 @@ class _DashboardState extends State<DashboardPage> {
                               ])
                         ])))
           ])));
+
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<EventBloc, EventState>(
+        bloc: _eventBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
 }

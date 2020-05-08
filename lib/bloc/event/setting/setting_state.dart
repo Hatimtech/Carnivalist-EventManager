@@ -31,7 +31,7 @@ class SettingState {
 
   bool tnc;
 
-  int errorCode;
+  dynamic uiMsg;
 
   SettingState({
     this.authToken,
@@ -57,7 +57,7 @@ class SettingState {
     this.cancellationPolicyDesc,
     this.cancellationOptions,
     this.tnc,
-    this.errorCode,
+    this.uiMsg,
   });
 
   factory SettingState.initial() {
@@ -87,7 +87,7 @@ class SettingState {
         CancellationOption(refundType: 'amount', refundValue: 0)
       ],
       tnc: false,
-      errorCode: null,
+      uiMsg: null,
     );
   }
 
@@ -115,7 +115,7 @@ class SettingState {
     String cancellationPolicyDesc,
     List<CancellationOption> cancellationOptions,
     bool tnc,
-    int errorCode = null,
+    dynamic uiMsg,
   }) {
     return SettingState(
       authToken: authToken ?? this.authToken,
@@ -143,7 +143,7 @@ class SettingState {
       cancellationPolicyDesc ?? this.cancellationPolicyDesc,
       cancellationOptions: cancellationOptions ?? this.cancellationOptions,
       tnc: tnc ?? this.tnc,
-      errorCode: errorCode,
+      uiMsg: uiMsg,
     );
   }
 }

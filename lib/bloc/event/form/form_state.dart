@@ -5,16 +5,14 @@ class FormState {
   final String authToken;
   final List<FieldData> fieldList;
   bool loading;
-  int errorCode;
-  String toastMsg;
+  dynamic uiMsg;
   bool uploadRequired;
 
   FormState({
     @required this.authToken,
     @required this.fieldList,
     this.loading,
-    this.errorCode,
-    this.toastMsg,
+    this.uiMsg,
     this.uploadRequired,
   });
 
@@ -23,8 +21,7 @@ class FormState {
       authToken: "",
       fieldList: List(),
       loading: false,
-      errorCode: null,
-      toastMsg: null,
+      uiMsg: null,
       uploadRequired: false,
     );
   }
@@ -33,16 +30,14 @@ class FormState {
     bool loading,
     String authToken,
     List<FieldData> fieldList,
-    int errorCode = null,
-    String toastMsg = null,
+    dynamic uiMsg,
     bool uploadRequired,
   }) {
     return FormState(
       authToken: authToken ?? this.authToken,
       loading: loading ?? this.loading,
       fieldList: fieldList ?? this.fieldList,
-      errorCode: errorCode,
-      toastMsg: toastMsg,
+      uiMsg: uiMsg,
       uploadRequired: uploadRequired ?? this.uploadRequired,
     );
   }

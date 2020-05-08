@@ -139,3 +139,10 @@ class UploadSettings extends SettingEvent {
   UploadSettings({this.callback});
 }
 
+class SettingDataUploadResult extends SettingEvent {
+  final bool success;
+  final dynamic uiMsg;
+
+  SettingDataUploadResult(this.success, {this.uiMsg});
+}
+

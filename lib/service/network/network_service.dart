@@ -53,7 +53,7 @@ class NetworkService extends NetworkType implements APIService {
   NetworkService(RestClient rest) : super(rest);
 
   @override
-  Future login(Map<String, dynamic> param) async {
+  login(Map<String, dynamic> param) async {
     var result = await rest.post<LoginResponse>(_loginUrl,
         body: param, encoding: Encoding.getByName("utf-8"));
 

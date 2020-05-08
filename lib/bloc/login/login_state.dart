@@ -1,14 +1,16 @@
 import 'package:meta/meta.dart';
 
-class LoginState  {
+class LoginState {
   final String mobile;
   final String password;
   bool loading;
+  dynamic uiMsg;
 
   LoginState({
     @required this.mobile,
     @required this.password,
-    bool loading,
+    this.loading,
+    this.uiMsg,
   });
 
   factory LoginState.initial() {
@@ -18,14 +20,17 @@ class LoginState  {
     );
   }
 
-  LoginState copyWith(
-      {bool loading,
-      String mobile,
-      String password}) {
-
+  LoginState copyWith({
+    bool loading,
+    String mobile,
+    String password,
+    dynamic uiMsg,
+  }) {
     return LoginState(
       mobile: mobile ?? this.mobile,
       password: password ?? this.password,
+      loading: loading ?? loading,
+      uiMsg: uiMsg,
     );
   }
 }

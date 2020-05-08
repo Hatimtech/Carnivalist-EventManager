@@ -6,8 +6,7 @@ class GalleryState {
   String banner;
   List<GalleryData> galleryList;
   bool loading;
-  int errorCode;
-  String toastMsg;
+  dynamic uiMsg;
   bool uploadRequired;
   bool bannerUploadRequired;
 
@@ -16,8 +15,7 @@ class GalleryState {
     this.banner,
     this.galleryList,
     this.loading,
-    this.errorCode,
-    this.toastMsg,
+    this.uiMsg,
     this.uploadRequired,
     this.bannerUploadRequired,
   });
@@ -28,8 +26,7 @@ class GalleryState {
       banner: "",
       galleryList: List(),
       loading: false,
-      errorCode: null,
-      toastMsg: null,
+      uiMsg: null,
       uploadRequired: false,
       bannerUploadRequired: false,
     );
@@ -40,8 +37,7 @@ class GalleryState {
     String authToken,
     String banner,
     List<GalleryData> galleryList,
-    int errorCode = null,
-    String toastMsg = null,
+    dynamic uiMsg,
     bool uploadRequired,
     bool bannerUploadRequired,
   }) {
@@ -50,8 +46,7 @@ class GalleryState {
       banner: banner ?? this.banner,
       loading: loading ?? this.loading,
       galleryList: galleryList ?? this.galleryList,
-      errorCode: errorCode,
-      toastMsg: toastMsg,
+      uiMsg: uiMsg,
       uploadRequired: uploadRequired ?? this.uploadRequired,
       bannerUploadRequired: bannerUploadRequired ?? this.bannerUploadRequired,
     );

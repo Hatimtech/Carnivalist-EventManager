@@ -41,3 +41,10 @@ class UploadFields extends FormEvent {
 
   UploadFields(this.callback);
 }
+
+class FormDataUploadResult extends FormEvent {
+  final bool success;
+  final dynamic uiMsg;
+
+  FormDataUploadResult(this.success, {this.uiMsg});
+}

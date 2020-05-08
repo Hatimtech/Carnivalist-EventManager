@@ -7,6 +7,7 @@ class SignUpState {
   final String password;
   final String confirmPassword;
   bool loading;
+  dynamic uiMsg;
 
   SignUpState({
     @required this.name,
@@ -14,7 +15,8 @@ class SignUpState {
     @required this.mobile,
     @required this.password,
     @required this.confirmPassword,
-    bool loading,
+    this.loading,
+    this.uiMsg,
   });
 
   factory SignUpState.initial() {
@@ -25,11 +27,19 @@ class SignUpState {
       mobile: null,
       password: null,
       confirmPassword: null,
+      uiMsg: null,
     );
   }
 
-  SignUpState copyWith(
-      {bool loading, String name, String email, String mobile, String password, String confirmPassword}) {
+  SignUpState copyWith({
+    bool loading,
+    String name,
+    String email,
+    String mobile,
+    String password,
+    String confirmPassword,
+    dynamic uiMsg,
+  }) {
     return SignUpState(
       loading: loading ?? this.loading,
       name: name ?? this.name,
@@ -37,6 +47,7 @@ class SignUpState {
       mobile: mobile ?? this.mobile,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
+      uiMsg: uiMsg,
     );
   }
 }

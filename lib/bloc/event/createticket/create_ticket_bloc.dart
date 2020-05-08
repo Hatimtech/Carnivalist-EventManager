@@ -146,8 +146,8 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
     add(DescriptionInput(description: description));
   }
 
-  void createTicket(callback) {
-    add(CreateTicket(callback: callback));
+  void createOrUpdateTicket(callback) {
+    add(CreateUpdateTicket(callback: callback));
   }
 
   @override
@@ -205,42 +205,50 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
       yield state.copyWith(description: event.description);
     }
 
-    if (event is CreateTicket) {
-      try {
-        int errorCode = validateCreateTicketData();
-        if (errorCode > 0) {
-          yield state.copyWith(errorCode: errorCode);
-          event.callback(null);
-          return;
-        }
-        yield state.copyWith(loading: true);
+    if (event is CreateUpdateTicket) {
+      yield* uploadTicket(event);
+    }
 
-        Map<String, dynamic> param = Map();
-        param.putIfAbsent('name', () => state.ticketName);
-        param.putIfAbsent(
-            'price',
-                () =>
-            state.ticketPrice != null
-                ? double.parse(state.ticketPrice)
-                : 0);
-        param.putIfAbsent(
-            'sellingEndDate', () => state.salesEndDate.toIso8601String());
-        param.putIfAbsent('quantity', () => int.parse(state.totalAvailable));
-        param.putIfAbsent(
-            'minOrderQuantity', () => int.parse(state.minBooking));
-        param.putIfAbsent(
-            'maxOrderQuantity', () => int.parse(state.maxBooking));
-        param.putIfAbsent('description', () => state.description);
-        param.putIfAbsent('currency', () => state.ticketCurrency);
-        param.putIfAbsent('event', () => eventDataId);
+    if (event is CreateUpdateTicketResult) {
+      yield state.copyWith(
+        loading: false,
+        uiMsg: event.uiMsg,
+      );
+    }
+  }
 
-        await apiProvider.getCreateTickets(state.authToken, param,
-            ticketId: ticketId);
+  Stream<CreateTicketState> uploadTicket(CreateUpdateTicket event) async* {
+    int errorCode = validateCreateTicketData();
+    if (errorCode > 0) {
+      yield state.copyWith(uiMsg: errorCode);
+      event.callback(null);
+      return;
+    }
+    yield state.copyWith(loading: true);
 
-        if (apiProvider.apiResult.responseCode == ok200) {
-          var createTicketResponse =
-          apiProvider.apiResult.response as CreateTicketResponse;
+    Map<String, dynamic> param = Map();
+    param.putIfAbsent('name', () => state.ticketName);
+    param.putIfAbsent('price',
+            () =>
+        state.ticketPrice != null
+            ? double.parse(state.ticketPrice)
+            : 0);
+    param.putIfAbsent(
+        'sellingEndDate', () => state.salesEndDate.toIso8601String());
+    param.putIfAbsent('quantity', () => int.parse(state.totalAvailable));
+    param.putIfAbsent('minOrderQuantity', () => int.parse(state.minBooking));
+    param.putIfAbsent('maxOrderQuantity', () => int.parse(state.maxBooking));
+    param.putIfAbsent('description', () => state.description);
+    param.putIfAbsent('currency', () => state.ticketCurrency);
+    param.putIfAbsent('event', () => eventDataId);
 
+    apiProvider
+        .getCreateTickets(state.authToken, param, ticketId: ticketId)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        var createTicketResponse =
+        networkServiceResponse.response as CreateTicketResponse;
+        if (createTicketResponse.code == apiCodeSuccess) {
           if (ticketId != null) {
             if (createTicketResponse.ticket != null)
               ticketBloc.updateTicket(createTicketResponse.ticket);
@@ -248,17 +256,24 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
             if (createTicketResponse.savedTicket != null)
               ticketBloc.addTicket(createTicketResponse.savedTicket);
           }
-
+          add(CreateUpdateTicketResult(true,
+              uiMsg: createTicketResponse.message));
           event.callback(createTicketResponse);
         } else {
-          event.callback(apiProvider.apiResult.error);
+          add(CreateUpdateTicketResult(false,
+              uiMsg: createTicketResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(createTicketResponse.message);
         }
-      } catch (error) {
-        print('Exception Occured--->$error');
-        yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
-        event.callback(null);
+      } else {
+        add(CreateUpdateTicketResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
       }
-    }
+    }).catchError((error) {
+      print('Error in uploadTicket--->$error');
+      add(CreateUpdateTicketResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(error);
+    });
   }
 
   int validateCreateTicketData() {

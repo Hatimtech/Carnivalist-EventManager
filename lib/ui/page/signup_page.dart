@@ -2,6 +2,7 @@ import 'package:eventmanagement/bloc/signup/sign_up_bloc.dart';
 import 'package:eventmanagement/bloc/signup/sign_up_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,6 +24,11 @@ class _SignUpState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  final _focusNodePhone = FocusNode();
+  final _focusNodeEmail = FocusNode();
+  final _focusNodePassword = FocusNode();
+  final _focusNodeConfirmPassword = FocusNode();
 
   bool _validate = false;
   bool visible = true;
@@ -53,130 +59,169 @@ class _SignUpState extends State<SignUpPage> {
     ]));
   }
 
-  _signUpBody() => ListView(children: <Widget>[
-        Image.asset(logoImage, scale: 2.0),
-        Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 0.0,
+  _signUpBody() =>
+      Center(
+        child: SingleChildScrollView(
+          child: Column(children: <Widget>[
+            _buildErrorReceiverEmptyBloc(),
+            const SizedBox(
+              height: 16.0,
             ),
-            child: Card(
-                child: Container(
-                    margin: EdgeInsets.only(
-                        top: 15, bottom: 2, right: 15, left: 15),
-                    child: Column(children: <Widget>[
-                      Text(AppLocalizations
-                          .of(context)
-                          .titleSignUp,
-                          textAlign: TextAlign.center,
-                          style: (TextStyle(
-                              fontSize: 19,
-                              color: colorTitle,
-                              fontFamily: montserratBoldFont))),
-                      _firstNameInput(),
-                      _phoneNoInput(),
-                      _emailInput(),
-                      _passwordInput(),
-                      _confirmPasswordInput(),
-                      SizedBox(height: 15),
-                      _signUpButton(),
-                      RawMaterialButton(
-                          padding: EdgeInsets.all(10),
+            Image.asset(logoImage, scale: 2.0),
+            Padding(
+              padding:
+              const EdgeInsets.only(top: 32.0, right: 16.0, left: 16.0),
+              child: Card(
+                  child: Container(
+                      margin: EdgeInsets.all(16.0),
+                      child: Column(children: <Widget>[
+                        Text(AppLocalizations
+                            .of(context)
+                            .titleSignUp,
+                            textAlign: TextAlign.center,
+                            style: (TextStyle(
+                                fontSize: 19,
+                                color: colorTitle,
+                                fontFamily: montserratBoldFont))),
+                        _firstNameInput(),
+                        _phoneNoInput(),
+                        _emailInput(),
+                        _passwordInput(),
+                        _confirmPasswordInput(),
+                        SizedBox(height: 15),
+                        _signUpButton(),
+                        RawMaterialButton(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                                AppLocalizations
+                                    .of(context)
+                                    .labelSignUpAgreement,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: colorTitle, fontSize: 10.0)),
+                            onPressed: () {})
+                      ])),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  )),
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              InkWell(
+                  child: Container(
+                      padding: EdgeInsets.all(0),
+                      child: Align(
+                          alignment: Alignment.center,
                           child: Text(
                               AppLocalizations
                                   .of(context)
-                                  .labelSignUpAgreement,
-                              textAlign: TextAlign.center,
-                              style:
-                              TextStyle(color: colorTitle, fontSize: 10.0)),
-                          onPressed: () {})
-                    ])),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ))),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          InkWell(
-              child: Container(
-                  padding: EdgeInsets.all(0),
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                          AppLocalizations
+                                  .labelAlredyAccount,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.normal),
+                              textAlign: TextAlign.center)))),
+              InkWell(
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: Text(AppLocalizations
                               .of(context)
-                              .labelAlredyAccount,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.center)))),
-          InkWell(
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Text(AppLocalizations
-                          .of(context)
-                          .labelSignIn,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.center))),
-              onTap: () => Navigator.pop(context))
-        ])
-      ]);
+                              .labelSignIn,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.normal),
+                              textAlign: TextAlign.center))),
+                  onTap: () => Navigator.pop(context))
+            ])
+          ]),
+        ),
+      );
+
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<SignUpBloc, SignUpState>(
+        bloc: _signUpBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
 
   _firstNameInput() => BlocBuilder(
       bloc: _signUpBloc,
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-          child: widget.inputField(_firstNameController,
-              labelText: AppLocalizations
-                  .of(context)
-                  .inputHintFirstName,
-              labelStyle: Theme
-                  .of(context)
-                  .textTheme
-                  .body1,
-              onChanged: _signUpBloc.nameInput,
-              validation: validateName,
-              keyboardType: TextInputType.text)));
+          child: widget.inputField(
+            _firstNameController,
+            labelText: AppLocalizations
+                .of(context)
+                .inputHintFirstName,
+            labelStyle: Theme
+                .of(context)
+                .textTheme
+                .body1,
+            onChanged: _signUpBloc.nameInput,
+            validation: validateName,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            nextFocusNode: _focusNodePhone,
+          )));
 
   _phoneNoInput() => BlocBuilder(
       bloc: _signUpBloc,
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-          child: widget.inputField(_phoneNoController,
-              labelText: AppLocalizations
-                  .of(context)
-                  .inputHintPhoneNo,
-              labelStyle: Theme
-                  .of(context)
-                  .textTheme
-                  .body1,
-              onChanged: _signUpBloc.mobileInput,
-              maxLength: 10,
-              validation: validateMobile,
-              keyboardType: TextInputType.number)));
+          child: widget.inputField(
+            _phoneNoController,
+            labelText: AppLocalizations
+                .of(context)
+                .inputHintPhoneNo,
+            labelStyle: Theme
+                .of(context)
+                .textTheme
+                .body1,
+            onChanged: _signUpBloc.mobileInput,
+            maxLength: 10,
+            validation: validateMobile,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            focusNode: _focusNodePhone,
+            nextFocusNode: _focusNodeEmail,
+          )));
 
   _emailInput() => BlocBuilder(
       bloc: _signUpBloc,
       builder: (BuildContext context, SignUpState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-          child: widget.inputField(_emailController,
-              labelText: AppLocalizations
-                  .of(context)
-                  .inputHintEmail,
-              labelStyle: Theme
-                  .of(context)
-                  .textTheme
-                  .body1,
-              validation: validateEmail,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: _signUpBloc.emailInput)));
+          child: widget.inputField(
+            _emailController,
+            labelText: AppLocalizations
+                .of(context)
+                .inputHintEmail,
+            labelStyle: Theme
+                .of(context)
+                .textTheme
+                .body1,
+            validation: validateEmail,
+            keyboardType: TextInputType.emailAddress,
+            onChanged: _signUpBloc.emailInput,
+            textInputAction: TextInputAction.next,
+            focusNode: _focusNodeEmail,
+            nextFocusNode: _focusNodePassword,
+          )));
 
   _passwordInput() => BlocBuilder(
       bloc: _signUpBloc,
@@ -194,6 +239,9 @@ class _SignUpState extends State<SignUpPage> {
               validation: validatePassword,
               maxLength: 20,
               obscureText: visible,
+              textInputAction: TextInputAction.next,
+              focusNode: _focusNodePassword,
+              nextFocusNode: _focusNodeConfirmPassword,
               inkWell: InkWell(
                   child:
                       Icon(visible ? Icons.visibility_off : Icons.visibility),
@@ -212,6 +260,7 @@ class _SignUpState extends State<SignUpPage> {
                   .textTheme
                   .body1,
               onChanged: _signUpBloc.passwordInput,
+              focusNode: _focusNodeConfirmPassword,
               obscureText: visible, validation: (confirmation) {
             return confirmation.isEmpty
                 ? 'Confirm password is required'
@@ -259,26 +308,20 @@ class _SignUpState extends State<SignUpPage> {
     _signUpBloc.signUp((results) {
       context.hideProgress(context);
 
-      var signUpResponse = results;
-      if (signUpResponse.code == apiCodeSuccess) {
-        _userBloc.saveUserName(_firstNameController.text);
-        _userBloc.saveEmail(_emailController.text);
-        _userBloc.saveMobile(_phoneNoController.text);
-        _userBloc.saveProfilePicture('');
-        _userBloc.saveUserId('');
-        _userBloc.savAuthToken(signUpResponse.token);
-        _userBloc.saveIsLogin(true);
-        _userBloc.getLoginDetails();
+      if (results is LoginResponse) {
+        if (results.code == apiCodeSuccess) {
+          _userBloc.saveUserName(_firstNameController.text);
+          _userBloc.saveEmail(_emailController.text);
+          _userBloc.saveMobile(_phoneNoController.text);
+          _userBloc.saveProfilePicture('');
+          _userBloc.saveUserId('');
+          _userBloc.savAuthToken(results.token);
+          _userBloc.saveIsLogin(true);
+          _userBloc.getLoginDetails();
 
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            bottomMenuRoute, (Route<dynamic> route) => false);
-      } else {
-        context.toast(signUpResponse.message);
-
-        _phoneNoController.clear();
-        _emailController.clear();
-        _passwordController.clear();
-        _confirmPasswordController.clear();
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              bottomMenuRoute, (Route<dynamic> route) => false);
+        }
       }
     });
   }

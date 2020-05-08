@@ -9,8 +9,7 @@ class EventState {
   final List<MenuCustom> eventFilterItemList;
   final String eventCurrentFilter;
   final bool loading;
-  int errorCode;
-  String toastMsg;
+  dynamic uiMsg;
 
   EventState({
     this.authToken,
@@ -18,8 +17,7 @@ class EventState {
     this.eventFilterItemList,
     this.eventCurrentFilter,
     this.loading,
-    this.errorCode,
-    this.toastMsg,
+    this.uiMsg,
   });
 
   factory EventState.initial() {
@@ -28,8 +26,7 @@ class EventState {
       eventDataList: [],
       eventFilterItemList: getEventFilterStatus(),
       loading: false,
-      errorCode: null,
-      toastMsg: null,
+      uiMsg: null,
     );
   }
 
@@ -39,8 +36,7 @@ class EventState {
     List<MenuCustom> eventFilterItemList,
     String eventCurrentFilter,
     bool loading,
-    int errorCode,
-    String toastMsg,
+    dynamic uiMsg,
   }) {
     return EventState(
       authToken: authToken ?? this.authToken,
@@ -48,8 +44,7 @@ class EventState {
       eventFilterItemList: eventFilterItemList ?? this.eventFilterItemList,
       eventCurrentFilter: eventCurrentFilter ?? this.eventCurrentFilter,
       loading: loading ?? this.loading,
-      errorCode: errorCode,
-      toastMsg: toastMsg,
+      uiMsg: uiMsg,
     );
   }
 

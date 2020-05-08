@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
 import 'package:eventmanagement/utils/vars.dart';
+
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
@@ -31,7 +33,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     add(SignUp(callback: callback));
   }
 
-
   @override
   SignUpState get initialState => SignUpState.initial();
 
@@ -59,35 +60,46 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     if (event is SignUp) {
       yield state.copyWith(loading: true);
+      signupApi(event);
+    }
 
-      Map<String, dynamic> param = Map();
-      param.putIfAbsent('name', () => state.name);
-      param.putIfAbsent('email', () => state.email);
-      param.putIfAbsent('mobile', () => state.mobile);
-      param.putIfAbsent('password', () => state.password);
-      param.putIfAbsent('userType', () => 'manager');
-
-      await apiProvider.getSignUp(param);
-
-      try {
-        var response = apiProvider.apiResult.response;
-
-        if (apiProvider.apiResult.responseCode == ok200) {
-          event.callback(response);
-          yield state.copyWith(
-            loading: false,
-          );
-        }
-        else{
-          yield state.copyWith(
-            loading: false,
-          );
-        }
-      } catch (e) {
-        yield state.copyWith(
-            loading: false
-        );
+    if (event is SignupResult) {
+      if (event.success) {
+        yield state.copyWith(loading: false);
+      } else {
+        yield state.copyWith(loading: false, uiMsg: event.uiMsg);
       }
     }
+  }
+
+  void signupApi(SignUp event) {
+    Map<String, dynamic> param = Map();
+    param.putIfAbsent('name', () => state.name);
+    param.putIfAbsent('email', () => state.email);
+    param.putIfAbsent('mobile', () => state.mobile);
+    param.putIfAbsent('password', () => state.password);
+    param.putIfAbsent('userType', () => 'manager');
+
+    apiProvider.getSignUp(param).then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        final signupResponse = networkServiceResponse.response as LoginResponse;
+        if (signupResponse.code == apiCodeSuccess) {
+          add(SignupResult(true));
+          event.callback(signupResponse);
+        } else {
+          add(SignupResult(false,
+              uiMsg: signupResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(signupResponse);
+        }
+      } else {
+        add(SignupResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error) {
+      print('Error in signupApi--->$error');
+      add(SignupResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(ERR_SOMETHING_WENT_WRONG);
+    });
   }
 }

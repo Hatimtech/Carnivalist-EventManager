@@ -6,33 +6,29 @@ import 'package:eventmanagement/service/di/dependency_injection.dart';
 import '../network_service_response.dart';
 
 class ApiProvider {
-  NetworkServiceResponse apiResult;
   APIService apiService = new Injector().flavor;
 
-  getLogin(Map<String, dynamic> param) async {
-    NetworkServiceResponse result = await apiService.login(param);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> getLogin(Map<String, dynamic> param) async {
+    return await apiService.login(param);
   }
 
-  getLoginDetail(String authToken) async {
-    NetworkServiceResponse result = await apiService.loginDetail(authToken);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> getLoginDetail(String authToken) async {
+    return await apiService.loginDetail(authToken);
   }
 
-  getSignUp(Map<String, dynamic> param) async {
-    NetworkServiceResponse result = await apiService.signUp(param);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> getSignUp(Map<String, dynamic> param) async {
+    return await apiService.signUp(param);
   }
 
-  getForgotPassword(Map<String, dynamic> param) async {
-    NetworkServiceResponse result = await apiService.forgotPassword(param);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> getForgotPassword(
+      Map<String, dynamic> param) async {
+    return await apiService.forgotPassword(param);
   }
 
   Future<NetworkServiceResponse> getBasic(String authToken, EventData basicJson,
       {String eventDataId}) async {
-    return await apiService.basic(
-        authToken, basicJson, eventDataId: eventDataId);
+    return await apiService.basic(authToken, basicJson,
+        eventDataId: eventDataId);
   }
 
   Future<NetworkServiceResponse> getEventTypes() async {
@@ -40,16 +36,14 @@ class ApiProvider {
     return result;
   }
 
-  getTickets(String authToken) async {
-    NetworkServiceResponse result = await apiService.tickets(authToken);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> getTickets(String authToken) async {
+    return await apiService.tickets(authToken);
   }
 
-  getCreateTickets(String authToken, Map<String, dynamic> param,
+  Future<NetworkServiceResponse> getCreateTickets(String authToken,
+      Map<String, dynamic> param,
       {String ticketId}) async {
-    NetworkServiceResponse result =
-    await apiService.createTicket(authToken, param, ticketId: ticketId);
-    this.apiResult = result;
+    return await apiService.createTicket(authToken, param, ticketId: ticketId);
   }
 
   Future<NetworkServiceResponse> activeInactiveTickets(String authToken,
@@ -62,49 +56,43 @@ class ApiProvider {
     return await apiService.deleteTicket(authToken, ticketId);
   }
 
-  createNewFormFields(String authToken, EventData eventData,
+  Future<NetworkServiceResponse> createNewFormFields(String authToken,
+      EventData eventData,
       {String eventDataId}) async {
-    NetworkServiceResponse result = await apiService
-        .createNewFormField(authToken, eventData, eventDataId: eventDataId);
-    this.apiResult = result;
+    return await apiService.createNewFormField(authToken, eventData,
+        eventDataId: eventDataId);
   }
 
-  uploadMedia(String authToken, String mediaPath) async {
-    NetworkServiceResponse result =
-    await apiService.uploadGalleryMedia(authToken, mediaPath);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> uploadMedia(String authToken,
+      String mediaPath) async {
+    return await apiService.uploadGalleryMedia(authToken, mediaPath);
   }
 
-  createGalleryData(String authToken, EventData eventData,
+  Future<NetworkServiceResponse> createGalleryData(String authToken,
+      EventData eventData,
       {String eventDataId}) async {
-    NetworkServiceResponse result = await apiService
-        .createGalleryData(authToken, eventData, eventDataId: eventDataId);
-    this.apiResult = result;
+    return await apiService.createGalleryData(authToken, eventData,
+        eventDataId: eventDataId);
   }
 
-  uploadSettings(String authToken, SettingData settingData,
+  Future<NetworkServiceResponse> uploadSettings(String authToken,
+      SettingData settingData,
       {String eventDataId}) async {
-    NetworkServiceResponse result =
-    await apiService.uploadSetting(
-        authToken, settingData, eventDataId: eventDataId);
-    this.apiResult = result;
+    return await apiService.uploadSetting(authToken, settingData,
+        eventDataId: eventDataId);
   }
 
-  getAllEvents(String authToken) async {
-    NetworkServiceResponse result = await apiService.getAllEvents(authToken);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> getAllEvents(String authToken) async {
+    return await apiService.getAllEvents(authToken);
   }
 
-  deleteEvent(String authToken, String eventId) async {
-    NetworkServiceResponse result =
-    await apiService.deleteEvent(authToken, eventId);
-    this.apiResult = result;
-  }
-
-  activeInactiveEvent(String authToken, Map<String, dynamic> param,
+  Future<NetworkServiceResponse> deleteEvent(String authToken,
       String eventId) async {
-    NetworkServiceResponse result =
-    await apiService.activeInactiveEvent(authToken, param, eventId);
-    this.apiResult = result;
+    return await apiService.deleteEvent(authToken, eventId);
+  }
+
+  Future<NetworkServiceResponse> activeInactiveEvent(String authToken,
+      Map<String, dynamic> param, String eventId) async {
+    return await apiService.activeInactiveEvent(authToken, param, eventId);
   }
 }

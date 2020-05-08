@@ -6,6 +6,7 @@ import 'package:eventmanagement/bloc/event/gallery/gallery_state.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_data.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
+import 'package:eventmanagement/model/event/gallery/media_upload_response.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
 import 'package:eventmanagement/utils/vars.dart';
 
@@ -95,22 +96,34 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
       if (state.uploadRequired) {
         try {
           if (state.bannerUploadRequired) {
+            final networkServiceResponse =
             await apiProvider.uploadMedia(state.authToken, state.banner);
-            if (apiProvider.apiResult.responseCode == ok200) {
-              final newBannerLink =
-              apiProvider.apiResult.response.fileLink as String;
-              print('New Banner Link--->$newBannerLink');
+            if (networkServiceResponse.responseCode == ok200) {
+              final mediaUploadRes =
+              networkServiceResponse.response as MediaUploadResponse;
 
-              if (isValid(newBannerLink)) {
-                state.bannerUploadRequired = false;
+              if (mediaUploadRes.code == apiCodeSuccess) {
+                final newBannerLink = mediaUploadRes.fileLink;
+                print('New Banner Link--->$newBannerLink');
 
-                await renameFile(state.banner,
-                    newBannerLink.substring(newBannerLink.lastIndexOf('/')));
+                if (isValid(newBannerLink)) {
+                  state.bannerUploadRequired = false;
 
-                state.banner = newBannerLink;
+                  await renameFile(state.banner,
+                      newBannerLink.substring(newBannerLink.lastIndexOf('/')));
+
+                  state.banner = newBannerLink;
+                }
+              } else {
+                yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
+                event.callback(ERR_SOMETHING_WENT_WRONG);
               }
             } else {
-              event.callback(apiProvider.apiResult.error);
+              yield state.copyWith(
+                  uiMsg:
+                  networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG);
+              event.callback(
+                  networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG);
             }
           }
 
@@ -119,15 +132,19 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
           galleryCount++) {
             final galleryData = state.galleryList[galleryCount];
             if (galleryData.uploadRequired) {
-              await apiProvider.uploadMedia(
+              final networkServiceResponse = await apiProvider.uploadMedia(
                   state.authToken, galleryData.localFilePath);
-              if (apiProvider.apiResult.responseCode == ok200) {
-                final newGalleryDataLink =
-                apiProvider.apiResult.response.fileLink as String;
-                print('New Gallery Data Link--->$newGalleryDataLink');
+              if (networkServiceResponse.responseCode == ok200) {
+                final mediaUploadResponse =
+                networkServiceResponse.response as MediaUploadResponse;
 
-                if (isValid(newGalleryDataLink)) {
-                  galleryData.uploadRequired = false;
+                if (mediaUploadResponse.code == apiCodeSuccess) {
+                  final newGalleryDataLink =
+                  networkServiceResponse.response.fileLink as String;
+                  print('New Gallery Data Link--->$newGalleryDataLink');
+
+                  if (isValid(newGalleryDataLink)) {
+                    galleryData.uploadRequired = false;
 
 //                if (galleryData.ownedByApp) {
 //                  await renameFile(
@@ -156,10 +173,17 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
 //                      '${newGalleryDataLink.substring(newGalleryDataLink.lastIndexOf('/') + 1, newGalleryDataLink.lastIndexOf('.'))}.jpg');
 //                }
 
-                  galleryData.link = newGalleryDataLink;
+                    galleryData.link = newGalleryDataLink;
+                  }
+                } else {
+                  yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
+                  event.callback(ERR_SOMETHING_WENT_WRONG);
                 }
               } else {
-                event.callback(apiProvider.apiResult.error);
+                yield state.copyWith(
+                    uiMsg: networkServiceResponse.error ??
+                        ERR_SOMETHING_WENT_WRONG);
+                event.callback(networkServiceResponse.error);
               }
             }
           }
@@ -167,21 +191,31 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
           eventDataToUpload.banner = state.banner;
           eventDataToUpload.gallery = state.galleryList;
 
-          await apiProvider.createGalleryData(
+          final networkServiceResponse = await apiProvider.createGalleryData(
               state.authToken, eventDataToUpload,
               eventDataId: eventDataId);
 
-          if (apiProvider.apiResult.responseCode == ok200) {
+          if (networkServiceResponse.responseCode == ok200) {
             var galleryResponse =
-            apiProvider.apiResult.response as GalleryResponse;
-            event.callback(galleryResponse);
-            state.uploadRequired = false;
+            networkServiceResponse.response as GalleryResponse;
+            if (galleryResponse.code == apiCodeSuccess) {
+              event.callback(galleryResponse);
+              state.uploadRequired = false;
+            } else {
+              yield state.copyWith(
+                  uiMsg: galleryResponse.message ?? ERR_SOMETHING_WENT_WRONG);
+              event.callback(
+                  galleryResponse.message ?? ERR_SOMETHING_WENT_WRONG);
+            }
           } else {
-            event.callback(apiProvider.apiResult.error);
+            yield state.copyWith(
+                uiMsg:
+                networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG);
+            event.callback(networkServiceResponse.error);
           }
         } catch (error) {
           print('Exception Occured--->$error');
-          yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
+          yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
           event.callback(null);
         }
       } else {
