@@ -40,6 +40,35 @@ class AppLocalizations {
   String get titleDashboard =>
       Intl.message('Dashboard', name: "titleDashboard", locale: _localeName);
 
+  String get labelTicketsSold =>
+      Intl.message(
+          'Tickets Sold', name: "labelTicketsSold", locale: _localeName);
+
+  String get labelUpcomingEvent =>
+      Intl.message(
+          'Upcoming Events', name: "labelUpcomingEvent", locale: _localeName);
+
+  String get labelCoupons =>
+      Intl.message('Coupons', name: "labelCoupons", locale: _localeName);
+
+  String get labelAddons =>
+      Intl.message('Addons', name: "labelAddons", locale: _localeName);
+
+  String get labelActiveEvent =>
+      Intl.message('Activate Event',
+          name: "labelActiveEvent", locale: _localeName);
+
+  String get labelInactiveEvent =>
+      Intl.message('Make Offline',
+          name: "labelInactiveEvent", locale: _localeName);
+
+  String get labelEditEvent =>
+      Intl.message('Edit Event', name: "labelEditEvent", locale: _localeName);
+
+  String get labelDeleteEvent =>
+      Intl.message('Delete Event',
+          name: "labelDeleteEvent", locale: _localeName);
+
   String get titleCreateEvent => Intl.message('Create Event',
       name: "titleCreateEvent", locale: _localeName);
 
@@ -743,9 +772,17 @@ class AppLocalizations {
           name: "errorNoEventTypesAvailable",
           locale: _localeName);
 
+  String get errorNoInternet =>
+      Intl.message('Please check your internet',
+          name: "errorNoInternet", locale: _localeName);
+
   String get errorSomethingWrong =>
       Intl.message('Something went wrong',
           name: "errorSomethingWrong", locale: _localeName);
+
+  String get notAvailable =>
+      Intl.message('NA',
+          name: "notAvailable", locale: _localeName);
 }
 
 class AppTranslationsDelegate extends LocalizationsDelegate<AppLocalizations> {

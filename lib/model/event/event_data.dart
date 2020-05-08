@@ -1,5 +1,8 @@
 import 'package:eventmanagement/model/event/field_data.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_data.dart';
+import 'package:eventmanagement/model/event/settings/cancellation_policy.dart';
+import 'package:eventmanagement/model/event/settings/payment_and_taxes.dart';
+import 'package:eventmanagement/model/event/settings/website_setting.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 
 class EventData {
@@ -23,6 +26,11 @@ class EventData {
   String banner;
   List<GalleryData> gallery;
 
+  String status;
+  CancellationPolicy cancellationPolicy;
+  PaymentAndTaxes paymentAndTaxes;
+  WebsiteSetting websiteSettings;
+
   EventData({
     this.id,
     this.title,
@@ -42,6 +50,10 @@ class EventData {
     this.formStructure,
     this.banner,
     this.gallery,
+    this.status,
+    this.cancellationPolicy,
+    this.paymentAndTaxes,
+    this.websiteSettings,
   });
 
   EventData.fromJson(Map<String, dynamic> json) {
@@ -70,6 +82,17 @@ class EventData {
     gallery = (json['gallery'] as List)
         ?.map((e) => GalleryData.fromJson(e))
         ?.toList();
+
+    status = json['status'];
+    cancellationPolicy = json['cancellationPolicy'] != null
+        ? new CancellationPolicy.fromJson(json['cancellationPolicy'])
+        : null;
+    paymentAndTaxes = json['paymentAndTaxes'] != null
+        ? new PaymentAndTaxes.fromJson(json['paymentAndTaxes'])
+        : null;
+    websiteSettings = json['websiteSettings'] != null
+        ? new WebsiteSetting.fromJson(json['websiteSettings'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -110,8 +133,26 @@ class EventData {
       data['gallery'] =
           this.gallery?.map((formData) => formData.toJson())?.toList();
 
+    if (this.status != null) data['status'] = this.status;
+    if (this.cancellationPolicy != null) {
+      data['cancellationPolicy'] = this.cancellationPolicy.toJson();
+    }
+    if (this.paymentAndTaxes != null) {
+      data['paymentAndTaxes'] = this.paymentAndTaxes.toJson();
+    }
+    if (this.websiteSettings != null) {
+      data['websiteSettings'] = this.websiteSettings.toJson();
+    }
+
     return data;
   }
+
+  @override
+  String toString() {
+    return 'EventData{id: $id, title: $title, tags: $tags, description: $description, type: $type, eventFrequency: $eventFrequency, startDateTime: $startDateTime, endDateTime: $endDateTime, daily: $daily, weekly: $weekly, custom: $custom, place: $place, eventPrivacy: $eventPrivacy, timeZone: $timeZone, tickets: $tickets, formStructure: $formStructure, banner: $banner, gallery: $gallery, status: $status, cancellationPolicy: $cancellationPolicy, paymentAndTaxes: $paymentAndTaxes, websiteSettings: $websiteSettings}';
+  }
+
+
 }
 
 class Daily {

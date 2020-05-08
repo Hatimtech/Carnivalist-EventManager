@@ -3,6 +3,9 @@ abstract class UserEvent {}
 class GetLoginDetails extends UserEvent {
 }
 
+class ClearLoginDetails extends UserEvent {
+}
+
 class SaveUserName extends UserEvent {
   final String username;
   SaveUserName({this.username});

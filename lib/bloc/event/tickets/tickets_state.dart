@@ -5,15 +5,13 @@ class TicketsState {
   final String authToken;
   final List<Ticket> ticketsList;
   bool loading;
-  int errorCode;
-  String toastMsg;
+  dynamic uiMsg;
 
   TicketsState({
     @required this.authToken,
     @required this.ticketsList,
     this.loading,
-    this.errorCode,
-    this.toastMsg,
+    this.uiMsg,
   });
 
   factory TicketsState.initial() {
@@ -21,8 +19,7 @@ class TicketsState {
       authToken: "",
       ticketsList: List(),
       loading: false,
-      errorCode: null,
-      toastMsg: null,
+      uiMsg: null,
     );
   }
 
@@ -30,15 +27,13 @@ class TicketsState {
     bool loading,
     String authToken,
     List<Ticket> ticketsList,
-    int errorCode = null,
-    String toastMsg = null,
+    String uiMsg,
   }) {
     return TicketsState(
       authToken: authToken ?? this.authToken,
       loading: loading ?? this.loading,
       ticketsList: ticketsList ?? this.ticketsList,
-      errorCode: errorCode,
-      toastMsg: toastMsg,
+      uiMsg: uiMsg,
     );
   }
 }

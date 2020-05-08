@@ -1,12 +1,13 @@
 import 'package:eventmanagement/model/event/carnivals/carnivals.dart';
 import 'package:eventmanagement/model/menu_custom.dart';
+import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:flutter/material.dart';
 
 class BasicState {
   final String authToken;
-  final String eventMenuName, postType;
-  final List<MenuCustom> eventMenuList;
-  final List<MenuCustom> postTypeList;
+  final String eventFreqName, eventPrivacy;
+  final List<MenuCustom> eventFreqList;
+  final List<MenuCustom> eventPrivacyList;
   final String eventName;
   final String eventType;
   final String eventTimeZone;
@@ -24,16 +25,17 @@ class BasicState {
   final List<Carnivals> eventTypeList;
   final List<EventCustomDate> eventCustomDateTimeList;
   final bool loading;
-  int errorCode;
-  int selectedTab;
+  dynamic uiMsg;
+  final int selectedTab;
   bool uploadRequired;
+  bool fullRefresh;
 
   BasicState({
     this.authToken,
-    this.eventMenuName,
-    this.eventMenuList,
-    this.postType,
-    this.postTypeList,
+    this.eventFreqName,
+    this.eventFreqList,
+    this.eventPrivacy,
+    this.eventPrivacyList,
     this.eventName,
     this.eventType,
     this.eventTimeZone,
@@ -51,25 +53,19 @@ class BasicState {
     this.eventTypeList,
     this.eventCustomDateTimeList,
     this.loading,
-    this.errorCode,
+    this.uiMsg,
     this.selectedTab,
     this.uploadRequired,
+    this.fullRefresh,
   });
-
-  /* BasicState(
-      {this.loading,
-      this.eventMenuName,
-      this.eventMenuList,
-      this.postType,
-      this.postTypeList});*/
 
   factory BasicState.initial() {
     return BasicState(
       authToken: '',
-      eventMenuName: '',
-      eventMenuList: List(),
-      postType: '',
-      postTypeList: List(),
+      eventFreqName: '',
+      eventFreqList: getBasicEventFrequency(),
+      eventPrivacy: '',
+      eventPrivacyList: getBasicEventPrivacy(),
       eventName: '',
       eventType: '',
       eventTimeZone: '',
@@ -87,9 +83,10 @@ class BasicState {
       eventTypeList: List(),
       eventCustomDateTimeList: [],
       loading: false,
-      errorCode: null,
+      uiMsg: null,
       selectedTab: 0,
       uploadRequired: false,
+      fullRefresh: false,
     );
   }
 
@@ -117,20 +114,21 @@ class BasicState {
       eventTypeList: List(),
       eventCustomDateTimeList: [],
       loading: false,
-      errorCode: null,
+      error: null,
       selectedTab: 0,
       uploadRequired: false,
+      fullRefresh: false,
     );
   }*/
 
   BasicState copyWith({
     String authToken,
-    String eventMenuName,
-    List<MenuCustom> eventMenuList,
-    String postType,
+    String eventFrequency,
+    List<MenuCustom> eventFreqList,
+    String eventPrivacy,
     List<MenuCustom> postTypeList,
     String eventName,
-    String eventCarnival,
+    String eventType,
     String eventTimeZone,
     List<String> eventTags,
     DateTime eventStartDate,
@@ -146,18 +144,19 @@ class BasicState {
     List<Carnivals> eventTypeList,
     List<EventCustomDate> eventCustomDateTimeList,
     bool loading,
-    int errorCode = null,
+    dynamic uiMsg,
     int selectedTab,
     bool uploadRequired,
+    bool fullRefresh,
   }) {
     return BasicState(
       authToken: authToken ?? this.authToken,
-      eventMenuName: eventMenuName ?? this.eventMenuName,
-      eventMenuList: eventMenuList ?? this.eventMenuList,
-      postType: postType ?? this.postType,
-      postTypeList: postTypeList ?? this.postTypeList,
+      eventFreqName: eventFrequency ?? this.eventFreqName,
+      eventFreqList: eventFreqList ?? this.eventFreqList,
+      eventPrivacy: eventPrivacy ?? this.eventPrivacy,
+      eventPrivacyList: postTypeList ?? this.eventPrivacyList,
       eventName: eventName ?? this.eventName,
-      eventType: eventCarnival ?? this.eventType,
+      eventType: eventType ?? this.eventType,
       eventTimeZone: eventTimeZone ?? this.eventTimeZone,
       eventTags: eventTags ?? this.eventTags,
       eventStartDate: eventStartDate ?? this.eventStartDate,
@@ -174,9 +173,10 @@ class BasicState {
       eventCustomDateTimeList:
       eventCustomDateTimeList ?? this.eventCustomDateTimeList,
       loading: loading ?? this.loading,
-      errorCode: errorCode,
+      uiMsg: uiMsg,
       selectedTab: selectedTab ?? this.selectedTab,
       uploadRequired: uploadRequired ?? this.uploadRequired,
+      fullRefresh: fullRefresh ?? false,
     );
   }
 }

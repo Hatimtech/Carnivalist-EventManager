@@ -1,7 +1,7 @@
 class ConvenienceCharge {
   bool precentage;
-  String percentValue;
-  String value;
+  double percentValue;
+  double value;
   bool enable;
 
   ConvenienceCharge({
@@ -13,8 +13,8 @@ class ConvenienceCharge {
 
   ConvenienceCharge.fromJson(Map<String, dynamic> json) {
     precentage = json['precentage'];
-    percentValue = json['percentValue'];
-    value = json['value'];
+    percentValue = json['percentValue']?.toDouble();
+    value = json['value']?.toDouble();
     enable = json['enable'];
   }
 

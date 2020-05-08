@@ -2,7 +2,6 @@ import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/createticket/create_ticket_bloc.dart';
 import 'package:eventmanagement/bloc/event/tickets/tickets_bloc.dart';
 import 'package:eventmanagement/bloc/event/tickets/tickets_state.dart';
-import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
@@ -28,11 +27,6 @@ class _TicketsState extends State<TicketsPage> {
   void initState() {
     super.initState();
     _ticketsBloc = BlocProvider.of<TicketsBloc>(context);
-    _ticketsBloc
-        .authTokenSave(BlocProvider
-        .of<UserBloc>(context)
-        .state
-        .authToken);
   }
 
   @override
@@ -40,28 +34,12 @@ class _TicketsState extends State<TicketsPage> {
     return Container(
         margin: EdgeInsets.all(5),
         child: Column(children: <Widget>[
-          BlocBuilder<TicketsBloc, TicketsState>(
-            bloc: _ticketsBloc,
-            condition: (prevState, newState) =>
-            newState.toastMsg != null || newState.errorCode != null,
-            builder: (context, TicketsState state) {
-              if (state.toastMsg != null) {
-                context.toast(state.toastMsg);
-                state.toastMsg = null;
-              } else if (state.errorCode != null) {
-                String errorMsg = getErrorMessage(state.errorCode, context);
-                context.toast(errorMsg);
-                state.errorCode = null;
-              }
-              return SizedBox.shrink();
-            },
-          ),
+          _buildErrorReceiverEmptyBloc(),
           Align(
               alignment: Alignment.topRight,
               child: RaisedButton(
                   splashColor: Colors.black.withOpacity(0.2),
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
                   onPressed: _onCreateTicketButtonPressed,
                   child: Text(AppLocalizations
                       .of(context)
@@ -72,8 +50,7 @@ class _TicketsState extends State<TicketsPage> {
                   child: BlocBuilder<TicketsBloc, TicketsState>(
                       bloc: _ticketsBloc,
                       condition: (prevState, nextState) {
-                        return prevState.ticketsList !=
-                            nextState.ticketsList ||
+                        return prevState.ticketsList != nextState.ticketsList ||
                             prevState.ticketsList.length !=
                                 nextState.ticketsList.length;
                       },
@@ -82,32 +59,47 @@ class _TicketsState extends State<TicketsPage> {
                             ? Container(
                             alignment: FractionalOffset.center,
                             child: CircularProgressIndicator(
-                                valueColor:
-                                AlwaysStoppedAnimation<Color>(
+                                valueColor: AlwaysStoppedAnimation<Color>(
                                     colorProgressBar)))
                             : ticketsList(snapshot.ticketsList);
                       })))
         ]));
   }
 
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<TicketsBloc, TicketsState>(
+        bloc: _ticketsBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
+            context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
+
   Future<void> _onCreateTicketButtonPressed({String ticketId}) async {
     var basicBloc = BlocProvider.of<BasicBloc>(context);
-    var ticketBloc = BlocProvider.of<TicketsBloc>(context);
     await showDialog(
       context: context,
       builder: (BuildContext context) =>
           BlocProvider(
             create: (context) =>
                 CreateTicketBloc(
-                  basicBloc,
-                  ticketBloc,
+                  basicBloc.eventDataId,
+                  _ticketsBloc,
                   ticketId: ticketId,
                 ),
             child: CreateTicketsDialog(),
           ),
     );
     basicBloc = null;
-    ticketBloc = null;
   }
 
   ticketsList(List<Ticket> ticketsList) =>
@@ -119,8 +111,8 @@ class _TicketsState extends State<TicketsPage> {
               return GestureDetector(
                   onTap: () => showTicketActions(ticket),
                   child: Card(
-                      margin: EdgeInsets.only(
-                          top: 5, left: 0, right: 0, bottom: 5),
+                      margin:
+                      EdgeInsets.only(top: 5, left: 0, right: 0, bottom: 5),
                       child: Container(
                           margin: EdgeInsets.all(10),
                           child: Column(children: <Widget>[
@@ -128,8 +120,8 @@ class _TicketsState extends State<TicketsPage> {
                               Expanded(
                                   flex: 1,
                                   child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
                                           ticket.name,
@@ -176,7 +168,8 @@ class _TicketsState extends State<TicketsPage> {
                                         AppLocalizations
                                             .of(context)
                                             .labelTicketSalesEnd,
-                                        style: Theme
+                                        style:
+                                        Theme
                                             .of(context)
                                             .textTheme
                                             .body2),
@@ -186,7 +179,8 @@ class _TicketsState extends State<TicketsPage> {
                                             DateTime.parse(
                                                 ticket.sellingEndDate))
                                             : '--',
-                                        style: Theme
+                                        style:
+                                        Theme
                                             .of(context)
                                             .textTheme
                                             .body2)

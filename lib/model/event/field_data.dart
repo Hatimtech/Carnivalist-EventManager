@@ -14,7 +14,9 @@ class FieldData {
   String get idWith_ => _id;
 
   String get typeUI =>
-      getCustomField().firstWhere((menu) => menu.value == this.type).name;
+      getCustomField()
+          .firstWhere((menu) => menu.value == this.type, orElse: () => null)
+          ?.name;
 
   FieldData(
     this._id, {
@@ -37,7 +39,7 @@ class FieldData {
     required = json['required'];
     type = json['type'];
     solid = json['solid'];
-    configurations = json['configurations'].cast<String>();
+    configurations = json['configurations']?.cast<String>() ?? [];
   }
 
   Map<String, dynamic> toJson() {

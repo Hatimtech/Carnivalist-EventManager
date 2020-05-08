@@ -19,9 +19,9 @@ class RestClient {
       return new MappedNetworkServiceResponse<T>(
           networkServiceResponse: new NetworkServiceResponse<T>(
               responseCode: 0,
-              errorMessage: e.toString().contains('SocketException')
-                  ? 'No internet'
-                  : e.toString()));
+              error: e.toString().contains('SocketException')
+                  ? ERR_NO_INTERNET
+                  : ERR_SOMETHING_WENT_WRONG));
     }
   }
 
@@ -37,9 +37,9 @@ class RestClient {
       return new MappedNetworkServiceResponse<T>(
           networkServiceResponse: new NetworkServiceResponse<T>(
               responseCode: 0,
-              errorMessage: e.toString().contains('SocketException')
-                  ? 'No internet'
-                  : e.toString()));
+              error: e.toString().contains('SocketException')
+                  ? ERR_NO_INTERNET
+                  : ERR_SOMETHING_WENT_WRONG));
     }
   }
 
@@ -57,9 +57,9 @@ class RestClient {
       return new MappedNetworkServiceResponse<T>(
           networkServiceResponse: new NetworkServiceResponse<T>(
               responseCode: 0,
-              errorMessage: e.toString().contains('SocketException')
-                  ? 'Please check your internet.'
-                  : e.toString()));
+              error: e.toString().contains('SocketException')
+                  ? ERR_NO_INTERNET
+                  : ERR_SOMETHING_WENT_WRONG));
     }
   }
 
@@ -78,7 +78,7 @@ class RestClient {
             var parsedResponse = json.decode(responseString);
             return new MappedNetworkServiceResponse<T>(
                 networkServiceResponse: new NetworkServiceResponse<T>(
-                    errorMessage:
+                    error:
                     ApiResponse
                         .fromJson(parsedResponse)
                         .responseMessage,
@@ -89,7 +89,7 @@ class RestClient {
         }
         return new MappedNetworkServiceResponse<T>(
             networkServiceResponse: new NetworkServiceResponse<T>(
-                errorMessage: 'Something went wrong',
+                error: ERR_SOMETHING_WENT_WRONG,
                 responseCode: response.statusCode));
       } else {
         return new MappedNetworkServiceResponse<T>(
@@ -102,9 +102,9 @@ class RestClient {
       return new MappedNetworkServiceResponse<T>(
           networkServiceResponse: new NetworkServiceResponse<T>(
               responseCode: 0,
-              errorMessage: e.toString().contains('SocketException')
-                  ? 'Please check your internet.'
-                  : e.toString()));
+              error: e.toString().contains('SocketException')
+                  ? ERR_NO_INTERNET
+                  : ERR_SOMETHING_WENT_WRONG));
     }
   }
 
@@ -115,7 +115,7 @@ class RestClient {
           var parsedResponse = json.decode(response.body);
           return new MappedNetworkServiceResponse<T>(
               networkServiceResponse: new NetworkServiceResponse<T>(
-                  errorMessage:
+                  error:
                   ApiResponse
                       .fromJson(parsedResponse)
                       .responseMessage,
@@ -126,7 +126,7 @@ class RestClient {
       }
       return new MappedNetworkServiceResponse<T>(
           networkServiceResponse: new NetworkServiceResponse<T>(
-              errorMessage: 'Something went wrong',
+              error: ERR_SOMETHING_WENT_WRONG,
               responseCode: response.statusCode));
     } else {
       return new MappedNetworkServiceResponse<T>(

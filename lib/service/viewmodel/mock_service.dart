@@ -77,4 +77,19 @@ class MockService implements APIService {
     return null;
   }
 
+  @override
+  getAllEvents(String authToken) {
+    return null;
+  }
+
+  @override
+  activeInactiveEvent(String authToken, Map<String, dynamic> param,
+      String eventId) {
+    return null;
+  }
+
+  @override
+  deleteEvent(String authToken, String eventId) {
+    return null;
+  }
 }

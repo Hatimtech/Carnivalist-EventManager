@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
+import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/settings/cancellation_option.dart';
 import 'package:eventmanagement/model/event/settings/cancellation_policy.dart';
 import 'package:eventmanagement/model/event/settings/convenience_charge.dart';
@@ -8,6 +8,7 @@ import 'package:eventmanagement/model/event/settings/payment_and_taxes.dart';
 import 'package:eventmanagement/model/event/settings/setting_response.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/settings/website_setting.dart';
+import 'package:eventmanagement/model/menu_custom.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
 import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:eventmanagement/utils/vars.dart';
@@ -17,13 +18,14 @@ import 'setting_state.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
   final ApiProvider apiProvider = ApiProvider();
-
-  final BasicBloc basicBloc;
-
-  SettingBloc(this.basicBloc);
+  String eventDataId;
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
+  }
+
+  void populateExistingEvent(eventData) {
+    add(PopulateExistingEvent(eventData: eventData));
   }
 
   void paymentType() {
@@ -68,7 +70,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   }
 
   void cancellationPolicyDeductionInput(index, input) {
-    add(CancellationPolicyDeductionInput(index: index, input: input));
+    add(CancellationPolicyDeductionInput(
+        index: index, input: double.tryParse(input)));
   }
 
   void cancellationPolicyEndDate(index, dateTime) {
@@ -120,6 +123,65 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       yield state.copyWith(authToken: event.authToken);
     }
 
+    if (event is PopulateExistingEvent) {
+      EventData eventData = event.eventData;
+      bool precentage =
+          eventData.paymentAndTaxes?.convenienceCharge?.precentage;
+      String percentValue = eventData
+          .paymentAndTaxes?.convenienceCharge?.percentValue
+          ?.toString();
+      String convenienceAmount =
+      eventData.paymentAndTaxes?.convenienceCharge?.value?.toString();
+      bool convenienceFee =
+          eventData.paymentAndTaxes?.convenienceCharge?.enable;
+
+      bool bookingCancellation = eventData.websiteSettings?.bookingCancellation;
+      bool bookingUpgradation = eventData.websiteSettings?.bookingUpgradation;
+      bool remaningTickets = eventData.websiteSettings?.remaningTickets;
+      bool showDateTime = eventData.websiteSettings?.showDateTime;
+      bool showPrice = eventData.websiteSettings?.showPrice;
+      bool showLocation = eventData.websiteSettings?.showLocation;
+      bool transferBooking = eventData.websiteSettings?.transferBooking;
+
+      String facebookLink = eventData.websiteSettings?.facebookLink;
+      String twitterLink = eventData.websiteSettings?.twitterLink;
+      String linkdinLink = eventData.websiteSettings?.linkdinLink;
+      String websiteLink = eventData.websiteSettings?.websiteLink;
+
+      String paymentGatewayPayBy =
+          eventData.websiteSettings?.paymentGatewayPayPerson;
+      MenuCustom paymentGatewayPayPerson = state.paymentTypeList.firstWhere(
+              (menu) => menu.value == paymentGatewayPayBy,
+          orElse: () => null);
+      String bookButtonLabel = eventData.websiteSettings?.bookButtonLabel;
+
+      String cancellationPolicyDesc = eventData.cancellationPolicy?.description;
+      List<CancellationOption> cancellationOptions =
+          eventData.cancellationPolicy?.options;
+
+      yield state.copyWith(
+        precentage: precentage,
+        percentValue: percentValue,
+        convenienceAmount: convenienceAmount,
+        convenienceFee: convenienceFee,
+        bookingCancellation: bookingCancellation,
+        bookingUpgradation: bookingUpgradation,
+        remaningTickets: remaningTickets,
+        showDateTime: showDateTime,
+        showPrice: showPrice,
+        showLocation: showLocation,
+        transferBooking: transferBooking,
+        facebookLink: facebookLink,
+        twitterLink: twitterLink,
+        linkdinLink: linkdinLink,
+        websiteLink: websiteLink,
+        paymentGatewayPayPerson: paymentGatewayPayPerson,
+        bookButtonLabel: bookButtonLabel,
+        cancellationPolicyDesc: cancellationPolicyDesc,
+        cancellationOptions: cancellationOptions,
+      );
+    }
+
     if (event is PaymentType) {
       yield state.copyWith(paymentTypeList: getPaymentType());
     }
@@ -158,7 +220,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
     if (event is AddCancellationPolicyOption) {
       final options = List.of(state.cancellationOptions);
-      options.add(CancellationOption(refundType: 'amount', refundValue: '0'));
+      options.add(CancellationOption(refundType: 'amount', refundValue: 0));
       yield state.copyWith(cancellationOptions: options);
     }
 
@@ -237,7 +299,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         }
 
         await apiProvider.uploadSettings(state.authToken, settingDataToUpload,
-            eventDataId: basicBloc.eventDataId);
+            eventDataId: eventDataId);
 
         yield state.copyWith(loading: false);
 
@@ -246,7 +308,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
           apiProvider.apiResult.response as SettingResponse;
           event.callback(settingResponse);
         } else {
-          event.callback(apiProvider.apiResult.errorMessage);
+          event.callback(apiProvider.apiResult.error);
         }
       } catch (error) {
         print('Exception Occured--->$error');
@@ -271,8 +333,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
           paymentAndTaxes: PaymentAndTaxes(
               gstCharge: GSTCharge.defaultInstance(),
               convenienceCharge: ConvenienceCharge(
-                percentValue: state.percentValue,
-                value: state.convenienceAmount,
+                percentValue: isValid(state.percentValue)
+                    ? double.tryParse(state.percentValue)
+                    : null,
+                value: isValid(state.convenienceAmount)
+                    ? double.tryParse(state.convenienceAmount)
+                    : null,
                 enable: state.convenienceFee,
                 precentage: false,
               )),

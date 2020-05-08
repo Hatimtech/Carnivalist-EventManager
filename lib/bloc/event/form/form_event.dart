@@ -12,6 +12,12 @@ class InitSolidFields extends FormEvent {
   InitSolidFields();
 }
 
+class PopulateExistingEvent extends FormEvent {
+  final List<FieldData> fieldList;
+
+  PopulateExistingEvent({this.fieldList});
+}
+
 class AddField extends FormEvent {
   final FieldData fieldData;
 

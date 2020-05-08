@@ -1,10 +1,12 @@
 import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
-import 'package:eventmanagement/bloc/user/user_bloc.dart';
+import 'package:eventmanagement/bloc/event/basic/basic_state.dart';
 import 'package:eventmanagement/ui/page/event/basic/basic_info_page.dart';
 import 'package:eventmanagement/ui/page/event/basic/event_datetime_info_page.dart';
 import 'package:eventmanagement/ui/page/event/basic/event_description_info_page.dart';
 import 'package:eventmanagement/ui/page/event/basic/event_location_info_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_scroll_bar.dart';
+import 'package:eventmanagement/utils/extensions.dart';
+import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,28 +18,11 @@ class BasicPage extends StatefulWidget {
 
 class _BasicState extends State<BasicPage> {
   BasicBloc _basicBloc;
-  UserBloc _userBloc;
 
   @override
   void initState() {
     super.initState();
     _basicBloc = BlocProvider.of<BasicBloc>(context);
-    _userBloc = BlocProvider.of<UserBloc>(context);
-    _userBloc.getLoginDetails();
-    _basicBloc.authTokenSave(_userBloc.state.authToken);
-
-    _basicBloc.eventMenu();
-    _basicBloc.postType();
-
-    _basicBloc.selectEventMenu(
-      _basicBloc.state.eventMenuName.isEmpty
-          ? 'Once'
-          : _basicBloc.state.eventMenuName,
-    );
-
-    _basicBloc.selectPostType(
-      _basicBloc.state.postType.isEmpty ? 'Public' : _basicBloc.state.postType,
-    );
   }
 
   @override
@@ -47,6 +32,8 @@ class _BasicState extends State<BasicPage> {
         padding: EdgeInsets.all(0),
         child: Column(
           children: <Widget>[
+            _buildFullRefreshBloc(),
+            _buildErrorReceiverEmptyBloc(),
             _buildParentCard(child: BasicInfoPage()),
             _buildParentCard(child: EventDateTimeInfoPage()),
             _buildParentCard(child: EventLocationInfoPage()),
@@ -56,6 +43,48 @@ class _BasicState extends State<BasicPage> {
       ),
     );
   }
+
+  Widget _buildFullRefreshBloc() {
+    return BlocBuilder<BasicBloc, BasicState>(
+      bloc: _basicBloc,
+      condition: (prevState, newState) {
+        bool shouldRebuild = newState.fullRefresh ?? false;
+        return shouldRebuild;
+      },
+      builder: (_, state) {
+        if (state.fullRefresh ?? false) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              state.fullRefresh = false;
+            });
+          });
+        }
+        return SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildErrorReceiverEmptyBloc() =>
+      BlocBuilder<BasicBloc, BasicState>(
+        bloc: _basicBloc,
+        condition: (prevState, newState) => newState.uiMsg != null,
+        builder: (context, BasicState state) {
+          if (state.uiMsg != null) {
+            String errorMsg = state.uiMsg is int ? getErrorMessage(
+                state.uiMsg, context) : state.uiMsg;
+            if (state.uiMsg == ERR_START_DATE_WEEK_DAY ||
+                state.uiMsg == ERR_END_DATE_WEEK_DAY)
+              context.toast(
+                  '$errorMsg${uiLabelWeekday(state.eventWeekday, context)}');
+            else
+              context.toast(errorMsg);
+
+            state.uiMsg = null;
+          }
+
+          return SizedBox.shrink();
+        },
+      );
 
   Widget _buildParentCard({Widget child}) {
     return Card(

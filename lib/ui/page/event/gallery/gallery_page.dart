@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_state.dart';
-import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_data.dart';
@@ -30,8 +30,10 @@ class _GalleryState extends State<GalleryPage> {
   void initState() {
     super.initState();
     _galleryBloc = BlocProvider.of<GalleryBloc>(context);
-    _galleryBloc
-        .authTokenSave(BlocProvider.of<UserBloc>(context).state.authToken);
+    final _basicBloc = BlocProvider.of<BasicBloc>(context);
+    if (_basicBloc.state.uploadRequired ||
+        _galleryBloc.eventDataToUpload == null)
+      _galleryBloc.eventDataToUpload = _basicBloc.eventDataToUpload;
     _futureSystemPath = getSystemDirPath();
   }
 
@@ -40,50 +42,14 @@ class _GalleryState extends State<GalleryPage> {
     return PlatformScrollbar(
       child: Stack(
         children: <Widget>[
-          BlocBuilder<GalleryBloc, GalleryState>(
-            bloc: _galleryBloc,
-            condition: (prevState, newState) {
-              return (prevState.galleryList.length == 0 &&
-                      newState.galleryList.length > 0) ||
-                  (prevState.galleryList.length > 0 &&
-                      newState.galleryList.length == 0);
-            },
-            builder: (_, state) {
-              if (state.galleryList.isEmpty)
-                return Container(
-                  margin: EdgeInsets.all(5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      _buildBannerImage(),
-                      const SizedBox(height: 16.0),
-                      Expanded(
-                        child: DecoratedBox(
-                            decoration: BoxDecoration(color: bgColorSecondary),
-                            child: Center(
-                                child: _buildUploadMediaInfoText(
-                                    AppLocalizations.of(context)
-                                        .labelUploadEventGallery,
-                                    false))),
-                      ),
-                    ],
-                  ),
-                );
-              else {
-                return SingleChildScrollView(
-                  child: Container(
-                    margin: EdgeInsets.all(5),
-                    child: Column(
-                      children: <Widget>[
-                        _buildBannerImage(),
-                        const SizedBox(height: 16.0),
-                        _buildGalleryMedia(),
-                      ],
-                    ),
-                  ),
-                );
-              }
-            },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CustomScrollView(
+              slivers: <Widget>[
+                _buildBannerImage(),
+                _buildGalleryMedia(),
+              ],
+            ),
           ),
           Align(
               alignment: Alignment.bottomCenter,
@@ -98,57 +64,64 @@ class _GalleryState extends State<GalleryPage> {
       future: _futureSystemPath,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
-          return SizedBox.shrink();
+          return SliverToBoxAdapter(
+            child: SizedBox.shrink(),
+          );
         else
-          return GestureDetector(
-            onTap: () => showImagePickerBottomSheet(true, false),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-              child: Container(
-                  height: 180,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: bgColorSecondary,
-                  ),
-                  child: BlocBuilder(
-                      bloc: _galleryBloc,
-                      condition: (prevState, newState) {
-                        return prevState.banner != newState.banner;
-                      },
-                      builder: (context, state) {
-                        return Stack(
-                          alignment: Alignment.center,
-                          children: <Widget>[
-                            if (isValid(state.banner))
-                              Image(
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                                image: state.banner.startsWith('http')
-                                    ? NetworkToFileImage(
-                                        url: state.banner,
-                                        file: File(Path.join(
-                                            snapshot.data,
-                                            'Pictures',
-                                            state.banner.substring(
-                                                state.banner.lastIndexOf('/') +
-                                                    1))),
-                                        debug: true,
-                                      )
-                                    : FileImage(
-                                        File(state.banner),
-                                      ),
+          return SliverToBoxAdapter(
+            child: GestureDetector(
+              onTap: () => showImagePickerBottomSheet(true, false),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                child: Container(
+                    height: 180,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: bgColorSecondary,
+                    ),
+                    child: BlocBuilder(
+                        bloc: _galleryBloc,
+                        condition: (prevState, newState) {
+                          return prevState.banner != newState.banner;
+                        },
+                        builder: (context, state) {
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: <Widget>[
+                              if (isValid(state.banner))
+                                Image(
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  image: state.banner.startsWith('http')
+                                      ? NetworkToFileImage(
+                                    url: state.banner,
+                                    file: File(Path.join(
+                                        snapshot.data,
+                                        'Pictures',
+                                        state.banner.substring(state
+                                            .banner
+                                            .lastIndexOf('/') +
+                                            1))),
+                                    debug: true,
+                                  )
+                                      : FileImage(
+                                    File(state.banner),
+                                  ),
+                                ),
+                              _buildUploadMediaInfoText(
+                                isValid(state.banner)
+                                    ? AppLocalizations
+                                    .of(context)
+                                    .labelUpdateBanner
+                                    : AppLocalizations
+                                    .of(context)
+                                    .labelUploadBanner,
+                                true,
                               ),
-                            _buildUploadMediaInfoText(
-                              isValid(state.banner)
-                                  ? AppLocalizations.of(context)
-                                      .labelUpdateBanner
-                                  : AppLocalizations.of(context)
-                                      .labelUploadBanner,
-                              true,
-                            ),
-                          ],
-                        );
-                      })),
+                            ],
+                          );
+                        })),
+              ),
             ),
           );
       });
@@ -178,7 +151,9 @@ class _GalleryState extends State<GalleryPage> {
         future: _futureSystemPath,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
-            return SizedBox.shrink();
+            return SliverToBoxAdapter(
+              child: SizedBox.shrink(),
+            );
           else
             return BlocBuilder<GalleryBloc, GalleryState>(
                 bloc: _galleryBloc,
@@ -186,58 +161,78 @@ class _GalleryState extends State<GalleryPage> {
                   return prevState.galleryList != newState.galleryList;
                 },
                 builder: (context, state) {
-                  return GridView.builder(
-                      padding: const EdgeInsets.all(0.0),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: state.galleryList.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12.0,
-                      ),
-                      itemBuilder: (context, position) {
-                        GalleryData galleryData = state.galleryList[position];
-                        return Padding(
-                          key: ValueKey(galleryData.id),
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: <Widget>[
-                              if (galleryData.type == 'image' &&
-                                  (isValid(galleryData.localFilePath) ||
-                                      isValid(galleryData.link)))
-                                Image(
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover,
-                                  image: isValid(galleryData.localFilePath)
-                                      ? FileImage(
-                                          File(galleryData.localFilePath))
-                                      : NetworkToFileImage(
-                                          url: galleryData.link,
-                                          file: File(Path.join(
-                                              snapshot.data,
-                                              'Pictures',
-                                              galleryData.link.substring(
-                                                  galleryData.link
-                                                          .lastIndexOf('/') +
-                                                      1))),
-                                          debug: true,
-                                        ),
-                                ),
-                              if (galleryData.type == 'video' &&
-                                  (isValid(galleryData.localFilePath) ||
-                                      isValid(galleryData.link)))
-                                VideoThumbnail(
-                                    isValid(galleryData.localFilePath)
-                                        ? galleryData.localFilePath
-                                        : galleryData.link),
-                              _buildRemoveMediaButton(galleryData),
-                            ],
+                  if (state.galleryList?.isEmpty ?? true) {
+                    return SliverPadding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      sliver: SliverFillRemaining(
+                        child: Container(
+                          color: bgColorSecondary,
+                          child: Center(
+                            child: _buildUploadMediaInfoText(
+                                AppLocalizations
+                                    .of(context)
+                                    .labelUploadEventGallery,
+                                false),
                           ),
-                        );
-                      });
+                        ),
+                      ),
+                    );
+                  } else {
+                    return SliverPadding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      sliver: SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12.0,
+                          mainAxisSpacing: 12.0,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                              (context, position) {
+                            print('position $position');
+                            GalleryData galleryData =
+                            state.galleryList[position];
+                            return Stack(
+                              alignment: Alignment.topRight,
+                              children: <Widget>[
+                                if (galleryData.type == 'image' &&
+                                    (isValid(galleryData.localFilePath) ||
+                                        isValid(galleryData.link)))
+                                  Image(
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    fit: BoxFit.cover,
+                                    image: isValid(galleryData.localFilePath)
+                                        ? FileImage(
+                                        File(galleryData.localFilePath))
+                                        : NetworkToFileImage(
+                                      url: galleryData.link,
+                                      file: File(Path.join(
+                                          snapshot.data,
+                                          'Pictures',
+                                          galleryData.link.substring(
+                                              galleryData.link
+                                                  .lastIndexOf('/') +
+                                                  1))),
+                                      debug: true,
+                                    ),
+                                  ),
+                                if (galleryData.type == 'video' &&
+                                    (isValid(galleryData.localFilePath) ||
+                                        isValid(galleryData.link)))
+                                  VideoThumbnail(
+                                      isValid(galleryData.localFilePath)
+                                          ? galleryData.localFilePath
+                                          : galleryData.link),
+                                _buildRemoveMediaButton(galleryData),
+                              ],
+                            );
+                          },
+                          childCount: state.galleryList.length,
+                        ),
+                      ),
+                    );
+                  }
                 });
         });
   }

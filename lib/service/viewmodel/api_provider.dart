@@ -29,15 +29,15 @@ class ApiProvider {
     this.apiResult = result;
   }
 
-  getBasic(String authToken, EventData basicJson, {String eventDataId}) async {
-    NetworkServiceResponse result =
-    await apiService.basic(authToken, basicJson, eventDataId: eventDataId);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> getBasic(String authToken, EventData basicJson,
+      {String eventDataId}) async {
+    return await apiService.basic(
+        authToken, basicJson, eventDataId: eventDataId);
   }
 
-  getCarnival() async {
+  Future<NetworkServiceResponse> getEventTypes() async {
     NetworkServiceResponse result = await apiService.carnivals();
-    this.apiResult = result;
+    return result;
   }
 
   getTickets(String authToken) async {
@@ -52,16 +52,14 @@ class ApiProvider {
     this.apiResult = result;
   }
 
-  activeInactiveTickets(String authToken, bool active, String ticketId) async {
-    NetworkServiceResponse result =
-    await apiService.activeInactiveTicket(authToken, active, ticketId);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> activeInactiveTickets(String authToken,
+      bool active, String ticketId) async {
+    return await apiService.activeInactiveTicket(authToken, active, ticketId);
   }
 
-  deleteTicket(String authToken, String ticketId) async {
-    NetworkServiceResponse result =
-    await apiService.deleteTicket(authToken, ticketId);
-    this.apiResult = result;
+  Future<NetworkServiceResponse> deleteTicket(String authToken,
+      String ticketId) async {
+    return await apiService.deleteTicket(authToken, ticketId);
   }
 
   createNewFormFields(String authToken, EventData eventData,
@@ -89,6 +87,24 @@ class ApiProvider {
     NetworkServiceResponse result =
     await apiService.uploadSetting(
         authToken, settingData, eventDataId: eventDataId);
+    this.apiResult = result;
+  }
+
+  getAllEvents(String authToken) async {
+    NetworkServiceResponse result = await apiService.getAllEvents(authToken);
+    this.apiResult = result;
+  }
+
+  deleteEvent(String authToken, String eventId) async {
+    NetworkServiceResponse result =
+    await apiService.deleteEvent(authToken, eventId);
+    this.apiResult = result;
+  }
+
+  activeInactiveEvent(String authToken, Map<String, dynamic> param,
+      String eventId) async {
+    NetworkServiceResponse result =
+    await apiService.activeInactiveEvent(authToken, param, eventId);
     this.apiResult = result;
   }
 }

@@ -1,15 +1,19 @@
 import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/basic/basic_state.dart';
+import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/event/setting/setting_bloc.dart';
 import 'package:eventmanagement/bloc/event/tickets/tickets_bloc.dart';
+import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
+import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/form/form_action_response.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
 import 'package:eventmanagement/model/event/settings/setting_response.dart';
+import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:eventmanagement/ui/page/event/basic/basic_page.dart';
 import 'package:eventmanagement/ui/page/event/forms/forms_page.dart';
 import 'package:eventmanagement/ui/page/event/gallery/gallery_page.dart';
@@ -23,7 +27,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EventMenuPage extends StatefulWidget {
-  EventMenuPage({Key key}) : super(key: key);
+  final String eventId;
+
+  EventMenuPage(this.eventId, {Key key}) : super(key: key);
 
   @override
   createState() => _EventMenuState();
@@ -34,11 +40,15 @@ class _EventMenuState extends State<EventMenuPage>
   TabController _tabController;
   TextStyle tabStyle = TextStyle(fontSize: 16);
 
+  UserBloc _userBloc;
+  EventBloc _eventBloc;
   BasicBloc _basicBloc;
   TicketsBloc _ticketsBloc;
   FormBloc _formBloc;
   GalleryBloc _galleryBloc;
   SettingBloc _settingBloc;
+
+  EventData _eventData;
 
   @override
   void initState() {
@@ -48,13 +58,107 @@ class _EventMenuState extends State<EventMenuPage>
       _basicBloc.selectedTabChange(_tabController.index);
     });
 
+    _userBloc = BlocProvider.of<UserBloc>(context);
+
+    _eventBloc = BlocProvider.of<EventBloc>(context);
     _basicBloc = BlocProvider.of<BasicBloc>(context);
     _ticketsBloc = BlocProvider.of<TicketsBloc>(context);
     _formBloc = BlocProvider.of<FormBloc>(context);
     _galleryBloc = BlocProvider.of<GalleryBloc>(context);
     _settingBloc = BlocProvider.of<SettingBloc>(context);
 
-    //TODO(Existing Event) Get existing event data via navigator and populate all the states here
+    if (isValid(widget.eventId)) {
+      _eventData = _eventBloc.state.findById(widget.eventId);
+    }
+
+    initBasicBloc();
+    initTicketBloc();
+    initFormsBloc();
+    initGalleryBloc();
+    initSettingsBloc();
+  }
+
+  void initBasicBloc() {
+    _basicBloc.authTokenSave(_userBloc.state.authToken);
+
+    if (_eventData != null) {
+      _basicBloc.eventDataId = _eventData.id;
+      _basicBloc.populateExistingEvent(_eventData);
+    } else {
+      _basicBloc.eventTimeZoneInput(
+        !isValid(_basicBloc.state.eventTimeZone)
+            ? _basicBloc.timeZoneList.firstWhere(
+                (timezone) => timezone.contains('Asia/Kolkata'),
+            orElse: () => null)
+            : _basicBloc.state.eventFreqName,
+      );
+
+      _basicBloc.selectEventFrequency(
+        !isValid(_basicBloc.state.eventFreqName)
+            ? 'Once'
+            : _basicBloc.state.eventFreqName,
+      );
+
+      _basicBloc.selectPostType(
+        !isValid(_basicBloc.state.eventPrivacy)
+            ? 'Public'
+            : _basicBloc.state.eventPrivacy,
+      );
+    }
+    _basicBloc.carnival();
+  }
+
+  void initTicketBloc() {
+    _ticketsBloc
+        .authTokenSave(BlocProvider
+        .of<UserBloc>(context)
+        .state
+        .authToken);
+    if (_eventData != null) {
+      _ticketsBloc.populateExistingEvent(_eventData.tickets);
+      _ticketsBloc.eventDataId = _eventData.id;
+    }
+  }
+
+  void initFormsBloc() {
+    _formBloc.authTokenSave(BlocProvider
+        .of<UserBloc>(context)
+        .state
+        .authToken);
+    if (_eventData != null) {
+      _formBloc.populateExistingEvent(_eventData.formStructure);
+      _formBloc.eventDataId = _eventData.id;
+    } else {
+      _formBloc.initSolidFields();
+    }
+  }
+
+  void initGalleryBloc() {
+    _galleryBloc
+        .authTokenSave(BlocProvider
+        .of<UserBloc>(context)
+        .state
+        .authToken);
+    if (_eventData != null) {
+      _galleryBloc.populateExistingEvent(_eventData.banner, _eventData.gallery);
+      _galleryBloc.eventDataId = _eventData.id;
+    }
+  }
+
+  void initSettingsBloc() {
+    _settingBloc
+        .authTokenSave(BlocProvider
+        .of<UserBloc>(context)
+        .state
+        .authToken);
+    _settingBloc.paymentType();
+    if (_eventData != null) {
+      _settingBloc.populateExistingEvent(_eventData);
+      _settingBloc.eventDataId = _eventData.id;
+    } else {
+      _settingBloc.selectPaymentGatewayBy(
+          _settingBloc.state.paymentGatewayPayPerson ?? getPaymentType()[0]);
+    }
   }
 
   @override
@@ -103,26 +207,6 @@ class _EventMenuState extends State<EventMenuPage>
               )
             ])),
         body: Column(children: <Widget>[
-          BlocBuilder<BasicBloc, BasicState>(
-            bloc: _basicBloc,
-            condition: (prevState, newState) => newState.errorCode != null,
-            builder: (context, BasicState state) {
-              if (state.errorCode != null) {
-                String errorMsg = getErrorMessage(state.errorCode, context);
-                if (state.errorCode == ERR_START_DATE_WEEK_DAY ||
-                    state.errorCode == ERR_END_DATE_WEEK_DAY)
-                  context.toast(
-                      '$errorMsg${uiLabelWeekday(
-                          state.eventWeekday, context)}');
-                else
-                  context.toast(errorMsg);
-
-                state.errorCode = null;
-              }
-
-              return SizedBox.shrink();
-            },
-          ),
           Container(
               child: Stack(
                 children: <Widget>[
@@ -183,13 +267,11 @@ class _EventMenuState extends State<EventMenuPage>
                             isScrollable: false,
                             indicatorSize: TabBarIndicatorSize.tab,
                             onTap: (pos) {
-                              if (pos > 0 && !isValid(_basicBloc.eventDataId)) {
-                                context.toast(
-                                    AppLocalizations
-                                        .of(context)
-                                        .validateStep1);
-                                _tabController.index = 0;
-                              }
+//                              if (pos > 0 && !isValid(_basicBloc.eventDataId)) {
+//                                context.toast(
+//                                    AppLocalizations.of(context).validateStep1);
+//                                _tabController.index = 0;
+//                              }
                             },
                             tabs: [
                               Tab(
@@ -297,123 +379,15 @@ class _EventMenuState extends State<EventMenuPage>
 
   void next() {
     if (_tabController.index == 0) {
-      context.showProgress(context);
-
-      _basicBloc.basic((results) {
-        context.hideProgress(context);
-
-        if (results is BasicResponse) {
-          var basicResponse = results;
-
-          if (basicResponse.code == apiCodeSuccess) {
-            context.toast(basicResponse.message);
-            _tabController.animateTo(1);
-          } else {
-            context.toast(basicResponse.message);
-          }
-        } else if (results is String) {
-          context.toast(results);
-        }
-
-        FocusScope.of(context).requestFocus(FocusNode());
-      });
+      submitBasicStep();
     } else if (_tabController.index == 1) {
-      if (_ticketsBloc.state.ticketsList.length > 0) {
-        _tabController.animateTo(2);
-      } else {
-        context.toast(AppLocalizations
-            .of(context)
-            .errorTicketLength);
-      }
+      submitTicketStep();
     } else if (_tabController.index == 2) {
-      context.showProgress(context);
-
-      _formBloc.uploadFields((results) {
-        context.hideProgress(context);
-
-        if (results is FormActionResponse) {
-          var formActionResponse = results;
-
-          if (formActionResponse.code == apiCodeSuccess) {
-            context.toast(formActionResponse.message);
-            _tabController.animateTo(3);
-          } else {
-            context.toast(formActionResponse.message);
-          }
-        } else if (results is String) {
-          if (results == 'Upload not required')
-            _tabController.animateTo(3);
-          else
-            context.toast(results);
-        }
-      });
+      submitFormStep();
     } else if (_tabController.index == 3) {
-      context.showProgress(context);
-
-      _galleryBloc.uploadGallery((results) {
-        context.hideProgress(context);
-
-        if (results is GalleryResponse) {
-          var galleryResponse = results;
-          if (galleryResponse.code == apiCodeSuccess) {
-            context.toast(galleryResponse.message);
-            _tabController.animateTo(4);
-          } else {
-            context.toast(galleryResponse.message);
-          }
-        } else if (results is String) {
-          if (results == 'Upload not required')
-            _tabController.animateTo(4);
-          else
-            context.toast(results);
-        }
-      });
+      submitGalleryStep();
     } else if (_tabController.index == 4) {
-      if (_basicBloc.state.uploadRequired) {
-        context.toast(AppLocalizations
-            .of(context)
-            .errorUnsavedBasic);
-        return;
-      }
-
-      if (_ticketsBloc.state.ticketsList.length == 0) {
-        context.toast(AppLocalizations
-            .of(context)
-            .errorTicketLength);
-        return;
-      }
-
-      if (_formBloc.state.uploadRequired) {
-        context.toast(AppLocalizations
-            .of(context)
-            .errorUnsavedForm);
-        return;
-      }
-
-      if (_galleryBloc.state.uploadRequired) {
-        context.toast(AppLocalizations
-            .of(context)
-            .errorUnsavedGallery);
-        return;
-      }
-
-      context.showProgress(context);
-
-      _settingBloc.uploadSettings((results) {
-        context.hideProgress(context);
-
-        if (results is SettingResponse) {
-          var settingResponse = results;
-          if (settingResponse.code == apiCodeSuccess) {
-            context.toast(settingResponse.message);
-            Navigator.of(context).pop();
-          } else {
-            context.toast(settingResponse.message);
-          }
-        } else if (results is String) {
-          context.toast(results);
-        }
-      });
+      submitSettingStep();
     }
   }
 
@@ -421,5 +395,147 @@ class _EventMenuState extends State<EventMenuPage>
     if (_tabController.index > 0) {
       _tabController.animateTo(_tabController.index - 1);
     }
+  }
+
+  void submitBasicStep() {
+    context.showProgress(context);
+
+    _basicBloc.basic((results) {
+      context.hideProgress(context);
+
+      if (results is BasicResponse) {
+        if (results.code == apiCodeSuccess) {
+          shareEventDataWithOtherBlocs();
+          _tabController.animateTo(1);
+        }
+      }
+
+      FocusScope.of(context).requestFocus(FocusNode());
+    });
+  }
+
+  void shareEventDataWithOtherBlocs() {
+    if (widget.eventId == null) {
+      if (!isValid(_ticketsBloc.eventDataId))
+        _ticketsBloc.eventDataId = _basicBloc.eventDataId;
+
+      if (!isValid(_formBloc.eventDataId)) {
+        _formBloc.eventDataId = _basicBloc.eventDataId;
+      }
+      _formBloc.eventDataToUpload = _basicBloc.eventDataToUpload;
+
+      if (!isValid(_galleryBloc.eventDataId)) {
+        _galleryBloc.eventDataId = _basicBloc.eventDataId;
+      }
+      _galleryBloc.eventDataToUpload = _basicBloc.eventDataToUpload;
+
+      if (!isValid(_settingBloc.eventDataId))
+        _settingBloc.eventDataId = _basicBloc.eventDataId;
+    }
+  }
+
+  void submitTicketStep() {
+    if (_ticketsBloc.state.ticketsList.length > 0) {
+      _tabController.animateTo(2);
+    } else {
+      context.toast(AppLocalizations
+          .of(context)
+          .errorTicketLength);
+    }
+  }
+
+  void submitFormStep() {
+    context.showProgress(context);
+
+    _formBloc.uploadFields((results) {
+      context.hideProgress(context);
+
+      if (results is FormActionResponse) {
+        var formActionResponse = results;
+
+        if (formActionResponse.code == apiCodeSuccess) {
+          context.toast(formActionResponse.message);
+          _tabController.animateTo(3);
+        } else {
+          context.toast(formActionResponse.message);
+        }
+      } else if (results is String) {
+        if (results == 'Upload not required')
+          _tabController.animateTo(3);
+        else
+          context.toast(results);
+      }
+    });
+  }
+
+  void submitGalleryStep() {
+    context.showProgress(context);
+
+    _galleryBloc.uploadGallery((results) {
+      context.hideProgress(context);
+
+      if (results is GalleryResponse) {
+        var galleryResponse = results;
+        if (galleryResponse.code == apiCodeSuccess) {
+          context.toast(galleryResponse.message);
+          _tabController.animateTo(4);
+        } else {
+          context.toast(galleryResponse.message);
+        }
+      } else if (results is String) {
+        if (results == 'Upload not required')
+          _tabController.animateTo(4);
+        else
+          context.toast(results);
+      }
+    });
+  }
+
+  void submitSettingStep() {
+    if (_basicBloc.state.uploadRequired) {
+      context.toast(AppLocalizations
+          .of(context)
+          .errorUnsavedBasic);
+      return;
+    }
+
+    if (_ticketsBloc.state.ticketsList.length == 0) {
+      context.toast(AppLocalizations
+          .of(context)
+          .errorTicketLength);
+      return;
+    }
+
+    if (_formBloc.state.uploadRequired) {
+      context.toast(AppLocalizations
+          .of(context)
+          .errorUnsavedForm);
+      return;
+    }
+
+    if (_galleryBloc.state.uploadRequired) {
+      context.toast(AppLocalizations
+          .of(context)
+          .errorUnsavedGallery);
+      return;
+    }
+
+    context.showProgress(context);
+
+    _settingBloc.uploadSettings((results) {
+      context.hideProgress(context);
+
+      if (results is SettingResponse) {
+        var settingResponse = results;
+        if (settingResponse.code == apiCodeSuccess) {
+          context.toast(settingResponse.message);
+          Navigator.of(context).pop();
+        } else {
+          context.toast(settingResponse.message);
+        }
+      } else if (results is String) {
+        context.toast(results);
+      }
+    });
   }
 }

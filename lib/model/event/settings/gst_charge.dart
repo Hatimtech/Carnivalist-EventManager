@@ -1,6 +1,6 @@
 class GSTCharge {
   bool enable;
-  String gstValue;
+  int gstValue;
 
   GSTCharge({
     this.enable,
@@ -20,6 +20,6 @@ class GSTCharge {
   }
 
   factory GSTCharge.defaultInstance() {
-    return GSTCharge(enable: false, gstValue: '18');
+    return GSTCharge(enable: false, gstValue: 18);
   }
 }

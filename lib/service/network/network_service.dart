@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
 import 'package:eventmanagement/model/event/carnivals/carnival_resonse.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
+import 'package:eventmanagement/model/event/event_action_response.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
+import 'package:eventmanagement/model/event/event_response.dart';
 import 'package:eventmanagement/model/event/form/form_action_response.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
 import 'package:eventmanagement/model/event/gallery/media_upload_response.dart';
@@ -18,7 +20,6 @@ import 'package:eventmanagement/utils/vars.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/src/media_type.dart';
 
-import '../network_service_response.dart';
 import '../network_type.dart';
 import '../restclient.dart';
 
@@ -44,6 +45,10 @@ class NetworkService extends NetworkType implements APIService {
   final _deleteTicketUrl = _baseUrl + _subUrl + 'tickets/delete-tickets/';
 
   final _uploadMediaUrl = _baseUrl + _subUrl + 'upload-media';
+  final _eventsListUrl = _baseUrl + _subUrl + 'get-events-for-managers';
+
+  final _activeInactiveEventUrl = _baseUrl + _subUrl + 'toggle-active';
+  final _deleteEventUrl = _baseUrl + _subUrl + 'delete-event/';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -52,11 +57,11 @@ class NetworkService extends NetworkType implements APIService {
     var result = await rest.post<LoginResponse>(_loginUrl,
         body: param, encoding: Encoding.getByName("utf-8"));
 
-    var res = LoginResponse.fromJson(json.decode(result.mappedResult));
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = LoginResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
   }
 
   @override
@@ -66,12 +71,13 @@ class NetworkService extends NetworkType implements APIService {
     };
 
     var result = await rest.get<LoginDetailResponse>(_loginDetailUrl, headers);
-    var res = LoginDetailResponse.fromJson(json.decode(result.mappedResult));
 
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = LoginDetailResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
   }
 
   @override
@@ -79,11 +85,11 @@ class NetworkService extends NetworkType implements APIService {
     var result = await rest.post<LoginResponse>(_signUpUrl,
         body: param, encoding: Encoding.getByName("utf-8"));
 
-    var res = LoginResponse.fromJson(json.decode(result.mappedResult));
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = LoginResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
   }
 
   @override
@@ -91,11 +97,11 @@ class NetworkService extends NetworkType implements APIService {
     var result = await rest.post<LoginResponse>(_forgotPasswordUrl,
         body: json.encode(param));
 
-    var res = LoginResponse.fromJson(json.decode(result.mappedResult));
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = LoginResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
   }
 
   @override
@@ -138,12 +144,13 @@ class NetworkService extends NetworkType implements APIService {
     };
 
     var result = await rest.get<TicketsResponse>(_ticketsListUrl, headers);
-    var res = TicketsResponse.fromJson(json.decode(result.mappedResult));
 
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = TicketsResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
   }
 
   @override
@@ -162,11 +169,11 @@ class NetworkService extends NetworkType implements APIService {
         encoding: Encoding.getByName("utf-8"),
         headers: headers);
 
-    var res = CreateTicketResponse.fromJson(json.decode(result.mappedResult));
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = CreateTicketResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
   }
 
   @override
@@ -179,11 +186,11 @@ class NetworkService extends NetworkType implements APIService {
     var result = await rest.get<TicketActionResponse>(
         '$_activeInactiveTicketUrl$ticketId/$isActive', headers);
 
-    var res = TicketActionResponse.fromJson(json.decode(result.mappedResult));
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = TicketActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
   }
 
   @override
@@ -196,11 +203,11 @@ class NetworkService extends NetworkType implements APIService {
     var result = await rest.get<TicketActionResponse>(
         '$_deleteTicketUrl$ticketId', headers);
 
-    var res = TicketActionResponse.fromJson(json.decode(result.mappedResult));
-    return new NetworkServiceResponse(
-      response: res,
-      responseCode: result.networkServiceResponse.responseCode,
-    );
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = TicketActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
   }
 
   @override
@@ -302,6 +309,59 @@ class NetworkService extends NetworkType implements APIService {
       result.networkServiceResponse.response = res;
     }
 
+    return result.networkServiceResponse;
+  }
+
+  @override
+  getAllEvents(String authToken) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<EventResponse>(_eventsListUrl, headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = EventResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  deleteEvent(String authToken, String eventId) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<EventActionResponse>(
+        '$_deleteEventUrl$eventId', headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = EventActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  activeInactiveEvent(String authToken, Map<String, dynamic> param,
+      String eventId) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<EventActionResponse>(_activeInactiveEventUrl,
+        body: json.encode(param),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = EventActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
     return result.networkServiceResponse;
   }
 }

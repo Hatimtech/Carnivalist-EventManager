@@ -32,4 +32,11 @@ abstract class APIService {
 
   uploadSetting(String authToken, SettingData settingData,
       {String eventDataId});
+
+  getAllEvents(String authToken);
+
+  deleteEvent(String authToken, String eventId);
+
+  activeInactiveEvent(String authToken, Map<String, dynamic> param,
+      String eventId);
 }

@@ -54,4 +54,11 @@ class Ticket {
     data['iV'] = this.iV;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Ticket{addons: $addons, active: $active, isDeleted: $isDeleted, sId: $sId, sellingEndDate: $sellingEndDate, currency: $currency, price: $price, quantity: $quantity, minOrderQuantity: $minOrderQuantity, maxOrderQuantity: $maxOrderQuantity, name: $name, description: $description, event: $event, sellingStartDate: $sellingStartDate, iV: $iV}';
+  }
+
+
 }

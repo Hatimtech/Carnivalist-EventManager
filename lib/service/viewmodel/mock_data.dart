@@ -2,16 +2,18 @@
 
 import 'package:eventmanagement/model/menu_custom.dart';
 
-getBasicEventMenu() => <MenuCustom>[
-  MenuCustom(name: 'Once'),
-  MenuCustom(name: 'Daily'),
-  MenuCustom(name: 'Weekly'),
-  MenuCustom(name: 'Custom')
-];
+getBasicEventFrequency() =>
+    <MenuCustom>[
+      MenuCustom(name: 'Once', value: 'Occurs once'),
+      MenuCustom(name: 'Daily', value: 'Daily'),
+      MenuCustom(name: 'Weekly', value: 'Weekly'),
+      MenuCustom(name: 'Custom', value: 'Custom')
+    ];
 
-getBasicEventPostType() => <MenuCustom>[
-  MenuCustom(name: 'Public'),
-  MenuCustom(name: 'Private')
+getBasicEventPrivacy() =>
+    <MenuCustom>[
+      MenuCustom(name: 'Public', value: 'public'),
+      MenuCustom(name: 'Private', value: 'private')
 ];
 
 getPaymentType() => <MenuCustom>[
@@ -25,3 +27,10 @@ getCustomField() => <MenuCustom>[
   MenuCustom(name: 'Single Select', value: 'singleSelect'),
   MenuCustom(name: 'Multi-Select', value: 'multiSelect'),
 ];
+
+getEventFilterStatus() =>
+    <MenuCustom>[
+      MenuCustom(name: 'UPCOMING'),
+      MenuCustom(name: 'DRAFT'),
+      MenuCustom(name: 'PAST EVENTS'),
+    ];

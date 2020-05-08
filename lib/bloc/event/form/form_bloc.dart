@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_event.dart';
 import 'package:eventmanagement/bloc/event/form/form_state.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
@@ -10,9 +9,8 @@ import 'package:eventmanagement/utils/vars.dart';
 
 class FormBloc extends Bloc<FormEvent, FormState> {
   final ApiProvider apiProvider = ApiProvider();
-  final BasicBloc basicBloc;
-
-  FormBloc(this.basicBloc);
+  String eventDataId;
+  EventData eventDataToUpload;
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -20,6 +18,10 @@ class FormBloc extends Bloc<FormEvent, FormState> {
 
   void initSolidFields() {
     add(InitSolidFields());
+  }
+
+  void populateExistingEvent(fieldList) {
+    add(PopulateExistingEvent(fieldList: fieldList));
   }
 
   void addField(FieldData fieldData) {
@@ -45,6 +47,10 @@ class FormBloc extends Bloc<FormEvent, FormState> {
   Stream<FormState> mapEventToState(FormEvent event) async* {
     if (event is AuthTokenSave) {
       yield state.copyWith(authToken: event.authToken);
+    }
+
+    if (event is PopulateExistingEvent) {
+      yield state.copyWith(fieldList: List.of(event.fieldList));
     }
 
     if (event is InitSolidFields) {
@@ -80,8 +86,6 @@ class FormBloc extends Bloc<FormEvent, FormState> {
     if (event is UploadFields) {
       if (state.uploadRequired) {
         try {
-          EventData eventDataToUpload = basicBloc.eventDataToUpload;
-
           final formFieldsToUpload = state.fieldList.map((field) {
             if (!(field.solid ?? false) && int.tryParse(field.id) != null)
               return FieldData(
@@ -102,7 +106,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
 
           await apiProvider.createNewFormFields(
               state.authToken, eventDataToUpload,
-              eventDataId: basicBloc.eventDataId);
+              eventDataId: eventDataId);
 
           if (apiProvider.apiResult.responseCode == ok200) {
             var formResponse =
@@ -110,7 +114,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
             event.callback(formResponse);
             state.uploadRequired = false;
           } else {
-            event.callback(apiProvider.apiResult.errorMessage);
+            event.callback(apiProvider.apiResult.error);
           }
         } catch (error) {
           print('Exception Occured--->$error');

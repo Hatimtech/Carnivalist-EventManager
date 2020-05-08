@@ -4,7 +4,6 @@ import 'package:eventmanagement/bloc/event/setting/setting_state.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/settings/cancellation_option.dart';
-import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_scroll_bar.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
@@ -37,8 +36,6 @@ class _SettingState extends State<SettingPage> {
   void initState() {
     super.initState();
     _settingBloc = BlocProvider.of<SettingBloc>(context);
-    _settingBloc.paymentType();
-    _settingBloc.selectPaymentGatewayBy(getPaymentType()[0]);
     _basicBloc = BlocProvider.of<BasicBloc>(context);
   }
 
@@ -455,7 +452,7 @@ class _SettingState extends State<SettingPage> {
                                       .textTheme
                                       .body1,
                                   initialValue: _settingBloc.state.twitterLink,
-                                  onChanged: _settingBloc.twitterLinkInput,
+                                  onChanged: _settingBloc.facebookLinkInput,
                                   textInputAction: TextInputAction.next,
                                   maxLength: 100,
                                   focusNode: _focusNodeFB,
@@ -784,8 +781,10 @@ class _SettingState extends State<SettingPage> {
               const SizedBox(height: 4.0),
               widget.inputFieldRectangle(
                 null,
-                initialValue:
-                _settingBloc.state.cancellationOptions[index].refundValue,
+                initialValue: _settingBloc
+                    .state.cancellationOptions[index].refundValue
+                    ?.toString() ??
+                    '',
                 onChanged: (value) =>
                     _settingBloc.cancellationPolicyDeductionInput(index, value),
                 hintText: AppLocalizations

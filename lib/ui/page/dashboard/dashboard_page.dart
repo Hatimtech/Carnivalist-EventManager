@@ -1,7 +1,14 @@
+import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
+import 'package:eventmanagement/bloc/event/event/event_state.dart';
+import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/ui/page/dashboard/event_filter.dart';
+import 'package:eventmanagement/ui/page/dashboard/event_list.dart';
+import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -9,9 +16,15 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardState extends State<DashboardPage> {
+  UserBloc _userBloc;
+  EventBloc _eventBloc;
+
   @override
   void initState() {
     super.initState();
+    _userBloc = BlocProvider.of<UserBloc>(context);
+    _eventBloc = BlocProvider.of<EventBloc>(context);
+    _eventBloc.authTokenSave(_userBloc.state.authToken);
   }
 
   @override
@@ -27,16 +40,56 @@ class _DashboardState extends State<DashboardPage> {
               size: 48.0,
             )),
         body: Column(children: <Widget>[
+          BlocBuilder<EventBloc, EventState>(
+            bloc: _eventBloc,
+            condition: (prevState, newState) =>
+            newState.toastMsg != null || newState.errorCode != null,
+            builder: (context, EventState state) {
+              if (state.toastMsg != null) {
+                context.toast(state.toastMsg);
+                state.toastMsg = null;
+              } else if (state.errorCode != null) {
+                String errorMsg = getErrorMessage(state.errorCode, context);
+                context.toast(errorMsg);
+                state.errorCode = null;
+              }
+              return SizedBox.shrink();
+            },
+          ),
           Container(
-              child: Center(
-                  child: Text(AppLocalizations
-                      .of(context)
-                      .titleDashboard,
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      AppLocalizations
+                          .of(context)
+                          .titleDashboard,
                       style: Theme
                           .of(context)
                           .appBarTheme
                           .textTheme
-                          .title)),
+                          .title,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.power_settings_new,
+                          color: Theme
+                              .of(context)
+                              .appBarTheme
+                              .iconTheme
+                              .color,
+                        ),
+                        onPressed: () {
+                          _userBloc.clearLoginDetails();
+                          return Navigator.of(context)
+                              .pushReplacementNamed(loginRoute);
+                        }),
+                  ),
+                ],
+              ),
               height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
@@ -45,79 +98,112 @@ class _DashboardState extends State<DashboardPage> {
                     ColorFilter.mode(colorHeaderBgFilter, BlendMode.srcATop),
                     image: AssetImage(headerBackgroundImage),
                     fit: BoxFit.fitWidth,
-              ))),
-          Expanded(
-              child: ListView(
-                  padding: EdgeInsets.all(0),
-                  shrinkWrap: true,
+                  ))),
+          Container(
+              padding: EdgeInsets.only(top: 10, bottom: 5),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                Container(
-                    padding: EdgeInsets.only(top: 10, bottom: 5),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Wrap(spacing: 2.0, children: <Widget>[
-                            _category(Icons.account_balance_wallet, "COUPONS"),
-                            _category(Icons.note_add, "ADD ONS"),
-                            _category(Icons.note, "REPORTS"),
-                            _category(Icons.people, "STAFF")
-                          ])
+                    Wrap(spacing: 2.0, children: <Widget>[
+                      _category(Icons.account_balance_wallet, "COUPONS"),
+                      _category(Icons.note_add, "ADD ONS"),
+                      _category(Icons.note, "REPORTS"),
+                      _category(Icons.people, "STAFF")
+                    ])
+                  ])),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                _eventBloc.getAllEvents();
+                return;
+              },
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Column(children: <Widget>[
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                _categoryCounter(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelTicketsSold,
+                                    '00'),
+                                SizedBox(width: 10),
+                                BlocBuilder<EventBloc, EventState>(
+                                    bloc: _eventBloc,
+                                    condition: (prevState, newState) =>
+                                    prevState.eventDataList !=
+                                        newState.eventDataList,
+                                    builder: (_, state) {
+                                      return _categoryCounter(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelUpcomingEvent,
+                                          state.upcomingEventsCount.toString());
+                                    })
+                              ]),
+                          const SizedBox(height: 5),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                _categoryCounter(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelCoupons,
+                                    '00'),
+                                SizedBox(width: 10),
+                                _categoryCounter(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelAddons,
+                                    '00')
+                              ])
                         ])),
-                Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    child: Column(children: <Widget>[
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            _categoryCounter('Ticket Sold', '00'),
-                            SizedBox(width: 10),
-                            _categoryCounter('Upcoming Events', '00')
-                          ]),
-                      const SizedBox(height: 5),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            _categoryCounter('COUPONS', '00'),
-                            SizedBox(width: 10),
-                            _categoryCounter('Addons', '00')
-                          ])
-                    ])),
-                Container(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'Upcoming Events',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .subtitle,
-                    )),
-                _upComingEvents()
-              ]))
+                  ),
+                  EventFilter(),
+                  EventList(),
+//                Container(
+//                    padding: EdgeInsets.all(10),
+//                    child: Text(
+//                      'Upcoming Events',
+//                      style: Theme.of(context).textTheme.subtitle,
+//                    )),
+//                _upComingEvents()
+                ],
+              ),
+            ),
+          )
         ]));
   }
 
   _category(IconData iconData, String name) =>
       Card(
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5.0))),
-      child: Container(
-          width: MediaQuery.of(context).size.width / 4.5,
-          padding: new EdgeInsets.all(10.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(iconData, size: 18, color: colorIconSecondary),
-                const SizedBox(height: 10),
-                Text(
-                  name,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .subhead,
-                )
-              ])));
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          child: Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width / 4.5,
+              padding: new EdgeInsets.all(10.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(iconData, size: 18, color: colorIconSecondary),
+                    const SizedBox(height: 10),
+                    Text(
+                      name,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .subhead,
+                    )
+                  ])));
 
   _categoryCounter(String name, String counter) => Card(
       color: bgColorSecondary,

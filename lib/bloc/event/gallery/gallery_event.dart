@@ -8,6 +8,13 @@ class AuthTokenSave extends GalleryEvent {
   AuthTokenSave({this.authToken});
 }
 
+class PopulateExistingEvent extends GalleryEvent {
+  String banner;
+  final List<GalleryData> galleryList;
+
+  PopulateExistingEvent({this.banner, this.galleryList});
+}
+
 class AddBanner extends GalleryEvent {
   final String banner;
 

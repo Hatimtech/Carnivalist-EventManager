@@ -74,6 +74,7 @@ const Color bgColorCard = Color(0xFFFFFFFF);
 const Color bgColorButton = Color(0xFF8C3EE9);
 const Color bgColorFAB = Color(0xFF9249F4);
 const Color bgColorFABHome = Color(0xFFF5066E);
+const Color bgColorFilterRow = Color(0xFFEEEEEE);
 
 const Color colorIcon = Color(0xFF8C3EE9);
 const Color colorIconSecondary = Color(0xFF6700E2);
@@ -317,6 +318,7 @@ const int ERR_CANCELLATION_DESC = 31;
 const int ERR_CANCELLATION_OPTION = 32;
 const int ERR_TNC = 33;
 
+const int ERR_NO_INTERNET = 99;
 const int ERR_SOMETHING_WENT_WRONG = 100;
 
 String getErrorMessage(int errorCode, BuildContext context) {
@@ -375,8 +377,6 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorTicketMinQuaLess;
     case ERR_TICKET_MIN_MAX_BET:
       return appLoc.errorTicketMinMaxBet;
-    case ERR_SOMETHING_WENT_WRONG:
-      return appLoc.errorSomethingWrong;
 
     case ERR_FIELD_LABEL:
       return appLoc.errorFieldLabel;
@@ -394,6 +394,11 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorNoCancellationOption;
     case ERR_TNC:
       return appLoc.errorTnc;
+
+    case ERR_NO_INTERNET:
+      return appLoc.errorNoInternet;
+    case ERR_SOMETHING_WENT_WRONG:
+      return appLoc.errorSomethingWrong;
 
     default:
       return appLoc.errorSomethingWrong;

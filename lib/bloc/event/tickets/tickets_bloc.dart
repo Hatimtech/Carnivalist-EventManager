@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
@@ -10,12 +9,14 @@ import 'tickets_state.dart';
 
 class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
   final ApiProvider apiProvider = ApiProvider();
-  final BasicBloc basicBloc;
-
-  TicketsBloc(this.basicBloc);
+  String eventDataId;
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
+  }
+
+  void populateExistingEvent(ticketList) {
+    add(PopulateExistingEvent(ticketList: ticketList));
   }
 
   void tickets() {
@@ -47,6 +48,10 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
       yield state.copyWith(authToken: event.authToken);
     }
 
+    if (event is PopulateExistingEvent) {
+      yield state.copyWith(ticketsList: List.of(event.ticketList));
+    }
+
     if (event is AddTicket) {
       state.ticketsList.add(event.ticket);
       yield state.copyWith(ticketsList: List.of(state.ticketsList));
@@ -61,66 +66,38 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
     }
 
     if (event is DeleteTicket) {
-      await apiProvider.deleteTicket(state.authToken, event.ticketId);
+      deleteTicketApi(event);
+    }
 
-      try {
-        if (apiProvider.apiResult.responseCode == ok200) {
-          var ticketsResponse =
-          apiProvider.apiResult.response as TicketActionResponse;
-          if (ticketsResponse.code == apiCodeSuccess) {
-            state.ticketsList
-                .removeWhere((ticket) => ticket.sId == event.ticketId);
+    if (event is DeleteTicketResult) {
+      if (event.success) {
+        state.ticketsList.removeWhere((ticket) => ticket.sId == event.ticketId);
 
-            yield state.copyWith(
-                ticketsList: List.of(state.ticketsList),
-                loading: false,
-                toastMsg: ticketsResponse.message);
-
-            event.callback(ticketsResponse);
-          } else {
-            yield state.copyWith(toastMsg: ticketsResponse.message);
-            event.callback(null);
-          }
-        } else {
-          yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
-          event.callback(null);
-        }
-      } catch (e) {
-        yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
-        event.callback(null);
+        yield state.copyWith(
+            ticketsList: List.of(state.ticketsList),
+            loading: false,
+            uiMsg: event.uiMsg);
+      } else {
+        yield state.copyWith(loading: false, uiMsg: event.uiMsg);
       }
     }
 
     if (event is ActiveInactiveTicket) {
-      await apiProvider.activeInactiveTickets(
-          state.authToken, event.active, event.ticketId);
+      activeInactiveTicketApi(event);
+    }
 
-      try {
-        if (apiProvider.apiResult.responseCode == ok200) {
-          var ticketsResponse =
-          apiProvider.apiResult.response as TicketActionResponse;
-          if (ticketsResponse.code == apiCodeSuccess) {
-            final ticket = state.ticketsList
-                .firstWhere((ticket) => ticket.sId == event.ticketId);
-            ticket.active = event.active;
+    if (event is ActiveInactiveTicketResult) {
+      if (event.success) {
+        final ticket = state.ticketsList
+            .firstWhere((ticket) => ticket.sId == event.ticketId);
+        ticket.active = event.active;
 
-            yield state.copyWith(
-                ticketsList: List.of(state.ticketsList),
-                loading: false,
-                toastMsg: ticketsResponse.message);
-
-            event.callback(ticketsResponse);
-          } else {
-            yield state.copyWith(toastMsg: ticketsResponse.message);
-            event.callback(null);
-          }
-        } else {
-          yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
-          event.callback(null);
-        }
-      } catch (e) {
-        yield state.copyWith(errorCode: ERR_SOMETHING_WENT_WRONG);
-        event.callback(null);
+        yield state.copyWith(
+            ticketsList: List.of(state.ticketsList),
+            loading: false,
+            uiMsg: event.uiMsg);
+      } else {
+        yield state.copyWith(loading: false, uiMsg: event.uiMsg);
       }
     }
 
@@ -131,29 +108,71 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
         ticketsList: state.ticketsList ?? [],
         loading: false,
       );
-
-//      await apiProvider.getTickets(state.authToken);
-//      try {
-//        if (apiProvider.apiResult.responseCode == ok200) {
-//          var ticketsResponse = apiProvider.apiResult.response;
-//          if (ticketsResponse.code == apiCodeSuccess) {
-//            yield state.copyWith(
-//              ticketsList: ticketsResponse.ticketsList,
-//            );
-//          }
-//          yield state.copyWith(
-//            loading: false,
-//          );
-//        } else {
-//          yield state.copyWith(
-//            loading: false,
-//          );
-//        }
-//      } catch (e) {
-//        yield state.copyWith(
-//          loading: false
-//        );
-//      }
     }
+  }
+
+  void deleteTicketApi(DeleteTicket event) {
+    apiProvider
+        .deleteTicket(state.authToken, event.ticketId)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        final ticketActionResponse =
+        networkServiceResponse.response as TicketActionResponse;
+        if (ticketActionResponse.code == apiCodeSuccess) {
+          add(DeleteTicketResult(true,
+              ticketId: event.ticketId, uiMsg: ticketActionResponse.message));
+          event.callback(ticketActionResponse);
+        } else {
+          add(DeleteTicketResult(false,
+              uiMsg: ticketActionResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(ticketActionResponse);
+        }
+      } else {
+        add(DeleteTicketResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error) {
+      print('Error in deleteTicketApi--->$error');
+      add(DeleteTicketResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(ERR_SOMETHING_WENT_WRONG);
+    });
+  }
+
+  void activeInactiveTicketApi(ActiveInactiveTicket event) {
+    apiProvider
+        .activeInactiveTickets(state.authToken, event.active, event.ticketId)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        final ticketActionResponse =
+        networkServiceResponse.response as TicketActionResponse;
+
+        if (ticketActionResponse.code == apiCodeSuccess) {
+          add(ActiveInactiveTicketResult(
+            true,
+            ticketId: event.ticketId,
+            active: event.active,
+            uiMsg: ticketActionResponse.message,
+          ));
+          event.callback(ticketActionResponse);
+        } else {
+          add(ActiveInactiveTicketResult(
+            false,
+            uiMsg: ticketActionResponse.message ?? ERR_SOMETHING_WENT_WRONG,
+          ));
+          event.callback(ticketActionResponse);
+        }
+      } else {
+        add(ActiveInactiveTicketResult(
+          false,
+          uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG,
+        ));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error) {
+      print('Error in activeInactiveTicketApi--->$error');
+      add(ActiveInactiveTicketResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(ERR_SOMETHING_WENT_WRONG);
+    });
   }
 }

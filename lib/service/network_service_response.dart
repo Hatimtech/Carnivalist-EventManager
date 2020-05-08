@@ -1,9 +1,9 @@
 class NetworkServiceResponse<T> {
   T response;
-  String errorMessage;
+  dynamic error;
   int responseCode;
 
-  NetworkServiceResponse({this.response, this.responseCode, this.errorMessage});
+  NetworkServiceResponse({this.response, this.responseCode, this.error});
 }
 
 class MappedNetworkServiceResponse<T> {

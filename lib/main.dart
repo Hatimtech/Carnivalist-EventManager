@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
@@ -21,7 +22,7 @@ import 'bloc/signup/sign_up_bloc.dart';
 import 'bloc/user/user_bloc.dart';
 import 'service/di/dependency_injection.dart';
 import 'ui/menu/bottom_menu_page.dart';
-import 'ui/page/dashboard_page.dart';
+import 'ui/page/dashboard/dashboard_page.dart';
 import 'ui/page/forgot_password_page.dart';
 import 'ui/page/login_page.dart';
 import 'ui/page/signup_page.dart';
@@ -51,7 +52,10 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
     super.build(context);
     return BlocProvider(
       create: (context) => UserBloc(),
-      child: _buildPlatformApp(),
+      child: BlocProvider(
+        create: (context) => EventBloc(),
+        child: _buildPlatformApp(),
+      ),
     );
   }
 
@@ -82,11 +86,14 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
           signUpRoute: (BuildContext context) => signupPageRoute,
           forgotPasswordRoute: (BuildContext context) =>
           forgotPasswordPageRoute,
-          bottomMenuRoute: (BuildContext context) => BottomMenuPage(),
+          bottomMenuRoute: (BuildContext context) => bottomMenuPageRoute,
           dashboardRoute: (BuildContext context) => DashboardPage(),
-          eventMenuRoute: (BuildContext context) => createEventPageRoute,
+          eventMenuRoute: (BuildContext context) =>
+              createEventPageRoute(context),
         });
   }
+
+  Widget get bottomMenuPageRoute => BottomMenuPage();
 
   Widget get loginPageRoute =>
       BlocProvider(
@@ -106,30 +113,24 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
         child: ForgotPasswordPage(),
       );
 
-  Widget get createEventPageRoute =>
+  Widget createEventPageRoute(BuildContext context) =>
       BlocProvider(
         create: (context) => BasicBloc(),
         child: BlocProvider(
-          create: (context) =>
-              SettingBloc(
-                BlocProvider.of<BasicBloc>(context),
-              ),
+          create: (context) => SettingBloc(),
           child: BlocProvider(
-            create: (context) =>
-                TicketsBloc(
-                  BlocProvider.of<BasicBloc>(context),
-                ),
+            create: (context) => TicketsBloc(),
             child: BlocProvider(
-                create: (context) =>
-                    FormBloc(
-                      BlocProvider.of<BasicBloc>(context),
-                    ),
+                create: (context) => FormBloc(),
                 child: BlocProvider(
-                    create: (context) =>
-                        GalleryBloc(
-                          BlocProvider.of<BasicBloc>(context),
-                        ),
-                    child: EventMenuPage())),
+                  create: (context) => GalleryBloc(),
+                  child: EventMenuPage(
+                    ModalRoute
+                        .of(context)
+                        .settings
+                        .arguments,
+                  ),
+                )),
           ),
         ),
       );

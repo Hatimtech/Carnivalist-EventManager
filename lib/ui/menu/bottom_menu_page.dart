@@ -1,6 +1,6 @@
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart';
-import 'package:eventmanagement/ui/page/dashboard_page.dart';
+import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

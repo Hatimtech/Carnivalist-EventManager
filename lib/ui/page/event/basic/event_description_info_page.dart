@@ -21,8 +21,14 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
   @override
   void initState() {
     super.initState();
-    print('_EventDescriptionInfoPageState: initState');
     _basicBloc = BlocProvider.of<BasicBloc>(context);
+    _eventDescriptionController.text = _basicBloc.state.eventDescription;
+  }
+
+  @override
+  void didUpdateWidget(EventDescriptionInfoPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _eventDescriptionController.text = _basicBloc.state.eventDescription;
   }
 
   @override
@@ -43,7 +49,7 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
           Container(
               child: BlocBuilder<BasicBloc, BasicState>(
                   condition: (prevState, newState) =>
-                      prevState.postType != newState.postType,
+                  prevState.eventPrivacy != newState.eventPrivacy,
                   bloc: _basicBloc,
                   builder: (context, BasicState state) => Container(
                       margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -51,7 +57,7 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
                           color: HexColor('#EEEEEF'),
                           borderRadius: BorderRadius.all(Radius.circular(5.0))),
                       child: Row(
-                          children: state.postTypeList.map((data) {
+                          children: state.eventPrivacyList.map((data) {
                         return Expanded(
                             child: GestureDetector(
                                 onTap: () {
@@ -59,7 +65,7 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
                                 },
                                 child: Container(
                                     decoration: BoxDecoration(
-                                        color: state.postType == data.name
+                                        color: state.eventPrivacy == data.name
                                             ? HexColor('#8c3ee9')
                                             : Colors.transparent,
                                         borderRadius: BorderRadius.circular(5)),
@@ -78,7 +84,6 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
 
   _eventDescriptionInput() => widget.inputFieldRectangle(
         _eventDescriptionController,
-        initialValue: _basicBloc.state.eventDescription,
         onChanged: _basicBloc.eventDescriptionInput,
         hintText: AppLocalizations.of(context).inputHintDescription,
         labelStyle: Theme.of(context).textTheme.body1,

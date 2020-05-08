@@ -8,6 +8,12 @@ class AuthTokenSave extends TicketsEvent {
   AuthTokenSave({this.authToken});
 }
 
+class PopulateExistingEvent extends TicketsEvent {
+  final List<Ticket> ticketList;
+
+  PopulateExistingEvent({this.ticketList});
+}
+
 class Tickets extends TicketsEvent {}
 
 class AddTicket extends TicketsEvent {
@@ -30,9 +36,27 @@ class ActiveInactiveTicket extends TicketsEvent {
   ActiveInactiveTicket(this.ticketId, this.active, this.callback);
 }
 
+class ActiveInactiveTicketResult extends TicketsEvent {
+  final bool success;
+  final String ticketId;
+  final bool active;
+  final dynamic uiMsg;
+
+  ActiveInactiveTicketResult(this.success,
+      {this.ticketId, this.active, this.uiMsg});
+}
+
 class DeleteTicket extends TicketsEvent {
   final String ticketId;
   final Function callback;
 
   DeleteTicket(this.ticketId, this.callback);
+}
+
+class DeleteTicketResult extends TicketsEvent {
+  final bool success;
+  final String ticketId;
+  final dynamic uiMsg;
+
+  DeleteTicketResult(this.success, {this.ticketId, this.uiMsg});
 }

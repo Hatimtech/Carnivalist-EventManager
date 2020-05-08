@@ -31,7 +31,6 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
   @override
   void initState() {
     super.initState();
-    print('EventDateTimeInfoPage: initState');
     _basicBloc = BlocProvider.of<BasicBloc>(context);
   }
 
@@ -50,17 +49,17 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
           Container(
               child: BlocBuilder<BasicBloc, BasicState>(
             condition: (prevState, newState) =>
-                prevState.eventMenuName != newState.eventMenuName,
+            prevState.eventFreqName != newState.eventFreqName,
             bloc: _basicBloc,
             builder: (context, BasicState state) => Column(
               children: <Widget>[
                 _buildEventDateTypeSelector(
-                    state.eventMenuName, state.eventMenuList),
-                if (state.eventMenuName == 'Once') _buildEventDateTypeOnce(),
-                if (state.eventMenuName == 'Daily') _buildEventDateTypeDaily(),
-                if (state.eventMenuName == 'Weekly')
+                    state.eventFreqName, state.eventFreqList),
+                if (state.eventFreqName == 'Once') _buildEventDateTypeOnce(),
+                if (state.eventFreqName == 'Daily') _buildEventDateTypeDaily(),
+                if (state.eventFreqName == 'Weekly')
                   _buildEventDateTypeWeekly(),
-                if (state.eventMenuName == 'Custom')
+                if (state.eventFreqName == 'Custom')
                   _buildEventDateTypeCustom(),
               ],
             ),
@@ -80,7 +79,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
           return Expanded(
               child: GestureDetector(
                   onTap: () {
-                    _basicBloc.selectEventMenu(data.name);
+                    _basicBloc.selectEventFrequency(data.name);
                   },
                   child: Container(
                       decoration: BoxDecoration(

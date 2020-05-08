@@ -123,7 +123,8 @@ extension WidgetExtensions on Widget {
     FormFieldValidator<String> validation,
   }) =>
       TextFormField(
-          initialValue: initialValue,
+          controller: textEditingController,
+          initialValue: textEditingController == null ? initialValue : null,
           validator: validation,
           onChanged: onChanged,
           keyboardType: keyboardType,

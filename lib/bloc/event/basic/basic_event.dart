@@ -1,14 +1,30 @@
 import 'package:eventmanagement/bloc/event/basic/basic_state.dart';
+import 'package:eventmanagement/model/event/carnivals/carnivals.dart';
+import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:flutter/material.dart';
 
 abstract class BasicEvent {}
 
-class EventMenu extends BasicEvent {}
+class EventFrequency extends BasicEvent {}
 
 class AuthTokenSave extends BasicEvent {
   final String authToken;
 
   AuthTokenSave({this.authToken});
+}
+
+class PopulateExistingEvent extends BasicEvent {
+  final EventData eventData;
+
+  PopulateExistingEvent({this.eventData});
+}
+
+class EventTypeAvailable extends BasicEvent {
+  final bool success;
+  final dynamic error;
+  final List<Carnivals> carnivalList;
+
+  EventTypeAvailable(this.success, {this.error, this.carnivalList});
 }
 
 class SelectedTabChange extends BasicEvent {
@@ -17,18 +33,16 @@ class SelectedTabChange extends BasicEvent {
   SelectedTabChange({this.index});
 }
 
-class SelectEventMenu extends BasicEvent {
-  final String eventMenuName;
+class SelectEventFrequency extends BasicEvent {
+  final String eventFreq;
 
-  SelectEventMenu({this.eventMenuName});
+  SelectEventFrequency({this.eventFreq});
 }
 
-class PostType extends BasicEvent {}
+class SelectEventPrivacy extends BasicEvent {
+  final String eventPrivacy;
 
-class SelectPostType extends BasicEvent {
-  final String postType;
-
-  SelectPostType({this.postType});
+  SelectEventPrivacy({this.eventPrivacy});
 }
 
 class EventNameInput extends BasicEvent {
@@ -140,4 +154,11 @@ class Basic extends BasicEvent {
 class Carnival extends BasicEvent {
 /*  Function callback;
   Basic({this.callback});*/
+}
+
+class EventBasicInfoUploadResult extends BasicEvent {
+  final bool success;
+  final dynamic uiMsg;
+
+  EventBasicInfoUploadResult(this.success, {this.uiMsg});
 }

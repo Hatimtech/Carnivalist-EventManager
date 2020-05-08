@@ -18,14 +18,14 @@ class CreateTicketsDialog extends StatefulWidget {
 }
 
 class _CreateTicketsState extends State<CreateTicketsDialog> {
-  final TextEditingController _ticketNameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _salesEndDateController = TextEditingController();
-  final TextEditingController _totalQuantityController =
-      TextEditingController();
-  final TextEditingController _minQuantityController = TextEditingController();
-  final TextEditingController _maxQuantityController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+//  final TextEditingController _ticketNameController = TextEditingController();
+//  final TextEditingController _priceController = TextEditingController();
+//  final TextEditingController _salesEndDateController = TextEditingController();
+//  final TextEditingController _totalQuantityController =
+//      TextEditingController();
+//  final TextEditingController _minQuantityController = TextEditingController();
+//  final TextEditingController _maxQuantityController = TextEditingController();
+//  final TextEditingController _descriptionController = TextEditingController();
 
   CreateTicketBloc _createTicketBloc;
   UserBloc _userBloc;
@@ -46,6 +46,11 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
     _userBloc.getLoginDetails();
 
     _createTicketBloc.authTokenSave(_userBloc.state.authToken);
+
+    if (!isValid(_createTicketBloc.state.ticketCurrency)) {
+      final defaultCurrencyUI = _createTicketBloc.mapCurrency['USD'];
+      _createTicketBloc.ticketCurrencyInput('USD', defaultCurrencyUI);
+    }
   }
 
   @override
@@ -255,13 +260,13 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
         if (createTicketResponse.code == apiCodeSuccess) {
           context.toast(createTicketResponse.message);
 
-          _ticketNameController.clear();
-          _priceController.clear();
-          _salesEndDateController.clear();
-          _totalQuantityController.clear();
-          _minQuantityController.clear();
-          _maxQuantityController.clear();
-          _descriptionController.clear();
+//          _ticketNameController.clear();
+//          _priceController.clear();
+//          _salesEndDateController.clear();
+//          _totalQuantityController.clear();
+//          _minQuantityController.clear();
+//          _maxQuantityController.clear();
+//          _descriptionController.clear();
 
           Navigator.pop(context);
         } else {
@@ -279,7 +284,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   ticketNameInput() =>
       widget.inputFieldRectangle(
-        _ticketNameController,
+        null,
         initialValue: _createTicketBloc.state.ticketName,
         textInputAction: TextInputAction.next,
         onChanged: _createTicketBloc.ticketNameInput,
@@ -334,7 +339,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   ticketPriceInput() =>
       widget.inputFieldRectangle(
-        _priceController,
+        null,
         initialValue: _createTicketBloc.state.ticketPrice,
         onChanged: _createTicketBloc.ticketPriceInput,
         keyboardType: TextInputType.number,
@@ -402,7 +407,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   totalAvailableInput() =>
       widget.inputFieldRectangle(
-        _totalQuantityController,
+        null,
         initialValue: _createTicketBloc.state.totalAvailable,
         keyboardType: TextInputType.number,
         textInputAction: TextInputAction.next,
@@ -422,7 +427,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   minBookingInput() =>
       widget.inputFieldRectangle(
-        _minQuantityController,
+        null,
         initialValue: _createTicketBloc.state.minBooking,
         onChanged: _createTicketBloc.minBookingInput,
         keyboardType: TextInputType.number,
@@ -442,7 +447,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   maxBookingInput() =>
       widget.inputFieldRectangle(
-        _maxQuantityController,
+        null,
         initialValue: _createTicketBloc.state.maxBooking,
         onChanged: _createTicketBloc.maxBookingInput,
         keyboardType: TextInputType.number,
@@ -462,7 +467,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   descriptionInput() =>
       widget.inputFieldRectangle(
-        _descriptionController,
+        null,
         initialValue: _createTicketBloc.state.description,
         onChanged: _createTicketBloc.descriptionInput,
         hintText: AppLocalizations

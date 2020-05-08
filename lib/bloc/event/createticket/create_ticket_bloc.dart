@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/tickets/tickets_bloc.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
@@ -10,8 +9,8 @@ import 'create_ticket_state.dart';
 
 class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
   final ApiProvider apiProvider = ApiProvider();
-  final BasicBloc basicBloc;
   final TicketsBloc ticketBloc;
+  final String eventDataId;
   final String ticketId;
   Map<String, String> mapCurrency = {
     'AED': 'AED - United Arab Emirates',
@@ -108,7 +107,7 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
     'ZAR': 'ZAR - South African rand',
   };
 
-  CreateTicketBloc(this.basicBloc, this.ticketBloc, {this.ticketId});
+  CreateTicketBloc(this.eventDataId, this.ticketBloc, {this.ticketId});
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -158,6 +157,7 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
     else {
       final ticket = ticketBloc.state.ticketsList
           .firstWhere((ticket) => ticket.sId == ticketId);
+      print('Existing Ticket toString--->${ticket.toString()}');
       return CreateTicketState.copyWith(ticket, mapCurrency[ticket.currency]);
     }
   }
@@ -232,7 +232,7 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
             'maxOrderQuantity', () => int.parse(state.maxBooking));
         param.putIfAbsent('description', () => state.description);
         param.putIfAbsent('currency', () => state.ticketCurrency);
-        param.putIfAbsent('event', () => basicBloc.eventDataId);
+        param.putIfAbsent('event', () => eventDataId);
 
         await apiProvider.getCreateTickets(state.authToken, param,
             ticketId: ticketId);
@@ -251,7 +251,7 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
 
           event.callback(createTicketResponse);
         } else {
-          event.callback(apiProvider.apiResult.errorMessage);
+          event.callback(apiProvider.apiResult.error);
         }
       } catch (error) {
         print('Exception Occured--->$error');

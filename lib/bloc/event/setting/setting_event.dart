@@ -1,3 +1,4 @@
+import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/menu_custom.dart';
 
 abstract class SettingEvent {}
@@ -6,6 +7,12 @@ class AuthTokenSave extends SettingEvent {
   final String authToken;
 
   AuthTokenSave({this.authToken});
+}
+
+class PopulateExistingEvent extends SettingEvent {
+  final EventData eventData;
+
+  PopulateExistingEvent({this.eventData});
 }
 
 class PaymentType extends SettingEvent {
@@ -66,7 +73,7 @@ class CancellationPolicyDeductionType extends SettingEvent {
 
 class CancellationPolicyDeductionInput extends SettingEvent {
   final int index;
-  final String input;
+  final double input;
 
   CancellationPolicyDeductionInput({this.index, this.input});
 }

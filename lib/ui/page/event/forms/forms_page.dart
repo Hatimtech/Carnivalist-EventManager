@@ -1,7 +1,7 @@
+import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/createfield/create_field_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_state.dart' as FS;
-import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/field_data.dart';
@@ -26,11 +26,9 @@ class _FormsState extends State<FormsPage> {
   void initState() {
     super.initState();
     _formBloc = BlocProvider.of<FormBloc>(context);
-    _formBloc.authTokenSave(BlocProvider
-        .of<UserBloc>(context)
-        .state
-        .authToken);
-    _formBloc.initSolidFields();
+    final _basicBloc = BlocProvider.of<BasicBloc>(context);
+    if (_basicBloc.state.uploadRequired || _formBloc.eventDataToUpload == null)
+      _formBloc.eventDataToUpload = _basicBloc.eventDataToUpload;
   }
 
   @override

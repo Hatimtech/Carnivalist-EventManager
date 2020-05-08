@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_event.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_state.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
@@ -12,12 +11,15 @@ import 'package:eventmanagement/utils/vars.dart';
 
 class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   final ApiProvider apiProvider = ApiProvider();
-  final BasicBloc basicBloc;
-
-  GalleryBloc(this.basicBloc);
+  String eventDataId;
+  EventData eventDataToUpload;
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
+  }
+
+  void populateExistingEvent(banner, galleryList) {
+    add(PopulateExistingEvent(banner: banner, galleryList: galleryList));
   }
 
   void addBanner(String banner) {
@@ -47,6 +49,11 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   Stream<GalleryState> mapEventToState(GalleryEvent event) async* {
     if (event is AuthTokenSave) {
       yield state.copyWith(authToken: event.authToken);
+    }
+
+    if (event is PopulateExistingEvent) {
+      yield state.copyWith(
+          banner: event.banner, galleryList: List.of(event.galleryList));
     }
 
     if (event is AddBanner) {
@@ -103,7 +110,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
                 state.banner = newBannerLink;
               }
             } else {
-              event.callback(apiProvider.apiResult.errorMessage);
+              event.callback(apiProvider.apiResult.error);
             }
           }
 
@@ -152,18 +159,17 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
                   galleryData.link = newGalleryDataLink;
                 }
               } else {
-                event.callback(apiProvider.apiResult.errorMessage);
+                event.callback(apiProvider.apiResult.error);
               }
             }
           }
 
-          EventData eventDataToUpload = basicBloc.eventDataToUpload;
           eventDataToUpload.banner = state.banner;
           eventDataToUpload.gallery = state.galleryList;
 
           await apiProvider.createGalleryData(
               state.authToken, eventDataToUpload,
-              eventDataId: basicBloc.eventDataId);
+              eventDataId: eventDataId);
 
           if (apiProvider.apiResult.responseCode == ok200) {
             var galleryResponse =
@@ -171,7 +177,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
             event.callback(galleryResponse);
             state.uploadRequired = false;
           } else {
-            event.callback(apiProvider.apiResult.errorMessage);
+            event.callback(apiProvider.apiResult.error);
           }
         } catch (error) {
           print('Exception Occured--->$error');

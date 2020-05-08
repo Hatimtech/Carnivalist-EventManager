@@ -27,8 +27,21 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
   @override
   void initState() {
     super.initState();
-    print('_EventLocationInfoPageState: initState');
     _basicBloc = BlocProvider.of<BasicBloc>(context);
+    initTextEditingController();
+  }
+
+  @override
+  void didUpdateWidget(EventLocationInfoPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    initTextEditingController();
+  }
+
+  void initTextEditingController() {
+    _eventLocationController.text = _basicBloc.state.eventLocation;
+    _eventStateController.text = _basicBloc.state.eventState;
+    _eventCityController.text = _basicBloc.state.eventCity;
+    _eventPostalCodeController.text = _basicBloc.state.eventPostalCode;
   }
 
   @override
@@ -84,7 +97,6 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
 
   _eventLocationInput() => widget.inputFieldRectangle(
         _eventLocationController,
-        initialValue: _basicBloc.state.eventLocation,
         onChanged: _basicBloc.eventLocationInput,
         hintText: AppLocalizations.of(context).inputHintTypeYourLocation,
         labelStyle: Theme.of(context).textTheme.body1,
@@ -95,7 +107,6 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
 
   _eventStateInput() => widget.inputFieldRectangle(
         _eventStateController,
-        initialValue: _basicBloc.state.eventState,
         onChanged: _basicBloc.eventStateInput,
         hintText: AppLocalizations.of(context).labelSelectState,
         labelStyle: Theme.of(context).textTheme.body1,
@@ -106,7 +117,6 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
 
   _eventCityInput() => widget.inputFieldRectangle(
         _eventCityController,
-        initialValue: _basicBloc.state.eventCity,
         onChanged: _basicBloc.eventCityInput,
         hintText: AppLocalizations.of(context).labelTypeCityName,
         labelStyle: Theme.of(context).textTheme.body1,
@@ -117,7 +127,6 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
 
   _eventPostalCodeInput() => widget.inputFieldRectangle(
         _eventPostalCodeController,
-        initialValue: _basicBloc.state.eventPostalCode,
         keyboardType: TextInputType.number,
         onChanged: _basicBloc.eventPostalCodeInput,
         hintText: AppLocalizations.of(context).labelTypePostalCode,

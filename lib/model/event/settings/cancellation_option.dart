@@ -3,7 +3,7 @@ import 'package:eventmanagement/utils/vars.dart';
 class CancellationOption {
   String refundType;
   DateTime cancellationEndDate;
-  String refundValue;
+  double refundValue;
 
   CancellationOption({
     this.refundType,
@@ -16,7 +16,7 @@ class CancellationOption {
     cancellationEndDate = isValid(json['cancellationEndDate'])
         ? DateTime.parse(json['cancellationEndDate'])
         : null;
-    refundValue = json['refundValue'];
+    refundValue = json['refundValue']?.toDouble();
   }
 
   Map<String, dynamic> toJson() {
@@ -27,4 +27,11 @@ class CancellationOption {
     if (this.refundValue != null) data['refundValue'] = this.refundValue;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'CancellationOption{refundType: $refundType, cancellationEndDate: $cancellationEndDate, refundValue: $refundValue}';
+  }
+
+
 }
