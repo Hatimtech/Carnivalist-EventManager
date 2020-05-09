@@ -14,13 +14,13 @@ class GalleryData {
     link = json['link'];
     localFilePath = json['localFilePath'];
     type = json['type'];
-    uploadRequired = json['isUploaded'];
+    uploadRequired = json['uploadRequired'] ?? false;
     ownedByApp = json['ownedByApp'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.localFilePath != null) data['link'] = this.link;
+    if (this.link != null) data['link'] = this.link;
     if (this.type != null) data['type'] = this.type;
     return data;
   }

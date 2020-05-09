@@ -36,7 +36,8 @@ extension ContextExtensions on BuildContext {
     Navigator.pop(context);
   }
 
-  void toast(String message) async {
+  void toast(String message,
+      {Duration duration = const Duration(seconds: 3)}) async {
     await Flushbar(
       boxShadows: [
         BoxShadow(
@@ -48,7 +49,7 @@ extension ContextExtensions on BuildContext {
       borderRadius: 0,
       backgroundColor: colorAccent,
       messageText: Text(message, style: TextStyle(color: Colors.white)),
-      duration: Duration(seconds: 3),
+      duration: duration,
     )
       ..show(this);
   }

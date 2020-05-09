@@ -294,8 +294,10 @@ class _EventListState extends State<EventList> {
     });
   }
 
-  void editEvent(EventData eventData) {
-    Navigator.pushNamed(context, eventMenuRoute, arguments: eventData.id);
+  Future<void> editEvent(EventData eventData) async {
+    var refresh = await Navigator.pushNamed(context, eventMenuRoute,
+        arguments: eventData.id);
+    if (refresh ?? false) _eventBloc.getAllEvents();
   }
 
   void deleteEvent(EventData eventData) {

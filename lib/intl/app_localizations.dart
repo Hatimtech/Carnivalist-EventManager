@@ -772,6 +772,36 @@ class AppLocalizations {
           name: "errorNoEventTypesAvailable",
           locale: _localeName);
 
+  String get errorUnsavedChanges =>
+      Intl.message(
+          'You will lost any unsaved changes. Are you sure, you want to go back?',
+          name: "errorUnsavedChanges",
+          locale: _localeName);
+
+  String get btnGoBack =>
+      Intl.message(
+          'Go Back',
+          name: "btnGoBack",
+          locale: _localeName);
+
+  String get logoutTitle =>
+      Intl.message(
+          'Logout',
+          name: "logoutTitle",
+          locale: _localeName);
+
+  String get logoutMsg =>
+      Intl.message(
+          'Are you sure, you want to logout?',
+          name: "logoutMsg",
+          locale: _localeName);
+
+  String get logoutButton =>
+      Intl.message(
+          'Logout',
+          name: "logoutButton",
+          locale: _localeName);
+
   String get errorNoInternet =>
       Intl.message('Please check your internet',
           name: "errorNoInternet", locale: _localeName);
@@ -783,6 +813,10 @@ class AppLocalizations {
   String get notAvailable =>
       Intl.message('NA',
           name: "notAvailable", locale: _localeName);
+
+  String get exitWarning =>
+      Intl.message(
+          "Press back again to exit", name: "exitWarning", locale: _localeName);
 }
 
 class AppTranslationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -9,6 +9,10 @@ class AuthTokenSave extends SettingEvent {
   AuthTokenSave({this.authToken});
 }
 
+class SettingDefault extends SettingEvent {
+  SettingDefault();
+}
+
 class PopulateExistingEvent extends SettingEvent {
   final EventData eventData;
 

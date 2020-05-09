@@ -3,6 +3,7 @@ import 'package:eventmanagement/model/event/basic/basic_response.dart';
 import 'package:eventmanagement/model/event/carnivals/carnival_resonse.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
+import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +13,6 @@ import 'basic_state.dart';
 
 class BasicBloc extends Bloc<BasicEvent, BasicState> {
   final ApiProvider apiProvider = ApiProvider();
-  EventData mainEventData;
   String eventDataId;
 
   List<String> timeZoneList = [
@@ -360,6 +360,10 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
     add(AuthTokenSave(authToken: authToken));
   }
 
+  void basicDefault() {
+    add(BasicDefault());
+  }
+
   void populateExistingEvent(eventData) {
     add(PopulateExistingEvent(eventData: eventData));
   }
@@ -444,7 +448,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
     add(SelectEventFrequency(eventFreq: eventFreq));
   }
 
-  void selectPostType(postType) {
+  void selectEventPrivacy(postType) {
     add(SelectEventPrivacy(eventPrivacy: postType));
   }
 
@@ -459,6 +463,18 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
   Stream<BasicState> mapEventToState(BasicEvent event) async* {
     if (event is AuthTokenSave) {
       yield state.copyWith(authToken: event.authToken);
+    }
+    if (event is BasicDefault) {
+      final eventFreqList = getBasicEventFrequency();
+      final eventPrivacyList = getBasicEventPrivacy();
+      yield state.copyWith(
+        eventFreqList: eventFreqList,
+        eventFrequency: eventFreqList[0].name,
+        eventPrivacyList: eventPrivacyList,
+        eventPrivacy: eventPrivacyList[0].name,
+        status: defaultEventStatus,
+        eventTimeZone: defaultTimezone,
+      );
     }
     if (event is PopulateExistingEvent) {
       final existingData = event.eventData;
@@ -540,6 +556,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
         eventDescription: eventDescription,
         eventCustomDateTimeList: eventCustomDateTimeList,
         fullRefresh: true,
+        status: existingData.status,
       );
     }
     if (event is SelectedTabChange) {
@@ -729,7 +746,10 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       state.eventPrivacyList.forEach((element) => element.isSelected = false);
       state.eventPrivacyList[id].isSelected = true;
 
-      yield state.copyWith(postTypeList: state.eventPrivacyList);
+      yield state.copyWith(
+        eventPrivacyList: state.eventPrivacyList,
+        uploadRequired: true,
+      );
     }
 
     if (event is SelectEventFrequency) {
@@ -741,7 +761,10 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       state.eventFreqList.forEach((element) => element.isSelected = false);
       state.eventFreqList[id].isSelected = true;
 
-      yield state.copyWith(eventFreqList: state.eventFreqList);
+      yield state.copyWith(
+        eventFreqList: state.eventFreqList,
+        uploadRequired: true,
+      );
     }
   }
 
@@ -916,7 +939,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
         startDateTime: startDateTime.toIso8601String(),
         endDateTime: endDateTime.toIso8601String(),
         description: state.eventDescription,
-        status: mainEventData?.status ?? 'DRAFT',
+        status: state.status,
         place: Place(
           name: '',
           address: state.eventLocation,
@@ -942,5 +965,15 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
           startTime: '',
           selectedDays: customSelectedDates,
         ));
+  }
+
+  String get defaultTimezone {
+    return timeZoneList.firstWhere(
+            (timezone) => timezone.contains('Asia/Kolkata'),
+        orElse: () => null);
+  }
+
+  String get defaultEventStatus {
+    return 'DRAFT';
   }
 }

@@ -13,7 +13,6 @@ import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/form/form_action_response.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
 import 'package:eventmanagement/model/event/settings/setting_response.dart';
-import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:eventmanagement/ui/page/event/basic/basic_page.dart';
 import 'package:eventmanagement/ui/page/event/forms/forms_page.dart';
 import 'package:eventmanagement/ui/page/event/gallery/gallery_page.dart';
@@ -37,6 +36,7 @@ class EventMenuPage extends StatefulWidget {
 
 class _EventMenuState extends State<EventMenuPage>
     with SingleTickerProviderStateMixin {
+  bool refreshList = false;
   TabController _tabController;
   TextStyle tabStyle = TextStyle(fontSize: 16);
 
@@ -81,29 +81,11 @@ class _EventMenuState extends State<EventMenuPage>
   void initBasicBloc() {
     _basicBloc.authTokenSave(_userBloc.state.authToken);
 
+    _basicBloc.basicDefault();
+
     if (_eventData != null) {
       _basicBloc.eventDataId = _eventData.id;
       _basicBloc.populateExistingEvent(_eventData);
-    } else {
-      _basicBloc.eventTimeZoneInput(
-        !isValid(_basicBloc.state.eventTimeZone)
-            ? _basicBloc.timeZoneList.firstWhere(
-                (timezone) => timezone.contains('Asia/Kolkata'),
-            orElse: () => null)
-            : _basicBloc.state.eventFreqName,
-      );
-
-      _basicBloc.selectEventFrequency(
-        !isValid(_basicBloc.state.eventFreqName)
-            ? 'Once'
-            : _basicBloc.state.eventFreqName,
-      );
-
-      _basicBloc.selectPostType(
-        !isValid(_basicBloc.state.eventPrivacy)
-            ? 'Public'
-            : _basicBloc.state.eventPrivacy,
-      );
     }
     _basicBloc.carnival();
   }
@@ -154,13 +136,10 @@ class _EventMenuState extends State<EventMenuPage>
         .of<UserBloc>(context)
         .state
         .authToken);
-    _settingBloc.paymentType();
+    _settingBloc.settingDefault();
     if (_eventData != null) {
       _settingBloc.populateExistingEvent(_eventData);
       _settingBloc.eventDataId = _eventData.id;
-    } else {
-      _settingBloc.selectPaymentGatewayBy(
-          _settingBloc.state.paymentGatewayPayPerson ?? getPaymentType()[0]);
     }
   }
 
@@ -209,124 +188,136 @@ class _EventMenuState extends State<EventMenuPage>
                 ),
               )
             ])),
-        body: Column(children: <Widget>[
-          Container(
-              child: Stack(
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                        icon: Icon(
-                          isPlatformAndroid
-                              ? Icons.arrow_back
-                              : CupertinoIcons.back,
-                          color: Theme
-                              .of(context)
-                              .appBarTheme
-                              .iconTheme
-                              .color,
-                        ),
-                        onPressed: Navigator
-                            .of(context)
-                            .pop),
-                  ),
-                  Center(
-                    child: Text(
-                      AppLocalizations
-                          .of(context)
-                          .titleCreateEvent,
-                      style: Theme
-                          .of(context)
-                          .appBarTheme
-                          .textTheme
-                          .title,
-                      textAlign: TextAlign.center,
+        body: WillPopScope(
+          onWillPop: () async {
+            bool exit = await checkUnsavedDataAndPop();
+            if (exit) Navigator.pop(context, refreshList);
+            return false;
+          },
+          child: Column(children: <Widget>[
+            Container(
+                child: Stack(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                          icon: Icon(
+                            isPlatformAndroid
+                                ? Icons.arrow_back
+                                : CupertinoIcons.back,
+                            color:
+                            Theme
+                                .of(context)
+                                .appBarTheme
+                                .iconTheme
+                                .color,
+                          ),
+                          onPressed: () async {
+                            bool exit = await checkUnsavedDataAndPop();
+                            if (exit) Navigator.pop(context, refreshList);
+                          }),
                     ),
-                  ),
-                ],
-              ),
-              height: 100,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(headerBackgroundImage),
-                    fit: BoxFit.fitWidth,
-                  ))),
-          const SizedBox(height: 16.0),
-          Expanded(
-              child: DefaultTabController(
-                  length: 5,
-                  child: Column(children: <Widget>[
-                    BlocBuilder<BasicBloc, BasicState>(
-                        bloc: _basicBloc,
-                        condition: (prevState, newState) =>
-                        prevState.selectedTab != newState.selectedTab,
-                        builder: (context, BasicState state) {
-                          return TabBar(
-                            controller: _tabController,
-                            labelColor: Colors.white,
-                            indicatorColor: Colors.transparent,
-                            labelPadding: EdgeInsets.all(4),
-                            isScrollable: false,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            onTap: (pos) {
+                    Center(
+                      child: Text(
+                        AppLocalizations
+                            .of(context)
+                            .titleCreateEvent,
+                        style: Theme
+                            .of(context)
+                            .appBarTheme
+                            .textTheme
+                            .title,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                height: 100,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(headerBackgroundImage),
+                      fit: BoxFit.fitWidth,
+                    ))),
+            const SizedBox(height: 16.0),
+            Expanded(
+                child: DefaultTabController(
+                    length: 5,
+                    child: Column(children: <Widget>[
+                      BlocBuilder<BasicBloc, BasicState>(
+                          bloc: _basicBloc,
+                          condition: (prevState, newState) =>
+                          prevState.selectedTab != newState.selectedTab,
+                          builder: (context, BasicState state) {
+                            return TabBar(
+                              controller: _tabController,
+                              labelColor: Colors.white,
+                              indicatorColor: Colors.transparent,
+                              labelPadding: EdgeInsets.all(4),
+                              isScrollable: false,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              onTap: (pos) {
 //                              if (pos > 0 && !isValid(_basicBloc.eventDataId)) {
 //                                context.toast(
 //                                    AppLocalizations.of(context).validateStep1);
 //                                _tabController.index = 0;
 //                              }
-                            },
-                            tabs: [
-                              Tab(
-                                child: tabName('1', state.selectedTab, 0,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuBasic),
-                              ),
-                              Tab(
-                                child: tabName('2', state.selectedTab, 1,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuTickets),
-                              ),
-                              Tab(
-                                child: tabName('3', state.selectedTab, 2,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuForms),
-                              ),
-                              Tab(
-                                child: tabName('4', state.selectedTab, 3,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuGallery),
-                              ),
-                              Tab(
-                                child: tabName('5', state.selectedTab, 4,
-                                    AppLocalizations
-                                        .of(context)
-                                        .menuSettings),
-                              )
-                            ],
-                          );
-                        }),
-                    Expanded(
-                      child: TabBarView(
-                        physics: isValid(_basicBloc.eventDataId)
-                            ? null
-                            : NeverScrollableScrollPhysics(),
-                        controller: _tabController,
-                        children: [
-                          BasicPage(),
-                          TicketsPage(),
-                          FormsPage(),
-                          GalleryPage(),
-                          SettingPage()
-                        ],
+                              },
+                              tabs: [
+                                Tab(
+                                  child: tabName('1', state.selectedTab, 0,
+                                      AppLocalizations
+                                          .of(context)
+                                          .menuBasic),
+                                ),
+                                Tab(
+                                  child: tabName('2', state.selectedTab, 1,
+                                      AppLocalizations
+                                          .of(context)
+                                          .menuTickets),
+                                ),
+                                Tab(
+                                  child: tabName('3', state.selectedTab, 2,
+                                      AppLocalizations
+                                          .of(context)
+                                          .menuForms),
+                                ),
+                                Tab(
+                                  child: tabName('4', state.selectedTab, 3,
+                                      AppLocalizations
+                                          .of(context)
+                                          .menuGallery),
+                                ),
+                                Tab(
+                                  child: tabName(
+                                      '5',
+                                      state.selectedTab,
+                                      4,
+                                      AppLocalizations
+                                          .of(context)
+                                          .menuSettings),
+                                )
+                              ],
+                            );
+                          }),
+                      Expanded(
+                        child: TabBarView(
+                          physics: isValid(_basicBloc.eventDataId)
+                              ? null
+                              : NeverScrollableScrollPhysics(),
+                          controller: _tabController,
+                          children: [
+                            BasicPage(),
+                            TicketsPage(),
+                            FormsPage(),
+                            GalleryPage(),
+                            SettingPage()
+                          ],
+                        ),
                       ),
-                    ),
-                  ])))
-        ]));
+                    ])))
+          ]),
+        ));
   }
 
   @override
@@ -410,6 +401,7 @@ class _EventMenuState extends State<EventMenuPage>
         if (results.code == apiCodeSuccess) {
           shareEventDataWithOtherBlocs();
           _tabController.animateTo(1);
+          refreshList = true;
         }
       }
 
@@ -440,6 +432,7 @@ class _EventMenuState extends State<EventMenuPage>
   void submitTicketStep() {
     if (_ticketsBloc.state.ticketsList.length > 0) {
       _tabController.animateTo(2);
+      refreshList = true;
     } else {
       context.toast(AppLocalizations
           .of(context)
@@ -456,6 +449,7 @@ class _EventMenuState extends State<EventMenuPage>
       if (results is FormActionResponse) {
         if (results.code == apiCodeSuccess) {
           _tabController.animateTo(3);
+          refreshList = true;
         }
       } else if (results is String && results == 'Upload not required') {
         _tabController.animateTo(3);
@@ -472,8 +466,8 @@ class _EventMenuState extends State<EventMenuPage>
       if (results is GalleryResponse) {
         var galleryResponse = results;
         if (galleryResponse.code == apiCodeSuccess) {
-          context.toast(galleryResponse.message);
           _tabController.animateTo(4);
+          refreshList = true;
         }
       } else if (results is String) {
         if (results == 'Upload not required') _tabController.animateTo(4);
@@ -517,9 +511,73 @@ class _EventMenuState extends State<EventMenuPage>
 
       if (results is SettingResponse) {
         if (results.code == apiCodeSuccess) {
-          Navigator.of(context).pop();
+          refreshList = true;
+          Navigator.of(context).pop(refreshList);
         }
       }
     });
+  }
+
+  Future<bool> checkUnsavedDataAndPop() async {
+    bool uploadBasic = false,
+        uploadForm = false,
+        uploadGallery = false,
+        uploadSetting = false;
+
+    if (_basicBloc.state.uploadRequired) {
+      uploadBasic = true;
+    }
+
+    if (_formBloc.state.uploadRequired &&
+        _formBloc.state.fieldList.length > 4) {
+      uploadForm = true;
+    }
+
+    if (_galleryBloc.state.uploadRequired) {
+      uploadGallery = true;
+    }
+
+    if (_settingBloc.state.uploadRequired) {
+      uploadSetting = true;
+    }
+
+    if (uploadBasic || uploadForm || uploadGallery || uploadSetting) {
+      AlertDialog alertDialog = AlertDialog(
+        content: Text(
+          AppLocalizations
+              .of(context)
+              .errorUnsavedChanges,
+          style: Theme
+              .of(context)
+              .textTheme
+              .title
+              .copyWith(
+            fontSize: 16.0,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(AppLocalizations
+                  .of(context)
+                  .btnCancel)),
+          FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context, refreshList);
+              },
+              child: Text(AppLocalizations
+                  .of(context)
+                  .btnGoBack)),
+        ],
+      );
+
+      showDialog(context: context, builder: (context) => alertDialog);
+
+      return false;
+    }
+
+    return true;
   }
 }

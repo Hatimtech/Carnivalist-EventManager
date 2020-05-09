@@ -13,6 +13,10 @@ class AuthTokenSave extends BasicEvent {
   AuthTokenSave({this.authToken});
 }
 
+class BasicDefault extends BasicEvent {
+  BasicDefault();
+}
+
 class PopulateExistingEvent extends BasicEvent {
   final EventData eventData;
 

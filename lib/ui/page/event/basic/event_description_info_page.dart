@@ -61,7 +61,7 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
                         return Expanded(
                             child: GestureDetector(
                                 onTap: () {
-                                  _basicBloc.selectPostType(data.name);
+                                  _basicBloc.selectEventPrivacy(data.name);
                                 },
                                 child: Container(
                                     decoration: BoxDecoration(

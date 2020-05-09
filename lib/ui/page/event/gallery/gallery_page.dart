@@ -278,7 +278,7 @@ class _GalleryState extends State<GalleryPage> {
               bool exist = await thumbToDelete.exists();
               if (exist) thumbToDelete.delete();
             }
-          } else {
+          } else if (isValid(galleryData.link)) {
             final fileToDelete = File(Path.join(
                 await getSystemDirPath(),
                 'Pictures',

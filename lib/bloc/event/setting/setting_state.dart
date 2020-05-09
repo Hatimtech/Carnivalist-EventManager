@@ -30,8 +30,8 @@ class SettingState {
   List<CancellationOption> cancellationOptions;
 
   bool tnc;
-
   dynamic uiMsg;
+  bool uploadRequired;
 
   SettingState({
     this.authToken,
@@ -58,6 +58,7 @@ class SettingState {
     this.cancellationOptions,
     this.tnc,
     this.uiMsg,
+    this.uploadRequired,
   });
 
   factory SettingState.initial() {
@@ -88,6 +89,7 @@ class SettingState {
       ],
       tnc: false,
       uiMsg: null,
+      uploadRequired: false,
     );
   }
 
@@ -116,6 +118,7 @@ class SettingState {
     List<CancellationOption> cancellationOptions,
     bool tnc,
     dynamic uiMsg,
+    bool uploadRequired,
   }) {
     return SettingState(
       authToken: authToken ?? this.authToken,
@@ -144,6 +147,7 @@ class SettingState {
       cancellationOptions: cancellationOptions ?? this.cancellationOptions,
       tnc: tnc ?? this.tnc,
       uiMsg: uiMsg,
+      uploadRequired: uploadRequired ?? this.uploadRequired,
     );
   }
 }

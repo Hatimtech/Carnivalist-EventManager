@@ -1,6 +1,5 @@
 import 'package:eventmanagement/model/event/carnivals/carnivals.dart';
 import 'package:eventmanagement/model/menu_custom.dart';
-import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:flutter/material.dart';
 
 class BasicState {
@@ -24,6 +23,7 @@ class BasicState {
   final String eventDescription;
   final List<Carnivals> eventTypeList;
   final List<EventCustomDate> eventCustomDateTimeList;
+  final String status;
   final bool loading;
   dynamic uiMsg;
   final int selectedTab;
@@ -52,6 +52,7 @@ class BasicState {
     this.eventDescription,
     this.eventTypeList,
     this.eventCustomDateTimeList,
+    this.status,
     this.loading,
     this.uiMsg,
     this.selectedTab,
@@ -63,9 +64,9 @@ class BasicState {
     return BasicState(
       authToken: '',
       eventFreqName: '',
-      eventFreqList: getBasicEventFrequency(),
+      eventFreqList: [],
       eventPrivacy: '',
-      eventPrivacyList: getBasicEventPrivacy(),
+      eventPrivacyList: [],
       eventName: '',
       eventType: '',
       eventTimeZone: '',
@@ -82,6 +83,7 @@ class BasicState {
       eventDescription: '',
       eventTypeList: List(),
       eventCustomDateTimeList: [],
+      status: '',
       loading: false,
       uiMsg: null,
       selectedTab: 0,
@@ -126,7 +128,7 @@ class BasicState {
     String eventFrequency,
     List<MenuCustom> eventFreqList,
     String eventPrivacy,
-    List<MenuCustom> postTypeList,
+    List<MenuCustom> eventPrivacyList,
     String eventName,
     String eventType,
     String eventTimeZone,
@@ -143,6 +145,7 @@ class BasicState {
     String eventDescription,
     List<Carnivals> eventTypeList,
     List<EventCustomDate> eventCustomDateTimeList,
+    String status,
     bool loading,
     dynamic uiMsg,
     int selectedTab,
@@ -154,7 +157,7 @@ class BasicState {
       eventFreqName: eventFrequency ?? this.eventFreqName,
       eventFreqList: eventFreqList ?? this.eventFreqList,
       eventPrivacy: eventPrivacy ?? this.eventPrivacy,
-      eventPrivacyList: postTypeList ?? this.eventPrivacyList,
+      eventPrivacyList: eventPrivacyList ?? this.eventPrivacyList,
       eventName: eventName ?? this.eventName,
       eventType: eventType ?? this.eventType,
       eventTimeZone: eventTimeZone ?? this.eventTimeZone,
@@ -172,6 +175,7 @@ class BasicState {
       eventTypeList: eventTypeList ?? this.eventTypeList,
       eventCustomDateTimeList:
       eventCustomDateTimeList ?? this.eventCustomDateTimeList,
+      status: status ?? this.status,
       loading: loading ?? this.loading,
       uiMsg: uiMsg,
       selectedTab: selectedTab ?? this.selectedTab,

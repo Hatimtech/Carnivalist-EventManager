@@ -24,6 +24,10 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     add(AuthTokenSave(authToken: authToken));
   }
 
+  void settingDefault() {
+    add(SettingDefault());
+  }
+
   void populateExistingEvent(eventData) {
     add(PopulateExistingEvent(eventData: eventData));
   }
@@ -123,6 +127,12 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       yield state.copyWith(authToken: event.authToken);
     }
 
+    if (event is SettingDefault) {
+      final paymentTypeList = getPaymentType();
+      yield state.copyWith(paymentTypeList: getPaymentType(),
+          paymentGatewayPayPerson: paymentTypeList[0]);
+    }
+
     if (event is PopulateExistingEvent) {
       EventData eventData = event.eventData;
       bool precentage =
@@ -201,39 +211,63 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       state.paymentTypeList.forEach((element) => element.isSelected = false);
       state.paymentTypeList[id].isSelected = true;
 
-      yield state.copyWith(paymentTypeList: state.paymentTypeList);
+      yield state.copyWith(
+        paymentTypeList: state.paymentTypeList,
+        uploadRequired: true,
+      );
     }
 
     if (event is SelectConvenienceFee) {
-      yield state.copyWith(convenienceFee: event.enable);
+      yield state.copyWith(
+        convenienceFee: event.enable,
+        uploadRequired: true,
+      );
     }
 
     if (event is ConveniencePercentageInput) {
-      yield state.copyWith(percentValue: event.input);
+      yield state.copyWith(
+        percentValue: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is ConvenienceAmountInput) {
-      yield state.copyWith(convenienceAmount: event.input);
+      yield state.copyWith(
+        convenienceAmount: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is SelectBookingCancellation) {
-      yield state.copyWith(bookingCancellation: event.enable);
+      yield state.copyWith(
+        bookingCancellation: event.enable,
+        uploadRequired: true,
+      );
     }
 
     if (event is BookingCancellationDescInput) {
-      yield state.copyWith(cancellationPolicyDesc: event.input);
+      yield state.copyWith(
+        cancellationPolicyDesc: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is AddCancellationPolicyOption) {
       final options = List.of(state.cancellationOptions);
       options.add(CancellationOption(refundType: 'amount', refundValue: 0));
-      yield state.copyWith(cancellationOptions: options);
+      yield state.copyWith(
+        cancellationOptions: options,
+        uploadRequired: true,
+      );
     }
 
     if (event is RemoveCancellationPolicyOption) {
       final options = List.of(state.cancellationOptions);
       options.removeAt(event.index);
-      yield state.copyWith(cancellationOptions: options);
+      yield state.copyWith(
+        cancellationOptions: options,
+        uploadRequired: true,
+      );
     }
 
     if (event is CancellationPolicyDeductionType) {
@@ -244,12 +278,16 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       newOption.refundType = event.isPercentage ? 'percentage' : 'amount';
       cancellationOptions.removeAt(event.index);
       cancellationOptions.insert(event.index, newOption);
-      yield state.copyWith(cancellationOptions: cancellationOptions);
+      yield state.copyWith(
+        cancellationOptions: cancellationOptions,
+        uploadRequired: true,
+      );
     }
 
     if (event is CancellationPolicyDeductionInput) {
       final cancellationOption = state.cancellationOptions[event.index];
       cancellationOption.refundValue = event.input;
+      state.uploadRequired = true;
     }
 
     if (event is CancellationPolicyEndDate) {
@@ -259,35 +297,59 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       newOption.cancellationEndDate = event.dateTime;
       state.cancellationOptions.removeAt(event.index);
       state.cancellationOptions.insert(event.index, newOption);
-      yield state.copyWith(cancellationOptions: state.cancellationOptions);
+      yield state.copyWith(
+        cancellationOptions: state.cancellationOptions,
+        uploadRequired: true,
+      );
     }
 
     if (event is SelectBookingTransfer) {
-      yield state.copyWith(transferBooking: event.enable);
+      yield state.copyWith(
+        transferBooking: event.enable,
+        uploadRequired: true,
+      );
     }
 
     if (event is SelectRemainingTickets) {
-      yield state.copyWith(remaningTickets: event.enable);
+      yield state.copyWith(
+        remaningTickets: event.enable,
+        uploadRequired: true,
+      );
     }
 
     if (event is RegistrationLabelInput) {
-      yield state.copyWith(bookButtonLabel: event.input);
+      yield state.copyWith(
+        bookButtonLabel: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is FacebookLinkInput) {
-      yield state.copyWith(facebookLink: event.input);
+      yield state.copyWith(
+        facebookLink: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is TwitterLinkInput) {
-      yield state.copyWith(twitterLink: event.input);
+      yield state.copyWith(
+        twitterLink: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is LinkedInLinkInput) {
-      yield state.copyWith(linkdinLink: event.input);
+      yield state.copyWith(
+        linkdinLink: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is WebsiteLinkInput) {
-      yield state.copyWith(websiteLink: event.input);
+      yield state.copyWith(
+        websiteLink: event.input,
+        uploadRequired: true,
+      );
     }
 
     if (event is TnCInput) {
@@ -323,6 +385,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         final settingResponse =
         networkServiceResponse.response as SettingResponse;
         if (settingResponse.code == apiCodeSuccess) {
+          state.uploadRequired = false;
           add(SettingDataUploadResult(true, uiMsg: settingResponse.message));
           event.callback(settingResponse);
         } else {

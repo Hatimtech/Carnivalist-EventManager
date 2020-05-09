@@ -16,6 +16,8 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardState extends State<DashboardPage> {
+  DateTime prevBackPressTime;
+
   UserBloc _userBloc;
   EventBloc _eventBloc;
 
@@ -34,123 +36,127 @@ class _DashboardState extends State<DashboardPage> {
         floatingActionButton: FloatingActionButton(
             heroTag: "btn1",
             backgroundColor: bgColorFAB,
-            onPressed: () => Navigator.pushNamed(context, eventMenuRoute),
+            onPressed: onCreateEventButtonPressed,
             child: Icon(
               Icons.add,
               size: 48.0,
             )),
-        body: Column(children: <Widget>[
-          _buildErrorReceiverEmptyBloc(),
-          Container(
-              child: Stack(
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      AppLocalizations
-                          .of(context)
-                          .titleDashboard,
-                      style: Theme
-                          .of(context)
-                          .appBarTheme
-                          .textTheme
-                          .title,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.power_settings_new,
-                          color: Theme
-                              .of(context)
-                              .appBarTheme
-                              .iconTheme
-                              .color,
-                        ),
-                        onPressed: () {
-                          _userBloc.clearLoginDetails();
-                          return Navigator.of(context)
-                              .pushReplacementNamed(loginRoute);
-                        }),
-                  ),
-                ],
-              ),
-              height: 100,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    colorFilter:
-                    ColorFilter.mode(colorHeaderBgFilter, BlendMode.srcATop),
-                    image: AssetImage(headerBackgroundImage),
-                    fit: BoxFit.fitWidth,
-                  ))),
-          Container(
-              padding: EdgeInsets.only(top: 10, bottom: 5),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        body: WillPopScope(
+          onWillPop: () {
+            return doubleBackPressToExit();
+          },
+          child: Column(children: <Widget>[
+            _buildErrorReceiverEmptyBloc(),
+            Container(
+                child: Stack(
                   children: <Widget>[
-                    Wrap(spacing: 2.0, children: <Widget>[
-                      _category(Icons.account_balance_wallet, "COUPONS"),
-                      _category(Icons.note_add, "ADD ONS"),
-                      _category(Icons.note, "REPORTS"),
-                      _category(Icons.people, "STAFF")
-                    ])
-                  ])),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                _eventBloc.getAllEvents();
-                return;
-              },
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Column(children: <Widget>[
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                _categoryCounter(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelTicketsSold,
-                                    '00'),
-                                SizedBox(width: 10),
-                                BlocBuilder<EventBloc, EventState>(
-                                    bloc: _eventBloc,
-                                    condition: (prevState, newState) =>
-                                    prevState.eventDataList !=
-                                        newState.eventDataList,
-                                    builder: (_, state) {
-                                      return _categoryCounter(
-                                          AppLocalizations
-                                              .of(context)
-                                              .labelUpcomingEvent,
-                                          state.upcomingEventsCount.toString());
-                                    })
-                              ]),
-                          const SizedBox(height: 5),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                _categoryCounter(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelCoupons,
-                                    '00'),
-                                SizedBox(width: 10),
-                                _categoryCounter(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelAddons,
-                                    '00')
-                              ])
-                        ])),
-                  ),
-                  EventFilter(),
-                  EventList(),
+                    Center(
+                      child: Text(
+                        AppLocalizations
+                            .of(context)
+                            .titleDashboard,
+                        style: Theme
+                            .of(context)
+                            .appBarTheme
+                            .textTheme
+                            .title,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.power_settings_new,
+                            color:
+                            Theme
+                                .of(context)
+                                .appBarTheme
+                                .iconTheme
+                                .color,
+                          ),
+                          onPressed: () {
+                            showLogoutConfirmationDialog();
+                          }),
+                    ),
+                  ],
+                ),
+                height: 100,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                      colorFilter:
+                      ColorFilter.mode(colorHeaderBgFilter, BlendMode.srcATop),
+                      image: AssetImage(headerBackgroundImage),
+                      fit: BoxFit.fitWidth,
+                    ))),
+            Container(
+                padding: EdgeInsets.only(top: 10, bottom: 5),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Wrap(spacing: 2.0, children: <Widget>[
+                        _category(Icons.account_balance_wallet, "COUPONS"),
+                        _category(Icons.note_add, "ADD ONS"),
+                        _category(Icons.note, "REPORTS"),
+                        _category(Icons.people, "STAFF")
+                      ])
+                    ])),
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  _eventBloc.getAllEvents();
+                  return;
+                },
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverToBoxAdapter(
+                      child: Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Column(children: <Widget>[
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  _categoryCounter(
+                                      AppLocalizations
+                                          .of(context)
+                                          .labelTicketsSold,
+                                      '00'),
+                                  SizedBox(width: 10),
+                                  BlocBuilder<EventBloc, EventState>(
+                                      bloc: _eventBloc,
+                                      condition: (prevState, newState) =>
+                                      prevState.eventDataList !=
+                                          newState.eventDataList,
+                                      builder: (_, state) {
+                                        return _categoryCounter(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelUpcomingEvent,
+                                            state.upcomingEventsCount
+                                                .toString());
+                                      })
+                                ]),
+                            const SizedBox(height: 5),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  _categoryCounter(
+                                      AppLocalizations
+                                          .of(context)
+                                          .labelCoupons,
+                                      '00'),
+                                  SizedBox(width: 10),
+                                  _categoryCounter(
+                                      AppLocalizations
+                                          .of(context)
+                                          .labelAddons,
+                                      '00')
+                                ])
+                          ])),
+                    ),
+                    EventFilter(),
+                    EventList(),
 //                Container(
 //                    padding: EdgeInsets.all(10),
 //                    child: Text(
@@ -158,11 +164,12 @@ class _DashboardState extends State<DashboardPage> {
 //                      style: Theme.of(context).textTheme.subtitle,
 //                    )),
 //                _upComingEvents()
-                ],
+                  ],
+                ),
               ),
-            ),
-          )
-        ]));
+            )
+          ]),
+        ));
   }
 
   _category(IconData iconData, String name) =>
@@ -330,4 +337,68 @@ class _DashboardState extends State<DashboardPage> {
           return SizedBox.shrink();
         },
       );
+
+  Future<void> onCreateEventButtonPressed() async {
+    var refresh = await Navigator.pushNamed(context, eventMenuRoute);
+    if (refresh ?? false) _eventBloc.getAllEvents();
+  }
+
+  Future<bool> doubleBackPressToExit() async {
+    DateTime now = DateTime.now();
+    if (prevBackPressTime == null ||
+        now.difference(prevBackPressTime) >= Duration(seconds: 3)) {
+      prevBackPressTime = now;
+      context.toast(
+        AppLocalizations
+            .of(context)
+            .exitWarning,
+        duration: const Duration(seconds: 2),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  void showLogoutConfirmationDialog() {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(
+        AppLocalizations
+            .of(context)
+            .logoutTitle,
+        style: Theme
+            .of(context)
+            .textTheme
+            .title
+            .copyWith(fontSize: 16.0),
+      ),
+      content: Text(
+        AppLocalizations
+            .of(context)
+            .logoutMsg,
+        style: Theme
+            .of(context)
+            .textTheme
+            .title
+            .copyWith(fontSize: 16.0, fontWeight: FontWeight.normal),
+      ),
+      actions: <Widget>[
+        FlatButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalizations
+                .of(context)
+                .btnCancel)),
+        FlatButton(
+            onPressed: () {
+              _userBloc.clearLoginDetails();
+              Navigator.pop(context);
+              Navigator.of(context).pushReplacementNamed(loginRoute);
+            },
+            child: Text(AppLocalizations
+                .of(context)
+                .btnLogout)),
+      ],
+    );
+
+    showDialog(context: context, builder: (context) => alertDialog);
+  }
 }

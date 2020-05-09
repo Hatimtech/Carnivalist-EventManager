@@ -199,6 +199,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
             var galleryResponse =
             networkServiceResponse.response as GalleryResponse;
             if (galleryResponse.code == apiCodeSuccess) {
+              yield state.copyWith(uiMsg: galleryResponse.message);
               event.callback(galleryResponse);
               state.uploadRequired = false;
             } else {
@@ -213,8 +214,8 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
                 networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG);
             event.callback(networkServiceResponse.error);
           }
-        } catch (error) {
-          print('Exception Occured--->$error');
+        } catch (error, stack) {
+          print('Exception Occured--->$error\n$stack');
           yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
           event.callback(null);
         }
