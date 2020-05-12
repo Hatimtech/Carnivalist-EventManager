@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
@@ -37,6 +38,10 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
 
   void activeInactiveTicket(String ticketId, bool active, Function callback) {
     add(ActiveInactiveTicket(ticketId, active, callback));
+  }
+
+  void assignAddon(String ticketId, List<String> addonIds, Function callback) {
+    add(AssignAddon(ticketId, addonIds, callback));
   }
 
   @override
@@ -109,6 +114,25 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
         loading: false,
       );
     }
+
+    if (event is AssignAddon) {
+      assignAddonsApi(event);
+    }
+
+    if (event is AssignAddonResult) {
+      if (event.success) {
+        int removeIndex = state.ticketsList
+            .indexWhere((ticket) => ticket.sId == event.ticket.sId);
+        state.ticketsList.removeAt(removeIndex);
+        state.ticketsList.insert(removeIndex, event.ticket);
+        yield state.copyWith(
+            ticketsList: List.of(state.ticketsList),
+            loading: false,
+            uiMsg: event.uiMsg);
+      } else {
+        yield state.copyWith(loading: false, uiMsg: event.uiMsg);
+      }
+    }
   }
 
   void deleteTicketApi(DeleteTicket event) {
@@ -173,6 +197,38 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
       print('Error in activeInactiveTicketApi--->$error');
       add(ActiveInactiveTicketResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
       event.callback(ERR_SOMETHING_WENT_WRONG);
+    });
+  }
+
+  void assignAddonsApi(AssignAddon event) {
+    final ticket =
+    state.ticketsList.firstWhere((ticket) => ticket.sId == event.ticketId);
+    ticket.addons = event.addonIds;
+    apiProvider
+        .assignAddon(state.authToken, ticket, ticketId: event.ticketId)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        var createTicketResponse =
+        networkServiceResponse.response as CreateTicketResponse;
+        if (createTicketResponse.code == apiCodeSuccess) {
+          add(AssignAddonResult(true,
+              uiMsg: createTicketResponse.message,
+              ticket: createTicketResponse.ticket));
+          event.callback(createTicketResponse);
+        } else {
+          add(AssignAddonResult(false,
+              uiMsg: createTicketResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(createTicketResponse.message);
+        }
+      } else {
+        add(AssignAddonResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error) {
+      print('Error in assignAddonsApi--->$error');
+      add(AssignAddonResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(error);
     });
   }
 }

@@ -67,6 +67,10 @@ class _EventMenuState extends State<EventMenuPage>
     _galleryBloc = BlocProvider.of<GalleryBloc>(context);
     _settingBloc = BlocProvider.of<SettingBloc>(context);
 
+//    final _addonBloc = BlocProvider.of<AddonBloc>(context);
+//    _addonBloc.authTokenSave(_userBloc.state.authToken);
+//    _addonBloc.getAllAddons();
+
     if (isValid(widget.eventId)) {
       _eventData = _eventBloc.state.findById(widget.eventId);
     }
@@ -257,11 +261,13 @@ class _EventMenuState extends State<EventMenuPage>
                               isScrollable: false,
                               indicatorSize: TabBarIndicatorSize.tab,
                               onTap: (pos) {
-//                              if (pos > 0 && !isValid(_basicBloc.eventDataId)) {
-//                                context.toast(
-//                                    AppLocalizations.of(context).validateStep1);
-//                                _tabController.index = 0;
-//                              }
+                                if (pos > 0 &&
+                                    !isValid(_basicBloc.eventDataId)) {
+                                  context.toast(AppLocalizations
+                                      .of(context)
+                                      .validateStep1);
+                                  _tabController.index = 0;
+                                }
                               },
                               tabs: [
                                 Tab(

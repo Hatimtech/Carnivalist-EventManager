@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
+import 'package:eventmanagement/bloc/addon/addon_state.dart';
+import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
@@ -11,22 +16,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardPage extends StatefulWidget {
+  const DashboardPage({Key key}) : super(key: key);
+
   @override
   createState() => _DashboardState();
 }
 
 class _DashboardState extends State<DashboardPage> {
-  DateTime prevBackPressTime;
-
+  PageNavBloc _pageNavBloc;
   UserBloc _userBloc;
   EventBloc _eventBloc;
+  AddonBloc _addonBloc;
 
   @override
   void initState() {
     super.initState();
+    _pageNavBloc = BlocProvider.of<PageNavBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
     _eventBloc = BlocProvider.of<EventBloc>(context);
     _eventBloc.authTokenSave(_userBloc.state.authToken);
+
+    _addonBloc = BlocProvider.of<AddonBloc>(context);
+    _addonBloc.authTokenSave(_userBloc.state.authToken);
+    initDownload();
+  }
+
+  void initDownload() {
+    if (PageStorage.of(context)
+        .readState(context, identifier: 'INIT_DOWNLOAD') ??
+        true) {
+      _eventBloc.getAllEvents();
+      _addonBloc.getAllAddons();
+      PageStorage.of(context)
+          .writeState(context, false, identifier: 'INIT_DOWNLOAD');
+    }
   }
 
   @override
@@ -34,129 +57,127 @@ class _DashboardState extends State<DashboardPage> {
     return Scaffold(
         backgroundColor: bgColor,
         floatingActionButton: FloatingActionButton(
-            heroTag: "btn1",
+            heroTag: "FAB",
             backgroundColor: bgColorFAB,
             onPressed: onCreateEventButtonPressed,
             child: Icon(
               Icons.add,
               size: 48.0,
             )),
-        body: WillPopScope(
-          onWillPop: () {
-            return doubleBackPressToExit();
-          },
-          child: Column(children: <Widget>[
-            _buildErrorReceiverEmptyBloc(),
-            Container(
-                child: Stack(
+        body: Column(children: <Widget>[
+          _buildErrorReceiverEmptyBloc(),
+          Container(
+              padding: EdgeInsets.only(top: 10, bottom: 5),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Center(
-                      child: Text(
+                    Wrap(spacing: 2.0, children: <Widget>[
+                      _category(
+                        Icons.account_balance_wallet,
                         AppLocalizations
                             .of(context)
-                            .titleDashboard,
-                        style: Theme
-                            .of(context)
-                            .appBarTheme
-                            .textTheme
-                            .title,
+                            .labelCoupons
+                            .toUpperCase(),
+                            () {
+//                          _pageNavBloc.currentPage(PAGE_COUPONS);
+                        },
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                          icon: Icon(
-                            Icons.power_settings_new,
-                            color:
-                            Theme
-                                .of(context)
-                                .appBarTheme
-                                .iconTheme
-                                .color,
-                          ),
-                          onPressed: () {
-                            showLogoutConfirmationDialog();
-                          }),
-                    ),
-                  ],
-                ),
-                height: 100,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      colorFilter:
-                      ColorFilter.mode(colorHeaderBgFilter, BlendMode.srcATop),
-                      image: AssetImage(headerBackgroundImage),
-                      fit: BoxFit.fitWidth,
-                    ))),
-            Container(
-                padding: EdgeInsets.only(top: 10, bottom: 5),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Wrap(spacing: 2.0, children: <Widget>[
-                        _category(Icons.account_balance_wallet, "COUPONS"),
-                        _category(Icons.note_add, "ADD ONS"),
-                        _category(Icons.note, "REPORTS"),
-                        _category(Icons.people, "STAFF")
-                      ])
-                    ])),
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  _eventBloc.getAllEvents();
-                  return;
-                },
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverToBoxAdapter(
-                      child: Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          child: Column(children: <Widget>[
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  _categoryCounter(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelTicketsSold,
-                                      '00'),
-                                  SizedBox(width: 10),
-                                  BlocBuilder<EventBloc, EventState>(
-                                      bloc: _eventBloc,
-                                      condition: (prevState, newState) =>
-                                      prevState.eventDataList !=
-                                          newState.eventDataList,
-                                      builder: (_, state) {
-                                        return _categoryCounter(
-                                            AppLocalizations
-                                                .of(context)
-                                                .labelUpcomingEvent,
-                                            state.upcomingEventsCount
-                                                .toString());
-                                      })
-                                ]),
-                            const SizedBox(height: 5),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  _categoryCounter(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelCoupons,
-                                      '00'),
-                                  SizedBox(width: 10),
-                                  _categoryCounter(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelAddons,
-                                      '00')
-                                ])
-                          ])),
-                    ),
-                    EventFilter(),
-                    EventList(),
+                      _category(
+                        Icons.note_add,
+                        AppLocalizations
+                            .of(context)
+                            .labelAddons
+                            .toUpperCase(),
+                            () {
+                          _pageNavBloc.currentPage(PAGE_ADDONS);
+                        },
+                      ),
+                      _category(
+                        Icons.note,
+                        AppLocalizations
+                            .of(context)
+                            .labelReports
+                            .toUpperCase(),
+                            () {
+//                          _pageNavBloc.currentPage(PAGE_REPORTS);
+                        },
+                      ),
+                      _category(
+                        Icons.people,
+                        AppLocalizations
+                            .of(context)
+                            .labelStaff
+                            .toUpperCase(),
+                            () {
+//                          _pageNavBloc.currentPage(PAGE_STAFF);
+                        },
+                      )
+                    ])
+                  ])),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                Completer<bool> downloadCompleter = Completer();
+                _eventBloc.getAllEvents(downloadCompleter: downloadCompleter);
+                return downloadCompleter.future;
+              },
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Column(children: <Widget>[
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                _categoryCounter(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelTicketsSold,
+                                    '00'),
+                                SizedBox(width: 10),
+                                BlocBuilder<EventBloc, EventState>(
+                                    bloc: _eventBloc,
+                                    condition: (prevState, newState) =>
+                                    prevState.eventDataList !=
+                                        newState.eventDataList,
+                                    builder: (_, state) {
+                                      return _categoryCounter(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelUpcomingEvent,
+                                          state.upcomingEventsCount.toString());
+                                    })
+                              ]),
+                          const SizedBox(height: 5),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                _categoryCounter(
+                                    AppLocalizations
+                                        .of(context)
+                                        .labelCoupons,
+                                    '00'),
+                                SizedBox(width: 10),
+                                BlocBuilder<AddonBloc, AddonState>(
+                                    bloc: _addonBloc,
+                                    condition: (prevState, newState) =>
+                                    prevState.addonList !=
+                                        newState.addonList,
+                                    builder: (_, state) {
+                                      return _categoryCounter(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelAddons,
+                                          state.addonList?.length?.toString() ??
+                                              '00');
+                                    })
+                              ])
+                        ])),
+                  ),
+                  EventFilter(),
+                  EventList(),
 //                Container(
 //                    padding: EdgeInsets.all(10),
 //                    child: Text(
@@ -164,38 +185,40 @@ class _DashboardState extends State<DashboardPage> {
 //                      style: Theme.of(context).textTheme.subtitle,
 //                    )),
 //                _upComingEvents()
-                  ],
-                ),
+                ],
               ),
-            )
-          ]),
-        ));
+            ),
+          )
+        ]));
   }
 
-  _category(IconData iconData, String name) =>
-      Card(
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0))),
-          child: Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width / 4.5,
-              padding: new EdgeInsets.all(10.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(iconData, size: 18, color: colorIconSecondary),
-                    const SizedBox(height: 10),
-                    Text(
-                      name,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .subhead,
-                    )
-                  ])));
+  _category(IconData iconData, String name, Function handler) =>
+      GestureDetector(
+        onTap: handler,
+        child: Card(
+            color: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            child: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 4.5,
+                padding: new EdgeInsets.all(10.0),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(iconData, size: 18, color: colorIconSecondary),
+                      const SizedBox(height: 10),
+                      Text(
+                        name,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .subhead,
+                      )
+                    ]))),
+      );
 
   _categoryCounter(String name, String counter) => Card(
       color: bgColorSecondary,
@@ -341,64 +364,5 @@ class _DashboardState extends State<DashboardPage> {
   Future<void> onCreateEventButtonPressed() async {
     var refresh = await Navigator.pushNamed(context, eventMenuRoute);
     if (refresh ?? false) _eventBloc.getAllEvents();
-  }
-
-  Future<bool> doubleBackPressToExit() async {
-    DateTime now = DateTime.now();
-    if (prevBackPressTime == null ||
-        now.difference(prevBackPressTime) >= Duration(seconds: 3)) {
-      prevBackPressTime = now;
-      context.toast(
-        AppLocalizations
-            .of(context)
-            .exitWarning,
-        duration: const Duration(seconds: 2),
-      );
-      return false;
-    }
-    return true;
-  }
-
-  void showLogoutConfirmationDialog() {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(
-        AppLocalizations
-            .of(context)
-            .logoutTitle,
-        style: Theme
-            .of(context)
-            .textTheme
-            .title
-            .copyWith(fontSize: 16.0),
-      ),
-      content: Text(
-        AppLocalizations
-            .of(context)
-            .logoutMsg,
-        style: Theme
-            .of(context)
-            .textTheme
-            .title
-            .copyWith(fontSize: 16.0, fontWeight: FontWeight.normal),
-      ),
-      actions: <Widget>[
-        FlatButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalizations
-                .of(context)
-                .btnCancel)),
-        FlatButton(
-            onPressed: () {
-              _userBloc.clearLoginDetails();
-              Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(loginRoute);
-            },
-            child: Text(AppLocalizations
-                .of(context)
-                .btnLogout)),
-      ],
-    );
-
-    showDialog(context: context, builder: (context) => alertDialog);
   }
 }

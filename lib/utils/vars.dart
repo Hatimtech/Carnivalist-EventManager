@@ -44,7 +44,7 @@ const String contactRoute = '/contact';
 const String dashboardRoute = '/dashboard';
 const String bottomMenuRoute = '/bottomMenu';
 const String eventMenuRoute = '/eventMenu';
-const String videoPlayerMenuRoute = '/videoPlayerMenu';
+const String eventDetailRoute = '/eventDetail';
 
 const String profileImage = 'assets/images/user_profile.png';
 const String headerBackgroundImage = 'assets/images/header_background.png';
@@ -55,6 +55,13 @@ const String bottomMenuBarCouponsImage =
     'assets/images/bottom_menu_bar_user.png';
 const String bottomMenuBarAddImage = 'assets/images/bottom_menu_bar_user.png';
 const String bottomMenuBarUserImage = 'assets/images/bottom_menu_bar_user.png';
+
+// Navigation Pages Constants
+const int PAGE_DASHBOARD = 0;
+const int PAGE_COUPONS = 1;
+const int PAGE_ADDONS = 2;
+const int PAGE_REPORTS = 3;
+const int PAGE_STAFF = 4;
 
 //TODO COLOR
 const Color colorPrimary = Color(0xFF0713D1);
@@ -70,6 +77,7 @@ const Color colorTextAction = Color(0xFF0713D1);
 
 const Color bgColor = Color(0xFFFFF4FF);
 const Color bgColorSecondary = Color(0xFFF7E4FC);
+const Color bgColorSelection = Color(0xFF7E007E);
 const Color bgColorCard = Color(0xFFFFFFFF);
 const Color bgColorButton = Color(0xFF8C3EE9);
 const Color bgColorFAB = Color(0xFF9249F4);
@@ -275,6 +283,10 @@ String uiLabelWeekday(String label, BuildContext context) {
   }
 }
 
+// Page Storage Keys
+const String PAGE_STORAGE_KEY_DASHBOARD = 'DashboardPage';
+const String PAGE_STORAGE_KEY_ADDON = 'AddonPage';
+
 // Error Codes
 const int ERR_EVENT_NAME = 1;
 const int ERR_EVENT_TYPE = 2;
@@ -317,6 +329,17 @@ const int ERR_NO_LIST_ITEM = 30;
 const int ERR_CANCELLATION_DESC = 31;
 const int ERR_CANCELLATION_OPTION = 32;
 const int ERR_TNC = 33;
+
+const int ERR_ADDON_NAME = 34;
+const int ERR_ADDON_START_DATE = 35;
+const int ERR_ADDON_END_DATE = 36;
+const int ERR_ADDON_START_DATE_AFTER = 37;
+const int ERR_ADDON_TOTAL_AVA = 38;
+const int ERR_ADDON_PRICE = 39;
+const int ERR_ADDON_DESCRIPTION = 40;
+const int ERR_ADDON_CONV_FEE_TYPE = 41;
+const int ERR_ADDON_CONV_FEE = 42;
+const int ERR_ADDON_IMAGE = 43;
 
 const int ERR_NO_INTERNET = 99;
 const int ERR_SOMETHING_WENT_WRONG = 100;
@@ -394,6 +417,27 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorNoCancellationOption;
     case ERR_TNC:
       return appLoc.errorTnc;
+
+    case ERR_ADDON_NAME:
+      return appLoc.errorAddonName;
+    case ERR_ADDON_START_DATE:
+      return appLoc.errorAddonStartDate;
+    case ERR_ADDON_END_DATE:
+      return appLoc.errorAddonEndDate;
+    case ERR_ADDON_START_DATE_AFTER:
+      return appLoc.errorAddonStartDateAfter;
+    case ERR_ADDON_TOTAL_AVA:
+      return appLoc.errorAddonTotalAva;
+    case ERR_ADDON_PRICE:
+      return appLoc.errorAddonPrice;
+    case ERR_ADDON_DESCRIPTION:
+      return appLoc.errorAddonDesc;
+    case ERR_ADDON_CONV_FEE_TYPE:
+      return appLoc.errorAddonConvFeeType;
+    case ERR_ADDON_CONV_FEE:
+      return appLoc.errorAddonConvFee;
+    case ERR_ADDON_IMAGE:
+      return appLoc.errorAddonImage;
 
     case ERR_NO_INTERNET:
       return appLoc.errorNoInternet;

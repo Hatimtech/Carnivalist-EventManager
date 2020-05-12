@@ -521,7 +521,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       final String eventPostalCode = existingData.place?.pincode;
       final String eventDescription = existingData.description;
 
-      List<EventCustomDate> eventCustomDateTimeList;
+      List<EventCustomDate> eventCustomDateTimeList = [];
       if (existingData.custom?.selectedDays != null &&
           (existingData.custom?.selectedDays?.length ?? 0) > 0) {
         eventCustomDateTimeList

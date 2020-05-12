@@ -1,5 +1,7 @@
+import 'package:eventmanagement/model/addons/addon.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
+import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
 
 class MockService implements APIService {
@@ -90,6 +92,21 @@ class MockService implements APIService {
 
   @override
   deleteEvent(String authToken, String eventId) {
+    return null;
+  }
+
+  @override
+  getAllAddons(String authToken, bool assigning) {
+    return null;
+  }
+
+  @override
+  uploadAddon(String authToken, Addon addon) {
+    return null;
+  }
+
+  @override
+  assignAddon(String authToken, Ticket ticket, {String ticketId}) {
     return null;
   }
 }

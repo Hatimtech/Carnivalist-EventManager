@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:eventmanagement/model/addons/addon.dart';
+import 'package:eventmanagement/model/addons/addon_response.dart';
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
 import 'package:eventmanagement/model/event/carnivals/carnival_resonse.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
@@ -12,6 +14,7 @@ import 'package:eventmanagement/model/event/gallery/media_upload_response.dart';
 import 'package:eventmanagement/model/event/settings/setting_response.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
+import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/model/event/tickets/tickets_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
@@ -24,7 +27,7 @@ import '../network_type.dart';
 import '../restclient.dart';
 
 class NetworkService extends NetworkType implements APIService {
-  static final _baseUrl = 'https://backend.carnivalist.tk';
+  static final _baseUrl = 'https://dev.backend.aktv.life';
   static final _subUrl = '/api/';
   final _loginUrl = _baseUrl + _subUrl + 'user/login';
   final _loginDetailUrl = _baseUrl + _subUrl + 'user/get-user-details';
@@ -49,6 +52,10 @@ class NetworkService extends NetworkType implements APIService {
 
   final _activeInactiveEventUrl = _baseUrl + _subUrl + 'toggle-active';
   final _deleteEventUrl = _baseUrl + _subUrl + 'delete-event/';
+
+  final _addonListUrl = _baseUrl + _subUrl + 'view-addons/';
+  final _addonTicketListUrl = _baseUrl + _subUrl + 'get-addons-for-tickets/';
+  final _addonUploadUrl = _baseUrl + _subUrl + 'create-addons/';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -360,6 +367,72 @@ class NetworkService extends NetworkType implements APIService {
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = EventActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  getAllAddons(String authToken, bool assigning) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<List<Addon>>(
+        assigning ? _addonTicketListUrl : _addonListUrl, headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      final addonListIterable = json.decode(result.mappedResult) as Iterable;
+
+      if (addonListIterable != null && addonListIterable.isNotEmpty) {
+        final addonList = addonListIterable
+            .map((addonMap) => Addon.fromJson(addonMap))
+            .toList();
+        result.networkServiceResponse.response = addonList;
+      }
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  uploadAddon(String authToken, Addon addon) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<AddonResponse>(_addonUploadUrl,
+        body: json.encode(addon),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = AddonResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  @override
+  assignAddon(String authToken, Ticket ticket,
+      {String ticketId}) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<CreateTicketResponse>(
+        '${ticketId != null
+            ? _updateTicketsUrl
+            : _createTicketsUrl}${ticketId != null ? '/$ticketId' : ''}',
+        body: json.encode(ticket),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = CreateTicketResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
     return result.networkServiceResponse;

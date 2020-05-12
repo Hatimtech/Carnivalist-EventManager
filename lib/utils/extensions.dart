@@ -122,6 +122,7 @@ extension WidgetExtensions on Widget {
     String initialValue,
     ValueChanged<String> onChanged,
     int maxLength,
+    bool enabled,
     TextInputType keyboardType,
     String hintText,
     String labelText,
@@ -154,6 +155,7 @@ extension WidgetExtensions on Widget {
             if (focusNode != null) focusNode.unfocus();
           },
           autofocus: false,
+          enabled: enabled,
           decoration: InputDecoration(
             counterText: '',
             focusedErrorBorder: OutlineInputBorder(
@@ -163,6 +165,8 @@ extension WidgetExtensions on Widget {
             focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: colorFocusedBorder, width: 1)),
             enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey, width: 1)),
+            disabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey, width: 1)),
             contentPadding: EdgeInsets.all(5),
             hintText: hintText,

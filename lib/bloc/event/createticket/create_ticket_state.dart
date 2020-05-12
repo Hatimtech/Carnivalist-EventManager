@@ -53,12 +53,11 @@ class CreateTicketState {
       ticketCurrency: 'USD',
       ticketCurrencyUI: 'USD - United States dollar',
       ticketPrice: '19.99',
-      salesEndDate: DateTime(2020, 30, 5),
+      salesEndDate: DateTime(2020, 5, 30),
       totalAvailable: '199',
       minBooking: '1',
       maxBooking: '2',
       description: 'My Mobile Ticket Desc',
-      errorCode: null,
     );
   }*/
 

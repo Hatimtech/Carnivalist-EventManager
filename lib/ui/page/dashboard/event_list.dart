@@ -24,7 +24,6 @@ class _EventListState extends State<EventList> {
   void initState() {
     super.initState();
     _eventBloc = BlocProvider.of<EventBloc>(context);
-    _eventBloc.getAllEvents();
   }
 
   @override
@@ -198,6 +197,10 @@ class _EventListState extends State<EventList> {
                     : AppLocalizations.of(context).labelActiveEvent,
                 eventData,
                 inactiveActiveEvent),
+          _buildMaterialEventAction(AppLocalizations
+              .of(context)
+              .labelViewEvent,
+              eventData, viewEvent),
           _buildMaterialEventAction(AppLocalizations.of(context).labelEditEvent,
               eventData, editEvent),
           _buildMaterialEventAction(
@@ -246,6 +249,10 @@ class _EventListState extends State<EventList> {
                   : AppLocalizations.of(context).labelActiveEvent,
               eventData,
               inactiveActiveEvent),
+        _buildCupertinoEventAction(AppLocalizations
+            .of(context)
+            .labelViewEvent,
+            eventData, viewEvent),
         _buildCupertinoEventAction(
             AppLocalizations.of(context).labelEditEvent, eventData, editEvent),
         _buildCupertinoEventAction(
@@ -292,6 +299,11 @@ class _EventListState extends State<EventList> {
         (response) {
       context.hideProgress(context);
     });
+  }
+
+  void viewEvent(EventData eventData) async {
+    Navigator.pushNamed(context, eventDetailRoute,
+        arguments: eventData.id);
   }
 
   Future<void> editEvent(EventData eventData) async {

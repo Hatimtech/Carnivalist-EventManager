@@ -27,11 +27,4 @@ class CancellationOption {
     if (this.refundValue != null) data['refundValue'] = this.refundValue;
     return data;
   }
-
-  @override
-  String toString() {
-    return 'CancellationOption{refundType: $refundType, cancellationEndDate: $cancellationEndDate, refundValue: $refundValue}';
-  }
-
-
 }

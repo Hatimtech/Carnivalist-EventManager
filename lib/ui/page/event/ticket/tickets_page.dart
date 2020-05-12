@@ -1,3 +1,4 @@
+import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
 import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/createticket/create_ticket_bloc.dart';
 import 'package:eventmanagement/bloc/event/tickets/tickets_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:eventmanagement/bloc/event/tickets/tickets_state.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
+import 'package:eventmanagement/ui/page/event/ticket/assign_addon_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_scroll_bar.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
@@ -353,7 +355,38 @@ class _TicketsState extends State<TicketsPage> {
     );
   }
 
-  void assignAddon(Ticket ticket) {}
+  Future<void> assignAddon(Ticket ticket) async {
+    dynamic addonIds;
+
+    print('Previous Ticket Addons--->${ticket.addons}');
+    if (isPlatformAndroid)
+      addonIds = await showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) {
+            return BlocProvider(
+              create: (BuildContext context) => AddonBloc(assigning: true),
+              child: AssignAddonPage(ticket.addons),
+            );
+          });
+    else
+      addonIds = await showCupertinoModalPopup(
+          context: context,
+          builder: (context) {
+            return BlocProvider(
+              create: (BuildContext context) => AddonBloc(assigning: true),
+              child: AssignAddonPage(ticket.addons),
+            );
+          });
+
+    if (addonIds != null && addonIds is List<String>) {
+      context.showProgress(context);
+
+      _ticketsBloc.assignAddon(ticket.sId, addonIds, (results) {
+        context.hideProgress(context);
+      });
+    }
+  }
 
   void assignCoupon(Ticket ticket) {}
 

@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
+import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/menu/event_menu_page.dart';
+import 'package:eventmanagement/ui/page/eventdetails/event_detail_root_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_app.dart';
 import 'package:eventmanagement/utils/orientation.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,10 +54,16 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return BlocProvider(
-      create: (context) => UserBloc(),
+      create: (context) => PageNavBloc(),
       child: BlocProvider(
-        create: (context) => EventBloc(),
-        child: _buildPlatformApp(),
+        create: (context) => UserBloc(),
+        child: BlocProvider(
+          create: (context) => EventBloc(),
+          child: BlocProvider(
+            create: (context) => AddonBloc(),
+            child: _buildPlatformApp(),
+          ),
+        ),
       ),
     );
   }
@@ -90,6 +99,7 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
           dashboardRoute: (BuildContext context) => DashboardPage(),
           eventMenuRoute: (BuildContext context) =>
               createEventPageRoute(context),
+          eventDetailRoute: (BuildContext context) => EventDetailRootPage(),
         });
   }
 
@@ -113,8 +123,10 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
         child: ForgotPasswordPage(),
       );
 
-  Widget createEventPageRoute(BuildContext context) =>
-      BlocProvider(
+  Widget createEventPageRoute(BuildContext context) {
+    return BlocProvider(
+      create: (BuildContext context) => AddonBloc(assigning: true),
+      child: BlocProvider(
         create: (context) => BasicBloc(),
         child: BlocProvider(
           create: (context) => SettingBloc(),
@@ -133,7 +145,9 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
                 )),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 bool get isPlatformAndroid {

@@ -1,5 +1,3 @@
-
-
 import 'package:eventmanagement/model/menu_custom.dart';
 
 getBasicEventFrequency() =>
@@ -14,7 +12,7 @@ getBasicEventPrivacy() =>
     <MenuCustom>[
       MenuCustom(name: 'Public', value: 'public'),
       MenuCustom(name: 'Private', value: 'private')
-];
+    ];
 
 getPaymentType() => <MenuCustom>[
   MenuCustom(name: 'Me', value: 'me'),
@@ -33,4 +31,16 @@ getEventFilterStatus() =>
       MenuCustom(name: 'UPCOMING'),
       MenuCustom(name: 'DRAFT'),
       MenuCustom(name: 'PAST EVENTS'),
+    ];
+
+getAddonPrivacy() =>
+    <MenuCustom>[
+      MenuCustom(name: 'PUBLIC', value: 'PUBLIC'),
+      MenuCustom(name: 'PRIVATE', value: 'PRIVATE'),
+    ];
+
+getAddonConvFeeType() =>
+    <MenuCustom>[
+      MenuCustom(name: 'Amount', value: 'Amount'),
+      MenuCustom(name: 'Percentage', value: 'Percentage'),
     ];

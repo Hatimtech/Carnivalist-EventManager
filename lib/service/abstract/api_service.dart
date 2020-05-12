@@ -1,5 +1,7 @@
+import 'package:eventmanagement/model/addons/addon.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
+import 'package:eventmanagement/model/event/tickets/tickets.dart';
 
 abstract class APIService {
   login(Map<String, dynamic> param);
@@ -39,4 +41,10 @@ abstract class APIService {
 
   activeInactiveEvent(String authToken, Map<String, dynamic> param,
       String eventId);
+
+  uploadAddon(String authToken, Addon addon);
+
+  getAllAddons(String authToken, bool assigning);
+
+  assignAddon(String authToken, Ticket ticket, {String ticketId});
 }

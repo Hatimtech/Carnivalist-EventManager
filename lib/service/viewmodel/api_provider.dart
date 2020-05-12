@@ -1,5 +1,7 @@
+import 'package:eventmanagement/model/addons/addon.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
+import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
 import 'package:eventmanagement/service/di/dependency_injection.dart';
 
@@ -20,8 +22,7 @@ class ApiProvider {
     return await apiService.signUp(param);
   }
 
-  Future<NetworkServiceResponse> getForgotPassword(
-      Map<String, dynamic> param) async {
+  Future<NetworkServiceResponse> getForgotPassword(Map<String, dynamic> param) async {
     return await apiService.forgotPassword(param);
   }
 
@@ -94,5 +95,20 @@ class ApiProvider {
   Future<NetworkServiceResponse> activeInactiveEvent(String authToken,
       Map<String, dynamic> param, String eventId) async {
     return await apiService.activeInactiveEvent(authToken, param, eventId);
+  }
+
+  Future<NetworkServiceResponse> getAllAddons(String authToken,
+      bool assigning) async {
+    return await apiService.getAllAddons(authToken, assigning);
+  }
+
+  Future<NetworkServiceResponse> uploadAddon(String authToken,
+      Addon addon) async {
+    return await apiService.uploadAddon(authToken, addon);
+  }
+
+  Future<NetworkServiceResponse> assignAddon(String authToken, Ticket ticket,
+      {String ticketId}) async {
+    return await apiService.assignAddon(authToken, ticket, ticketId: ticketId);
   }
 }

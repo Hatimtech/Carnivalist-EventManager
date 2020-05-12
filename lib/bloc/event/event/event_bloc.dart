@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
@@ -19,8 +20,8 @@ class EventBloc extends Bloc<EventMain, EventState> {
     add(EventFilterValue(filter: filter));
   }
 
-  void getAllEvents() {
-    add(GetAllEvents());
+  void getAllEvents({Completer<bool> downloadCompleter}) {
+    add(GetAllEvents(downloadCompleter: downloadCompleter));
   }
 
   void deleteEvent(String eventId, Function callback) {
@@ -43,7 +44,7 @@ class EventBloc extends Bloc<EventMain, EventState> {
       yield state.copyWith(eventCurrentFilter: event.filter);
     }
     if (event is GetAllEvents) {
-      yield state.copyWith(loading: true);
+      if (event.downloadCompleter == null) yield state.copyWith(loading: true);
       getAllEventsApi(event);
     }
 
@@ -96,20 +97,22 @@ class EventBloc extends Bloc<EventMain, EventState> {
   void getAllEventsApi(GetAllEvents event) {
     apiProvider.getAllEvents(state.authToken).then((networkServiceResponse) {
       if (networkServiceResponse.responseCode == ok200) {
-        var eventResponse =
-        networkServiceResponse.response as EventResponse;
+        var eventResponse = networkServiceResponse.response as EventResponse;
         if (eventResponse.code == apiCodeSuccess)
-          add(EventListAvailable(true,
-              eventList: eventResponse.events));
+          add(EventListAvailable(true, eventList: eventResponse.events));
         else
           add(EventListAvailable(false, error: ERR_SOMETHING_WENT_WRONG));
       } else {
         add(EventListAvailable(false,
             error: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
       }
+      if (event.downloadCompleter != null)
+        event.downloadCompleter.complete(true);
     }).catchError((error) {
       print('Error in getAllEventsApi--->$error');
       add(EventListAvailable(false, error: ERR_SOMETHING_WENT_WRONG));
+      if (event.downloadCompleter != null)
+        event.downloadCompleter.complete(false);
     });
   }
 

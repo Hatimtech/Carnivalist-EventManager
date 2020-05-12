@@ -53,8 +53,8 @@ class EventState {
       final dateTimeNow = DateTime.now();
       return eventDataList.where((event) {
         try {
-          return isValid(event.startDateTime) &&
-              DateTime.parse(event.startDateTime).isAfter(dateTimeNow) &&
+          return isValid(event.endDateTime) &&
+              DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
               (event.status == 'ACTIVE' || event.status == 'INACTIVE');
         } catch (error) {
           return false;
@@ -68,8 +68,8 @@ class EventState {
       final dateTimeNow = DateTime.now();
       return eventDataList.where((event) {
         try {
-          return isValid(event.startDateTime) &&
-              DateTime.parse(event.startDateTime).isBefore(dateTimeNow);
+          return isValid(event.endDateTime) &&
+              DateTime.parse(event.endDateTime).isBefore(dateTimeNow);
         } catch (error) {
           return false;
         }

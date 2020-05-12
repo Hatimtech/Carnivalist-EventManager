@@ -640,10 +640,16 @@ class _SettingState extends State<SettingPage> {
                 ),
                 BlocBuilder<SettingBloc, SettingState>(
                     bloc: _settingBloc,
-                    condition: (prevState, newState) =>
-                    prevState.cancellationOptions !=
-                        newState.cancellationOptions,
+                    condition: (prevState, newState) {
+                      print(
+                          'prevState.cancellationOptions !=newState.cancellationOptions ${prevState
+                              .cancellationOptions !=
+                              newState.cancellationOptions}');
+                      return prevState.cancellationOptions !=
+                          newState.cancellationOptions;
+                    },
                     builder: (BuildContext context, SettingState state) {
+                      print('list main root');
                       final currentOptionsLength =
                           state.cancellationOptions.length;
                       return Column(
@@ -695,11 +701,16 @@ class _SettingState extends State<SettingPage> {
       key: ValueKey(cancellationOption.hashCode),
       bloc: _settingBloc,
       condition: (prevState, newState) {
+        print('main list con ${newState.cancellationOptions.length ==
+            currentOptionsLength &&
+            (prevState.cancellationOptions[index].refundType !=
+                newState.cancellationOptions[index].refundType)}');
         return newState.cancellationOptions.length == currentOptionsLength &&
             (prevState.cancellationOptions[index].refundType !=
                 newState.cancellationOptions[index].refundType);
       },
       builder: (BuildContext context, state) {
+        print('_buildCancellationOptionView $index');
         final cancellationOption = state.cancellationOptions[index];
         return Column(
           children: <Widget>[
@@ -831,14 +842,23 @@ class _SettingState extends State<SettingPage> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: BlocBuilder<SettingBloc, SettingState>(
-                    condition: (prevState, newState) =>
-                    newState.cancellationOptions.length ==
-                        currentOptionsLength &&
-                        prevState.cancellationOptions[index]
-                            .cancellationEndDate !=
-                            newState.cancellationOptions[index]
-                                .cancellationEndDate,
+                    condition: (prevState, newState) {
+                      print('prevState.cancellationOptions[index] ${newState
+                          .cancellationOptions.length ==
+                          currentOptionsLength &&
+                          prevState.cancellationOptions[index]
+                              .cancellationEndDate !=
+                              newState.cancellationOptions[index]
+                                  .cancellationEndDate}');
+                      return newState.cancellationOptions.length ==
+                          currentOptionsLength &&
+                          prevState.cancellationOptions[index]
+                              .cancellationEndDate !=
+                              newState.cancellationOptions[index]
+                                  .cancellationEndDate;
+                    },
                     builder: (BuildContext context, state) {
+                      print('_buildCancellationEndDateView $index');
                       return Text(
                         state.cancellationOptions[index].cancellationEndDate !=
                             null

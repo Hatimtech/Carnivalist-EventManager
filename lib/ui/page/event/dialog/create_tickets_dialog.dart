@@ -18,15 +18,6 @@ class CreateTicketsDialog extends StatefulWidget {
 }
 
 class _CreateTicketsState extends State<CreateTicketsDialog> {
-//  final TextEditingController _ticketNameController = TextEditingController();
-//  final TextEditingController _priceController = TextEditingController();
-//  final TextEditingController _salesEndDateController = TextEditingController();
-//  final TextEditingController _totalQuantityController =
-//      TextEditingController();
-//  final TextEditingController _minQuantityController = TextEditingController();
-//  final TextEditingController _maxQuantityController = TextEditingController();
-//  final TextEditingController _descriptionController = TextEditingController();
-
   CreateTicketBloc _createTicketBloc;
   UserBloc _userBloc;
 
@@ -43,8 +34,6 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
     _createTicketBloc = BlocProvider.of<CreateTicketBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
-    _userBloc.getLoginDetails();
-
     _createTicketBloc.authTokenSave(_userBloc.state.authToken);
 
     if (!isValid(_createTicketBloc.state.ticketCurrency)) {

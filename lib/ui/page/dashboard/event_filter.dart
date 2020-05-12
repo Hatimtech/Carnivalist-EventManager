@@ -21,7 +21,8 @@ class _EventFilterState extends State<EventFilter>
   void initState() {
     super.initState();
     _eventBloc = BlocProvider.of<EventBloc>(context);
-    _eventBloc.selectFilterValue(getEventFilterStatus()[0].name);
+    if (!isValid(_eventBloc.state.eventCurrentFilter))
+      _eventBloc.selectFilterValue(getEventFilterStatus()[0].name);
   }
 
   @override

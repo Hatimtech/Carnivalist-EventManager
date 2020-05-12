@@ -60,3 +60,19 @@ class DeleteTicketResult extends TicketsEvent {
 
   DeleteTicketResult(this.success, {this.ticketId, this.uiMsg});
 }
+
+class AssignAddon extends TicketsEvent {
+  final String ticketId;
+  final List<String> addonIds;
+  final Function callback;
+
+  AssignAddon(this.ticketId, this.addonIds, this.callback);
+}
+
+class AssignAddonResult extends TicketsEvent {
+  final bool success;
+  final Ticket ticket;
+  final dynamic uiMsg;
+
+  AssignAddonResult(this.success, {this.ticket, this.uiMsg});
+}

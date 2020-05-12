@@ -24,7 +24,7 @@ class Ticket {
     sId = json['_id'];
     sellingEndDate = json['sellingEndDate'];
     currency = json['currency'];
-    price = json['price'].toDouble();
+    price = json['price']?.toDouble();
     quantity = json['quantity'];
     minOrderQuantity = json['minOrderQuantity'];
     maxOrderQuantity = json['maxOrderQuantity'];
@@ -54,11 +54,4 @@ class Ticket {
     data['iV'] = this.iV;
     return data;
   }
-
-  @override
-  String toString() {
-    return 'Ticket{addons: $addons, active: $active, isDeleted: $isDeleted, sId: $sId, sellingEndDate: $sellingEndDate, currency: $currency, price: $price, quantity: $quantity, minOrderQuantity: $minOrderQuantity, maxOrderQuantity: $maxOrderQuantity, name: $name, description: $description, event: $event, sellingStartDate: $sellingStartDate, iV: $iV}';
-  }
-
-
 }

@@ -52,7 +52,13 @@ class AppLocalizations {
       Intl.message('Coupons', name: "labelCoupons", locale: _localeName);
 
   String get labelAddons =>
-      Intl.message('Addons', name: "labelAddons", locale: _localeName);
+      Intl.message('Add ons', name: "labelAddons", locale: _localeName);
+
+  String get labelReports =>
+      Intl.message('Reports', name: "labelReports", locale: _localeName);
+
+  String get labelStaff =>
+      Intl.message('Staff', name: "labelStaff", locale: _localeName);
 
   String get labelActiveEvent =>
       Intl.message('Activate Event',
@@ -61,6 +67,9 @@ class AppLocalizations {
   String get labelInactiveEvent =>
       Intl.message('Make Offline',
           name: "labelInactiveEvent", locale: _localeName);
+
+  String get labelViewEvent =>
+      Intl.message('View Event', name: "labelViewEvent", locale: _localeName);
 
   String get labelEditEvent =>
       Intl.message('Edit Event', name: "labelEditEvent", locale: _localeName);
@@ -595,6 +604,12 @@ class AppLocalizations {
   String get inputValue =>
       Intl.message('Input Value', name: "inputValue", locale: _localeName);
 
+
+  // Event Detail Strings
+  String get titleEventDetails =>
+      Intl.message(
+          'Event Details', name: "titleEventDetails", locale: _localeName);
+
   // Error Messages
   String get errorEventName =>
       Intl.message('Event name can not be empty',
@@ -783,6 +798,131 @@ class AppLocalizations {
           'Go Back',
           name: "btnGoBack",
           locale: _localeName);
+
+
+  String get titleCreateAddon =>
+      Intl.message('Create Add-ons',
+          name: "titleCreateAddon", locale: _localeName);
+
+  String get labelAddonPrivacy =>
+      Intl.message(
+          'Is Private', name: "labelAddonPrivacy", locale: _localeName);
+
+  String get labelAddonIsActive =>
+      Intl.message('Active', name: "labelAddonIsActive", locale: _localeName);
+
+  String get labelAddonName =>
+      Intl.message('Add on Name', name: "labelAddonName", locale: _localeName);
+
+  String get labelAddonStartDate =>
+      Intl.message('Start Date',
+          name: "labelAddonStartDate", locale: _localeName);
+
+  String get labelAddonEndDate =>
+      Intl.message('End Date',
+          name: "labelAddonEndDate", locale: _localeName);
+
+  String get labelAddonTotalAvailable =>
+      Intl.message('Quantity',
+          name: "labelAddonTotalAvailable", locale: _localeName);
+
+  String get labelAddonPrice =>
+      Intl.message('Price', name: "labelAddonPrice", locale: _localeName);
+
+  String get labelAddonDesc =>
+      Intl.message('Description', name: "labelAddonDesc", locale: _localeName);
+
+  String get labelAddonConvFee =>
+      Intl.message(
+          'Convenience Fee', name: "labelAddonConvFee", locale: _localeName);
+
+  String get labelAddonChargeConvFee =>
+      Intl.message('Charge Convenience Fee', name: "labelAddonChargeConvFee",
+          locale: _localeName);
+
+  String get labelAddonTypePublic =>
+      Intl.message('Public', name: "labelAddonTypePublic", locale: _localeName);
+
+  String get labelAddonTypePrivate =>
+      Intl.message(
+          'Private', name: "labelAddonTypePrivate", locale: _localeName);
+
+  String get labelAddonTypeAmount =>
+      Intl.message('Amount', name: "labelAddonTypeAmount", locale: _localeName);
+
+  String get labelAddonTypePercentage =>
+      Intl.message(
+          'Percentage', name: "labelAddonTypePercentage", locale: _localeName);
+
+  String get inputHintAddonName =>
+      Intl.message('Type your addon name',
+          name: "inputHintAddonName", locale: _localeName);
+
+  String get inputHintAddonPrice =>
+      Intl.message('Addon Price',
+          name: "inputHintAddonPrice", locale: _localeName);
+
+  String get inputHintAddonConvenienceFee =>
+      Intl.message('Fee',
+          name: "inputHintAddonConvenienceFee", locale: _localeName);
+
+  String get labelAddonUploadImage =>
+      Intl.message(
+          'Upload Image', name: "labelAddonUploadImage",
+          locale: _localeName);
+
+  String get labelAddonQuanity =>
+      Intl.message('Qty: ', name: "labelAddonQuanity", locale: _localeName);
+
+  String get labelAddonConvFeeView =>
+      Intl.message('Fee: ', name: "labelAddonConvFeeView", locale: _localeName);
+
+  String get labelAddonSaleEnd =>
+      Intl.message('sales end:',
+          name: "labelAddonSaleEnd", locale: _localeName);
+
+  String get labelEditAddon =>
+      Intl.message('Edit Addon', name: "labelEditAddon", locale: _localeName);
+
+  String get errorAddonName =>
+      Intl.message('Addon name can not be empty',
+          name: "errorAddonName", locale: _localeName);
+
+  String get errorAddonStartDate =>
+      Intl.message('Start date can not be empty',
+          name: "errorAddonStartDate", locale: _localeName);
+
+  String get errorAddonEndDate =>
+      Intl.message('End date can not be empty',
+          name: "errorAddonEndDate", locale: _localeName);
+
+  String get errorAddonStartDateAfter =>
+      Intl.message('Start date can not be bigger than end date',
+          name: "errorAddonStartDateAfter", locale: _localeName);
+
+  String get errorAddonTotalAva =>
+      Intl.message('Quantity can not be empty',
+          name: "errorAddonTotalAva", locale: _localeName);
+
+  String get errorAddonPrice =>
+      Intl.message('Addon price can not be empty',
+          name: "errorAddonPrice", locale: _localeName);
+
+  String get errorAddonDesc =>
+      Intl.message('Addon description can not be empty',
+          name: "errorAddonDesc", locale: _localeName);
+
+  String get errorAddonConvFeeType =>
+      Intl.message('Convinence fee type can not be empty',
+          name: "errorAddonConvFeeType", locale: _localeName);
+
+  String get errorAddonConvFee =>
+      Intl.message('Convinence fee can not be empty',
+          name: "errorAddonConvFee", locale: _localeName);
+
+  String get errorAddonImage =>
+      Intl.message('Addon image is required',
+          name: "errorAddonImage", locale: _localeName);
 
   String get logoutTitle =>
       Intl.message(

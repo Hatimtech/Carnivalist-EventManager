@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eventmanagement/model/event/event_data.dart';
 
 abstract class EventMain {}
@@ -15,7 +17,10 @@ class EventFilterValue extends EventMain {
 }
 
 class GetAllEvents extends EventMain {
-  GetAllEvents();
+
+  Completer<bool> downloadCompleter;
+
+  GetAllEvents({this.downloadCompleter});
 }
 
 class EventListAvailable extends EventMain {
