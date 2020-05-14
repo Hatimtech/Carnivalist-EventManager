@@ -48,10 +48,10 @@ class Addon {
     id = json['_id'] ?? json['id'];
     name = json['name'];
     active = json['active'];
-    startDateTime = isValid(json['Start Date']) != null
+    startDateTime = isValid(json['Start Date'])
         ? DateTime.parse(json['Start Date'])
         : null;
-    endDateTime = isValid(json['End Date']) != null
+    endDateTime = isValid(json['End Date'])
         ? DateTime.parse(json['End Date'])
         : null;
     quantity = json['quantity'];
@@ -66,10 +66,10 @@ class Addon {
     description = json['description'];
     image = json['image'];
     user = json['user'];
-    createdAt = isValid(json['createdAt']) != null
+    createdAt = isValid(json['createdAt'])
         ? DateTime.parse(json['createdAt'])
         : null;
-    updatedAt = isValid(json['updatedAt']) != null
+    updatedAt = isValid(json['updatedAt'])
         ? DateTime.parse(json['updatedAt'])
         : null;
     isSelected = json['isSelected'] ?? false;

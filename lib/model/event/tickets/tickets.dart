@@ -40,7 +40,7 @@ class Ticket {
     data['addons'] = this.addons;
     data['active'] = this.active;
     data['isDeleted'] = this.isDeleted;
-    data['sId'] = this.sId;
+    data['_id'] = this.sId;
     data['sellingEndDate'] = this.sellingEndDate;
     data['currency'] = this.currency;
     data['price'] = this.price;

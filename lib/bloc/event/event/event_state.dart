@@ -50,30 +50,11 @@ class EventState {
 
   List<EventData> get data {
     if (eventCurrentFilter == eventFilterItemList[0].name) {
-      final dateTimeNow = DateTime.now();
-      return eventDataList.where((event) {
-        try {
-          return isValid(event.endDateTime) &&
-              DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
-              (event.status == 'ACTIVE' || event.status == 'INACTIVE');
-        } catch (error) {
-          return false;
-        }
-      }).toList();
+      return upcomingEvents;
     } else if (eventCurrentFilter == eventFilterItemList[1].name) {
-      return eventDataList.where((event) {
-        return event.status == eventFilterItemList[1].name;
-      }).toList();
+      return draftEvents;
     } else if (eventCurrentFilter == eventFilterItemList[2].name) {
-      final dateTimeNow = DateTime.now();
-      return eventDataList.where((event) {
-        try {
-          return isValid(event.endDateTime) &&
-              DateTime.parse(event.endDateTime).isBefore(dateTimeNow);
-        } catch (error) {
-          return false;
-        }
-      }).toList();
+      return pastEvents;
     }
   }
 
@@ -81,13 +62,44 @@ class EventState {
     final dateTimeNow = DateTime.now();
     return eventDataList.where((event) {
       try {
-        return isValid(event.startDateTime) &&
-            DateTime.parse(event.startDateTime).isAfter(dateTimeNow) &&
+        return isValid(event.endDateTime) &&
+            DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
             (event.status == 'ACTIVE' || event.status == 'INACTIVE');
       } catch (error) {
         return false;
       }
     }).length;
+  }
+
+  List<EventData> get upcomingEvents {
+    final dateTimeNow = DateTime.now();
+    return eventDataList.where((event) {
+      try {
+        return isValid(event.endDateTime) &&
+            DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
+            (event.status == 'ACTIVE' || event.status == 'INACTIVE');
+      } catch (error) {
+        return false;
+      }
+    }).toList();
+  }
+
+  List<EventData> get draftEvents {
+    return eventDataList.where((event) {
+      return event.status == eventFilterItemList[1].name;
+    }).toList();
+  }
+
+  List<EventData> get pastEvents {
+    final dateTimeNow = DateTime.now();
+    return eventDataList.where((event) {
+      try {
+        return isValid(event.startDateTime) &&
+            DateTime.parse(event.startDateTime).isBefore(dateTimeNow);
+      } catch (error) {
+        return false;
+      }
+    }).toList();
   }
 
   EventData findById(String eventId) {

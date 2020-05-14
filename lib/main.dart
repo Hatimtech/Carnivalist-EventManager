@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
+import 'package:eventmanagement/bloc/coupon/coupon_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
@@ -61,7 +60,10 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
           create: (context) => EventBloc(),
           child: BlocProvider(
             create: (context) => AddonBloc(),
-            child: _buildPlatformApp(),
+            child: BlocProvider(
+              create: (context) => CouponBloc(),
+              child: _buildPlatformApp(),
+            ),
           ),
         ),
       ),
@@ -151,6 +153,6 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
 }
 
 bool get isPlatformAndroid {
-  return Platform.isAndroid;
-//  return false;
+//  return Platform.isAndroid;
+  return false;
 }

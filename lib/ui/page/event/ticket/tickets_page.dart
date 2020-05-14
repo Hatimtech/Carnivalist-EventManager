@@ -218,12 +218,12 @@ class _TicketsState extends State<TicketsPage> {
                   .labelAssignAddon,
               ticket,
               assignAddon),
-          _buildMaterialTicketAction(
-              AppLocalizations
-                  .of(context)
-                  .labelAssignCoupon,
-              ticket,
-              assignCoupon),
+//          _buildMaterialTicketAction(
+//              AppLocalizations
+//                  .of(context)
+//                  .labelAssignCoupon,
+//              ticket,
+//              assignCoupon),
           _buildMaterialTicketAction(
               (ticket.active ?? false)
                   ? AppLocalizations
@@ -286,12 +286,12 @@ class _TicketsState extends State<TicketsPage> {
             AppLocalizations
                 .of(context)
                 .labelAssignAddon, ticket, assignAddon),
-        _buildCupertinoTicketAction(
-            AppLocalizations
-                .of(context)
-                .labelAssignCoupon,
-            ticket,
-            assignCoupon),
+//        _buildCupertinoTicketAction(
+//            AppLocalizations
+//                .of(context)
+//                .labelAssignCoupon,
+//            ticket,
+//            assignCoupon),
         _buildCupertinoTicketAction(
             (ticket.active ?? false)
                 ? AppLocalizations

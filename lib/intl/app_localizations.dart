@@ -41,12 +41,12 @@ class AppLocalizations {
       Intl.message('Dashboard', name: "titleDashboard", locale: _localeName);
 
   String get labelTicketsSold =>
-      Intl.message(
-          'Tickets Sold', name: "labelTicketsSold", locale: _localeName);
+      Intl.message('Tickets Sold',
+          name: "labelTicketsSold", locale: _localeName);
 
   String get labelUpcomingEvent =>
-      Intl.message(
-          'Upcoming Events', name: "labelUpcomingEvent", locale: _localeName);
+      Intl.message('Upcoming Events',
+          name: "labelUpcomingEvent", locale: _localeName);
 
   String get labelCoupons =>
       Intl.message('Coupons', name: "labelCoupons", locale: _localeName);
@@ -319,8 +319,8 @@ class AppLocalizations {
       Intl.message('Field Name', name: "labelFieldName", locale: _localeName);
 
   String get labelFieldPlaceholder =>
-      Intl.message(
-          'Placeholder', name: "labelFieldPlaceholder", locale: _localeName);
+      Intl.message('Placeholder',
+          name: "labelFieldPlaceholder", locale: _localeName);
 
   String get typeFieldName => Intl.message('Type your field name',
       name: "typeFieldName", locale: _localeName);
@@ -334,8 +334,7 @@ class AppLocalizations {
           name: "typeListItemValue", locale: _localeName);
 
   String get btnListItemAdd =>
-      Intl.message('ADD',
-          name: "btnListItemAdd", locale: _localeName);
+      Intl.message('ADD', name: "btnListItemAdd", locale: _localeName);
 
   String get labelMandatory =>
       Intl.message('Mandatory', name: "labelMandatory", locale: _localeName);
@@ -356,8 +355,8 @@ class AppLocalizations {
       Intl.message('Settings', name: "menuSettings", locale: _localeName);
 
   String get validateStep1 =>
-      Intl.message('Please complete the current step.', name: "validateStep1",
-          locale: _localeName);
+      Intl.message('Please complete the current step.',
+          name: "validateStep1", locale: _localeName);
 
   String get msgNoData =>
       Intl.message('No Data', name: "msgNoData", locale: _localeName);
@@ -509,26 +508,24 @@ class AppLocalizations {
       Intl.message('No', name: "labelNo", locale: _localeName);
 
   String get labelUploadBanner =>
-      Intl.message(
-          'Click to Upload Your Banner Image', name: "labelUploadBanner",
-          locale: _localeName);
+      Intl.message('Click to Upload Your Banner Image',
+          name: "labelUploadBanner", locale: _localeName);
 
   String get labelUpdateBanner =>
-      Intl.message(
-          'Click to Update Your Banner Image', name: "labelUpdateBanner",
-          locale: _localeName);
+      Intl.message('Click to Update Your Banner Image',
+          name: "labelUpdateBanner", locale: _localeName);
 
   String get labelUploadEventGallery =>
-      Intl.message('Upload your event gallery', name: "labelUploadEventGallery",
-          locale: _localeName);
+      Intl.message('Upload your event gallery',
+          name: "labelUploadEventGallery", locale: _localeName);
 
   String get labelUploadImage =>
-      Intl.message(
-          'Upload Image', name: "labelUploadImage", locale: _localeName);
+      Intl.message('Upload Image',
+          name: "labelUploadImage", locale: _localeName);
 
   String get labelUploadVideo =>
-      Intl.message(
-          'Upload Video', name: "labelUploadVideo", locale: _localeName);
+      Intl.message('Upload Video',
+          name: "labelUploadVideo", locale: _localeName);
 
   /// Custom Menu Items
   String get labelEventOnce =>
@@ -604,11 +601,10 @@ class AppLocalizations {
   String get inputValue =>
       Intl.message('Input Value', name: "inputValue", locale: _localeName);
 
-
   // Event Detail Strings
   String get titleEventDetails =>
-      Intl.message(
-          'Event Details', name: "titleEventDetails", locale: _localeName);
+      Intl.message('Event Details',
+          name: "titleEventDetails", locale: _localeName);
 
   // Error Messages
   String get errorEventName =>
@@ -722,46 +718,32 @@ class AppLocalizations {
           locale: _localeName);
 
   String get errorFieldLabel =>
-      Intl.message(
-          'Field name can not be empty',
-          name: "errorFieldLabel",
-          locale: _localeName);
+      Intl.message('Field name can not be empty',
+          name: "errorFieldLabel", locale: _localeName);
 
   String get errorFieldPlaceholder =>
-      Intl.message(
-          'Placeholder can not be empty',
-          name: "errorFieldPlaceholder",
-          locale: _localeName);
+      Intl.message('Placeholder can not be empty',
+          name: "errorFieldPlaceholder", locale: _localeName);
 
   String get errorDuplicateListItem =>
-      Intl.message(
-          'Duplicate list item is not allowed',
-          name: "errorDuplicateListItem",
-          locale: _localeName);
+      Intl.message('Duplicate list item is not allowed',
+          name: "errorDuplicateListItem", locale: _localeName);
 
   String get errorNoListItem =>
-      Intl.message(
-          'Add atleast 1 list item',
-          name: "errorNoListItem",
-          locale: _localeName);
+      Intl.message('Add atleast 1 list item',
+          name: "errorNoListItem", locale: _localeName);
 
   String get errorCancellationDesc =>
-      Intl.message(
-          'Cancellation description can not be empty',
-          name: "errorCancellationDesc",
-          locale: _localeName);
+      Intl.message('Cancellation description can not be empty',
+          name: "errorCancellationDesc", locale: _localeName);
 
   String get errorNoCancellationOption =>
-      Intl.message(
-          'Add atleast 1 cancellation option',
-          name: "errorNoCancellationOption",
-          locale: _localeName);
+      Intl.message('Add atleast 1 cancellation option',
+          name: "errorNoCancellationOption", locale: _localeName);
 
   String get errorTnc =>
-      Intl.message(
-          'Please review and accept terms of use and privacy policy.',
-          name: "errorTnc",
-          locale: _localeName);
+      Intl.message('Please review and accept terms of use and privacy policy.',
+          name: "errorTnc", locale: _localeName);
 
   String get errorUnsavedBasic =>
       Intl.message(
@@ -782,10 +764,8 @@ class AppLocalizations {
           locale: _localeName);
 
   String get errorNoEventTypesAvailable =>
-      Intl.message(
-          'No event types available',
-          name: "errorNoEventTypesAvailable",
-          locale: _localeName);
+      Intl.message('No event types available',
+          name: "errorNoEventTypesAvailable", locale: _localeName);
 
   String get errorUnsavedChanges =>
       Intl.message(
@@ -794,19 +774,15 @@ class AppLocalizations {
           locale: _localeName);
 
   String get btnGoBack =>
-      Intl.message(
-          'Go Back',
-          name: "btnGoBack",
-          locale: _localeName);
-
+      Intl.message('Go Back', name: "btnGoBack", locale: _localeName);
 
   String get titleCreateAddon =>
       Intl.message('Create Add-ons',
           name: "titleCreateAddon", locale: _localeName);
 
   String get labelAddonPrivacy =>
-      Intl.message(
-          'Is Private', name: "labelAddonPrivacy", locale: _localeName);
+      Intl.message('Is Private',
+          name: "labelAddonPrivacy", locale: _localeName);
 
   String get labelAddonIsActive =>
       Intl.message('Active', name: "labelAddonIsActive", locale: _localeName);
@@ -819,8 +795,7 @@ class AppLocalizations {
           name: "labelAddonStartDate", locale: _localeName);
 
   String get labelAddonEndDate =>
-      Intl.message('End Date',
-          name: "labelAddonEndDate", locale: _localeName);
+      Intl.message('End Date', name: "labelAddonEndDate", locale: _localeName);
 
   String get labelAddonTotalAvailable =>
       Intl.message('Quantity',
@@ -833,26 +808,26 @@ class AppLocalizations {
       Intl.message('Description', name: "labelAddonDesc", locale: _localeName);
 
   String get labelAddonConvFee =>
-      Intl.message(
-          'Convenience Fee', name: "labelAddonConvFee", locale: _localeName);
+      Intl.message('Convenience Fee',
+          name: "labelAddonConvFee", locale: _localeName);
 
   String get labelAddonChargeConvFee =>
-      Intl.message('Charge Convenience Fee', name: "labelAddonChargeConvFee",
-          locale: _localeName);
+      Intl.message('Charge Convenience Fee',
+          name: "labelAddonChargeConvFee", locale: _localeName);
 
   String get labelAddonTypePublic =>
       Intl.message('Public', name: "labelAddonTypePublic", locale: _localeName);
 
   String get labelAddonTypePrivate =>
-      Intl.message(
-          'Private', name: "labelAddonTypePrivate", locale: _localeName);
+      Intl.message('Private',
+          name: "labelAddonTypePrivate", locale: _localeName);
 
-  String get labelAddonTypeAmount =>
+  String get labelAmount =>
       Intl.message('Amount', name: "labelAddonTypeAmount", locale: _localeName);
 
-  String get labelAddonTypePercentage =>
-      Intl.message(
-          'Percentage', name: "labelAddonTypePercentage", locale: _localeName);
+  String get labelPercentage =>
+      Intl.message('Percentage',
+          name: "labelAddonTypePercentage", locale: _localeName);
 
   String get inputHintAddonName =>
       Intl.message('Type your addon name',
@@ -867,9 +842,8 @@ class AppLocalizations {
           name: "inputHintAddonConvenienceFee", locale: _localeName);
 
   String get labelAddonUploadImage =>
-      Intl.message(
-          'Upload Image', name: "labelAddonUploadImage",
-          locale: _localeName);
+      Intl.message('Upload Image',
+          name: "labelAddonUploadImage", locale: _localeName);
 
   String get labelAddonQuanity =>
       Intl.message('Qty: ', name: "labelAddonQuanity", locale: _localeName);
@@ -924,23 +898,233 @@ class AppLocalizations {
       Intl.message('Addon image is required',
           name: "errorAddonImage", locale: _localeName);
 
+  String get labelCouponQuantityLeft =>
+      Intl.message('Left : ',
+          name: "labelCouponQuantityLeft", locale: _localeName);
+
+  String get labelCouponOff =>
+      Intl.message('Off', name: "labelCouponOff", locale: _localeName);
+
+  String get labelCouponValidTill =>
+      Intl.message('Valid till:',
+          name: "labelCouponValidTill", locale: _localeName);
+
+  String get labelEditCoupon =>
+      Intl.message('Edit Coupon', name: "labelEditCoupon", locale: _localeName);
+
+  String get labelActiveCoupon =>
+      Intl.message('Active Coupon',
+          name: "labelActiveCoupon", locale: _localeName);
+
+  String get labelInActiveCoupon =>
+      Intl.message('Inactive Coupon',
+          name: "labelInActiveCoupon", locale: _localeName);
+
+  String get labelCreateDiscountCoupon =>
+      Intl.message('Code Discount',
+          name: "labelCreateDiscountCoupon", locale: _localeName);
+
+  String get labelCreateGroupCoupon =>
+      Intl.message('Group Discount',
+          name: "labelCreateGroupCoupon", locale: _localeName);
+
+  String get labelCreateFlatCoupon =>
+      Intl.message('Flat Discount',
+          name: "labelCreateFlatCoupon", locale: _localeName);
+
+  String get labelCreateLoyaltyCoupon =>
+      Intl.message('Loyalty Discount',
+          name: "labelCreateLoyaltyCoupon", locale: _localeName);
+
+  String get labelCreateAffiliateCoupon =>
+      Intl.message('Affiliate Discount',
+          name: "labelCreateAffiliateCoupon", locale: _localeName);
+
+  String get titleCreateCodeDiscount =>
+      Intl.message('Code Discount',
+          name: "titleCreateCodeDiscount", locale: _localeName);
+
+  String get titleCreateGroupDiscount =>
+      Intl.message('Group Discount',
+          name: "titleCreateGroupDiscount", locale: _localeName);
+
+  String get titleCreateFlatDiscount =>
+      Intl.message('Flat Discount',
+          name: "titleCreateFlatDiscount", locale: _localeName);
+
+  String get titleCreateLoyaltyDiscount =>
+      Intl.message('Loyalty Discount',
+          name: "titleCreateLoyaltyDiscount", locale: _localeName);
+
+  String get titleCreateAffiliateDiscount =>
+      Intl.message('Affiliate Discount',
+          name: "titleCreateAffiliateDiscount", locale: _localeName);
+
+  String get labelDiscountName =>
+      Intl.message('Discount Name',
+          name: "labelDiscountName", locale: _localeName);
+
+  String get labelDiscountAvailFrom =>
+      Intl.message('Discount avail from',
+          name: "labelDiscountAvailFrom", locale: _localeName);
+
+  String get labelDiscountAvailTill =>
+      Intl.message('Discount avail till',
+          name: "labelDiscountAvailTill", locale: _localeName);
+
+  String get labelCouponNoOfDiscounts =>
+      Intl.message('No. of Discount',
+          name: "labelCouponNoOfDiscounts", locale: _localeName);
+
+  String get labelCouponCode =>
+      Intl.message('Code',
+          name: "labelCouponCode", locale: _localeName);
+
+  String get labelCouponMinTicketNo =>
+      Intl.message('Min Ticket No',
+          name: "labelCouponMinTicketNo", locale: _localeName);
+
+  String get labelCouponMaxTicketNo =>
+      Intl.message('Max Ticket No',
+          name: "labelCouponMaxTicketNo", locale: _localeName);
+
+  String get labelCouponChooseEvent =>
+      Intl.message('Choose Event',
+          name: "labelCouponChooseEvent", locale: _localeName);
+
+  String get labelCouponChoosePastEvent =>
+      Intl.message('Choose Past Event',
+          name: "labelCouponChoosePastEvent", locale: _localeName);
+
+  String get labelCouponDiscountValue =>
+      Intl.message('Discount Value',
+          name: "labelCouponDiscountValue", locale: _localeName);
+
+  String get labelCouponSelectTicket =>
+      Intl.message('Select Ticket',
+          name: "labelCouponSelectTicket", locale: _localeName);
+
+  String get labelCouponAffiliateEmail =>
+      Intl.message('Affiliate Email Id',
+          name: "labelCouponAffiliateEmail", locale: _localeName);
+
+  String get inputHintDiscountName =>
+      Intl.message('Type Discount Name',
+          name: "inputHintDiscountName", locale: _localeName);
+
+  String get inputHintCouponCode =>
+      Intl.message('Type Code',
+          name: "inputHintCouponCode", locale: _localeName);
+
+  String get inputHintCouponNoOfDiscount =>
+      Intl.message('Quantity',
+          name: "inputHintCouponNoOfDiscount", locale: _localeName);
+
+  String get inputHintDiscountValue =>
+      Intl.message('Discount',
+          name: "inputHintDiscountValue", locale: _localeName);
+
+  String get inputHintCouponMinTicketNo =>
+      Intl.message('Type Min Ticket No',
+          name: "inputHintCouponMinTicketNo", locale: _localeName);
+
+  String get inputHintCouponMaxTicketNo =>
+      Intl.message('Type Max Ticket No',
+          name: "inputHintCouponMaxTicketNo", locale: _localeName);
+
+  String get inputHintSelectEvent =>
+      Intl.message('Select Event',
+          name: "inputHintSelectEvent", locale: _localeName);
+
+  String get inputHintSelectPastEvent =>
+      Intl.message('Select Past Event',
+          name: "inputHintSelectPastEvent", locale: _localeName);
+
+  String get inputHintAffiliateEmailId =>
+      Intl.message('Type Affiliate Email',
+          name: "inputHintAffiliateEmailId", locale: _localeName);
+
+  String get errorCouponNoEventAvailable =>
+      Intl.message('No events available',
+          name: "errorCouponNoEventAvailable", locale: _localeName);
+
+  String get errorCouponDiscountName =>
+      Intl.message('Discount name can not be empty',
+          name: "errorCouponDiscountName", locale: _localeName);
+
+  String get errorCouponAvailStartDate =>
+      Intl.message('Discount start date can not be empty',
+          name: "errorCouponAvailStartDate", locale: _localeName);
+
+  String get errorCouponAvailEndDate =>
+      Intl.message('Discount end date can not be empty',
+          name: "errorCouponAvailEndDate", locale: _localeName);
+
+  String get errorCouponStartDateAfter =>
+      Intl.message('Start date can not be after end date',
+          name: "errorCouponStartDateAfter", locale: _localeName);
+
+  String get errorCouponNoOfDiscount =>
+      Intl.message('No of discount can not be empty',
+          name: "errorCouponNoOfDiscount", locale: _localeName);
+
+  String get errorCouponNoOfDiscountZero =>
+      Intl.message('No of discount can not be 0',
+          name: "errorCouponNoOfDiscountZero", locale: _localeName);
+
+  String get errorCouponCode =>
+      Intl.message('Coupon code can not be empty',
+          name: "errorCouponCode", locale: _localeName);
+
+  String get errorCouponDiscountValue =>
+      Intl.message('Discount value can not be empty',
+          name: "errorCouponDiscountValue", locale: _localeName);
+
+  String get errorCouponSelectEvent =>
+      Intl.message('Event can not be empty',
+          name: "errorCouponSelectEvent", locale: _localeName);
+
+  String get errorCouponSelectTicket =>
+      Intl.message('Select atleast 1 ticket',
+          name: "errorCouponSelectTicket", locale: _localeName);
+
+  String get errorCouponMinTicket =>
+      Intl.message('Min Ticket number can not be empty',
+          name: "errorCouponMinTicket", locale: _localeName);
+
+  String get errorCouponMinTicketZero =>
+      Intl.message('Min Ticket number can not be 0',
+          name: "errorCouponMinTicketZero", locale: _localeName);
+
+  String get errorCouponMaxTicket =>
+      Intl.message('Max Ticket number can not be empty',
+          name: "errorCouponMaxTicket", locale: _localeName);
+
+  String get errorCouponMaxTicketZero =>
+      Intl.message('Max Ticket number can not be 0',
+          name: "errorCouponMaxTicketZero", locale: _localeName);
+
+  String get errorCouponSelectPastEvent =>
+      Intl.message('Past event can not be empty',
+          name: "errorCouponSelectPastEvent", locale: _localeName);
+
+  String get errorCouponAffEmail =>
+      Intl.message('Affiliate email can not be empty',
+          name: "errorCouponAffEmail", locale: _localeName);
+
+  String get errorCouponAffEmailValid =>
+      Intl.message('Affiliate email is not valid',
+          name: "errorCouponAffEmailValid", locale: _localeName);
+
   String get logoutTitle =>
-      Intl.message(
-          'Logout',
-          name: "logoutTitle",
-          locale: _localeName);
+      Intl.message('Logout', name: "logoutTitle", locale: _localeName);
 
   String get logoutMsg =>
-      Intl.message(
-          'Are you sure, you want to logout?',
-          name: "logoutMsg",
-          locale: _localeName);
+      Intl.message('Are you sure, you want to logout?',
+          name: "logoutMsg", locale: _localeName);
 
   String get logoutButton =>
-      Intl.message(
-          'Logout',
-          name: "logoutButton",
-          locale: _localeName);
+      Intl.message('Logout', name: "logoutButton", locale: _localeName);
 
   String get errorNoInternet =>
       Intl.message('Please check your internet',
@@ -951,12 +1135,11 @@ class AppLocalizations {
           name: "errorSomethingWrong", locale: _localeName);
 
   String get notAvailable =>
-      Intl.message('NA',
-          name: "notAvailable", locale: _localeName);
+      Intl.message('NA', name: "notAvailable", locale: _localeName);
 
   String get exitWarning =>
-      Intl.message(
-          "Press back again to exit", name: "exitWarning", locale: _localeName);
+      Intl.message("Press back again to exit",
+          name: "exitWarning", locale: _localeName);
 }
 
 class AppTranslationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
 import 'package:eventmanagement/bloc/addon/addon_state.dart';
 import 'package:eventmanagement/bloc/addon/create/create_addon_bloc.dart';
-import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/addons/addon.dart';
@@ -67,6 +66,9 @@ class _AddonState extends State<AddonPage> {
             child: BlocBuilder<AddonBloc, AddonState>(
                 bloc: _addonBloc,
                 condition: (prevState, newState) {
+                  print(
+                      'prevState.loading--->${prevState
+                          .loading} newState.loading--->${newState.loading}');
                   return (prevState.loading != newState.loading) ||
                       (prevState.showPublic != newState.showPublic) ||
                       (prevState.addonList != newState.addonList ||
@@ -214,7 +216,8 @@ class _AddonState extends State<AddonPage> {
                 _addonBloc.addonSelectionChange(currentAddon.id);
               }
             },
-            child: BlocBuilder<AddonBloc, AddonState>(
+            child: widget.enableSelection
+                ? BlocBuilder<AddonBloc, AddonState>(
               bloc: _addonBloc,
               condition: (prevState, newState) {
                 final newStateAddon = newState.addonList
@@ -227,30 +230,34 @@ class _AddonState extends State<AddonPage> {
               builder: (_, state) {
                 final addon = state.addonList
                     .firstWhere((addon) => addon.id == currentAddon.id);
-                return Container(
-                  color: (addon.isSelected ?? false) ? bgColorSelection : null,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          _buildAddonImage(addon.image, systemPath),
-                          const SizedBox(width: 16.0),
-                          Expanded(
-                              child: _buildNameAndQuantityView(addon.name,
-                                  addon.quantity, addon.convenienceFee)),
-                          _buildPriceAndDateView(
-                              addon.price, addon.endDateTime),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                return _buildAddonListItem(addon, systemPath);
               },
-            ),
+            )
+                : _buildAddonListItem(addonList[position], systemPath),
           );
         });
+  }
+
+  Widget _buildAddonListItem(Addon addon, String systemPath) {
+    return Container(
+      color: (addon.isSelected ?? false) ? bgColorSelection : null,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildAddonImage(addon.image, systemPath),
+              const SizedBox(width: 16.0),
+              Expanded(
+                  child: _buildNameAndQuantityView(
+                      addon.name, addon.quantity, addon.convenienceFee)),
+              _buildPriceAndDateView(addon.price, addon.endDateTime),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildAddonImage(String url, String systemPath) {

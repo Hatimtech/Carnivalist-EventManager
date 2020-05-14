@@ -2,13 +2,10 @@ import 'dart:io';
 
 import 'package:eventmanagement/bloc/addon/create/create_addon_bloc.dart';
 import 'package:eventmanagement/bloc/addon/create/create_addon_state.dart';
-import 'package:eventmanagement/bloc/event/createticket/create_ticket_bloc.dart';
-import 'package:eventmanagement/bloc/event/createticket/create_ticket_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/addons/addon_response.dart';
-import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:eventmanagement/utils/vars.dart';
@@ -364,9 +361,13 @@ class _CreateAddonState extends State<CreateAddonDialog> {
   String uiValueAddonConvFeeType(String value) {
     switch (value) {
       case 'Amount':
-        return AppLocalizations.of(context).labelAddonTypeAmount;
+        return AppLocalizations
+            .of(context)
+            .labelAmount;
       case 'Percentage':
-        return AppLocalizations.of(context).labelAddonTypePercentage;
+        return AppLocalizations
+            .of(context)
+            .labelPercentage;
       default:
         return '';
     }

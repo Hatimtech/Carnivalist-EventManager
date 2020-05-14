@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:eventmanagement/model/addons/addon.dart';
 import 'package:eventmanagement/model/addons/addon_response.dart';
+import 'package:eventmanagement/model/coupons/coupon.dart';
+import 'package:eventmanagement/model/coupons/coupon_action_response.dart';
+import 'package:eventmanagement/model/coupons/coupon_response.dart';
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
 import 'package:eventmanagement/model/event/carnivals/carnival_resonse.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
@@ -27,7 +30,10 @@ import '../network_type.dart';
 import '../restclient.dart';
 
 class NetworkService extends NetworkType implements APIService {
-  static final _baseUrl = 'https://dev.backend.aktv.life';
+  static final _baseUrl = 'https://backend.carnivalist.tk'
+
+  /*'https://dev.backend.aktv.life'*/;
+
   static final _subUrl = '/api/';
   final _loginUrl = _baseUrl + _subUrl + 'user/login';
   final _loginDetailUrl = _baseUrl + _subUrl + 'user/get-user-details';
@@ -56,6 +62,12 @@ class NetworkService extends NetworkType implements APIService {
   final _addonListUrl = _baseUrl + _subUrl + 'view-addons/';
   final _addonTicketListUrl = _baseUrl + _subUrl + 'get-addons-for-tickets/';
   final _addonUploadUrl = _baseUrl + _subUrl + 'create-addons/';
+
+  final _couponListUrl = _baseUrl + _subUrl + 'get-coupons/';
+  final _couponTicketListUrl = _baseUrl + _subUrl + 'get-coupons/';
+
+  final _activeInactiveCouponUrl = _baseUrl + _subUrl + 'active-toggle/';
+  final _couponUploadUrl = _baseUrl + _subUrl + 'save-new-coupon/';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -385,7 +397,7 @@ class NetworkService extends NetworkType implements APIService {
     if (result.networkServiceResponse.responseCode == ok200) {
       final addonListIterable = json.decode(result.mappedResult) as Iterable;
 
-      if (addonListIterable != null && addonListIterable.isNotEmpty) {
+      if (addonListIterable != null) {
         final addonList = addonListIterable
             .map((addonMap) => Addon.fromJson(addonMap))
             .toList();
@@ -416,8 +428,7 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
-  assignAddon(String authToken, Ticket ticket,
-      {String ticketId}) async {
+  assignAddon(String authToken, Ticket ticket, {String ticketId}) async {
     var headers = {
       'Authorization': authToken,
       "Content-Type": "application/json"
@@ -435,6 +446,59 @@ class NetworkService extends NetworkType implements APIService {
       var res = CreateTicketResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  getAllCoupons(String authToken) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<CouponResponse>(_couponListUrl, headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      final res = CouponResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  activeInactiveCoupons(String authToken, String couponId) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<CouponActionResponse>(
+        '$_activeInactiveCouponUrl$couponId', headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = CouponActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  uploadCoupon(String authToken, Coupon coupon) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<CouponResponse>(_couponUploadUrl,
+        body: json.encode(coupon),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = CouponResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
     return result.networkServiceResponse;
   }
 }

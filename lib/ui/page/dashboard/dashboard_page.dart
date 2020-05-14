@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
 import 'package:eventmanagement/bloc/addon/addon_state.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
+import 'package:eventmanagement/bloc/coupon/coupon_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
@@ -26,6 +27,7 @@ class _DashboardState extends State<DashboardPage> {
   PageNavBloc _pageNavBloc;
   UserBloc _userBloc;
   EventBloc _eventBloc;
+  CouponBloc _couponBloc;
   AddonBloc _addonBloc;
 
   @override
@@ -38,6 +40,9 @@ class _DashboardState extends State<DashboardPage> {
 
     _addonBloc = BlocProvider.of<AddonBloc>(context);
     _addonBloc.authTokenSave(_userBloc.state.authToken);
+
+    _couponBloc = BlocProvider.of<CouponBloc>(context);
+    _couponBloc.authTokenSave(_userBloc.state.authToken);
     initDownload();
   }
 
@@ -47,6 +52,7 @@ class _DashboardState extends State<DashboardPage> {
         true) {
       _eventBloc.getAllEvents();
       _addonBloc.getAllAddons();
+      _couponBloc.getAllCoupons();
       PageStorage.of(context)
           .writeState(context, false, identifier: 'INIT_DOWNLOAD');
     }
@@ -79,7 +85,7 @@ class _DashboardState extends State<DashboardPage> {
                             .labelCoupons
                             .toUpperCase(),
                             () {
-//                          _pageNavBloc.currentPage(PAGE_COUPONS);
+                          _pageNavBloc.currentPage(PAGE_COUPONS);
                         },
                       ),
                       _category(

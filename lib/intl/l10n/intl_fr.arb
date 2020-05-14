@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-04-28T14:21:55.007705",
+  "@@last_modified": "2020-05-13T13:26:53.780545",
   "appTitle": "Carnivalist",
   "@appTitle": {
     "type": "text",
@@ -20,8 +20,63 @@
     "type": "text",
     "placeholders": {}
   },
-  "titleDashboard": "Tableau de bord",
+  "titleDashboard": "Dashboard",
   "@titleDashboard": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTicketsSold": "Tickets Sold",
+  "@labelTicketsSold": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelUpcomingEvent": "Upcoming Events",
+  "@labelUpcomingEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCoupons": "Coupons",
+  "@labelCoupons": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddons": "Add ons",
+  "@labelAddons": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelReports": "Reports",
+  "@labelReports": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaff": "Staff",
+  "@labelStaff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelActiveEvent": "Activate Event",
+  "@labelActiveEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelInactiveEvent": "Make Offline",
+  "@labelInactiveEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelViewEvent": "View Event",
+  "@labelViewEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEditEvent": "Edit Event",
+  "@labelEditEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDeleteEvent": "Delete Event",
+  "@labelDeleteEvent": {
     "type": "text",
     "placeholders": {}
   },
@@ -70,8 +125,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "subtitleCancellationPolicy": "Cancellation Policy",
+  "@subtitleCancellationPolicy": {
+    "type": "text",
+    "placeholders": {}
+  },
   "titleCustomField": "Create your custom field",
   "@titleCustomField": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleFieldListDetails": "Enter list details",
+  "@titleFieldListDetails": {
     "type": "text",
     "placeholders": {}
   },
@@ -115,8 +180,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelCarnivalName": "Carnival",
-  "@labelCarnivalName": {
+  "labelEventType": "Event type",
+  "@labelEventType": {
     "type": "text",
     "placeholders": {}
   },
@@ -147,6 +212,11 @@
   },
   "labelEndTime": "End time",
   "@labelEndTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventDay": "Event Day",
+  "@labelEventDay": {
     "type": "text",
     "placeholders": {}
   },
@@ -185,8 +255,58 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelTicketCoupons": "Coupon: ",
+  "@labelTicketCoupons": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTicketAddons": "Add ons: ",
+  "@labelTicketAddons": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAssignAddon": "Assign Add-on",
+  "@labelAssignAddon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAssignCoupon": "Assign Coupon",
+  "@labelAssignCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelActiveTicket": "Active Ticket",
+  "@labelActiveTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelInactiveTicket": "Inactive Ticket",
+  "@labelInactiveTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEditTicket": "Edit Ticket",
+  "@labelEditTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDeleteTicket": "Delete Ticket",
+  "@labelDeleteTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTicketSalesEnd": "sales end:",
+  "@labelTicketSalesEnd": {
+    "type": "text",
+    "placeholders": {}
+  },
   "labelTicketName": "Ticket Name",
   "@labelTicketName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTicketCurrency": "Ticket Currency",
+  "@labelTicketCurrency": {
     "type": "text",
     "placeholders": {}
   },
@@ -215,6 +335,16 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelEditField": "Edit Field",
+  "@labelEditField": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDeleteField": "Delete Field",
+  "@labelDeleteField": {
+    "type": "text",
+    "placeholders": {}
+  },
   "labelDescription": "Description",
   "@labelDescription": {
     "type": "text",
@@ -232,6 +362,36 @@
   },
   "labelBookingCancel": "Booking Cancellation",
   "@labelBookingCancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCancellationDeductAmount": "Deduct amount in fixed value",
+  "@labelCancellationDeductAmount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCancellationDeductPercentage": "Deduct amount in percentage",
+  "@labelCancellationDeductPercentage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCancellationDeductAmountInput": "Amount will be deducted",
+  "@labelCancellationDeductAmountInput": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCancellationDeductPercentageInput": "Percentage will be deducted",
+  "@labelCancellationDeductPercentageInput": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCancellationEndDate": "Cancellation End Date",
+  "@labelCancellationEndDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCancellationEndDateInput": "End Date",
+  "@labelCancellationEndDateInput": {
     "type": "text",
     "placeholders": {}
   },
@@ -285,8 +445,28 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelFieldPlaceholder": "Placeholder",
+  "@labelFieldPlaceholder": {
+    "type": "text",
+    "placeholders": {}
+  },
   "typeFieldName": "Type your field name",
   "@typeFieldName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "typeFieldPlaceholder": "Type your field placeholder",
+  "@typeFieldPlaceholder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "typeListItemValue": "Type your list item value",
+  "@typeListItemValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnListItemAdd": "ADD",
+  "@btnListItemAdd": {
     "type": "text",
     "placeholders": {}
   },
@@ -317,6 +497,11 @@
   },
   "menuSettings": "Settings",
   "@menuSettings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "validateStep1": "Please complete the current step.",
+  "@validateStep1": {
     "type": "text",
     "placeholders": {}
   },
@@ -375,6 +560,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "btnConfirm": "Confirm",
+  "@btnConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
   "btnLogout": "Logout",
   "@btnLogout": {
     "type": "text",
@@ -387,6 +577,11 @@
   },
   "btnCreateFields": "Create Fields",
   "@btnCreateFields": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnAddCancellationOption": "ADD MORE",
+  "@btnAddCancellationOption": {
     "type": "text",
     "placeholders": {}
   },
@@ -425,8 +620,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "inputHintCarnival": "Select your carnival",
-  "@inputHintCarnival": {
+  "inputHintEventType": "Select event tpye",
+  "@inputHintEventType": {
     "type": "text",
     "placeholders": {}
   },
@@ -480,6 +675,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "inputHintTicketCurrency": "Select Currency",
+  "@inputHintTicketCurrency": {
+    "type": "text",
+    "placeholders": {}
+  },
   "inputHintSalesEndDate": "Sales end date",
   "@inputHintSalesEndDate": {
     "type": "text",
@@ -487,6 +687,11 @@
   },
   "inputHintPercentage": "Type your Percentage",
   "@inputHintPercentage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintCancellationDesc": "Cancellation Policy Description",
+  "@inputHintCancellationDesc": {
     "type": "text",
     "placeholders": {}
   },
@@ -525,23 +730,63 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelEventOnce": "Une fois que",
+  "labelYes": "Yes",
+  "@labelYes": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelNo": "No",
+  "@labelNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelUploadBanner": "Click to Upload Your Banner Image",
+  "@labelUploadBanner": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelUpdateBanner": "Click to Update Your Banner Image",
+  "@labelUpdateBanner": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelUploadEventGallery": "Upload your event gallery",
+  "@labelUploadEventGallery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelUploadImage": "Upload Image",
+  "@labelUploadImage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelUploadVideo": "Upload Video",
+  "@labelUploadVideo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventOnce": "Once",
   "@labelEventOnce": {
     "type": "text",
     "placeholders": {}
   },
-  "labelEventDaily": "du quotidien",
+  "labelEventDaily": "Daily",
   "@labelEventDaily": {
     "type": "text",
     "placeholders": {}
   },
-  "labelEventWeekly": "Hebdomadaire",
+  "labelEventWeekly": "Weekly",
   "@labelEventWeekly": {
     "type": "text",
     "placeholders": {}
   },
-  "labelEventCustom": "Douane",
+  "labelEventCustom": "Custom",
   "@labelEventCustom": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventCustomButton": "ADD THIS DATE",
+  "@labelEventCustomButton": {
     "type": "text",
     "placeholders": {}
   },
@@ -582,6 +827,516 @@
   },
   "labelEventFormMultiSelect": "Multi-Select",
   "@labelEventFormMultiSelect": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSunday": "Sunday",
+  "@labelSunday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelMonday": "Monday",
+  "@labelMonday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTuesday": "Tuesday",
+  "@labelTuesday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelWednesday": "Wednesday",
+  "@labelWednesday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelThursday": "Thursday",
+  "@labelThursday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelFriday": "Friday",
+  "@labelFriday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSaturday": "Saturday",
+  "@labelSaturday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCamera": "Camera",
+  "@labelCamera": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelGallery": "Gallery",
+  "@labelGallery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputValue": "Input Value",
+  "@inputValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleEventDetails": "Event Details",
+  "@titleEventDetails": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventName": "Event name can not be empty",
+  "@errorEventName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventDesc": "Event description can not be empty",
+  "@errorEventDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventType": "Event type can not be empty",
+  "@errorEventType": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventTimezone": "Timezone can not be empty",
+  "@errorEventTimezone": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventAddress": "Address can not be empty",
+  "@errorEventAddress": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventState": "State can not be empty",
+  "@errorEventState": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventCity": "City can not be empty",
+  "@errorEventCity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEventPostal": "Postal code can be empty",
+  "@errorEventPostal": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStartDate": "Start date can not be empty",
+  "@errorStartDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStartTime": "Start time can not be empty",
+  "@errorStartTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEndDate": "End date can not be empty",
+  "@errorEndDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEndTime": "End time can not be empty",
+  "@errorEndTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEndTimeLess": "End time can not be less than start time",
+  "@errorEndTimeLess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorWeekday": "Weekday can not be empty",
+  "@errorWeekday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStartDateWeekday": "Start date should be on ",
+  "@errorStartDateWeekday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEndDateWeekday": "End date should be on ",
+  "@errorEndDateWeekday": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTwoDateReq": "Atleast 2 custom dates are required",
+  "@errorTwoDateReq": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorDuplicateTag": "Duplicate Tag",
+  "@errorDuplicateTag": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketLength": "Please create atleast 1 ticket.",
+  "@errorTicketLength": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketName": "Ticket name can not be empty",
+  "@errorTicketName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketCurrency": "Ticket currency can not be empty",
+  "@errorTicketCurrency": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketSaleEnd": "Sale end date can not be empty",
+  "@errorTicketSaleEnd": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketAvailableQua": "Available quantity can not be empty",
+  "@errorTicketAvailableQua": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketMinQua": "Min quantity can not be empty",
+  "@errorTicketMinQua": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketMaxQua": "Max quantity can not be empty",
+  "@errorTicketMaxQua": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketMinQuaLess": "Min quantity should be less than Max quantity",
+  "@errorTicketMinQuaLess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTicketMinMaxBet": "Min and Max quantity should be less than or equal to Availabe quantity",
+  "@errorTicketMinMaxBet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorFieldLabel": "Field name can not be empty",
+  "@errorFieldLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorFieldPlaceholder": "Placeholder can not be empty",
+  "@errorFieldPlaceholder": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorDuplicateListItem": "Duplicate list item is not allowed",
+  "@errorDuplicateListItem": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNoListItem": "Add atleast 1 list item",
+  "@errorNoListItem": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCancellationDesc": "Cancellation description can not be empty",
+  "@errorCancellationDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNoCancellationOption": "Add atleast 1 cancellation option",
+  "@errorNoCancellationOption": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorTnc": "Please review and accept terms of use and privacy policy.",
+  "@errorTnc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnsavedBasic": "You have unsaved changes in 'Basic' section. Please submit them first.",
+  "@errorUnsavedBasic": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnsavedForm": "You have unsaved changes in 'Forms'. Please submit them first.",
+  "@errorUnsavedForm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnsavedGallery": "You have unsaved changes in 'Gallery'. Please submit them first.",
+  "@errorUnsavedGallery": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNoEventTypesAvailable": "No event types available",
+  "@errorNoEventTypesAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnsavedChanges": "You will lost any unsaved changes. Are you sure, you want to go back?",
+  "@errorUnsavedChanges": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnGoBack": "Go Back",
+  "@btnGoBack": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateAddon": "Create Add-ons",
+  "@titleCreateAddon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonPrivacy": "Is Private",
+  "@labelAddonPrivacy": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonIsActive": "Active",
+  "@labelAddonIsActive": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonName": "Add on Name",
+  "@labelAddonName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonStartDate": "Start Date",
+  "@labelAddonStartDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonEndDate": "End Date",
+  "@labelAddonEndDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonTotalAvailable": "Quantity",
+  "@labelAddonTotalAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonPrice": "Price",
+  "@labelAddonPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonDesc": "Description",
+  "@labelAddonDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonConvFee": "Convenience Fee",
+  "@labelAddonConvFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonChargeConvFee": "Charge Convenience Fee",
+  "@labelAddonChargeConvFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonTypePublic": "Public",
+  "@labelAddonTypePublic": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonTypePrivate": "Private",
+  "@labelAddonTypePrivate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonTypeAmount": "Amount",
+  "@labelAddonTypeAmount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonTypePercentage": "Percentage",
+  "@labelAddonTypePercentage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintAddonName": "Type your addon name",
+  "@inputHintAddonName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintAddonPrice": "Addon Price",
+  "@inputHintAddonPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintAddonConvenienceFee": "Fee",
+  "@inputHintAddonConvenienceFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonUploadImage": "Upload Image",
+  "@labelAddonUploadImage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonQuanity": "Qty: ",
+  "@labelAddonQuanity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonConvFeeView": "Fee: ",
+  "@labelAddonConvFeeView": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAddonSaleEnd": "sales end:",
+  "@labelAddonSaleEnd": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEditAddon": "Edit Addon",
+  "@labelEditAddon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonName": "Addon name can not be empty",
+  "@errorAddonName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonStartDate": "Start date can not be empty",
+  "@errorAddonStartDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonEndDate": "End date can not be empty",
+  "@errorAddonEndDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonStartDateAfter": "Start date can not be bigger than end date",
+  "@errorAddonStartDateAfter": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonTotalAva": "Quantity can not be empty",
+  "@errorAddonTotalAva": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonPrice": "Addon price can not be empty",
+  "@errorAddonPrice": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonDesc": "Addon description can not be empty",
+  "@errorAddonDesc": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonConvFeeType": "Convinence fee type can not be empty",
+  "@errorAddonConvFeeType": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonConvFee": "Convinence fee can not be empty",
+  "@errorAddonConvFee": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAddonImage": "Addon image is required",
+  "@errorAddonImage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponQuantityLeft": "Left : ",
+  "@labelCouponQuantityLeft": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponOff": "Off",
+  "@labelCouponOff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponValidTill": "Valid till:",
+  "@labelCouponValidTill": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEditCoupon": "Edit Coupon",
+  "@labelEditCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelActiveCoupon": "Active Coupon",
+  "@labelActiveCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelInActiveCoupon": "Inactive Coupon",
+  "@labelInActiveCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCreateDiscountCoupon": "Remise sur le code",
+  "@labelCreateDiscountCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCreateGroupCoupon": "Remise de groupe",
+  "@labelCreateGroupCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCreateFlatCoupon": "Remise forfaitaire",
+  "@labelCreateFlatCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCreateLoyaltyCoupon": "Remise fidélité",
+  "@labelCreateLoyaltyCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCreateAffiliateCoupon": "Remise d'affiliation",
+  "@labelCreateAffiliateCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutTitle": "Logout",
+  "@logoutTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutMsg": "Are you sure, you want to logout?",
+  "@logoutMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logoutButton": "Logout",
+  "@logoutButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNoInternet": "Please check your internet",
+  "@errorNoInternet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorSomethingWrong": "Something went wrong",
+  "@errorSomethingWrong": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "notAvailable": "NA",
+  "@notAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "exitWarning": "Press back again to exit",
+  "@exitWarning": {
     "type": "text",
     "placeholders": {}
   }

@@ -1,4 +1,5 @@
 import 'package:eventmanagement/model/addons/addon.dart';
+import 'package:eventmanagement/model/coupons/coupon.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
@@ -47,4 +48,10 @@ abstract class APIService {
   getAllAddons(String authToken, bool assigning);
 
   assignAddon(String authToken, Ticket ticket, {String ticketId});
+
+  getAllCoupons(String authToken);
+
+  activeInactiveCoupons(String authToken, String couponId);
+
+  uploadCoupon(String authToken, Coupon coupon);
 }

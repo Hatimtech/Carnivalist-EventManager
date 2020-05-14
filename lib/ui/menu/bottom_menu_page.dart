@@ -5,6 +5,7 @@ import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart';
 import 'package:eventmanagement/ui/page/addons/addon_page.dart';
+import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
@@ -22,7 +23,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
 
   final List<Widget> _pages = [
     DashboardPage(key: PageStorageKey(PAGE_STORAGE_KEY_DASHBOARD)),
-    Container(),
+    CouponPage(key: PageStorageKey(PAGE_STORAGE_KEY_COUPONS)),
     AddonPage(key: PageStorageKey(PAGE_STORAGE_KEY_ADDON)),
     Container(),
     Container(),
@@ -49,10 +50,10 @@ class _BottomMenuState extends State<BottomMenuPage> {
     if (!loaded) {
       final appLoc = AppLocalizations.of(context);
       _title.add(appLoc.titleDashboard);
+      _title.add(appLoc.labelCoupons);
       _title.add(appLoc.labelAddons);
-      _title.add(appLoc.labelAddons);
-      _title.add(appLoc.labelAddons);
-      _title.add(appLoc.labelAddons);
+      _title.add(appLoc.labelReports);
+      _title.add(appLoc.labelStaff);
       loaded = true;
     }
   }
@@ -76,7 +77,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
                       children: <Widget>[
                         IconButton(
                           onPressed: () {
-//                            _pageNavBloc.currentPage(PAGE_COUPONS);
+                            _pageNavBloc.currentPage(PAGE_COUPONS);
                           },
                           icon: Icon(
                             Icons.account_balance_wallet,

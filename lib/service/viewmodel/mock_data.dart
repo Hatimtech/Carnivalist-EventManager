@@ -1,4 +1,6 @@
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/model/menu_custom.dart';
+import 'package:flutter/material.dart';
 
 getBasicEventFrequency() =>
     <MenuCustom>[
@@ -43,4 +45,68 @@ getAddonConvFeeType() =>
     <MenuCustom>[
       MenuCustom(name: 'Amount', value: 'Amount'),
       MenuCustom(name: 'Percentage', value: 'Percentage'),
+    ];
+
+getCouponDiscountType({BuildContext context}) =>
+    <MenuCustom>[
+      MenuCustom(
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelAmount
+            : 'Amount',
+        value: 'amount',
+      ),
+      MenuCustom(
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelPercentage
+            : 'Percentage',
+        value: 'percentage',
+      ),
+    ];
+
+getCouponType({BuildContext context}) =>
+    <MenuCustom>[
+      MenuCustom(
+        value: 'Code Discount',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelCreateDiscountCoupon
+            : 'Code Discount',
+      ),
+      MenuCustom(
+        value: 'Group Discount',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelCreateGroupCoupon
+            : 'Group Discount',
+      ),
+      MenuCustom(
+        value: 'Flat Discount',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelCreateFlatCoupon
+            : 'Flat Discount',
+      ),
+      MenuCustom(
+        value: 'Loyalty Discount',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelCreateLoyaltyCoupon
+            : 'Loyalty Discount',
+      ),
+      MenuCustom(
+        value: 'Affiliate Discount',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelCreateAffiliateCoupon
+            : 'Affiliate Discount',
+      ),
     ];

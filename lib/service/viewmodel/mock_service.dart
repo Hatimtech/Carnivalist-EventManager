@@ -1,4 +1,5 @@
 import 'package:eventmanagement/model/addons/addon.dart';
+import 'package:eventmanagement/model/coupons/coupon.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
@@ -109,4 +110,20 @@ class MockService implements APIService {
   assignAddon(String authToken, Ticket ticket, {String ticketId}) {
     return null;
   }
+
+  @override
+  getAllCoupons(String authToken) {
+    return null;
+  }
+
+  @override
+  activeInactiveCoupons(String authToken, String couponId) {
+    return null;
+  }
+
+  @override
+  uploadCoupon(String authToken, Coupon coupon) {
+    return null;
+  }
+
 }

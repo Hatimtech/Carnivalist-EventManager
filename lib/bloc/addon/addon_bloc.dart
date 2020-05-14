@@ -118,9 +118,10 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
       if (networkServiceResponse.responseCode == ok200) {
         var addonList = networkServiceResponse.response as List<Addon>;
         if (addonList != null) {
-          addonList.forEach((addon) {
-            if (addonIds.contains(addon.id)) addon.isSelected = true;
-          });
+          if (assigning)
+            addonList.forEach((addon) {
+              if (addonIds.contains(addon.id)) addon.isSelected = true;
+            });
           add(AddonListAvailable(true, addonList: addonList));
         }
       } else {

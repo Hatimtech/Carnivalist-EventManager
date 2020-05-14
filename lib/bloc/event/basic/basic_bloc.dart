@@ -922,22 +922,48 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
     return customSelectedDateTime;
   }
 
+  List<DateTime> get lowestAndBiggestDate {
+    final List<DateTime> dates = [
+      state.eventCustomDateTimeList[0].eventStartDateTime,
+      state.eventCustomDateTimeList[0].eventEndDateTime
+    ];
+    state.eventCustomDateTimeList.forEach((eventCustomDateTime) {
+      if (eventCustomDateTime.eventStartDateTime.isBefore(dates[0]))
+        dates[0] = eventCustomDateTime.eventStartDateTime;
+
+      if (eventCustomDateTime.eventEndDateTime.isAfter(dates[1]))
+        dates[1] = eventCustomDateTime.eventEndDateTime;
+    });
+    return dates;
+  }
+
   EventData get eventDataToUpload {
+    final eventFreq = state.eventFreqList
+        .firstWhere((frequency) => frequency.name == state.eventFreqName,
+        orElse: () => state.eventFreqList[0])
+        .value;
+    final eventPrivacy = state.eventPrivacyList
+        .firstWhere((privacy) => privacy.name == state.eventPrivacy,
+        orElse: () => state.eventPrivacyList[0])
+        .value;
+
+    DateTime startDate = startDateTime;
+    DateTime endDate = endDateTime;
+    if (eventFreq == state.eventFreqList[3].value) {
+      List<DateTime> customDates = lowestAndBiggestDate;
+      startDate = customDates[0];
+      endDate = customDates[1];
+    }
+
     return EventData(
         title: state.eventName,
         type: state.eventType,
         timeZone: state.eventTimeZone,
         tags: state.eventTags,
-        eventFrequency: state.eventFreqList
-            .firstWhere((frequency) => frequency.name == state.eventFreqName,
-            orElse: () => state.eventFreqList[0])
-            .value,
-        eventPrivacy: state.eventPrivacyList
-            .firstWhere((privacy) => privacy.name == state.eventPrivacy,
-            orElse: () => state.eventPrivacyList[0])
-            .value,
-        startDateTime: startDateTime.toIso8601String(),
-        endDateTime: endDateTime.toIso8601String(),
+        eventFrequency: eventFreq,
+        eventPrivacy: eventPrivacy,
+        startDateTime: startDate.toIso8601String(),
+        endDateTime: endDate.toIso8601String(),
         description: state.eventDescription,
         status: state.status,
         place: Place(

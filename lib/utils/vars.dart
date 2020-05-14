@@ -285,6 +285,7 @@ String uiLabelWeekday(String label, BuildContext context) {
 
 // Page Storage Keys
 const String PAGE_STORAGE_KEY_DASHBOARD = 'DashboardPage';
+const String PAGE_STORAGE_KEY_COUPONS = 'CouponPage';
 const String PAGE_STORAGE_KEY_ADDON = 'AddonPage';
 
 // Error Codes
@@ -340,6 +341,25 @@ const int ERR_ADDON_DESCRIPTION = 40;
 const int ERR_ADDON_CONV_FEE_TYPE = 41;
 const int ERR_ADDON_CONV_FEE = 42;
 const int ERR_ADDON_IMAGE = 43;
+
+const int ERR_DISCOUNT_NAME = 44;
+const int ERR_COUPON_START_DATE = 45;
+const int ERR_COUPON_END_DATE = 46;
+const int ERR_COUPON_START_DATE_AFTER = 47;
+const int ERR_COUPON_NO_OF_DISCOUNT = 48;
+const int ERR_COUPON_NO_OF_DISCOUNT_ZERO = 49;
+const int ERR_COUPON_CODE = 50;
+const int ERR_COUPON_DISCOUNT = 51;
+const int ERR_COUPON_EVENT_SELECTION = 52;
+const int ERR_COUPON_TICKET_SELECTION = 53;
+const int ERR_COUPON_MIN_TICKET = 54;
+const int ERR_COUPON_MIN_TICKET_ZERO = 55;
+const int ERR_COUPON_MAX_TICKET = 56;
+const int ERR_COUPON_MAX_TICKET_ZERO = 57;
+const int ERR_COUPON_AFFILIATE_EMAIL = 58;
+const int ERR_COUPON_AFFILIATE_EMAIL_VALID = 59;
+
+const int ERR_COUPON_PAST_EVENT_SELECTION = 60;
 
 const int ERR_NO_INTERNET = 99;
 const int ERR_SOMETHING_WENT_WRONG = 100;
@@ -438,6 +458,44 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorAddonConvFee;
     case ERR_ADDON_IMAGE:
       return appLoc.errorAddonImage;
+
+    case ERR_DISCOUNT_NAME:
+      return appLoc.errorCouponDiscountName;
+    case ERR_COUPON_START_DATE:
+      return appLoc.errorCouponAvailStartDate;
+    case ERR_COUPON_END_DATE:
+      return appLoc.errorCouponAvailEndDate;
+    case ERR_COUPON_START_DATE_AFTER:
+      return appLoc.errorCouponStartDateAfter;
+    case ERR_COUPON_NO_OF_DISCOUNT:
+      return appLoc.errorCouponNoOfDiscount;
+    case ERR_COUPON_NO_OF_DISCOUNT_ZERO:
+      return appLoc.errorCouponNoOfDiscountZero;
+    case ERR_COUPON_CODE:
+      return appLoc.errorCouponCode;
+    case ERR_COUPON_DISCOUNT:
+      return appLoc.errorCouponDiscountValue;
+    case ERR_COUPON_EVENT_SELECTION:
+      return appLoc.errorCouponSelectEvent;
+    case ERR_COUPON_TICKET_SELECTION:
+      return appLoc.errorCouponSelectTicket;
+
+    case ERR_COUPON_MIN_TICKET:
+      return appLoc.errorCouponMinTicket;
+    case ERR_COUPON_MIN_TICKET_ZERO:
+      return appLoc.errorCouponMinTicketZero;
+    case ERR_COUPON_MAX_TICKET:
+      return appLoc.errorCouponMaxTicket;
+    case ERR_COUPON_MAX_TICKET_ZERO:
+      return appLoc.errorCouponMaxTicketZero;
+
+    case ERR_COUPON_PAST_EVENT_SELECTION:
+      return appLoc.errorCouponSelectPastEvent;
+
+    case ERR_COUPON_AFFILIATE_EMAIL:
+      return appLoc.errorCouponAffEmail;
+    case ERR_COUPON_AFFILIATE_EMAIL_VALID:
+      return appLoc.errorCouponAffEmailValid;
 
     case ERR_NO_INTERNET:
       return appLoc.errorNoInternet;

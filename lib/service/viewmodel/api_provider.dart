@@ -1,4 +1,5 @@
 import 'package:eventmanagement/model/addons/addon.dart';
+import 'package:eventmanagement/model/coupons/coupon.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
@@ -110,5 +111,19 @@ class ApiProvider {
   Future<NetworkServiceResponse> assignAddon(String authToken, Ticket ticket,
       {String ticketId}) async {
     return await apiService.assignAddon(authToken, ticket, ticketId: ticketId);
+  }
+
+  Future<NetworkServiceResponse> getAllCoupons(String authToken) async {
+    return await apiService.getAllCoupons(authToken);
+  }
+
+  Future<NetworkServiceResponse> activeInactiveCoupons(String authToken,
+      String couponId) async {
+    return await apiService.activeInactiveCoupons(authToken, couponId);
+  }
+
+  Future<NetworkServiceResponse> uploadCoupon(String authToken,
+      Coupon coupon) async {
+    return await apiService.uploadCoupon(authToken, coupon);
   }
 }
