@@ -153,6 +153,6 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
 }
 
 bool get isPlatformAndroid {
-//  return Platform.isAndroid;
-  return false;
+  return Platform.isAndroid;
+//  return false;
 }
