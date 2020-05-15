@@ -19,6 +19,8 @@ import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/model/event/tickets/tickets_response.dart';
+import 'package:eventmanagement/model/eventdetails/event_detail_action_response.dart';
+import 'package:eventmanagement/model/eventdetails/event_detail_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
@@ -30,9 +32,7 @@ import '../network_type.dart';
 import '../restclient.dart';
 
 class NetworkService extends NetworkType implements APIService {
-  static final _baseUrl = 'https://backend.carnivalist.tk'
-
-  /*'https://dev.backend.aktv.life'*/;
+  static final _baseUrl = 'https://backend.carnivalist.tk';
 
   static final _subUrl = '/api/';
   final _loginUrl = _baseUrl + _subUrl + 'user/login';
@@ -64,10 +64,13 @@ class NetworkService extends NetworkType implements APIService {
   final _addonUploadUrl = _baseUrl + _subUrl + 'create-addons/';
 
   final _couponListUrl = _baseUrl + _subUrl + 'get-coupons/';
-  final _couponTicketListUrl = _baseUrl + _subUrl + 'get-coupons/';
 
   final _activeInactiveCouponUrl = _baseUrl + _subUrl + 'active-toggle/';
   final _couponUploadUrl = _baseUrl + _subUrl + 'save-new-coupon/';
+
+  final _eventDetailUrl = _baseUrl + _subUrl + 'ticketreports/';
+  final _resendTicketUrl = _baseUrl + _subUrl + 'resend-ticket/';
+  final _sendMailUrl = _baseUrl + _subUrl + 'send-announcement/';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -499,6 +502,66 @@ class NetworkService extends NetworkType implements APIService {
       result.networkServiceResponse.response = res;
     }
 
+    return result.networkServiceResponse;
+  }
+
+  @override
+  getEventDetail(String authToken, String eventId) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<EventDetailResponse>(
+        '$_eventDetailUrl$eventId', headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      final res = EventDetailResponse.fromJson(
+          json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  attendeesResendTicket(String authToken, Map<String, dynamic> param) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<EventDetailActionResponse>(
+        _resendTicketUrl,
+        body: json.encode(param),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = EventDetailActionResponse.fromJson(
+          json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  attendeesSendMail(String authToken, Map<String, dynamic> param) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<EventDetailActionResponse>(
+        _sendMailUrl,
+        body: json.encode(param),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = EventDetailActionResponse.fromJson(
+          json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
     return result.networkServiceResponse;
   }
 }

@@ -54,4 +54,10 @@ abstract class APIService {
   activeInactiveCoupons(String authToken, String couponId);
 
   uploadCoupon(String authToken, Coupon coupon);
+
+  getEventDetail(String authToken, String eventId);
+
+  attendeesResendTicket(String authToken, Map<String, dynamic> param);
+
+  attendeesSendMail(String authToken, Map<String, dynamic> param);
 }

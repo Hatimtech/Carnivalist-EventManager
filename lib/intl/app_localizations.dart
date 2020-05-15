@@ -376,6 +376,9 @@ class AppLocalizations {
   String get btnSubmit =>
       Intl.message('Submit', name: "btnSubmit", locale: _localeName);
 
+  String get btnSend =>
+      Intl.message('Send', name: "btnSend", locale: _localeName);
+
   String get btnNext =>
       Intl.message('Next', name: "btnNext", locale: _localeName);
 
@@ -1115,6 +1118,94 @@ class AppLocalizations {
   String get errorCouponAffEmailValid =>
       Intl.message('Affiliate email is not valid',
           name: "errorCouponAffEmailValid", locale: _localeName);
+
+  String get labelEventDetailAttendees =>
+      Intl.message('Attendee',
+          name: "labelEventDetailAttendees", locale: _localeName);
+
+  String get labelEventDetailDetails =>
+      Intl.message('Details',
+          name: "labelEventDetailDetails", locale: _localeName);
+
+  String get labelEventDetailTicket =>
+      Intl.message('Ticket: ',
+          name: "labelEventDetailTicket", locale: _localeName);
+
+  String get labelEventDetailStatusSuccess =>
+      Intl.message('Success',
+          name: "labelEventDetailStatusSuccess", locale: _localeName);
+
+  String get labelEventDetailStatusFailed =>
+      Intl.message('Failed',
+          name: "labelEventDetailStatusFailed", locale: _localeName);
+
+  String get labelAttendeesResendTicket =>
+      Intl.message('Resend Ticket', name: "labelAttendeesResendTicket",
+          locale: _localeName);
+
+  String get labelAttendeesSendMail =>
+      Intl.message('Send Mail',
+          name: "labelAttendeesSendMail", locale: _localeName);
+
+  String get errorMailSubject =>
+      Intl.message('Subject can not be empty',
+          name: "errorMailSubject", locale: _localeName);
+
+  String get errorMailFromName =>
+      Intl.message('From name can not be empty',
+          name: "errorMailFromName", locale: _localeName);
+
+  String get errorMailReplyTo =>
+      Intl.message('Reply-to mail can not be empty',
+          name: "errorMailReplyTo", locale: _localeName);
+
+  String get errorMailReplyToValid =>
+      Intl.message('Please enter valid reply-to mail',
+          name: "errorMailReplyToValid", locale: _localeName);
+
+  String get errorMailMessage =>
+      Intl.message('Message body can not be empty',
+          name: "errorMailMessage", locale: _localeName);
+
+  String get labelSendAnnouncement =>
+      Intl.message('Send Announcement',
+          name: "labelSendAnnouncement", locale: _localeName);
+
+  String get labelSendAnnouncementSubject =>
+      Intl.message('Subject',
+          name: "labelSendAnnouncementSubject", locale: _localeName);
+
+  String get labelSendAnnouncementFromName =>
+      Intl.message('From Name',
+          name: "labelSendAnnouncementFromName", locale: _localeName);
+
+  String get labelSendAnnouncementReplyTo =>
+      Intl.message('Reply To',
+          name: "labelSendAnnouncementReplyTo", locale: _localeName);
+
+  String get labelSendAnnouncementMessage =>
+      Intl.message('Message',
+          name: "labelSendAnnouncementMessage", locale: _localeName);
+
+  String get inputSendAnnouncementSubject =>
+      Intl.message('Type Subject',
+          name: "inputSendAnnouncementSubject", locale: _localeName);
+
+  String get inputSendAnnouncementFromName =>
+      Intl.message('Enter From Name',
+          name: "inputSendAnnouncementFromName", locale: _localeName);
+
+  String get inputSendAnnouncementReplyTo =>
+      Intl.message('Enter Email Address',
+          name: "inputSendAnnouncementReplyTo", locale: _localeName);
+
+  String get inputSendAnnouncementMessage =>
+      Intl.message('Enter Message Body',
+          name: "inputSendAnnouncementMessage", locale: _localeName);
+
+  String get labelAnnouncementFor =>
+      Intl.message('Announcement For',
+          name: "labelAnnouncementFor", locale: _localeName);
 
   String get logoutTitle =>
       Intl.message('Logout', name: "logoutTitle", locale: _localeName);

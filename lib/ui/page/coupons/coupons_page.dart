@@ -373,7 +373,6 @@ class _CouponState extends State<CouponPage> {
   }
 
   void _onCreateCouponTypeSelected(String type, {String couponId}) {
-    print('type--->$type');
     showDialog(
       context: context,
       builder: (BuildContext context) => BlocProvider(

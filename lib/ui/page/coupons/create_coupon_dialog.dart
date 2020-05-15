@@ -34,8 +34,6 @@ class _CreateCouponState extends State<CreateCouponDialog> {
 
   final FocusNode _focusNodeMaxTicketNo = FocusNode();
 
-  final FocusNode _focusNodeAffiliateEmail = FocusNode();
-
   final List<MenuCustom> couponTypeList = [];
   bool loaded = false;
 

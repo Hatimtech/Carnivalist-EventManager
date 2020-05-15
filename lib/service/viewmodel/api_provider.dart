@@ -23,7 +23,8 @@ class ApiProvider {
     return await apiService.signUp(param);
   }
 
-  Future<NetworkServiceResponse> getForgotPassword(Map<String, dynamic> param) async {
+  Future<NetworkServiceResponse> getForgotPassword(
+      Map<String, dynamic> param) async {
     return await apiService.forgotPassword(param);
   }
 
@@ -125,5 +126,20 @@ class ApiProvider {
   Future<NetworkServiceResponse> uploadCoupon(String authToken,
       Coupon coupon) async {
     return await apiService.uploadCoupon(authToken, coupon);
+  }
+
+  Future<NetworkServiceResponse> getEventDetail(String authToken,
+      String eventId) async {
+    return await apiService.getEventDetail(authToken, eventId);
+  }
+
+  Future<NetworkServiceResponse> attendeesResendTicket(String authToken,
+      Map<String, dynamic> param) async {
+    return await apiService.attendeesResendTicket(authToken, param);
+  }
+
+  Future<NetworkServiceResponse> attendeesSendMail(String authToken,
+      Map<String, dynamic> param) async {
+    return await apiService.attendeesSendMail(authToken, param);
   }
 }

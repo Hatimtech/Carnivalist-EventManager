@@ -350,7 +350,6 @@ class CreateCouponBloc extends Bloc<CreateCouponEvent, CreateCouponState> {
   }
 
   int get validateAffiliateDiscountData {
-    print('validateAffiliateDiscountData ${state.affiliateEmailId}');
     if (!isValid(state.discountName)) return ERR_DISCOUNT_NAME;
     if (state.startDateTime == null) return ERR_COUPON_START_DATE;
     if (state.endDateTime == null) return ERR_COUPON_END_DATE;

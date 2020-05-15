@@ -4,6 +4,7 @@ import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/coupon/coupon_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
+import 'package:eventmanagement/bloc/event/eventdetail/event_detail_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
@@ -103,7 +104,8 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
           dashboardRoute: (BuildContext context) => DashboardPage(),
           eventMenuRoute: (BuildContext context) =>
               createEventPageRoute(context),
-          eventDetailRoute: (BuildContext context) => EventDetailRootPage(),
+          eventDetailRoute: (BuildContext context) =>
+              eventDetailPageRoute(context),
         });
   }
 
@@ -125,6 +127,16 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
       BlocProvider(
         create: (context) => ForgotPasswordBloc(),
         child: ForgotPasswordPage(),
+      );
+
+  Widget eventDetailPageRoute(BuildContext context) =>
+      BlocProvider(
+        create: (ctx) =>
+            EventDetailBloc(eventId: ModalRoute
+                .of(context)
+                .settings
+                .arguments as String),
+        child: EventDetailRootPage(),
       );
 
   Widget createEventPageRoute(BuildContext context) {

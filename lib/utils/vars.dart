@@ -358,8 +358,13 @@ const int ERR_COUPON_MAX_TICKET = 56;
 const int ERR_COUPON_MAX_TICKET_ZERO = 57;
 const int ERR_COUPON_AFFILIATE_EMAIL = 58;
 const int ERR_COUPON_AFFILIATE_EMAIL_VALID = 59;
-
 const int ERR_COUPON_PAST_EVENT_SELECTION = 60;
+
+const int ERR_MAIL_SUBJECT_NAME = 61;
+const int ERR_MAIL_FROM_NAME = 62;
+const int ERR_MAIL_REPLY_TO = 63;
+const int ERR_MAIL_REPLY_TO_VALID = 64;
+const int ERR_MAIL_MESSAGE_BODY = 65;
 
 const int ERR_NO_INTERNET = 99;
 const int ERR_SOMETHING_WENT_WRONG = 100;
@@ -496,6 +501,17 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorCouponAffEmail;
     case ERR_COUPON_AFFILIATE_EMAIL_VALID:
       return appLoc.errorCouponAffEmailValid;
+
+    case ERR_MAIL_SUBJECT_NAME:
+      return appLoc.errorMailSubject;
+    case ERR_MAIL_FROM_NAME:
+      return appLoc.errorMailFromName;
+    case ERR_MAIL_REPLY_TO :
+      return appLoc.errorMailReplyTo;
+    case ERR_MAIL_REPLY_TO_VALID:
+      return appLoc.errorMailReplyToValid;
+    case ERR_MAIL_MESSAGE_BODY:
+      return appLoc.errorMailMessage;
 
     case ERR_NO_INTERNET:
       return appLoc.errorNoInternet;

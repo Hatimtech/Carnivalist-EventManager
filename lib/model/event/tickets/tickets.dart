@@ -18,7 +18,7 @@ class Ticket {
   Ticket({name, sellingEndDate, price, addons});
 
   Ticket.fromJson(Map<String, dynamic> json) {
-    addons = json['addons'].cast<String>();
+    addons = json['addons']?.cast<String>();
     active = json['active'];
     isDeleted = json['isDeleted'];
     sId = json['_id'];

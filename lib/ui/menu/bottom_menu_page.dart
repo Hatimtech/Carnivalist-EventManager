@@ -7,6 +7,8 @@ import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart
 import 'package:eventmanagement/ui/page/addons/addon_page.dart';
 import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
+import 'package:eventmanagement/ui/page/webview_page.dart';
+import 'package:eventmanagement/ui/page/webview_plugin_page.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,8 +27,8 @@ class _BottomMenuState extends State<BottomMenuPage> {
     DashboardPage(key: PageStorageKey(PAGE_STORAGE_KEY_DASHBOARD)),
     CouponPage(key: PageStorageKey(PAGE_STORAGE_KEY_COUPONS)),
     AddonPage(key: PageStorageKey(PAGE_STORAGE_KEY_ADDON)),
-    Container(),
-    Container(),
+    const WebViewPluginPage('https://manager.carnivalist.tk/reports'),
+    const WebViewPage('https://manager.carnivalist.tk/manage-staffs'),
   ];
 
   final List<String> _title = [];
@@ -95,7 +97,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
                         ),
                         IconButton(
                           onPressed: () {
-//                            _pageNavBloc.currentPage(PAGE_REPORTS);
+                            _pageNavBloc.currentPage(PAGE_REPORTS);
                           },
                           icon: Icon(
                             Icons.note,

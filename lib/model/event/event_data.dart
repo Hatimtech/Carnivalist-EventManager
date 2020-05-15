@@ -146,6 +146,13 @@ class EventData {
 
     return data;
   }
+
+  @override
+  String toString() {
+    return 'EventData{id: $id, title: $title, tags: $tags, description: $description, type: $type, eventFrequency: $eventFrequency, startDateTime: $startDateTime, endDateTime: $endDateTime, daily: $daily, weekly: $weekly, custom: $custom, place: $place, eventPrivacy: $eventPrivacy, timeZone: $timeZone, tickets: $tickets, formStructure: $formStructure, banner: $banner, gallery: $gallery, status: $status, cancellationPolicy: $cancellationPolicy, paymentAndTaxes: $paymentAndTaxes, websiteSettings: $websiteSettings}';
+  }
+
+
 }
 
 class Daily {

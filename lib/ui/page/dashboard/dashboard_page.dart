@@ -4,6 +4,7 @@ import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
 import 'package:eventmanagement/bloc/addon/addon_state.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/coupon/coupon_bloc.dart';
+import 'package:eventmanagement/bloc/coupon/coupon_state.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
@@ -160,11 +161,20 @@ class _DashboardState extends State<DashboardPage> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                _categoryCounter(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelCoupons,
-                                    '00'),
+                                BlocBuilder<CouponBloc, CouponState>(
+                                    bloc: _couponBloc,
+                                    condition: (prevState, newState) =>
+                                    prevState.couponList !=
+                                        newState.couponList,
+                                    builder: (_, state) {
+                                      return _categoryCounter(
+                                          AppLocalizations
+                                              .of(context)
+                                              .labelCoupons,
+                                          state.couponList?.length
+                                              ?.toString() ??
+                                              '00');
+                                    }),
                                 SizedBox(width: 10),
                                 BlocBuilder<AddonBloc, AddonState>(
                                     bloc: _addonBloc,
