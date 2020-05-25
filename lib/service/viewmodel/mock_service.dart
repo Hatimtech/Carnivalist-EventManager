@@ -140,4 +140,14 @@ class MockService implements APIService {
   attendeesSendMail(String authToken, Map<String, dynamic> param) {
     return null;
   }
+
+  @override
+  uploadProfilePic(String authToken, String mediaPath) {
+    return null;
+  }
+
+  @override
+  updateUserDetails(String authToken, Map<String, dynamic> param) {
+    return null;
+  }
 }

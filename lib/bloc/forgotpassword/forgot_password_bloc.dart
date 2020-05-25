@@ -30,7 +30,7 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
 
       Map<String, dynamic> param = Map();
       param.putIfAbsent(emailParam, () => state.mobile);
-      param.putIfAbsent(redirectUrlValue, () => state.mobile);
+      param.putIfAbsent(redirectParam, () => redirectUrlValue);
 
       final networkServiceResponse = await apiProvider.getForgotPassword(param);
 

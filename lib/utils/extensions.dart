@@ -1,9 +1,10 @@
+import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/ui/page/webview_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
 import 'package:eventmanagement/ui/widget/flushbar/flushbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:html_editor/html_editor.dart';
 
 import 'vars.dart';
 
@@ -53,6 +54,45 @@ extension ContextExtensions on BuildContext {
     )
       ..show(this);
   }
+
+  Future<bool> showConfirmationDialog(String title,
+      String message, {
+        String posText,
+        String negText,
+      }) async {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(
+        title,
+        style: Theme
+            .of(this)
+            .textTheme
+            .title
+            .copyWith(fontSize: 16.0),
+      ),
+      content: Text(
+        message,
+        style: Theme
+            .of(this)
+            .textTheme
+            .title
+            .copyWith(fontSize: 16.0, fontWeight: FontWeight.normal),
+      ),
+      actions: <Widget>[
+        if (isValid(negText))
+          FlatButton(
+              onPressed: () => Navigator.pop(this, false),
+              child: Text(negText)),
+        if (isValid(posText))
+          FlatButton(
+              onPressed: () {
+                Navigator.pop(this, true);
+              },
+              child: Text(posText)),
+      ],
+    );
+
+    return showDialog(context: this, builder: (context) => alertDialog);
+  }
 }
 
 extension WidgetExtensions on Widget {
@@ -85,19 +125,21 @@ extension WidgetExtensions on Widget {
         child: this),
   );
 
-  inputField(TextEditingController textEditingController,
-      {ValueChanged<String> onChanged,
-        int maxLength,
-        TextInputType keyboardType,
-        String hintText,
-        String labelText,
-        TextStyle labelStyle,
-        bool obscureText = false,
-        InkWell inkWell,
-        TextInputAction textInputAction,
-        FocusNode focusNode,
-        FocusNode nextFocusNode,
-        FormFieldValidator<String> validation}) =>
+  inputField(TextEditingController textEditingController, {
+    ValueChanged<String> onChanged,
+    int maxLength,
+    TextInputType keyboardType,
+    String hintText,
+    String labelText,
+    TextStyle labelStyle,
+    bool obscureText = false,
+    bool enabled = true,
+    InkWell inkWell,
+    TextInputAction textInputAction,
+    FocusNode focusNode,
+    FocusNode nextFocusNode,
+    FormFieldValidator<String> validation,
+  }) =>
       TextFormField(
           controller: textEditingController,
           obscureText: obscureText,
@@ -110,6 +152,7 @@ extension WidgetExtensions on Widget {
             if (nextFocusNode != null) nextFocusNode.requestFocus();
             if (focusNode != null) focusNode.unfocus();
           },
+          enabled: enabled,
           focusNode: focusNode,
           decoration: InputDecoration(
               counterText: '',
@@ -151,8 +194,8 @@ extension WidgetExtensions on Widget {
           focusNode: focusNode,
           textInputAction: textInputAction,
           onFieldSubmitted: (_) {
-            if (nextFocusNode != null) nextFocusNode.requestFocus();
             if (focusNode != null) focusNode.unfocus();
+            if (nextFocusNode != null) nextFocusNode.requestFocus();
           },
           autofocus: false,
           enabled: enabled,
@@ -195,4 +238,111 @@ extension WidgetExtensions on Widget {
         Radius.circular(5.0) //                 <--- border radius here
     ),
   );
+
+  Widget hintedWebview(BuildContext context, String htmlValue, String hint) {
+    return Container(
+      height: isValid(htmlValue) ? 156 : 48,
+      padding: EdgeInsets.only(left: 3.0),
+      decoration: boxDecorationRectangle(),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: isValid(htmlValue)
+            ? AbsorbPointer(
+          child: WebViewPage(
+            htmlValue,
+            raw: true,
+          ),
+        )
+            : Text(
+          hint,
+          style: Theme
+              .of(context)
+              .textTheme
+              .body1
+              .copyWith(color: Theme
+              .of(context)
+              .hintColor),
+        ),
+      ),
+    );
+  }
+
+  Future showHtmlEditorDialog(BuildContext context,
+      GlobalKey<HtmlEditorState> htmlEditorKey,
+      String htmlValue,
+      String hint,
+      Function resultHandler) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * .9,
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  HtmlEditor(
+                    key: htmlEditorKey,
+                    hint: isValid(htmlValue) ? '' : hint,
+                    value: htmlValue,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * .8,
+                    showBottomToolbar: false,
+                  ),
+                  Row(children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        onPressed: () => Navigator.pop(context),
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          AppLocalizations
+                              .of(context)
+                              .btnClose,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: RaisedButton(
+                        onPressed: () async {
+                          final html =
+                          await htmlEditorKey.currentState.getText();
+                          resultHandler(html);
+                          Navigator.pop(context);
+                        },
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          AppLocalizations
+                              .of(context)
+                              .btnSave,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button,
+                        ),
+                      ),
+                    )
+                  ]),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

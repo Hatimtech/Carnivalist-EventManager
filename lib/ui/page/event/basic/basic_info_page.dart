@@ -146,6 +146,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
   _eventNameInput() => widget.inputFieldRectangle(
         _eventNameController,
 //        initialValue: _basicBloc.state.eventName,
+    maxLength: 250,
         onChanged: _basicBloc.eventNameInput,
         hintText: AppLocalizations.of(context).inputHintEventName,
         labelStyle: Theme.of(context).textTheme.body1,

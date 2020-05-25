@@ -39,9 +39,11 @@ class _WidthAwareTextFieldState extends State<WidthAwareTextField> {
           textInputAction: TextInputAction.done,
           style: Theme.of(context).textTheme.body1,
           maxLines: 1,
+          maxLength: 250,
           focusNode: widget.focusNode,
           decoration: InputDecoration(
             border: InputBorder.none,
+            counterText: '',
             hintText: widget.showHint
                 ? AppLocalizations.of(context).inputHintTag
                 : null,

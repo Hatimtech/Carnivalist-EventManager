@@ -232,10 +232,6 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
             ),
           ),
         );
-//        return widget.inputFieldRectangle(_eventStartDateController,
-//              onChanged: _basicBloc.eventStartDateInput,
-//              hintText: AppLocalizations.of(context).inputHintDate,
-//              labelStyle: Theme.of(context).textTheme.body1);
       });
 
   _eventStartTimeInput() => BlocBuilder<BasicBloc, BasicState>(

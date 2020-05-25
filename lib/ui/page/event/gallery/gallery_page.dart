@@ -10,6 +10,7 @@ import 'package:eventmanagement/ui/page/event/gallery/video_thumbnail.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_scroll_bar.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,9 +110,10 @@ class _GalleryState extends State<GalleryPage> {
                             alignment: Alignment.center,
                             children: <Widget>[
                               if (isValid(state.banner))
-                                Image(
+                                FadeInImage(
                                   width: double.infinity,
                                   fit: BoxFit.cover,
+                                  placeholder: AssetImage(placeholderImage),
                                   image: state.banner.startsWith('http')
                                       ? NetworkToFileImage(
                                     url: state.banner,
@@ -208,34 +210,37 @@ class _GalleryState extends State<GalleryPage> {
                         ),
                         delegate: SliverChildBuilderDelegate(
                               (context, position) {
-                            print('position $position');
                             GalleryData galleryData =
                             state.galleryList[position];
                             return Stack(
+                              key: ValueKey(galleryData.localFilePath ??
+                                  galleryData.link),
                               alignment: Alignment.topRight,
                               children: <Widget>[
-                                if (galleryData.type == 'image' &&
-                                    (isValid(galleryData.localFilePath) ||
-                                        isValid(galleryData.link)))
-                                  Image(
+                                if (galleryData.type == 'image')
+                                  FadeInImage(
                                     alignment: Alignment.center,
                                     width: double.infinity,
                                     height: double.infinity,
                                     fit: BoxFit.cover,
+                                    placeholder: AssetImage(placeholderImage),
                                     image: isValid(galleryData.localFilePath)
                                         ? FileImage(
                                         File(galleryData.localFilePath))
-                                        : NetworkToFileImage(
+                                        : isValid(galleryData.link)
+                                        ? NetworkToFileImage(
                                       url: galleryData.link,
                                       file: File(Path.join(
                                           snapshot.data,
                                           'Pictures',
                                           galleryData.link.substring(
                                               galleryData.link
-                                                  .lastIndexOf('/') +
+                                                  .lastIndexOf(
+                                                  '/') +
                                                   1))),
                                       debug: true,
-                                    ),
+                                    )
+                                        : AssetImage(placeholderImage),
                                   ),
                                 if (galleryData.type == 'video' &&
                                     (isValid(galleryData.localFilePath) ||
@@ -259,46 +264,65 @@ class _GalleryState extends State<GalleryPage> {
 
   Widget _buildRemoveMediaButton(GalleryData galleryData) => InkWell(
         onTap: () async {
-          _galleryBloc.removeGalleryItem(galleryData);
-          if (isValid(galleryData.localFilePath)) {
-            final fileToDelete = File(galleryData.localFilePath);
+          bool delete = await context.showConfirmationDialog(
+              AppLocalizations
+                  .of(context)
+                  .mediaDeleteTitle,
+              AppLocalizations
+                  .of(context)
+                  .mediaDeleteMsg,
+              posText: AppLocalizations
+                  .of(context)
+                  .deleteButton,
+              negText: AppLocalizations
+                  .of(context)
+                  .btnCancel);
 
-            if (galleryData.ownedByApp) {
-              bool exist = await fileToDelete.exists();
-              if (exist) fileToDelete.delete();
-            }
-            if (galleryData.type == 'video') {
-              final thumbToDelete = File(
-                Path.join(
-                  await getSystemDirPath(),
-                  'Pictures',
-                  '${galleryData.localFilePath.substring(galleryData.localFilePath.lastIndexOf('/') + 1, galleryData.localFilePath.lastIndexOf('.'))}.jpg',
-                ),
-              );
-              bool exist = await thumbToDelete.exists();
-              if (exist) thumbToDelete.delete();
-            }
-          } else if (isValid(galleryData.link)) {
-            final fileToDelete = File(Path.join(
-                await getSystemDirPath(),
-                'Pictures',
-                galleryData.link
-                    .substring(galleryData.link.lastIndexOf('/') + 1)));
-
-            bool exist = await fileToDelete.exists();
-            if (exist) fileToDelete.delete();
+          if (delete ?? false) {
+            removeGalleryMedia(galleryData);
           }
         },
-        child: Container(
-          width: 48.0,
-          height: 48.0,
-          decoration: BoxDecoration(
-              color: bgColorSecondary.withAlpha(150),
-              borderRadius:
-                  BorderRadius.only(bottomLeft: Radius.circular(36.0))),
-          child: Icon(Icons.delete_forever),
-        ),
-      );
+    child: Container(
+      width: 48.0,
+      height: 48.0,
+      decoration: BoxDecoration(
+          color: bgColorSecondary.withAlpha(150),
+          borderRadius:
+          BorderRadius.only(bottomLeft: Radius.circular(36.0))),
+      child: Icon(Icons.delete_forever),
+    ),
+  );
+
+  Future<void> removeGalleryMedia(GalleryData galleryData) async {
+    _galleryBloc.removeGalleryItem(galleryData);
+    if (isValid(galleryData.localFilePath)) {
+      final fileToDelete = File(galleryData.localFilePath);
+
+      if (galleryData.ownedByApp) {
+        bool exist = await fileToDelete.exists();
+        if (exist) fileToDelete.delete();
+      }
+      if (galleryData.type == 'video') {
+        final thumbToDelete = File(
+          Path.join(
+            await getSystemDirPath(),
+            'Pictures',
+            '${galleryData.localFilePath.substring(
+                galleryData.localFilePath.lastIndexOf('/') + 1,
+                galleryData.localFilePath.lastIndexOf('.'))}.jpg',
+          ),
+        );
+        bool exist = await thumbToDelete.exists();
+        if (exist) thumbToDelete.delete();
+      }
+    } else if (isValid(galleryData.link)) {
+      final fileToDelete = File(Path.join(await getSystemDirPath(), 'Pictures',
+          galleryData.link.substring(galleryData.link.lastIndexOf('/') + 1)));
+
+      bool exist = await fileToDelete.exists();
+      if (exist) fileToDelete.delete();
+    }
+  }
 
   Widget _buildUploadGalleryRow() {
     return Padding(
@@ -437,7 +461,7 @@ class _GalleryState extends State<GalleryPage> {
       if (banner) {
         await _deleteExistingBanner();
         _galleryBloc.addBanner(image.path);
-      } else
+      } else {
         _galleryBloc.addGalleryItem(
           GalleryData(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -447,32 +471,57 @@ class _GalleryState extends State<GalleryPage> {
             ownedByApp: true,
           ),
         );
+      }
     }
   }
 
   Future<void> _openGallery(bool banner, bool video) async {
+    List<String> extensions;
     var image;
-    if (video)
-      image = await ImagePicker.pickVideo(source: ImageSource.gallery);
-    else
-      image = await ImagePicker.pickImage(
-          source: ImageSource.gallery, imageQuality: 80);
+    if (video) {
+      extensions = ['3gp', 'mp4', 'webm', 'mkv', 'mov', 'mp4', 'm4v'];
+//      image = await ImagePicker.pickVideo(source: ImageSource.gallery);
+    } else {
+      extensions = ['jpg', 'jpeg', 'png', 'bmp', 'webp', 'tiff'];
+//      image = await ImagePicker.pickImage(
+//          source: ImageSource.gallery, imageQuality: 80);
+    }
 
-    print('Gallery Image/Video Path--->${image?.path}');
+    if (banner)
+      image = await FilePicker.getFilePath(
+        type: FileType.custom,
+        allowedExtensions: extensions,
+      );
+    else
+      image = await FilePicker.getMultiFilePath(
+        type: FileType.custom,
+        allowedExtensions: extensions,
+      );
+
     if (image != null) {
       if (banner) {
         await _deleteExistingBanner();
-        _galleryBloc.addBanner(image.path);
-      } else
-        _galleryBloc.addGalleryItem(
-          GalleryData(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            localFilePath: image.path,
-            type: video ? 'video' : 'image',
-            uploadRequired: true,
-            ownedByApp: !video,
-          ),
-        );
+        _galleryBloc.addBanner(image);
+      } else if (image is Map) {
+        int millis = DateTime
+            .now()
+            .millisecondsSinceEpoch;
+        List<GalleryData> galleryDataList = [];
+        image.forEach((key, value) {
+          if (!_galleryBloc.state.isGalleryItemExist(value))
+            galleryDataList.add(
+              GalleryData(
+                id: (millis++).toString(),
+                localFilePath: value,
+                type: video ? 'video' : 'image',
+                uploadRequired: true,
+                ownedByApp: false,
+              ),
+            );
+        });
+        if (galleryDataList.length > 0)
+          _galleryBloc.addGalleryItems(galleryDataList);
+      }
     }
   }
 
@@ -480,7 +529,6 @@ class _GalleryState extends State<GalleryPage> {
     if (isValid(_galleryBloc.state.banner)) {
       File fileToDelete;
 
-      print('_galleryBloc.state.banner ${_galleryBloc.state.banner}');
       if (_galleryBloc.state.banner.startsWith('http')) {
         fileToDelete = File(Path.join(
             await getSystemDirPath(),
@@ -488,6 +536,8 @@ class _GalleryState extends State<GalleryPage> {
             _galleryBloc.state.banner
                 .substring(_galleryBloc.state.banner.lastIndexOf('/') + 1)));
       } else {
+        final systemPath = await getSystemDirPath();
+        if (!_galleryBloc.state.banner.contains(systemPath)) return;
         fileToDelete = File(_galleryBloc.state.banner);
       }
 

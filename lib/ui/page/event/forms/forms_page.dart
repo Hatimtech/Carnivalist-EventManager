@@ -294,8 +294,24 @@ class _FormsState extends State<FormsPage> {
     _onCreateFieldButtonPressed(fieldId: fieldData.id);
   }
 
-  void deleteField(FieldData fieldData) {
-    _formBloc.deleteField(fieldData.id);
+  Future<void> deleteField(FieldData fieldData) async {
+    bool delete = await context.showConfirmationDialog(
+        AppLocalizations
+            .of(context)
+            .fieldDeleteTitle,
+        AppLocalizations
+            .of(context)
+            .fieldDeleteMsg,
+        posText: AppLocalizations
+            .of(context)
+            .deleteButton,
+        negText: AppLocalizations
+            .of(context)
+            .btnCancel);
+
+    if (delete ?? false) {
+      _formBloc.deleteField(fieldData.id);
+    }
   }
 
   Future<void> _onCreateFieldButtonPressed({String fieldId}) async {

@@ -174,7 +174,8 @@ class _SignUpState extends State<SignUpPage> {
                 .textTheme
                 .body1,
             onChanged: _signUpBloc.nameInput,
-            validation: validateName,
+            validation: (value) =>
+                validateName(value, AppLocalizations.of(context)),
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             nextFocusNode: _focusNodePhone,
@@ -194,9 +195,10 @@ class _SignUpState extends State<SignUpPage> {
                 .textTheme
                 .body1,
             onChanged: _signUpBloc.mobileInput,
-            maxLength: 10,
-            validation: validateMobile,
-            keyboardType: TextInputType.number,
+            maxLength: 13,
+            validation: (value) =>
+                validateMobile(value, AppLocalizations.of(context)),
+            keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.next,
             focusNode: _focusNodePhone,
             nextFocusNode: _focusNodeEmail,
@@ -215,7 +217,8 @@ class _SignUpState extends State<SignUpPage> {
                 .of(context)
                 .textTheme
                 .body1,
-            validation: validateEmail,
+            validation: (value) =>
+                validateEmail(value, AppLocalizations.of(context)),
             keyboardType: TextInputType.emailAddress,
             onChanged: _signUpBloc.emailInput,
             textInputAction: TextInputAction.next,
@@ -236,7 +239,8 @@ class _SignUpState extends State<SignUpPage> {
                   .textTheme
                   .body1,
               onChanged: _signUpBloc.passwordInput,
-              validation: validatePassword,
+              validation: (value) =>
+                  validatePassword(value, AppLocalizations.of(context)),
               maxLength: 20,
               obscureText: visible,
               textInputAction: TextInputAction.next,
@@ -263,12 +267,18 @@ class _SignUpState extends State<SignUpPage> {
               focusNode: _focusNodeConfirmPassword,
               obscureText: visible, validation: (confirmation) {
             return confirmation.isEmpty
-                ? 'Confirm password is required'
+                ? AppLocalizations
+                .of(context)
+                .errorConfirmPassword
                 : confirmation.length < 4
-                    ? 'Confirm password at least 4 characters'
+                ? AppLocalizations
+                .of(context)
+                .errorConfirmPasswordLength
                     : validationEqual(confirmation, _passwordController.text)
                         ? null
-                        : 'Password and confirm password not match';
+                : AppLocalizations
+                .of(context)
+                .errorConfirmPasswordMatch;
           },
               maxLength: 20,
               inkWell: InkWell(
@@ -310,17 +320,18 @@ class _SignUpState extends State<SignUpPage> {
 
       if (results is LoginResponse) {
         if (results.code == apiCodeSuccess) {
-          _userBloc.saveUserName(_firstNameController.text);
-          _userBloc.saveEmail(_emailController.text);
-          _userBloc.saveMobile(_phoneNoController.text);
-          _userBloc.saveProfilePicture('');
-          _userBloc.saveUserId('');
-          _userBloc.savAuthToken(results.token);
-          _userBloc.saveIsLogin(true);
-          _userBloc.getLoginDetails();
-
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              bottomMenuRoute, (Route<dynamic> route) => false);
+//          _userBloc.saveUserName(_firstNameController.text);
+//          _userBloc.saveEmail(_emailController.text);
+//          _userBloc.saveMobile(_phoneNoController.text);
+//          _userBloc.saveProfilePicture('');
+//          _userBloc.saveUserId('');
+//          _userBloc.savAuthToken(results.token);
+//          _userBloc.saveIsLogin(true);
+//          _userBloc.getLoginDetails();
+          context.toast(AppLocalizations
+              .of(context)
+              .signupSuccess);
+          Navigator.of(context).pushReplacementNamed(loginRoute);
         }
       }
     });

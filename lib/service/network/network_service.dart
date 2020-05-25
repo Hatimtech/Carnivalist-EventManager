@@ -19,6 +19,7 @@ import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/model/event/tickets/tickets_response.dart';
+import 'package:eventmanagement/model/event/user_profile_response.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail_action_response.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
@@ -33,6 +34,8 @@ import '../restclient.dart';
 
 class NetworkService extends NetworkType implements APIService {
   static final _baseUrl = 'https://backend.carnivalist.tk';
+
+  /*'https://backend.aktv.life';*/
 
   static final _subUrl = '/api/';
   final _loginUrl = _baseUrl + _subUrl + 'user/login';
@@ -71,6 +74,9 @@ class NetworkService extends NetworkType implements APIService {
   final _eventDetailUrl = _baseUrl + _subUrl + 'ticketreports/';
   final _resendTicketUrl = _baseUrl + _subUrl + 'resend-ticket/';
   final _sendMailUrl = _baseUrl + _subUrl + 'send-announcement/';
+
+  final _uploadProfilePic = _baseUrl + _subUrl + 'user/change-profile-pic';
+  final _updateProfileUrl = _baseUrl + _subUrl + 'user/change-profile-info';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -116,8 +122,12 @@ class NetworkService extends NetworkType implements APIService {
 
   @override
   forgotPassword(Map<String, dynamic> param) async {
+    var headers = {"Content-Type": "application/json"};
+
     var result = await rest.post<LoginResponse>(_forgotPasswordUrl,
-        body: json.encode(param));
+        body: json.encode(param),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = LoginResponse.fromJson(json.decode(result.mappedResult));
@@ -516,8 +526,8 @@ class NetworkService extends NetworkType implements APIService {
         '$_eventDetailUrl$eventId', headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
-      final res = EventDetailResponse.fromJson(
-          json.decode(result.mappedResult));
+      final res =
+      EventDetailResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
     return result.networkServiceResponse;
@@ -530,15 +540,14 @@ class NetworkService extends NetworkType implements APIService {
       "Content-Type": "application/json"
     };
 
-    var result = await rest.post<EventDetailActionResponse>(
-        _resendTicketUrl,
+    var result = await rest.post<EventDetailActionResponse>(_resendTicketUrl,
         body: json.encode(param),
         encoding: Encoding.getByName("utf-8"),
         headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
-      var res = EventDetailActionResponse.fromJson(
-          json.decode(result.mappedResult));
+      var res =
+      EventDetailActionResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
     return result.networkServiceResponse;
@@ -551,15 +560,70 @@ class NetworkService extends NetworkType implements APIService {
       "Content-Type": "application/json"
     };
 
-    var result = await rest.post<EventDetailActionResponse>(
-        _sendMailUrl,
+    var result = await rest.post<EventDetailActionResponse>(_sendMailUrl,
         body: json.encode(param),
         encoding: Encoding.getByName("utf-8"),
         headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
-      var res = EventDetailActionResponse.fromJson(
-          json.decode(result.mappedResult));
+      var res =
+      EventDetailActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  uploadProfilePic(String authToken, String mediaPath) async {
+    //create multipart request for POST or PATCH method
+    var request = http.MultipartRequest("POST", Uri.parse(_uploadProfilePic));
+
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "multipart/form-data;"
+    };
+
+    request.headers.addAll(headers);
+
+    String mediaName;
+
+    if (isValid(mediaPath)) {
+      mediaName = mediaPath
+          .split("/")
+          .last;
+
+      //create multipart using filepath, string or bytes
+      var multipartFile = await http.MultipartFile.fromPath("file", mediaPath,
+          filename: mediaName, contentType: MediaType.parse('image/jpeg'));
+
+      //add multipart to request
+      request.files.add(multipartFile);
+    }
+
+    var result = await rest.multipartUpload<UserProfileResponse>(request);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = UserProfileResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  @override
+  updateUserDetails(String authToken, Map<String, dynamic> param) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<UserProfileResponse>(_updateProfileUrl,
+        body: json.encode(param),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res =
+      UserProfileResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
     return result.networkServiceResponse;

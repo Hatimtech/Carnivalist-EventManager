@@ -11,6 +11,7 @@ import 'package:eventmanagement/bloc/login/login_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/menu/event_menu_page.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_detail_root_page.dart';
+import 'package:eventmanagement/ui/page/user_info_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_app.dart';
 import 'package:eventmanagement/utils/orientation.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,6 @@ import 'bloc/signup/sign_up_bloc.dart';
 import 'bloc/user/user_bloc.dart';
 import 'service/di/dependency_injection.dart';
 import 'ui/menu/bottom_menu_page.dart';
-import 'ui/page/dashboard/dashboard_page.dart';
 import 'ui/page/forgot_password_page.dart';
 import 'ui/page/login_page.dart';
 import 'ui/page/signup_page.dart';
@@ -56,19 +56,10 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return BlocProvider(
-      create: (context) => PageNavBloc(),
+      create: (context) => UserBloc(),
       child: BlocProvider(
-        create: (context) => UserBloc(),
-        child: BlocProvider(
-          create: (context) => EventBloc(),
-          child: BlocProvider(
-            create: (context) => AddonBloc(),
-            child: BlocProvider(
-              create: (context) => CouponBloc(),
-              child: _buildPlatformApp(),
-            ),
-          ),
-        ),
+        create: (context) => EventBloc(),
+        child: _buildPlatformApp(),
       ),
     );
   }
@@ -101,15 +92,26 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
           forgotPasswordRoute: (BuildContext context) =>
           forgotPasswordPageRoute,
           bottomMenuRoute: (BuildContext context) => bottomMenuPageRoute,
-          dashboardRoute: (BuildContext context) => DashboardPage(),
           eventMenuRoute: (BuildContext context) =>
               createEventPageRoute(context),
           eventDetailRoute: (BuildContext context) =>
               eventDetailPageRoute(context),
+          userInfoRoute: (BuildContext context) => UserInfoPage(),
         });
   }
 
-  Widget get bottomMenuPageRoute => BottomMenuPage();
+  Widget get bottomMenuPageRoute {
+    return BlocProvider(
+      create: (context) => PageNavBloc(),
+      child: BlocProvider(
+        create: (context) => AddonBloc(),
+        child: BlocProvider(
+          create: (context) => CouponBloc(),
+          child: BottomMenuPage(),
+        ),
+      ),
+    );
+  }
 
   Widget get loginPageRoute =>
       BlocProvider(
@@ -132,10 +134,11 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
   Widget eventDetailPageRoute(BuildContext context) =>
       BlocProvider(
         create: (ctx) =>
-            EventDetailBloc(eventId: ModalRoute
-                .of(context)
-                .settings
-                .arguments as String),
+            EventDetailBloc(
+                eventId: ModalRoute
+                    .of(context)
+                    .settings
+                    .arguments as String),
         child: EventDetailRootPage(),
       );
 

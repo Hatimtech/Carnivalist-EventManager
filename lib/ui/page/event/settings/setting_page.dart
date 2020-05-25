@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:html_editor/html_editor.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -623,44 +624,18 @@ class _SettingState extends State<SettingPage> {
                 const SizedBox(
                   height: 16.0,
                 ),
-                widget.inputFieldRectangle(
-                  null,
-                  hintText:
-                  AppLocalizations
-                      .of(context)
-                      .inputHintCancellationDesc,
-                  labelStyle: Theme
-                      .of(context)
-                      .textTheme
-                      .body1,
-                  initialValue: _settingBloc.state.cancellationPolicyDesc,
-                  onChanged: _settingBloc.bookingCancellationDescInput,
-                  maxLines: 2,
-                  maxLength: 500,
-                ),
+                _cancellationPolicyDescriptionInput(),
                 BlocBuilder<SettingBloc, SettingState>(
                     bloc: _settingBloc,
                     condition: (prevState, newState) {
-                      print(
-                          'prevState.cancellationOptions !=newState.cancellationOptions ${prevState
-                              .cancellationOptions !=
-                              newState.cancellationOptions}');
                       return prevState.cancellationOptions !=
                           newState.cancellationOptions;
                     },
                     builder: (BuildContext context, SettingState state) {
-                      print('list main root');
                       final currentOptionsLength =
                           state.cancellationOptions.length;
                       return Column(
                         children: <Widget>[
-//                          ...state.cancellationOptions
-//                              .map<Widget>((cancellationOption) {
-//                            return _buildCancellationOptionView(
-//                                cancellationOption,
-//                                state.cancellationOptions
-//                                    .indexOf(cancellationOption));
-//                          }),
                           ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
@@ -695,22 +670,60 @@ class _SettingState extends State<SettingPage> {
             )));
   }
 
+  /*Widget _cancellationPolicyDescriptionInput(){
+    return widget.inputFieldRectangle(
+      null,
+      hintText:
+      AppLocalizations.of(context).inputHintCancellationDesc,
+      labelStyle: Theme.of(context).textTheme.body1,
+      initialValue: _settingBloc.state.cancellationPolicyDesc,
+      onChanged: _settingBloc.bookingCancellationDescInput,
+      maxLines: 2,
+      maxLength: 500,
+    );
+  }*/
+
+  GlobalKey<HtmlEditorState> keyEditor = GlobalKey();
+
+  Widget _cancellationPolicyDescriptionInput() {
+    return InkWell(
+      onTap: () =>
+          widget.showHtmlEditorDialog(
+              context,
+              keyEditor,
+              _settingBloc.state.cancellationPolicyDesc,
+              AppLocalizations
+                  .of(context)
+                  .inputHintCancellationDesc,
+              _settingBloc.bookingCancellationDescInput),
+      child: BlocBuilder<SettingBloc, SettingState>(
+        bloc: _settingBloc,
+        condition: (prevState, newState) {
+          return prevState.cancellationPolicyDesc !=
+              newState.cancellationPolicyDesc;
+        },
+        builder: (_, state) =>
+            widget.hintedWebview(
+                context,
+                state.cancellationPolicyDesc,
+                AppLocalizations
+                    .of(context)
+                    .inputHintCancellationDesc),
+      ),
+    );
+  }
+
   Widget _buildCancellationOptionView(CancellationOption cancellationOption,
       int index, int currentOptionsLength) {
     return BlocBuilder<SettingBloc, SettingState>(
       key: ValueKey(cancellationOption.hashCode),
       bloc: _settingBloc,
       condition: (prevState, newState) {
-        print('main list con ${newState.cancellationOptions.length ==
-            currentOptionsLength &&
-            (prevState.cancellationOptions[index].refundType !=
-                newState.cancellationOptions[index].refundType)}');
         return newState.cancellationOptions.length == currentOptionsLength &&
             (prevState.cancellationOptions[index].refundType !=
                 newState.cancellationOptions[index].refundType);
       },
       builder: (BuildContext context, state) {
-        print('_buildCancellationOptionView $index');
         final cancellationOption = state.cancellationOptions[index];
         return Column(
           children: <Widget>[
@@ -843,26 +856,19 @@ class _SettingState extends State<SettingPage> {
                   alignment: Alignment.centerLeft,
                   child: BlocBuilder<SettingBloc, SettingState>(
                     condition: (prevState, newState) {
-                      print('prevState.cancellationOptions[index] ${newState
-                          .cancellationOptions.length ==
-                          currentOptionsLength &&
-                          prevState.cancellationOptions[index]
-                              .cancellationEndDate !=
-                              newState.cancellationOptions[index]
-                                  .cancellationEndDate}');
                       return newState.cancellationOptions.length ==
                           currentOptionsLength &&
-                          prevState.cancellationOptions[index]
-                              .cancellationEndDate !=
-                              newState.cancellationOptions[index]
+                          prevState
+                              .cancellationOptions[index].cancellationEndDate !=
+                              newState
+                                  .cancellationOptions[index]
                                   .cancellationEndDate;
                     },
                     builder: (BuildContext context, state) {
-                      print('_buildCancellationEndDateView $index');
                       return Text(
                         state.cancellationOptions[index].cancellationEndDate !=
                             null
-                            ? DateFormat.yMMMd().add_Hm().format(state
+                            ? DateFormat.yMMMd().format(state
                             .cancellationOptions[index].cancellationEndDate)
                             : AppLocalizations
                             .of(context)
@@ -911,14 +917,17 @@ class _SettingState extends State<SettingPage> {
         initialDate: eventStartTime,
       );
 
-      TimeOfDay pickedTime = await showTimePicker(
-        context: context,
-        initialTime:
-        TimeOfDay(hour: currentTime.hour, minute: currentTime.minute),
-      );
+//      TimeOfDay pickedTime = await showTimePicker(
+//        context: context,
+//        initialTime:
+//            TimeOfDay(hour: currentTime.hour, minute: currentTime.minute),
+//      );
 
       pickedDate = DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
-          pickedTime.hour, pickedTime.minute);
+          23,
+          59,
+          59,
+          999);
     } else {
       pickedDate = await _cupertinoPickDate(initialDate);
     }

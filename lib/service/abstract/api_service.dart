@@ -60,4 +60,8 @@ abstract class APIService {
   attendeesResendTicket(String authToken, Map<String, dynamic> param);
 
   attendeesSendMail(String authToken, Map<String, dynamic> param);
+
+  uploadProfilePic(String authToken, String mediaPath);
+
+  updateUserDetails(String authToken, Map<String, dynamic> param);
 }

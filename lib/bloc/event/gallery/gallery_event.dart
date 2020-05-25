@@ -28,7 +28,7 @@ class RemoveBanner extends GalleryEvent {
 }
 
 class AddGalleryItem extends GalleryEvent {
-  final GalleryData galleryData;
+  final List<GalleryData> galleryData;
 
   AddGalleryItem({this.galleryData});
 }

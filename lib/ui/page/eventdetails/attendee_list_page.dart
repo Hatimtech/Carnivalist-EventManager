@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/event_detail_bloc.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/event_detail_state.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/send_mail_bloc.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
+import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail.dart';
 import 'package:eventmanagement/model/eventdetails/user_detail.dart';
 import 'package:eventmanagement/ui/page/eventdetails/send_mail_dialog.dart';
@@ -27,36 +29,44 @@ class AttendeeListPage extends StatefulWidget {
 class _AttendeeListPageState extends State<AttendeeListPage> {
   UserBloc _userBloc;
   EventDetailBloc _eventDetailBloc;
+  EventData _eventData;
 
   @override
   void initState() {
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
     _eventDetailBloc = BlocProvider.of<EventDetailBloc>(context);
+    initSelectedEventData();
+  }
+
+  void initSelectedEventData() {
+    _eventData = BlocProvider
+        .of<EventBloc>(context)
+        .state
+        .eventDataList
+        .firstWhere(
+            (eventData) => eventData.id == _eventDetailBloc.selectedEventId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      Expanded(
-          child: BlocBuilder<EventDetailBloc, EventDetailState>(
-              bloc: _eventDetailBloc,
-              condition: (prevState, newState) {
-                return (prevState.loading != newState.loading) ||
-                    (prevState.eventDetailList != newState.eventDetailList ||
-                        prevState.eventDetailList.length !=
-                            newState.eventDetailList.length);
-              },
-              builder: (context, state) {
-                return Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    _attendeesList(state.eventDetailList),
-                    if (state.loading) const PlatformProgressIndicator(),
-                  ],
-                );
-              })),
-    ]);
+    return BlocBuilder<EventDetailBloc, EventDetailState>(
+        bloc: _eventDetailBloc,
+        condition: (prevState, newState) {
+          return (prevState.loading != newState.loading) ||
+              (prevState.eventDetailList != newState.eventDetailList ||
+                  prevState.eventDetailList.length !=
+                      newState.eventDetailList.length);
+        },
+        builder: (context, state) {
+          return Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              _attendeesList(state.eventDetailList),
+              if (state.loading) const PlatformProgressIndicator(),
+            ],
+          );
+        });
   }
 
   _attendeesList(List<EventDetail> eventDetailList) =>
@@ -77,13 +87,7 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
         padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
         itemCount: eventDetailList.length,
         itemBuilder: (context, position) {
-          EventDetail eventDetail = eventDetailList[position];
-          return GestureDetector(
-            onTap: () {
-//              showCouponActions(currentCoupon);
-            },
-            child: _buildEventDetailListItem(eventDetailList[position]),
-          );
+          return _buildEventDetailListItem(eventDetailList[position]);
         });
   }
 
@@ -305,11 +309,8 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
               final userDetail = (eventDetail.user?.length ?? 0) > 0
                   ? eventDetail.user[0]
                   : null;
-              final eventData = (eventDetail.eventDetails?.length ?? 0) > 0
-                  ? eventDetail.eventDetails[0]
-                  : null;
               _sendMail(
-                eventData?.title ?? '',
+                _eventData?.title ?? '',
                 userDetail?.username ?? '',
                 _userBloc.state.userName,
                 _userBloc.state.email,
@@ -370,21 +371,16 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
         _buildCupertinoCouponAction(
             AppLocalizations
                 .of(context)
-                .labelAttendeesSendMail,
-                () {
-              final userDetail = (eventDetail.user?.length ?? 0) > 0
-                  ? eventDetail.user[0]
-                  : null;
-              final eventData = (eventDetail.eventDetails?.length ?? 0) > 0
-                  ? eventDetail.eventDetails[0]
-                  : null;
-              _sendMail(
-                eventData?.title ?? '',
-                userDetail?.username ?? '',
-                _userBloc.state.userName,
-                _userBloc.state.email,
-              );
-            }),
+                .labelAttendeesSendMail, () {
+          final userDetail =
+          (eventDetail.user?.length ?? 0) > 0 ? eventDetail.user[0] : null;
+          _sendMail(
+            _eventData?.title ?? '',
+            userDetail?.username ?? '',
+            _userBloc.state.userName,
+            _userBloc.state.email,
+          );
+        }),
       ],
       cancelButton: CupertinoActionSheetAction(
         child: Text(
@@ -438,9 +434,10 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
 
   void _sendMail(String eventName, String email, String fromName,
       String replyTo) {
-    final announcementForLabel = AppLocalizations
-        .of(context)
-        .labelAnnouncementFor;
+    final announcementForLabel =
+        AppLocalizations
+            .of(context)
+            .labelAnnouncementFor;
     showDialog(
       context: context,
       builder: (BuildContext context) =>
@@ -450,8 +447,7 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
                   announcement: false,
                   eventName: eventName,
                   emails: email.split(''),
-                  subject:
-                  '$announcementForLabel $eventName',
+                  subject: '$announcementForLabel $eventName',
                   fromName: fromName,
                   replyTo: replyTo,
                 ),

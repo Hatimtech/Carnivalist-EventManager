@@ -129,7 +129,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
     if (event is SettingDefault) {
       final paymentTypeList = getPaymentType();
-      yield state.copyWith(paymentTypeList: getPaymentType(),
+      yield state.copyWith(
+          paymentTypeList: getPaymentType(),
           paymentGatewayPayPerson: paymentTypeList[0]);
     }
 
@@ -406,6 +407,15 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   }
 
   int validateSettingsInfo() {
+    if (state.convenienceFee) {
+      if (!isValid(state.percentValue)) return ERR_CONV_FEE_PERCENT;
+      if (double.tryParse(state.percentValue) == 0)
+        return ERR_CONV_FEE_PERCENT_VALID;
+
+      if (!isValid(state.convenienceAmount)) return ERR_CONV_FEE_AMOUNT;
+      if (double.tryParse(state.convenienceAmount) == 0)
+        return ERR_CONV_FEE_AMOUNT_VALID;
+    }
     if (state.bookingCancellation) {
       if (!isValid(state.cancellationPolicyDesc)) return ERR_CANCELLATION_DESC;
       if (state.cancellationOptions.length == 0) return ERR_CANCELLATION_OPTION;

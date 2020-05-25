@@ -92,7 +92,8 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                   .of(context)
                   .textTheme
                   .body1,
-              validation: validatePhoneEmail,
+              validation: (value) =>
+                  validatePhoneEmail(value, AppLocalizations.of(context)),
               keyboardType: TextInputType.emailAddress)));
 
   _resetButton() => GestureDetector(

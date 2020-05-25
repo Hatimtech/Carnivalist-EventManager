@@ -51,4 +51,15 @@ class GalleryState {
       bannerUploadRequired: bannerUploadRequired ?? this.bannerUploadRequired,
     );
   }
+
+  bool isGalleryItemExist(String path) {
+    bool exist = false;
+    for (GalleryData value in galleryList) {
+      if (value.localFilePath == path) {
+        exist = true;
+        break;
+      }
+    }
+    return exist;
+  }
 }

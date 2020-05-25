@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
 import 'flushbar.dart';
 
 class FlushbarRoute<T> extends OverlayRoute<T> {
@@ -249,14 +251,14 @@ class FlushbarRoute<T> extends OverlayRoute<T> {
   }
 
   @override
-  void install(OverlayEntry insertionPoint) {
+  void install(/*OverlayEntry insertionPoint*/) {
 
     _controller = createAnimationController();
 
     _filterBlurAnimation = createBlurFilterAnimation();
     _filterColorAnimation = createColorFilterAnimation();
     _animation = createAnimation();
-    super.install(insertionPoint);
+    super.install(/*insertionPoint*/);
   }
 
   @override

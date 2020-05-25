@@ -31,6 +31,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
         .state
         .authToken);
     _eventDetailBloc.getEventDetail();
+    _pageController = PageController(initialPage: _showAttendee ? 0 : 1);
   }
 
   @override
@@ -112,9 +113,17 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
         children: <Widget>[
           Expanded(
             child: GestureDetector(
-              onTap: () => setState(() {
-                _showAttendee = true;
-              }),
+              onTap: () {
+                if (!_showAttendee) {
+                  _pageController.animateToPage(0,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.linear);
+
+                  setState(() {
+                    _showAttendee = true;
+                  });
+                }
+              },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
                 child: Padding(
@@ -123,7 +132,8 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
                     AppLocalizations
                         .of(context)
                         .labelEventDetailAttendees,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .body1
                         .copyWith(fontWeight: FontWeight.w500),
@@ -139,9 +149,16 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () => setState(() {
-                _showAttendee = false;
-              }),
+              onTap: () {
+                if (_showAttendee) {
+                  _pageController.animateToPage(1,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.linear);
+                  setState(() {
+                    _showAttendee = false;
+                  });
+                }
+              },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
                 child: Padding(
@@ -150,7 +167,8 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
                     AppLocalizations
                         .of(context)
                         .labelEventDetailDetails,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .body1
                         .copyWith(fontWeight: FontWeight.w500),
@@ -170,6 +188,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
   );
 
   Widget _buildRootPageView() => PageView.builder(
+    physics: NeverScrollableScrollPhysics(),
     controller: _pageController,
     onPageChanged: onPageChanged,
     scrollDirection: Axis.horizontal,

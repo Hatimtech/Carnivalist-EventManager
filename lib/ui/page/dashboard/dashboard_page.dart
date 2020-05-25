@@ -74,7 +74,7 @@ class _DashboardState extends State<DashboardPage> {
         body: Column(children: <Widget>[
           _buildErrorReceiverEmptyBloc(),
           Container(
-              padding: EdgeInsets.only(top: 10, bottom: 5),
+              padding: EdgeInsets.symmetric(vertical: 4.0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -194,13 +194,6 @@ class _DashboardState extends State<DashboardPage> {
                   ),
                   EventFilter(),
                   EventList(),
-//                Container(
-//                    padding: EdgeInsets.all(10),
-//                    child: Text(
-//                      'Upcoming Events',
-//                      style: Theme.of(context).textTheme.subtitle,
-//                    )),
-//                _upComingEvents()
                 ],
               ),
             ),
@@ -246,118 +239,17 @@ class _DashboardState extends State<DashboardPage> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(counter, style: Theme
-                    .of(context)
-                    .textTheme
-                    .subtitle),
+                Text(counter.length > 1 ? counter : counter.padLeft(2, '0'),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .subtitle),
                 SizedBox(height: 10),
                 Text(name, style: Theme
                     .of(context)
                     .textTheme
                     .subhead)
               ])));
-
-  _upComingEvents() => Card(
-      color: Theme.of(context).cardColor,
-      margin: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(10.0), top: Radius.circular(10.0)),
-      ),
-      child: Container(
-          padding: EdgeInsets.all(10),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <
-              Widget>[
-            Expanded(
-                flex: 0,
-                child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.purple,
-                    backgroundImage: NetworkImage(
-                        'https://pbs.twimg.com/profile_images/470783207642632192/Zp8-uggw.jpeg'))),
-            Expanded(
-                flex: 1,
-                child: Container(
-                    margin: EdgeInsets.all(5),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Event Title',
-                            maxLines: 2,
-                            textAlign: TextAlign.left,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .subtitle,
-                          ),
-                          const SizedBox(height: 2.0),
-                          Row(children: <Widget>[
-                            Icon(Icons.calendar_today, size: 15.0),
-                            const SizedBox(width: 3.0),
-                            Text(
-                              '15-06-2020',
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .body2
-                                  .copyWith(
-                                color: colorTextSubhead,
-                              ),
-                            ),
-                          ]),
-                          const SizedBox(height: 15.0),
-                          Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(children: <Widget>[
-                                  Icon(Icons.image_aspect_ratio, size: 15.0),
-                                  const SizedBox(width: 2.0),
-                                  Text(
-                                    '0/200',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .body2
-                                        .copyWith(
-                                      color: colorTextSubhead,
-                                    ),
-                                  )
-                                ]),
-                                Row(children: <Widget>[
-                                  Icon(Icons.visibility, size: 15.0),
-                                  const SizedBox(width: 2.0),
-                                  Text(
-                                    '1000',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .body2
-                                        .copyWith(
-                                      color: colorTextSubhead,
-                                    ),
-                                  )
-                                ]),
-                                Row(children: <Widget>[
-                                  Icon(Icons.visibility, size: 15.0),
-                                  const SizedBox(width: 3.0),
-                                  Align(
-                                    child: Text(
-                                      '00',
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .body2
-                                          .copyWith(
-                                        color: colorTextSubhead,
-                                      ),
-                                    ),
-                                  )
-                                ])
-                              ])
-                        ])))
-          ])));
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<EventBloc, EventState>(

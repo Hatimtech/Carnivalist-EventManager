@@ -41,6 +41,18 @@ class PlatformApp extends PlatformWidget<Theme, MaterialApp> {
       primarySwatch: Colors.indigo,
       fontFamily: montserratFont,
       cardColor: bgColorCard,
+      primaryIconTheme: ThemeData
+          .light()
+          .iconTheme
+          .copyWith(
+        color: colorIcon,
+      ),
+      accentIconTheme: ThemeData
+          .light()
+          .iconTheme
+          .copyWith(
+        color: colorIcon,
+      ),
       textTheme: ThemeData.light().textTheme.copyWith(
             title: const TextStyle(
               fontSize: 18,

@@ -107,88 +107,112 @@ class _TicketsState extends State<TicketsPage> {
   ticketsList(List<Ticket> ticketsList) =>
       PlatformScrollbar(
         child: ListView.builder(
+            padding: const EdgeInsets.all(0.0),
             itemCount: ticketsList.length,
             itemBuilder: (context, position) {
               final ticket = ticketsList[position];
+              final currencyFormat = NumberFormat.simpleCurrency(
+                  name: isValid(ticket.currency) ? ticket.currency : 'USD',
+                  decimalDigits: (ticket.price?.isInt ?? false) ? 0 : null);
               return GestureDetector(
-                  onTap: () => showTicketActions(ticket),
+                  onTap: () {
+                    return showTicketActions(ticket);
+                  },
                   child: Card(
-                      margin:
-                      EdgeInsets.only(top: 5, left: 0, right: 0, bottom: 5),
-                      child: Container(
-                          margin: EdgeInsets.all(10),
-                          child: Column(children: <Widget>[
-                            Row(children: <Widget>[
+                      clipBehavior: Clip.antiAlias,
+//                      margin: const EdgeInsets.all(0.0),
+                      child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxHeight: 72.0,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              VerticalDivider(
+                                thickness: 6,
+                                width: 6,
+                                color:
+                                ticket.active ? colorActive : colorInactive,
+                              ),
+                              const SizedBox(width: 8.0),
                               Expanded(
-                                  flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
                                   child: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          ticket.name,
-                                          style: Theme
-                                              .of(context)
-                                              .textTheme
-                                              .body1
-                                              .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        ticket.name,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1
+                                            .copyWith(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '${AppLocalizations
+                                            .of(context)
+                                            .labelTicketAddons} ${ticket.addons
+                                            ?.length ?? 0}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1
+                                            .copyWith(
+                                          fontSize: 12.0,
                                         ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          '${AppLocalizations
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(top: 8.0, right: 8.0),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        '${currencyFormat.format(
+                                            ticket.price != null
+                                                ? ticket.price
+                                                : 0)}',
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .subtitle
+                                            .copyWith(color: colorTextBody1),
+                                      ),
+                                      Text(
+                                          AppLocalizations
                                               .of(context)
-                                              .labelTicketCoupons} ${ticket
-                                              .addons?.length ??
-                                              0}   ${AppLocalizations
-                                              .of(context)
-                                              .labelTicketAddons} ${ticket
-                                              .addons?.length ?? 0}',
+                                              .labelTicketSalesEnd,
                                           style: Theme
                                               .of(context)
                                               .textTheme
-                                              .body1
-                                              .copyWith(
-                                            fontSize: 12.0,
-                                          ),
-                                        )
-                                      ])),
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      '${ticket.price}',
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .subtitle
-                                          .copyWith(color: colorTextBody1),
-                                    ),
-                                    Text(
-                                        AppLocalizations
-                                            .of(context)
-                                            .labelTicketSalesEnd,
-                                        style:
-                                        Theme
-                                            .of(context)
-                                            .textTheme
-                                            .body2),
-                                    Text(
-                                        isValid(ticket.sellingEndDate)
-                                            ? DateFormat.yMMMd().format(
-                                            DateTime.parse(
-                                                ticket.sellingEndDate))
-                                            : '--',
-                                        style:
-                                        Theme
-                                            .of(context)
-                                            .textTheme
-                                            .body2)
-                                  ])
-                            ])
-                          ]))));
+                                              .body2),
+                                      Text(
+                                          isValid(ticket.sellingEndDate)
+                                              ? DateFormat.yMMMd().format(
+                                              DateTime.parse(
+                                                  ticket.sellingEndDate))
+                                              : '--',
+                                          style:
+                                          Theme
+                                              .of(context)
+                                              .textTheme
+                                              .body2)
+                                    ]),
+                              )
+                            ],
+                          ))));
             }),
       );
 
@@ -402,10 +426,26 @@ class _TicketsState extends State<TicketsPage> {
     _onCreateTicketButtonPressed(ticketId: ticket.sId);
   }
 
-  void deleteTicket(Ticket ticket) {
-    context.showProgress(context);
-    _ticketsBloc.deleteTicket(ticket.sId, (response) {
-      context.hideProgress(context);
-    });
+  Future<void> deleteTicket(Ticket ticket) async {
+    bool delete = await context.showConfirmationDialog(
+        AppLocalizations
+            .of(context)
+            .ticketDeleteTitle,
+        AppLocalizations
+            .of(context)
+            .ticketDeleteMsg,
+        posText: AppLocalizations
+            .of(context)
+            .deleteButton,
+        negText: AppLocalizations
+            .of(context)
+            .btnCancel);
+
+    if (delete ?? false) {
+      context.showProgress(context);
+      _ticketsBloc.deleteTicket(ticket.sId, (response) {
+        context.hideProgress(context);
+      });
+    }
   }
 }

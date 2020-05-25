@@ -7,13 +7,12 @@ import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart
 import 'package:eventmanagement/ui/page/addons/addon_page.dart';
 import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
-import 'package:eventmanagement/ui/page/webview_page.dart';
 import 'package:eventmanagement/ui/page/webview_plugin_page.dart';
-import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class BottomMenuPage extends StatefulWidget {
   @override
@@ -28,7 +27,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
     CouponPage(key: PageStorageKey(PAGE_STORAGE_KEY_COUPONS)),
     AddonPage(key: PageStorageKey(PAGE_STORAGE_KEY_ADDON)),
     const WebViewPluginPage('https://manager.carnivalist.tk/reports'),
-    const WebViewPage('https://manager.carnivalist.tk/manage-staffs'),
+    const WebViewPluginPage('https://manager.carnivalist.tk/staff'),
   ];
 
   final List<String> _title = [];
@@ -63,6 +62,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: bgColor,
       floatingActionButton: _buildHomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -106,10 +106,11 @@ class _BottomMenuState extends State<BottomMenuPage> {
                         ),
                         IconButton(
                           onPressed: () {
-//                            _pageNavBloc.currentPage(PAGE_STAFF);
+                            Navigator.of(context)
+                                .pushNamed(userInfoRoute);
                           },
                           icon: Icon(
-                            Icons.people,
+                            Icons.account_circle,
                             color: colorIconBottomBar,
                           ),
                         ),
@@ -174,13 +175,13 @@ class _BottomMenuState extends State<BottomMenuPage> {
           ),
         ],
       ),
-      height: 100,
+      height: 124,
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
           colorFilter: ColorFilter.mode(colorHeaderBgFilter, BlendMode.srcATop),
           image: AssetImage(headerBackgroundImage),
-          fit: BoxFit.fitWidth,
+          fit: BoxFit.fill,
         ),
       ),
     );
@@ -233,11 +234,10 @@ class _BottomMenuState extends State<BottomMenuPage> {
     if (_prevBackPressTime == null ||
         now.difference(_prevBackPressTime) >= Duration(seconds: 3)) {
       _prevBackPressTime = now;
-      context.toast(
-        AppLocalizations
+      Fluttertoast.showToast(
+        msg: AppLocalizations
             .of(context)
             .exitWarning,
-        duration: const Duration(seconds: 2),
       );
       return false;
     }
@@ -276,7 +276,8 @@ class _BottomMenuState extends State<BottomMenuPage> {
             onPressed: () {
               _userBloc.clearLoginDetails();
               Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(loginRoute);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  loginRoute, (Route<dynamic> route) => false);
             },
             child: Text(AppLocalizations
                 .of(context)

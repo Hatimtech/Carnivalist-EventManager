@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:html_editor/html_editor.dart';
 import 'package:intl/intl.dart';
 
 class CreateTicketsDialog extends StatefulWidget {
@@ -26,7 +27,6 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   final FocusNode _focusNodeTotalAva = FocusNode();
   final FocusNode _focusNodeMinBook = FocusNode();
   final FocusNode _focusNodeMaxBook = FocusNode();
-  final FocusNode _focusNodeDescription = FocusNode();
 
   @override
   void initState() {
@@ -57,78 +57,77 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
     return SingleChildScrollView(
         child: Container(
             padding: EdgeInsets.all(10),
-            child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                Widget>[
-              _buildErrorReceiverEmptyBloc(),
-              Text(AppLocalizations
-                  .of(context)
-                  .titleTicketDetails,
-                  textAlign: TextAlign.left,
-                  style: Theme
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildErrorReceiverEmptyBloc(),
+                  Text(AppLocalizations
                       .of(context)
-                      .textTheme
-                      .title),
-              const SizedBox(height: 20.0),
-              Text(AppLocalizations
-                  .of(context)
-                  .labelTicketName,
-                  style: Theme
+                      .titleTicketDetails,
+                      textAlign: TextAlign.left,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .title),
+                  const SizedBox(height: 20.0),
+                  Text(AppLocalizations
                       .of(context)
-                      .textTheme
-                      .body2),
-              const SizedBox(height: 4.0),
-              ticketNameInput(),
-              const SizedBox(height: 10.0),
-              Text(AppLocalizations
-                  .of(context)
-                  .labelTicketCurrency,
-                  style: Theme
+                      .labelTicketName,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body2),
+                  const SizedBox(height: 4.0),
+                  ticketNameInput(),
+                  const SizedBox(height: 10.0),
+                  Text(AppLocalizations
                       .of(context)
-                      .textTheme
-                      .body2),
-              const SizedBox(height: 4.0),
-              ticketCurrency(),
-              const SizedBox(height: 10.0),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(AppLocalizations
-                                  .of(context)
-                                  .labelPrice,
-                                  textAlign: TextAlign.left,
-                                  style: Theme
+                      .labelTicketCurrency,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body2),
+                  const SizedBox(height: 4.0),
+                  ticketCurrency(),
+                  const SizedBox(height: 10.0),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(AppLocalizations
                                       .of(context)
-                                      .textTheme
-                                      .body2),
+                                      .labelPrice,
+                                  textAlign: TextAlign.left,
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .body2),
                               SizedBox(height: 4.0),
                               ticketPriceInput(),
                             ])),
-                    const SizedBox(width: 10.0),
-                    Expanded(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(AppLocalizations
-                                  .of(context)
-                                  .labelSalesEnds,
-                                  textAlign: TextAlign.left,
-                                  style: Theme
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(AppLocalizations
                                       .of(context)
-                                      .textTheme
-                                      .body2),
+                                      .labelSalesEnds,
+                                  textAlign: TextAlign.left,
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .body2),
                               const SizedBox(height: 4.0),
                               saleEndDateInput(),
                             ]))
-                  ]),
-              const SizedBox(height: 10.0),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
+                      ]),
+                  const SizedBox(height: 10.0),
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: <
+                      Widget>[
                     Expanded(
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,52 +176,52 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
                               maxBookingInput(),
                             ]))
                   ]),
-              const SizedBox(height: 10.0),
-              Text(AppLocalizations
-                  .of(context)
-                  .labelDescription,
-                  textAlign: TextAlign.left,
-                  style: Theme
+                  const SizedBox(height: 10.0),
+                  Text(AppLocalizations
                       .of(context)
-                      .textTheme
-                      .body2),
-              const SizedBox(height: 4.0),
-              descriptionInput(),
-              const SizedBox(height: 15),
-              Row(children: <Widget>[
-                Expanded(
-                  child: RaisedButton(
-                    onPressed: () => Navigator.pop(context),
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text(
-                      AppLocalizations
-                          .of(context)
-                          .btnClose,
+                      .labelDescription,
+                      textAlign: TextAlign.left,
                       style: Theme
                           .of(context)
                           .textTheme
-                          .button,
+                          .body2),
+                  const SizedBox(height: 4.0),
+                  descriptionInput(),
+                  const SizedBox(height: 15),
+                  Row(children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        onPressed: () => Navigator.pop(context),
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          AppLocalizations
+                              .of(context)
+                              .btnClose,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: RaisedButton(
-                    onPressed: _createTicketToApi,
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text(
-                      AppLocalizations
-                          .of(context)
-                          .btnSave,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .button,
-                    ),
-                  ),
-                )
-              ])
-            ])));
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: RaisedButton(
+                        onPressed: _createTicketToApi,
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          AppLocalizations
+                              .of(context)
+                              .btnSave,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button,
+                        ),
+                      ),
+                    )
+                  ])
+                ])));
   }
 
   Widget _buildErrorReceiverEmptyBloc() =>
@@ -436,7 +435,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
         initialValue: _createTicketBloc.state.maxBooking,
         onChanged: _createTicketBloc.maxBookingInput,
         keyboardType: TextInputType.number,
-        textInputAction: TextInputAction.next,
+        textInputAction: TextInputAction.done,
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         maxLength: 6,
         hintText: AppLocalizations
@@ -447,24 +446,45 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
             .textTheme
             .body1,
         focusNode: _focusNodeMaxBook,
-        nextFocusNode: _focusNodeDescription,
       );
 
-  descriptionInput() =>
-      widget.inputFieldRectangle(
+  /*descriptionInput() => widget.inputFieldRectangle(
         null,
         initialValue: _createTicketBloc.state.description,
         onChanged: _createTicketBloc.descriptionInput,
-        hintText: AppLocalizations
-            .of(context)
-            .inputHintDescription,
-        labelStyle: Theme
-            .of(context)
-            .textTheme
-            .body1,
+        hintText: AppLocalizations.of(context).inputHintDescription,
+        labelStyle: Theme.of(context).textTheme.body1,
         maxLines: 5,
         maxLength: 500,
         focusNode: _focusNodeDescription,
+      );*/
+
+  GlobalKey<HtmlEditorState> keyEditor = GlobalKey();
+
+  descriptionInput() =>
+      InkWell(
+        onTap: () =>
+            widget.showHtmlEditorDialog(
+                context,
+                keyEditor,
+                _createTicketBloc.state.description,
+                AppLocalizations
+                    .of(context)
+                    .inputHintDescription,
+                _createTicketBloc.descriptionInput),
+        child: BlocBuilder<CreateTicketBloc, CreateTicketState>(
+          bloc: _createTicketBloc,
+          condition: (prevState, newState) {
+            return prevState.description != newState.description;
+          },
+          builder: (_, state) =>
+              widget.hintedWebview(
+                  context,
+                  state.description,
+                  AppLocalizations
+                      .of(context)
+                      .inputHintDescription),
+        ),
       );
 
   _pickDate(DateTime initialDate, Function dateHandler) async {

@@ -100,7 +100,7 @@ class _CouponState extends State<CouponPage> {
 
   Widget _buildCouponList(List<Coupon> couponList) {
     return ListView.builder(
-        padding: const EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(4.0),
         itemCount: couponList.length,
         itemBuilder: (context, position) {
           Coupon currentCoupon = couponList[position];
@@ -115,35 +115,54 @@ class _CouponState extends State<CouponPage> {
 
   Widget _buildCouponListItem(Coupon coupon) {
     final couponParams = coupon.couponParameters;
-    return couponParams != null
-        ? Card(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: _buildNameAndQuantityView(
-                      couponParams.discountName ?? '--',
-                      coupon.couponType ?? '--',
-                      couponParams.noOfDiscount ?? 0,
-                    ),
-                  ),
-                  _buildPriceAndDateView(
-                    couponParams.discountType == 'amount'
-                        ? couponParams.discountValue != null
-                            ? '\$${couponParams.discountValue}'
-                            : '--'
-                        : couponParams.discountValue != null
-                            ? '${couponParams.discountValue}%'
-                            : '--',
-                    couponParams.endDateTime,
-                  ),
-                ],
+    if (couponParams != null) {
+      final currencyFormat = NumberFormat.simpleCurrency(
+          name: isValid(couponParams.currency) ? couponParams.currency : 'USD',
+          decimalDigits: 0);
+      return Card(
+        clipBehavior: Clip.antiAlias,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 72.0,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              VerticalDivider(
+                thickness: 6,
+                width: 6,
+                color: coupon.active ? colorActive : colorInactive,
               ),
-            ),
-          )
-        : SizedBox.shrink();
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: _buildNameAndQuantityView(
+                    couponParams.discountName ?? '--',
+                    coupon.couponType ?? '--',
+                    couponParams.noOfDiscount ?? 0,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: _buildPriceAndDateView(
+                  couponParams.discountType == 'amount'
+                      ? couponParams.discountValue != null
+                      ? '${currencyFormat.format(couponParams.discountValue)}'
+                      : '--'
+                      : couponParams.discountValue != null
+                      ? '${couponParams.discountValue}%'
+                      : '--',
+                  couponParams.endDateTime,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else
+      return SizedBox.shrink();
   }
 
   Widget _buildNameAndQuantityView(
@@ -153,7 +172,7 @@ class _CouponState extends State<CouponPage> {
         children: <Widget>[
           Text(
             couponName,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.body1.copyWith(
                   fontWeight: FontWeight.w500,

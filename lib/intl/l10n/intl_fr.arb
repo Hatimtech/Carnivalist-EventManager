@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-05-13T13:26:53.780545",
+  "@@last_modified": "2020-05-21T17:07:55.329846",
   "appTitle": "Carnivalist",
   "@appTitle": {
     "type": "text",
@@ -7,6 +7,11 @@
   },
   "titleSignUp": "Sign Up",
   "@titleSignUp": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signupSuccess": "Your account is created. Please login",
+  "@signupSuccess": {
     "type": "text",
     "placeholders": {}
   },
@@ -320,7 +325,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelTotalAvailable": "Total Available",
+  "labelTotalAvailable": "Quantity",
   "@labelTotalAvailable": {
     "type": "text",
     "placeholders": {}
@@ -532,6 +537,11 @@
   },
   "btnSubmit": "Submit",
   "@btnSubmit": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "btnSend": "Send",
+  "@btnSend": {
     "type": "text",
     "placeholders": {}
   },
@@ -945,7 +955,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorEndTimeLess": "End time can not be less than start time",
+  "errorEndTimeLess": "End date can not be less than start date",
   "@errorEndTimeLess": {
     "type": "text",
     "placeholders": {}
@@ -1037,6 +1047,26 @@
   },
   "errorNoListItem": "Add atleast 1 list item",
   "@errorNoListItem": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorConvFeePercent": "Convenience fee percent can not be empty",
+  "@errorConvFeePercent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorConvFeePercentValid": "Convenience fee percent can not 0",
+  "@errorConvFeePercentValid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorConvFeeAmount": "Convenience fee amount can not be empty",
+  "@errorConvFeeAmount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorConvFeeAmountValid": "Convenience fee amount can not be 0",
+  "@errorConvFeeAmountValid": {
     "type": "text",
     "placeholders": {}
   },
@@ -1150,13 +1180,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelAddonTypeAmount": "Amount",
-  "@labelAddonTypeAmount": {
+  "labelAmount": "Amount",
+  "@labelAmount": {
     "type": "text",
     "placeholders": {}
   },
-  "labelAddonTypePercentage": "Percentage",
-  "@labelAddonTypePercentage": {
+  "labelPercentage": "Percentage",
+  "@labelPercentage": {
     "type": "text",
     "placeholders": {}
   },
@@ -1280,28 +1310,368 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelCreateDiscountCoupon": "Remise sur le code",
+  "labelCreateDiscountCoupon": "Code Discount",
   "@labelCreateDiscountCoupon": {
     "type": "text",
     "placeholders": {}
   },
-  "labelCreateGroupCoupon": "Remise de groupe",
+  "labelCreateGroupCoupon": "Group Discount",
   "@labelCreateGroupCoupon": {
     "type": "text",
     "placeholders": {}
   },
-  "labelCreateFlatCoupon": "Remise forfaitaire",
+  "labelCreateFlatCoupon": "Flat Discount",
   "@labelCreateFlatCoupon": {
     "type": "text",
     "placeholders": {}
   },
-  "labelCreateLoyaltyCoupon": "Remise fidélité",
+  "labelCreateLoyaltyCoupon": "Loyalty Discount",
   "@labelCreateLoyaltyCoupon": {
     "type": "text",
     "placeholders": {}
   },
-  "labelCreateAffiliateCoupon": "Remise d'affiliation",
+  "labelCreateAffiliateCoupon": "Affiliate Discount",
   "@labelCreateAffiliateCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateCodeDiscount": "Code Discount",
+  "@titleCreateCodeDiscount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateGroupDiscount": "Group Discount",
+  "@titleCreateGroupDiscount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateFlatDiscount": "Flat Discount",
+  "@titleCreateFlatDiscount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateLoyaltyDiscount": "Loyalty Discount",
+  "@titleCreateLoyaltyDiscount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateAffiliateDiscount": "Affiliate Discount",
+  "@titleCreateAffiliateDiscount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDiscountName": "Discount Name",
+  "@labelDiscountName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDiscountAvailFrom": "Discount avail from",
+  "@labelDiscountAvailFrom": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDiscountAvailTill": "Discount avail till",
+  "@labelDiscountAvailTill": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponNoOfDiscounts": "No. of Discount",
+  "@labelCouponNoOfDiscounts": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponCode": "Code",
+  "@labelCouponCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponMinTicketNo": "Min Ticket No",
+  "@labelCouponMinTicketNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponMaxTicketNo": "Max Ticket No",
+  "@labelCouponMaxTicketNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponChooseEvent": "Choose Event",
+  "@labelCouponChooseEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponChoosePastEvent": "Choose Past Event",
+  "@labelCouponChoosePastEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponDiscountValue": "Discount Value",
+  "@labelCouponDiscountValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponSelectTicket": "Select Ticket",
+  "@labelCouponSelectTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelCouponAffiliateEmail": "Affiliate Email Id",
+  "@labelCouponAffiliateEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintDiscountName": "Type Discount Name",
+  "@inputHintDiscountName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintCouponCode": "Type Code",
+  "@inputHintCouponCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintCouponNoOfDiscount": "Quantity",
+  "@inputHintCouponNoOfDiscount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintDiscountValue": "Discount",
+  "@inputHintDiscountValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintCouponMinTicketNo": "Type Min Ticket No",
+  "@inputHintCouponMinTicketNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintCouponMaxTicketNo": "Type Max Ticket No",
+  "@inputHintCouponMaxTicketNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintSelectEvent": "Select Event",
+  "@inputHintSelectEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintSelectPastEvent": "Select Past Event",
+  "@inputHintSelectPastEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintAffiliateEmailId": "Type Affiliate Email",
+  "@inputHintAffiliateEmailId": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponNoEventAvailable": "No events available",
+  "@errorCouponNoEventAvailable": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponDiscountName": "Discount name can not be empty",
+  "@errorCouponDiscountName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponAvailStartDate": "Discount start date can not be empty",
+  "@errorCouponAvailStartDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponAvailEndDate": "Discount end date can not be empty",
+  "@errorCouponAvailEndDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponStartDateAfter": "Start date can not be after end date",
+  "@errorCouponStartDateAfter": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponNoOfDiscount": "No of discount can not be empty",
+  "@errorCouponNoOfDiscount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponNoOfDiscountZero": "No of discount can not be 0",
+  "@errorCouponNoOfDiscountZero": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponCode": "Coupon code can not be empty",
+  "@errorCouponCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponDiscountValue": "Discount value can not be empty",
+  "@errorCouponDiscountValue": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponSelectEvent": "Event can not be empty",
+  "@errorCouponSelectEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponSelectTicket": "Select atleast 1 ticket",
+  "@errorCouponSelectTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponMinTicket": "Min Ticket number can not be empty",
+  "@errorCouponMinTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponMinTicketZero": "Min Ticket number can not be 0",
+  "@errorCouponMinTicketZero": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponMaxTicket": "Max Ticket number can not be empty",
+  "@errorCouponMaxTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponMaxTicketZero": "Max Ticket number can not be 0",
+  "@errorCouponMaxTicketZero": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponSelectPastEvent": "Past event can not be empty",
+  "@errorCouponSelectPastEvent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponAffEmail": "Affiliate email can not be empty",
+  "@errorCouponAffEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCouponAffEmailValid": "Affiliate email is not valid",
+  "@errorCouponAffEmailValid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventDetailAttendees": "Attendee",
+  "@labelEventDetailAttendees": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventDetailDetails": "Details",
+  "@labelEventDetailDetails": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventDetailTicket": "Ticket: ",
+  "@labelEventDetailTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventDetailStatusSuccess": "Success",
+  "@labelEventDetailStatusSuccess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelEventDetailStatusFailed": "Failed",
+  "@labelEventDetailStatusFailed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAttendeesResendTicket": "Resend Ticket",
+  "@labelAttendeesResendTicket": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAttendeesSendMail": "Send Mail",
+  "@labelAttendeesSendMail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMailSubject": "Subject can not be empty",
+  "@errorMailSubject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMailFromName": "From name can not be empty",
+  "@errorMailFromName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMailReplyTo": "Reply-to mail can not be empty",
+  "@errorMailReplyTo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMailReplyToValid": "Please enter valid reply-to mail",
+  "@errorMailReplyToValid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorMailMessage": "Message body can not be empty",
+  "@errorMailMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorGalleryBanner": "Please add event banner image",
+  "@errorGalleryBanner": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSendAnnouncement": "Send Announcement",
+  "@labelSendAnnouncement": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSendAnnouncementSubject": "Subject",
+  "@labelSendAnnouncementSubject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSendAnnouncementFromName": "From Name",
+  "@labelSendAnnouncementFromName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSendAnnouncementReplyTo": "Reply To",
+  "@labelSendAnnouncementReplyTo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelSendAnnouncementMessage": "Message",
+  "@labelSendAnnouncementMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputSendAnnouncementSubject": "Type Subject",
+  "@inputSendAnnouncementSubject": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputSendAnnouncementFromName": "Enter From Name",
+  "@inputSendAnnouncementFromName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputSendAnnouncementReplyTo": "Enter Email Address",
+  "@inputSendAnnouncementReplyTo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputSendAnnouncementMessage": "Enter Message Body",
+  "@inputSendAnnouncementMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAnnouncementFor": "Announcement For",
+  "@labelAnnouncementFor": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelPriceOnwards": "Onwards",
+  "@labelPriceOnwards": {
     "type": "text",
     "placeholders": {}
   },

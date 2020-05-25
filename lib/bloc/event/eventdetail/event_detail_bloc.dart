@@ -31,6 +31,8 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     add(ResendTicketEvent(orderId: orderId, email: email, callback: callback));
   }
 
+  String get selectedEventId => eventId;
+
   @override
   EventDetailState get initialState => EventDetailState.initial();
 

@@ -1,4 +1,3 @@
-import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/eventdetails/payment_response.dart';
 import 'package:eventmanagement/model/eventdetails/ticket_detail.dart';
 import 'package:eventmanagement/model/eventdetails/user_detail.dart';
@@ -9,7 +8,8 @@ class EventDetail {
   List<UserDetail> user;
   List<TicketDetail> tickets;
   PaymentResponse paymentResponse;
-  List<EventData> eventDetails;
+
+//  List<EventData> eventDetails;
 
   EventDetail({
     this.id,
@@ -17,7 +17,7 @@ class EventDetail {
     this.user,
     this.paymentResponse,
     this.tickets,
-    this.eventDetails,
+//    this.eventDetails,
   });
 
   EventDetail.fromJson(Map<String, dynamic> json) {
@@ -32,9 +32,9 @@ class EventDetail {
         ?.map((e) => TicketDetail.fromJson(e))
         ?.toList();
 
-    eventDetails = (json['eventDetails'] as List)
-        ?.map((e) => EventData.fromJson(e))
-        ?.toList();
+//    eventDetails = (json['eventDetails'] as List)
+//        ?.map((e) => EventData.fromJson(e))
+//        ?.toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -48,9 +48,9 @@ class EventDetail {
     }
     if (this.tickets != null)
       data['tickets'] = this.tickets.map((ticket) => ticket.toJson())?.toList();
-    if (this.eventDetails != null)
-      data['eventDetails'] =
-          this.eventDetails.map((eventData) => eventData.toJson())?.toList();
+//    if (this.eventDetails != null)
+//      data['eventDetails'] =
+//          this.eventDetails.map((eventData) => eventData.toJson())?.toList();
     return data;
   }
 }

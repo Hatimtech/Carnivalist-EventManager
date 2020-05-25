@@ -66,9 +66,6 @@ class _AddonState extends State<AddonPage> {
             child: BlocBuilder<AddonBloc, AddonState>(
                 bloc: _addonBloc,
                 condition: (prevState, newState) {
-                  print(
-                      'prevState.loading--->${prevState
-                          .loading} newState.loading--->${newState.loading}');
                   return (prevState.loading != newState.loading) ||
                       (prevState.showPublic != newState.showPublic) ||
                       (prevState.addonList != newState.addonList ||
@@ -204,7 +201,7 @@ class _AddonState extends State<AddonPage> {
 
   Widget _buildAddonList(List<Addon> addonList, String systemPath) {
     return ListView.builder(
-        padding: const EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(4.0),
         itemCount: addonList.length,
         itemBuilder: (context, position) {
           Addon currentAddon = addonList[position];
@@ -242,17 +239,39 @@ class _AddonState extends State<AddonPage> {
     return Container(
       color: (addon.isSelected ?? false) ? bgColorSelection : null,
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
+        clipBehavior: Clip.antiAlias,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 72.0,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildAddonImage(addon.image, systemPath),
+              VerticalDivider(
+                thickness: 6,
+                width: 6,
+                color: addon.active && addon.endDateTime.isAfter(DateTime.now())
+                    ? colorActive
+                    : colorInactive,
+              ),
+              const SizedBox(width: 8.0),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: _buildAddonImage(addon.image, systemPath),
+              ),
               const SizedBox(width: 16.0),
               Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
                   child: _buildNameAndQuantityView(
-                      addon.name, addon.quantity, addon.convenienceFee)),
-              _buildPriceAndDateView(addon.price, addon.endDateTime),
+                      addon.name, addon.quantity, addon.convenienceFee),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: _buildPriceAndDateView(
+                    addon.currency, addon.price, addon.endDateTime),
+              ),
             ],
           ),
         ),
@@ -263,16 +282,18 @@ class _AddonState extends State<AddonPage> {
   Widget _buildAddonImage(String url, String systemPath) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(4.0),
-      child: Image(
-          width: 48,
-          height: 48,
-          fit: BoxFit.cover,
-          image: NetworkToFileImage(
-            url: url,
-            file: File(Path.join(systemPath, 'Pictures',
-                url.substring(url.lastIndexOf('/') + 1))),
-            debug: true,
-          )),
+      child: FadeInImage(
+        width: 48,
+        height: 48,
+        fit: BoxFit.cover,
+        placeholder: AssetImage(placeholderImage),
+        image: NetworkToFileImage(
+          url: url,
+          file: File(Path.join(
+              systemPath, 'Pictures', url.substring(url.lastIndexOf('/') + 1))),
+          debug: true,
+        ),
+      ),
     );
   }
 
@@ -283,7 +304,7 @@ class _AddonState extends State<AddonPage> {
         children: <Widget>[
           Text(
             addonName,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.body1.copyWith(
                   fontWeight: FontWeight.w500,
@@ -301,13 +322,19 @@ class _AddonState extends State<AddonPage> {
         ]);
   }
 
-  Widget _buildPriceAndDateView(double price, DateTime saleEnd) {
+  Widget _buildPriceAndDateView(String currency, double price,
+      DateTime saleEnd) {
+    final currencyFormat = price != null
+        ? NumberFormat.simpleCurrency(
+        name: isValid(currency) ? currency : 'USD',
+        decimalDigits: (price?.isInt ?? false) ? 0 : null)
+        : null;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           const SizedBox(height: 2),
           Text(
-            price?.toString() ?? '--',
+            price != null ? '${currencyFormat.format(price)}' : '--',
             style: Theme.of(context)
                 .textTheme
                 .subtitle

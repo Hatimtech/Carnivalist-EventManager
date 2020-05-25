@@ -236,14 +236,13 @@ class _EventMenuState extends State<EventMenuPage>
                     ),
                   ],
                 ),
-                height: 100,
+                height: 124,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(headerBackgroundImage),
-                      fit: BoxFit.fitWidth,
+                      fit: BoxFit.fill,
                     ))),
-            const SizedBox(height: 16.0),
             Expanded(
                 child: DefaultTabController(
                     length: 5,
@@ -500,6 +499,13 @@ class _EventMenuState extends State<EventMenuPage>
       context.toast(AppLocalizations
           .of(context)
           .errorUnsavedForm);
+      return;
+    }
+
+    if (!isValid(_galleryBloc.state.banner)) {
+      context.toast(AppLocalizations
+          .of(context)
+          .errorGalleryBanner);
       return;
     }
 

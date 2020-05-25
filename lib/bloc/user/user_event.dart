@@ -55,3 +55,23 @@ class SaveAddress extends UserEvent {
   final String address;
   SaveAddress({this.address});
 }
+
+class UpdateUserDetails extends UserEvent {
+  final String name;
+  final String email;
+  final String mobile;
+  final String profilePic;
+  final Function callback;
+
+  UpdateUserDetails(
+      {this.name, this.email, this.mobile, this.profilePic, this.callback});
+}
+
+class UpdateUserResult extends UserEvent {
+  final bool success;
+  final dynamic uiMsg;
+  final String name, mobile, profilePic;
+
+  UpdateUserResult(this.success,
+      {this.uiMsg, this.name, this.mobile, this.profilePic});
+}

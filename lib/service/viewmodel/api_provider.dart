@@ -142,4 +142,14 @@ class ApiProvider {
       Map<String, dynamic> param) async {
     return await apiService.attendeesSendMail(authToken, param);
   }
+
+  Future<NetworkServiceResponse> uploadProfilePic(String authToken,
+      String mediaPath) async {
+    return await apiService.uploadProfilePic(authToken, mediaPath);
+  }
+
+  Future<NetworkServiceResponse> updateUserDetails(String authToken,
+      Map<String, dynamic> param) async {
+    return await apiService.updateUserDetails(authToken, param);
+  }
 }

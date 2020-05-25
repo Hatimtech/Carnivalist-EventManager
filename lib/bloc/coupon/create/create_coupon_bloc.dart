@@ -361,7 +361,7 @@ class CreateCouponBloc extends Bloc<CreateCouponEvent, CreateCouponState> {
       return ERR_COUPON_NO_OF_DISCOUNT_ZERO;
 
     if (!isValid(state.affiliateEmailId)) return ERR_COUPON_AFFILIATE_EMAIL;
-    if (validateEmail(state.affiliateEmailId) != null)
+    if (!isValidEmail(state.affiliateEmailId))
       return ERR_COUPON_AFFILIATE_EMAIL_VALID;
 
     if (!isValid(state.discountValue)) return ERR_COUPON_DISCOUNT;

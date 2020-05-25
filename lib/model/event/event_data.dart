@@ -4,6 +4,7 @@ import 'package:eventmanagement/model/event/settings/cancellation_policy.dart';
 import 'package:eventmanagement/model/event/settings/payment_and_taxes.dart';
 import 'package:eventmanagement/model/event/settings/website_setting.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
+import 'package:flutter/material.dart';
 
 class EventData {
   String id;
@@ -146,13 +147,6 @@ class EventData {
 
     return data;
   }
-
-  @override
-  String toString() {
-    return 'EventData{id: $id, title: $title, tags: $tags, description: $description, type: $type, eventFrequency: $eventFrequency, startDateTime: $startDateTime, endDateTime: $endDateTime, daily: $daily, weekly: $weekly, custom: $custom, place: $place, eventPrivacy: $eventPrivacy, timeZone: $timeZone, tickets: $tickets, formStructure: $formStructure, banner: $banner, gallery: $gallery, status: $status, cancellationPolicy: $cancellationPolicy, paymentAndTaxes: $paymentAndTaxes, websiteSettings: $websiteSettings}';
-  }
-
-
 }
 
 class Daily {

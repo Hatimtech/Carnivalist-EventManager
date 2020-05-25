@@ -94,8 +94,8 @@ class EventState {
     final dateTimeNow = DateTime.now();
     return eventDataList.where((event) {
       try {
-        return isValid(event.startDateTime) &&
-            DateTime.parse(event.startDateTime).isBefore(dateTimeNow);
+        return isValid(event.endDateTime) &&
+            DateTime.parse(event.endDateTime).isBefore(dateTimeNow);
       } catch (error) {
         return false;
       }

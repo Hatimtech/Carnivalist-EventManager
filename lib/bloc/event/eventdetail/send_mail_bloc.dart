@@ -139,7 +139,7 @@ class SendMailBloc extends Bloc<SendMailEvent, SendMailState> {
     if (!isValid(state.subject)) return ERR_MAIL_SUBJECT_NAME;
     if (!isValid(state.fromName)) return ERR_MAIL_FROM_NAME;
     if (!isValid(state.replyTo)) return ERR_MAIL_REPLY_TO;
-    if (validateEmail(state.replyTo) != null) return ERR_MAIL_REPLY_TO_VALID;
+    if (!isValidEmail(state.replyTo)) return ERR_MAIL_REPLY_TO_VALID;
     if (!isValid(state.message)) return ERR_MAIL_MESSAGE_BODY;
 
     return 0;

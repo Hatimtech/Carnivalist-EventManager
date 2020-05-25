@@ -31,6 +31,11 @@ class AppLocalizations {
   String get titleSignUp =>
       Intl.message('Sign Up', name: "titleSignUp", locale: _localeName);
 
+  String get signupSuccess =>
+      Intl.message(
+          'Your account is created. Please login', name: "signupSuccess",
+          locale: _localeName);
+
   String get titleForgotPassword => Intl.message('Forgot Password',
       name: "titleForgotPassword", locale: _localeName);
 
@@ -234,7 +239,8 @@ class AppLocalizations {
   String get labelSalesEnds =>
       Intl.message('Sales Ends', name: "labelSalesEnds", locale: _localeName);
 
-  String get labelTotalAvailable => Intl.message('Total Available',
+  String get labelTotalAvailable =>
+      Intl.message('Quantity',
       name: "labelTotalAvailable", locale: _localeName);
 
   String get labelMinBooking =>
@@ -399,6 +405,9 @@ class AppLocalizations {
 
   String get btnLogout =>
       Intl.message('Logout', name: "btnLogout", locale: _localeName);
+
+  String get btnUpdate =>
+      Intl.message('Update', name: "btnUpdate", locale: _localeName);
 
   String get btnCreateTicket => Intl.message('Create Ticket',
       name: "btnCreateTicket", locale: _localeName);
@@ -659,7 +668,7 @@ class AppLocalizations {
           name: "errorEndTime", locale: _localeName);
 
   String get errorEndTimeLess =>
-      Intl.message('End time can not be less than start time',
+      Intl.message('End date can not be less than start date',
           name: "errorEndTimeLess", locale: _localeName);
 
   String get errorWeekday =>
@@ -735,6 +744,23 @@ class AppLocalizations {
   String get errorNoListItem =>
       Intl.message('Add atleast 1 list item',
           name: "errorNoListItem", locale: _localeName);
+
+  String get errorConvFeePercent =>
+      Intl.message('Convenience fee percent can not be empty',
+          name: "errorConvFeePercent", locale: _localeName);
+
+  String get errorConvFeePercentValid =>
+      Intl.message('Convenience fee percent can not 0',
+          name: "errorConvFeePercentValid", locale: _localeName);
+
+  String get errorConvFeeAmount =>
+      Intl.message('Convenience fee amount can not be empty',
+          name: "errorConvFeeAmount", locale: _localeName);
+
+  String get errorConvFeeAmountValid =>
+      Intl.message('Convenience fee amount can not be 0',
+          name: "errorConvFeeAmountValid", locale: _localeName);
+
 
   String get errorCancellationDesc =>
       Intl.message('Cancellation description can not be empty',
@@ -826,11 +852,11 @@ class AppLocalizations {
           name: "labelAddonTypePrivate", locale: _localeName);
 
   String get labelAmount =>
-      Intl.message('Amount', name: "labelAddonTypeAmount", locale: _localeName);
+      Intl.message('Amount', name: "labelAmount", locale: _localeName);
 
   String get labelPercentage =>
       Intl.message('Percentage',
-          name: "labelAddonTypePercentage", locale: _localeName);
+          name: "labelPercentage", locale: _localeName);
 
   String get inputHintAddonName =>
       Intl.message('Type your addon name',
@@ -1167,6 +1193,10 @@ class AppLocalizations {
       Intl.message('Message body can not be empty',
           name: "errorMailMessage", locale: _localeName);
 
+  String get errorGalleryBanner =>
+      Intl.message('Please add event banner image',
+          name: "errorGalleryBanner", locale: _localeName);
+
   String get labelSendAnnouncement =>
       Intl.message('Send Announcement',
           name: "labelSendAnnouncement", locale: _localeName);
@@ -1206,6 +1236,95 @@ class AppLocalizations {
   String get labelAnnouncementFor =>
       Intl.message('Announcement For',
           name: "labelAnnouncementFor", locale: _localeName);
+
+  String get labelPriceOnwards =>
+      Intl.message('Onwards',
+          name: "labelPriceOnwards", locale: _localeName);
+
+  String get eventDeleteTitle =>
+      Intl.message(
+          'Delete Event', name: "eventDeleteTitle", locale: _localeName);
+
+  String get eventDeleteMsg =>
+      Intl.message('Are you sure, you want to delete this event?',
+          name: "eventDeleteMsg", locale: _localeName);
+
+  String get ticketDeleteTitle =>
+      Intl.message(
+          'Delete Ticket', name: "ticketDeleteTitle", locale: _localeName);
+
+  String get ticketDeleteMsg =>
+      Intl.message('Are you sure, you want to delete this ticket?',
+          name: "ticketDeleteMsg", locale: _localeName);
+
+  String get fieldDeleteTitle =>
+      Intl.message(
+          'Delete Field', name: "fieldDeleteTitle", locale: _localeName);
+
+  String get fieldDeleteMsg =>
+      Intl.message('Are you sure, you want to delete this form field?',
+          name: "fieldDeleteMsg", locale: _localeName);
+
+  String get mediaDeleteTitle =>
+      Intl.message(
+          'Delete Media', name: "mediaDeleteTitle", locale: _localeName);
+
+  String get mediaDeleteMsg =>
+      Intl.message('Are you sure, you want to delete this media file?',
+          name: "mediaDeleteMsg", locale: _localeName);
+
+  String get deleteButton =>
+      Intl.message('Delete', name: "eventDeleteButton", locale: _localeName);
+
+  String get errorPhoneEmail =>
+      Intl.message('Phone No/Email is required', name: "errorPhoneEmail",
+          locale: _localeName);
+
+  String get errorEmail =>
+      Intl.message(
+          'Email is required', name: "errorEmail", locale: _localeName);
+
+  String get errorInvalidEmail =>
+      Intl.message(
+          'Invalid email', name: "errorInvalidEmail", locale: _localeName);
+
+  String get errorPhoneNo =>
+      Intl.message(
+          'Phone no is required', name: "errorPhoneNo", locale: _localeName);
+
+  String get errorPhoneNoLength =>
+      Intl.message('Valid phone number is required', name: "errorPhoneNoLength",
+          locale: _localeName);
+
+  String get errorPassword =>
+      Intl.message(
+          'Password is required', name: "errorPassword", locale: _localeName);
+
+  String get errorPasswordLength =>
+      Intl.message(
+          'Password at least 4 characters', name: "errorPasswordLength",
+          locale: _localeName);
+
+  String get errorConfirmPassword =>
+      Intl.message('Confirm Password is required', name: "errorConfirmPassword",
+          locale: _localeName);
+
+  String get errorConfirmPasswordLength =>
+      Intl.message('Confirm Password at least 4 characters',
+          name: "errorConfirmPasswordLength", locale: _localeName);
+
+  String get errorConfirmPasswordMatch =>
+      Intl.message('Password and confirm password not match',
+          name: "errorConfirmPasswordMatch", locale: _localeName);
+
+  String get errorFirstName =>
+      Intl.message('First name is required', name: "errorFirstName",
+          locale: _localeName);
+
+  String get errorFirstNameValid =>
+      Intl.message(
+          'First name must be a-z and A-Z', name: "errorFirstNameValid",
+          locale: _localeName);
 
   String get logoutTitle =>
       Intl.message('Logout', name: "logoutTitle", locale: _localeName);

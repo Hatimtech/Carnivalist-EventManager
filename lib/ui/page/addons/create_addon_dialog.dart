@@ -469,7 +469,7 @@ class _CreateAddonState extends State<CreateAddonDialog> {
                 return SizedBox.shrink();
               else
                 return GestureDetector(
-                  onTap: () => showImagePickerBottomSheet(true, false),
+                  onTap: () => showImagePickerBottomSheet(),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     child: Container(
@@ -526,11 +526,10 @@ class _CreateAddonState extends State<CreateAddonDialog> {
             }),
       );
 
-  void showImagePickerBottomSheet(bool banner, bool video) {
+  void showImagePickerBottomSheet() {
     if (isPlatformAndroid)
       showModalBottomSheet(
-          context: context,
-          builder: (ctx) => _buildImagePickerView(banner, video));
+          context: context, builder: (ctx) => _buildImagePickerView());
     else
       showCupertinoModalPopup(
         context: context,
@@ -543,20 +542,20 @@ class _CreateAddonState extends State<CreateAddonDialog> {
                 topRight: Radius.circular(12.0),
               ),
             ),
-            child: _buildImagePickerView(banner, video),
+            child: _buildImagePickerView(),
           );
         },
       );
   }
 
-  Widget _buildImagePickerView(bool banner, bool video) {
+  Widget _buildImagePickerView() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
-            _openCamera(banner, video);
+            _openCamera();
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -575,7 +574,7 @@ class _CreateAddonState extends State<CreateAddonDialog> {
         GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
-            _openGallery(banner, video);
+            _openGallery();
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -595,38 +594,28 @@ class _CreateAddonState extends State<CreateAddonDialog> {
     );
   }
 
-  Future<void> _openCamera(bool banner, bool video) async {
+  Future<void> _openCamera() async {
     var image;
 
-    if (video)
-      image = await ImagePicker.pickVideo(source: ImageSource.camera);
-    else
-      image = await ImagePicker.pickImage(
-          source: ImageSource.camera, imageQuality: 80);
+    image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 80);
 
     print('Camera Image/Video Path--->${image?.path}');
     if (image != null) {
-      if (banner) {
-        await _deleteExistingBanner();
-        _createAddonBloc.imageInput(image.path);
-      }
+      await _deleteExistingBanner();
+      _createAddonBloc.imageInput(image.path);
     }
   }
 
-  Future<void> _openGallery(bool banner, bool video) async {
+  Future<void> _openGallery() async {
     var image;
-    if (video)
-      image = await ImagePicker.pickVideo(source: ImageSource.gallery);
-    else
-      image = await ImagePicker.pickImage(
-          source: ImageSource.gallery, imageQuality: 80);
+    image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 80);
 
     print('Gallery Image/Video Path--->${image?.path}');
     if (image != null) {
-      if (banner) {
-        await _deleteExistingBanner();
-        _createAddonBloc.imageInput(image.path);
-      }
+      await _deleteExistingBanner();
+      _createAddonBloc.imageInput(image.path);
     }
   }
 
@@ -641,6 +630,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
             _createAddonBloc.state.image
                 .substring(_createAddonBloc.state.image.lastIndexOf('/') + 1)));
       } else {
+        final systemPath = await getSystemDirPath();
+        if (!_createAddonBloc.state.image.contains(systemPath)) return;
         fileToDelete = File(_createAddonBloc.state.image);
       }
 

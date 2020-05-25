@@ -3,8 +3,10 @@ import 'package:eventmanagement/bloc/event/basic/basic_state.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
+import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:html_editor/html_editor.dart';
 
 class EventDescriptionInfoPage extends StatefulWidget {
   @override
@@ -82,13 +84,128 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
         ]);
   }
 
-  _eventDescriptionInput() => widget.inputFieldRectangle(
-        _eventDescriptionController,
-        onChanged: _basicBloc.eventDescriptionInput,
-        hintText: AppLocalizations.of(context).inputHintDescription,
-        labelStyle: Theme.of(context).textTheme.body1,
-        maxLines: 10,
+  GlobalKey<HtmlEditorState> keyEditor = GlobalKey();
+
+  /*_eventDescriptionInput() {
+    return widget.inputFieldRectangle(
+      _eventDescriptionController,
+      onChanged: _basicBloc.eventDescriptionInput,
+      hintText: AppLocalizations.of(context).inputHintDescription,
+      labelStyle: Theme.of(context).textTheme.body1,
+      maxLines: 10,
+    );
+  }*/
+
+  _eventDescriptionInput() {
+    return InkWell(
+      onTap: () =>
+          widget.showHtmlEditorDialog(
+              context,
+              keyEditor,
+              _basicBloc.state.eventDescription,
+              AppLocalizations
+                  .of(context)
+                  .inputHintDescription,
+              _basicBloc.eventDescriptionInput),
+      child: BlocBuilder<BasicBloc, BasicState>(
+        bloc: _basicBloc,
+        condition: (prevState, newState) {
+          print('${prevState.eventDescription != newState.eventDescription}');
+          return prevState.eventDescription != newState.eventDescription;
+        },
+        builder: (_, state) =>
+            widget.hintedWebview(
+                context,
+                state.eventDescription,
+                AppLocalizations
+                    .of(context)
+                    .inputHintDescription),
+      ),
+    );
+  }
+
+  boxDecorationRectangle() =>
+      BoxDecoration(
+        border: Border.all(width: 1, color: Colors.grey),
+        borderRadius: BorderRadius.all(
+            Radius.circular(5.0) //                 <--- border radius here
+        ),
       );
+
+  void _showDescriptionDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * .9,
+              color: Colors.white,
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  HtmlEditor(
+                    key: keyEditor,
+                    hint: isValid(_basicBloc.state.eventDescription)
+                        ? ''
+                        : AppLocalizations
+                        .of(context)
+                        .inputHintDescription,
+                    value: _basicBloc.state.eventDescription,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * .8,
+                    showBottomToolbar: false,
+                  ),
+                  Row(children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        onPressed: () => Navigator.pop(context),
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          AppLocalizations
+                              .of(context)
+                              .btnClose,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: RaisedButton(
+                        onPressed: () async {
+                          final html = await keyEditor.currentState.getText();
+                          _basicBloc.eventDescriptionInput(html);
+                          Navigator.pop(context);
+                        },
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text(
+                          AppLocalizations
+                              .of(context)
+                              .btnSave,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .button,
+                        ),
+                      ),
+                    )
+                  ]),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   String uiValueEventPost(String value) {
     switch (value) {

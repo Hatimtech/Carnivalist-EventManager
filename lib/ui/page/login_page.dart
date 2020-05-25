@@ -176,7 +176,8 @@ class _LoginState extends State<LoginPage> {
                   .of(context)
                   .textTheme
                   .body1,
-              validation: validatePhoneEmail,
+              validation: (value) =>
+                  validatePhoneEmail(value, AppLocalizations.of(context)),
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               nextFocusNode: _focusNodePassword,
@@ -198,7 +199,8 @@ class _LoginState extends State<LoginPage> {
                     .textTheme
                     .body1,
                 obscureText: visible,
-                validation: validatePassword,
+                validation: (value) =>
+                    validatePassword(value, AppLocalizations.of(context)),
                 focusNode: _focusNodePassword,
                 inkWell: InkWell(
                     child:

@@ -14,9 +14,10 @@ int apiCodeSuccess = 1;
 int apiCodeError = 0;
 
 const String redirectUrlValue =
-    'https://dev.managers.aktv.life/login/forgotpassword';
+    'https://manager.carnivalist.tk/login/forgotpassword';
 
 const String emailParam = 'email';
+const String redirectParam = 'redirectUri';
 
 //DRAWER
 
@@ -41,13 +42,14 @@ const String forgotPasswordRoute = '/forgotPassword';
 const String profileRoute = '/profile';
 const String profileEditRoute = '/profileEdit';
 const String contactRoute = '/contact';
-const String dashboardRoute = '/dashboard';
 const String bottomMenuRoute = '/bottomMenu';
 const String eventMenuRoute = '/eventMenu';
 const String eventDetailRoute = '/eventDetail';
+const String userInfoRoute = '/userInfo';
 
 const String profileImage = 'assets/images/user_profile.png';
 const String headerBackgroundImage = 'assets/images/header_background.png';
+const String placeholderImage = 'assets/images/image_placeholder.png';
 
 const String bottomMenuBarHomeImage = 'assets/images/bottom_menu_bar_home.png';
 const String bottomMenuBarEventImage = 'assets/images/bottom_menu_bar_user.png';
@@ -96,6 +98,9 @@ const Color colorBottomBarMenu = Color(0xFFFEFEFE);
 const Color colorHeaderTitle = Colors.white;
 const Color colorHeaderBgFilter = Colors.transparent;
 
+const Color colorActive = Colors.green;
+const Color colorInactive = Colors.red;
+
 List<Color> gradientsClipper = [Colors.grey.shade200, Colors.white];
 
 List<Color> gradientsButton = [Colors.grey.shade200, Colors.white];
@@ -118,108 +123,71 @@ buttonBg() {
 expandStyle(int flex, Widget child) => Expanded(flex: flex, child: child);
 
 //VALIDATION
-String validatePhoneEmail(String value) {
+String validatePhoneEmail(String value, AppLocalizations appLocalizations) {
   String patternEmail =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regExpEmail = new RegExp(patternEmail);
 
   if (value.isEmpty) {
-    return 'Phone No/Email is required';
+    return appLocalizations.errorPhoneEmail;
   } else if (isNumeric(value)) {
-    if (value.replaceAll(" ", "").length != 10) {
-      return 'Mobile number must be 10 digits';
+    if (value
+        .replaceAll(" ", "")
+        .length < 10) {
+      return appLocalizations.errorPhoneNoLength;
     } else {
       return null;
     }
   } else if (!regExpEmail.hasMatch(value)) {
-    return 'Invalid email';
+    return appLocalizations.errorInvalidEmail;
   } else {
     return null;
   }
 }
 
-String validateEmail(String value) {
+bool isValidEmail(String value) {
+  String pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regExp = new RegExp(pattern);
+  if (value.isEmpty || !regExp.hasMatch(value)) {
+    return false;
+  }
+  return true;
+}
+
+String validateEmail(String value, AppLocalizations appLocalizations) {
   String pattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regExp = new RegExp(pattern);
   if (value.isEmpty) {
-    return 'Email is required';
+    return appLocalizations.errorEmail;
   } else if (!regExp.hasMatch(value)) {
-    return 'Invalid email';
+    return appLocalizations.errorInvalidEmail;
   } else {
     return null;
   }
 }
 
-String validateMobile(String value) {
-  String pattern = r'(^[0-9]*$)';
+String validateMobile(String value, AppLocalizations appLocalizations) {
+  String pattern = r'(^(?:[+0])?[0-9]*$)';
   RegExp regExp = RegExp(pattern);
   if (value.replaceAll(" ", "").isEmpty) {
-    return 'Phone no is required';
-  } else if (value.replaceAll(" ", "").length != 10) {
-    return 'Phone no number must 10 digits';
+    return appLocalizations.errorPhoneNo;
+  } else if (value
+      .replaceAll(" ", "")
+      .length < 10) {
+    return appLocalizations.errorPhoneNoLength;
   } else if (!regExp.hasMatch(value.replaceAll(" ", ""))) {
-    return 'Phone no number must be 10 digits';
+    return appLocalizations.errorPhoneNoLength;
   }
   return null;
 }
 
-String validatePassword(String value) {
+String validatePassword(String value, AppLocalizations appLocalizations) {
   if (value.isEmpty) {
-    return 'Password is required';
+    return appLocalizations.errorPassword;
   } else if (value.length < 4) {
-    return 'Password at least 4 characters';
-  }
-  return null;
-}
-
-String validateOldPassword(String value) {
-  if (value.isEmpty) {
-    return null;
-  } else if (value.length < 4) {
-    return 'Old password must be at least 4 characters';
-  }
-  return null;
-}
-
-String validateNewPassword(String value) {
-  if (value.isEmpty) {
-    return null;
-  } else if (value.length < 4) {
-    return 'New password must be at least 4 characters';
-  }
-  return null;
-}
-
-String validateConfirmPassword(String value) {
-  if (value.isEmpty) {
-    return 'Confirm password is required';
-  } else if (value.length < 4) {
-    return 'Confirm password must be at least 4 characters';
-  }
-  return null;
-}
-
-String validateEditName(String value) {
-  String pattern = r'(^[a-zA-Z ]*$)';
-  RegExp regExp = RegExp(pattern);
-  if (value.isEmpty) {
-    return null;
-  } else if (!regExp.hasMatch(value)) {
-    return 'Name must be a-z and A-Z';
-  }
-  return null;
-}
-
-String validateEditMobile(String value) {
-  String pattern = r'(^[0-9]*$)';
-  RegExp regExp = RegExp(pattern);
-  if (value.replaceAll(" ", "").isEmpty) {
-    return null;
-  } else if (value.replaceAll(" ", "").length != 10) {
-    return 'Mobile number must 10 digits';
-  } else if (!regExp.hasMatch(value.replaceAll(" ", ""))) {
-    return 'Mobile number must be digits';
+    return appLocalizations.errorPasswordLength;
   }
   return null;
 }
@@ -232,24 +200,13 @@ bool validationEqual(String currentValue, String checkValue) {
   }
 }
 
-String validateName(String value) {
+String validateName(String value, AppLocalizations appLocalizations) {
   String pattern = r'(^[a-zA-Z ]*$)';
   RegExp regExp = RegExp(pattern);
   if (value.isEmpty) {
-    return 'First name is required';
+    return appLocalizations.errorFirstName;
   } else if (!regExp.hasMatch(value)) {
-    return 'First name must be a-z and A-Z';
-  }
-  return null;
-}
-
-String validateAddress(String value) {
-  String pattern = r'(^[a-zA-Z0-9-, ]*$)';
-  RegExp regExp = RegExp(pattern);
-  if (value.isEmpty) {
-    return 'Address is required';
-  } else if (!regExp.hasMatch(value)) {
-    return 'Address must be text and numeric';
+    return appLocalizations.errorFirstNameValid;
   }
   return null;
 }
@@ -287,6 +244,7 @@ String uiLabelWeekday(String label, BuildContext context) {
 const String PAGE_STORAGE_KEY_DASHBOARD = 'DashboardPage';
 const String PAGE_STORAGE_KEY_COUPONS = 'CouponPage';
 const String PAGE_STORAGE_KEY_ADDON = 'AddonPage';
+const String PAGE_STORAGE_KEY_USER = 'UserPage';
 
 // Error Codes
 const int ERR_EVENT_NAME = 1;
@@ -366,6 +324,12 @@ const int ERR_MAIL_REPLY_TO = 63;
 const int ERR_MAIL_REPLY_TO_VALID = 64;
 const int ERR_MAIL_MESSAGE_BODY = 65;
 
+const int ERR_GALLERY_BANNER = 66;
+const int ERR_CONV_FEE_PERCENT = 67;
+const int ERR_CONV_FEE_PERCENT_VALID = 68;
+const int ERR_CONV_FEE_AMOUNT = 69;
+const int ERR_CONV_FEE_AMOUNT_VALID = 70;
+
 const int ERR_NO_INTERNET = 99;
 const int ERR_SOMETHING_WENT_WRONG = 100;
 
@@ -436,6 +400,14 @@ String getErrorMessage(int errorCode, BuildContext context) {
     case ERR_NO_LIST_ITEM:
       return appLoc.errorNoListItem;
 
+    case ERR_CONV_FEE_PERCENT:
+      return appLoc.errorConvFeePercent;
+    case ERR_CONV_FEE_PERCENT_VALID:
+      return appLoc.errorConvFeePercentValid;
+    case ERR_CONV_FEE_AMOUNT:
+      return appLoc.errorConvFeeAmount;
+    case ERR_CONV_FEE_AMOUNT_VALID:
+      return appLoc.errorConvFeeAmountValid;
     case ERR_CANCELLATION_DESC:
       return appLoc.errorCancellationDesc;
     case ERR_CANCELLATION_OPTION:
@@ -506,12 +478,14 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorMailSubject;
     case ERR_MAIL_FROM_NAME:
       return appLoc.errorMailFromName;
-    case ERR_MAIL_REPLY_TO :
+    case ERR_MAIL_REPLY_TO:
       return appLoc.errorMailReplyTo;
     case ERR_MAIL_REPLY_TO_VALID:
       return appLoc.errorMailReplyToValid;
     case ERR_MAIL_MESSAGE_BODY:
       return appLoc.errorMailMessage;
+    case ERR_GALLERY_BANNER:
+      return appLoc.errorGalleryBanner;
 
     case ERR_NO_INTERNET:
       return appLoc.errorNoInternet;
@@ -523,14 +497,24 @@ String getErrorMessage(int errorCode, BuildContext context) {
   }
 }
 
+const String fallbackPath =
+    '/storage/emulated/0/Android/data/com.carnivalist.eventmanagement/files/';
+
 Future<String> getSystemDirPath() async {
   Directory externalFilesDir = Platform.isIOS
       ? await getApplicationSupportDirectory()
       : await getExternalStorageDirectory();
-  return externalFilesDir.path;
+  return externalFilesDir.path ?? fallbackPath;
 }
 
 void printWrapped(String text) {
   final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
   pattern.allMatches(text).forEach((match) => print(match.group(0)));
+}
+
+String get userBase64 =>
+    'data:image/jpeg;base64,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';
+
+extension NumExtension on num {
+  bool get isInt => this is int || this == this.roundToDouble();
 }

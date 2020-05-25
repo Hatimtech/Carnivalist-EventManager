@@ -3,7 +3,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,6 +26,10 @@ dependencies:
   url_launcher: ^5.4.5
   webview_flutter: ^0.3.21
   flutter_webview_plugin: ^0.3.11
+  fluttertoast: ^4.0.0
+  html_editor: ^1.0.1
+  file_picker: ^1.9.0+1
+  flutter_nfc_reader: ^0.1.0
 
 dev_dependencies:
   flutter_test:

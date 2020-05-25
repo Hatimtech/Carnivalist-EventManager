@@ -41,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "btnPrevious": MessageLookupByLibrary.simpleMessage("Previous"),
         "btnReset": MessageLookupByLibrary.simpleMessage("Reset"),
         "btnSave": MessageLookupByLibrary.simpleMessage("Save"),
+        "btnSend": MessageLookupByLibrary.simpleMessage("Send"),
         "btnSignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "btnSignUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "btnSubmit": MessageLookupByLibrary.simpleMessage("Submit"),
@@ -66,6 +67,50 @@ class MessageLookup extends MessageLookupByLibrary {
             "Quantity can not be empty"),
         "errorCancellationDesc": MessageLookupByLibrary.simpleMessage(
             "Cancellation description can not be empty"),
+        "errorConvFeeAmount": MessageLookupByLibrary.simpleMessage(
+            "Convenience fee amount can not be empty"),
+        "errorConvFeeAmountValid": MessageLookupByLibrary.simpleMessage(
+            "Convenience fee amount can not be 0"),
+        "errorConvFeePercent": MessageLookupByLibrary.simpleMessage(
+            "Convenience fee percent can not be empty"),
+        "errorConvFeePercentValid": MessageLookupByLibrary.simpleMessage(
+            "Convenience fee percent can not 0"),
+        "errorCouponAffEmail": MessageLookupByLibrary.simpleMessage(
+            "Affiliate email can not be empty"),
+        "errorCouponAffEmailValid": MessageLookupByLibrary.simpleMessage(
+            "Affiliate email is not valid"),
+        "errorCouponAvailEndDate": MessageLookupByLibrary.simpleMessage(
+            "Discount end date can not be empty"),
+        "errorCouponAvailStartDate": MessageLookupByLibrary.simpleMessage(
+            "Discount start date can not be empty"),
+        "errorCouponCode": MessageLookupByLibrary.simpleMessage(
+            "Coupon code can not be empty"),
+        "errorCouponDiscountName": MessageLookupByLibrary.simpleMessage(
+            "Discount name can not be empty"),
+        "errorCouponDiscountValue": MessageLookupByLibrary.simpleMessage(
+            "Discount value can not be empty"),
+        "errorCouponMaxTicket": MessageLookupByLibrary.simpleMessage(
+            "Max Ticket number can not be empty"),
+        "errorCouponMaxTicketZero": MessageLookupByLibrary.simpleMessage(
+            "Max Ticket number can not be 0"),
+        "errorCouponMinTicket": MessageLookupByLibrary.simpleMessage(
+            "Min Ticket number can not be empty"),
+        "errorCouponMinTicketZero": MessageLookupByLibrary.simpleMessage(
+            "Min Ticket number can not be 0"),
+        "errorCouponNoEventAvailable": MessageLookupByLibrary.simpleMessage(
+            "No events available"),
+        "errorCouponNoOfDiscount": MessageLookupByLibrary.simpleMessage(
+            "No of discount can not be empty"),
+        "errorCouponNoOfDiscountZero": MessageLookupByLibrary.simpleMessage(
+            "No of discount can not be 0"),
+        "errorCouponSelectEvent": MessageLookupByLibrary.simpleMessage(
+            "Event can not be empty"),
+        "errorCouponSelectPastEvent": MessageLookupByLibrary.simpleMessage(
+            "Past event can not be empty"),
+        "errorCouponSelectTicket": MessageLookupByLibrary.simpleMessage(
+            "Select atleast 1 ticket"),
+        "errorCouponStartDateAfter": MessageLookupByLibrary.simpleMessage(
+            "Start date can not be after end date"),
         "errorDuplicateListItem": MessageLookupByLibrary.simpleMessage(
             "Duplicate list item is not allowed"),
         "errorDuplicateTag": MessageLookupByLibrary.simpleMessage(
@@ -77,7 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "errorEndTime": MessageLookupByLibrary.simpleMessage(
             "End time can not be empty"),
         "errorEndTimeLess": MessageLookupByLibrary.simpleMessage(
-            "End time can not be less than start time"),
+            "End date can not be less than start date"),
         "errorEventAddress": MessageLookupByLibrary.simpleMessage(
             "Address can not be empty"),
         "errorEventCity": MessageLookupByLibrary.simpleMessage(
@@ -98,6 +143,18 @@ class MessageLookup extends MessageLookupByLibrary {
             "Field name can not be empty"),
         "errorFieldPlaceholder": MessageLookupByLibrary.simpleMessage(
             "Placeholder can not be empty"),
+        "errorGalleryBanner": MessageLookupByLibrary.simpleMessage(
+            "Please add event banner image"),
+        "errorMailFromName": MessageLookupByLibrary.simpleMessage(
+            "From name can not be empty"),
+        "errorMailMessage": MessageLookupByLibrary.simpleMessage(
+            "Message body can not be empty"),
+        "errorMailReplyTo": MessageLookupByLibrary.simpleMessage(
+            "Reply-to mail can not be empty"),
+        "errorMailReplyToValid": MessageLookupByLibrary.simpleMessage(
+            "Please enter valid reply-to mail"),
+        "errorMailSubject": MessageLookupByLibrary.simpleMessage(
+            "Subject can not be empty"),
         "errorNoCancellationOption": MessageLookupByLibrary.simpleMessage(
             "Add atleast 1 cancellation option"),
         "errorNoEventTypesAvailable": MessageLookupByLibrary.simpleMessage(
@@ -154,6 +211,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Type your addon name"),
         "inputHintAddonPrice": MessageLookupByLibrary.simpleMessage(
             "Addon Price"),
+        "inputHintAffiliateEmailId": MessageLookupByLibrary.simpleMessage(
+            "Type Affiliate Email"),
         "inputHintAmount": MessageLookupByLibrary.simpleMessage(
             "Type your Amount"),
         "inputHintBookNow": MessageLookupByLibrary.simpleMessage(
@@ -162,9 +221,21 @@ class MessageLookup extends MessageLookupByLibrary {
             "Cancellation Policy Description"),
         "inputHintConfirmPassword": MessageLookupByLibrary.simpleMessage(
             "Confirm Password"),
+        "inputHintCouponCode": MessageLookupByLibrary.simpleMessage(
+            "Type Code"),
+        "inputHintCouponMaxTicketNo": MessageLookupByLibrary.simpleMessage(
+            "Type Max Ticket No"),
+        "inputHintCouponMinTicketNo": MessageLookupByLibrary.simpleMessage(
+            "Type Min Ticket No"),
+        "inputHintCouponNoOfDiscount": MessageLookupByLibrary.simpleMessage(
+            "Quantity"),
         "inputHintDate": MessageLookupByLibrary.simpleMessage("MM DD, YYYY"),
         "inputHintDescription": MessageLookupByLibrary.simpleMessage(
             "Description"),
+        "inputHintDiscountName": MessageLookupByLibrary.simpleMessage(
+            "Type Discount Name"),
+        "inputHintDiscountValue": MessageLookupByLibrary.simpleMessage(
+            "Discount"),
         "inputHintEmail": MessageLookupByLibrary.simpleMessage("Email"),
         "inputHintEventName": MessageLookupByLibrary.simpleMessage(
             "Type your event name"),
@@ -189,6 +260,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "inputHintQuantity": MessageLookupByLibrary.simpleMessage("Quantity"),
         "inputHintSalesEndDate": MessageLookupByLibrary.simpleMessage(
             "Sales end date"),
+        "inputHintSelectEvent": MessageLookupByLibrary.simpleMessage(
+            "Select Event"),
+        "inputHintSelectPastEvent": MessageLookupByLibrary.simpleMessage(
+            "Select Past Event"),
         "inputHintTag": MessageLookupByLibrary.simpleMessage("Tag your event"),
         "inputHintTagEvent": MessageLookupByLibrary.simpleMessage(
             "Tag your event"),
@@ -205,6 +280,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Type your Location"),
         "inputHintWebsiteLink": MessageLookupByLibrary.simpleMessage(
             "Ex:-https://Carnivallist.com/"),
+        "inputSendAnnouncementFromName": MessageLookupByLibrary.simpleMessage(
+            "Enter From Name"),
+        "inputSendAnnouncementMessage": MessageLookupByLibrary.simpleMessage(
+            "Enter Message Body"),
+        "inputSendAnnouncementReplyTo": MessageLookupByLibrary.simpleMessage(
+            "Enter Email Address"),
+        "inputSendAnnouncementSubject": MessageLookupByLibrary.simpleMessage(
+            "Type Subject"),
         "inputValue": MessageLookupByLibrary.simpleMessage("Input Value"),
         "labelActiveCoupon": MessageLookupByLibrary.simpleMessage(
             "Active Coupon"),
@@ -229,9 +312,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Start Date"),
         "labelAddonTotalAvailable": MessageLookupByLibrary.simpleMessage(
             "Quantity"),
-        "labelAddonTypeAmount": MessageLookupByLibrary.simpleMessage("Amount"),
-        "labelAddonTypePercentage": MessageLookupByLibrary.simpleMessage(
-            "Percentage"),
         "labelAddonTypePrivate": MessageLookupByLibrary.simpleMessage(
             "Private"),
         "labelAddonTypePublic": MessageLookupByLibrary.simpleMessage("Public"),
@@ -240,12 +320,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelAddons": MessageLookupByLibrary.simpleMessage("Add ons"),
         "labelAlredyAccount": MessageLookupByLibrary.simpleMessage(
             "Alredy have an account?"),
+        "labelAmount": MessageLookupByLibrary.simpleMessage("Amount"),
         "labelAmountValue": MessageLookupByLibrary.simpleMessage(
             "Amount Value"),
+        "labelAnnouncementFor": MessageLookupByLibrary.simpleMessage(
+            "Announcement For"),
         "labelAssignAddon": MessageLookupByLibrary.simpleMessage(
             "Assign Add-on"),
         "labelAssignCoupon": MessageLookupByLibrary.simpleMessage(
             "Assign Coupon"),
+        "labelAttendeesResendTicket": MessageLookupByLibrary.simpleMessage(
+            "Resend Ticket"),
+        "labelAttendeesSendMail": MessageLookupByLibrary.simpleMessage(
+            "Send Mail"),
         "labelBecomeAVendorPartner": MessageLookupByLibrary.simpleMessage(
             "Become a vendor partner."),
         "labelBookingCancel": MessageLookupByLibrary.simpleMessage(
@@ -266,9 +353,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelCity": MessageLookupByLibrary.simpleMessage("City"),
         "labelConvenienceFee": MessageLookupByLibrary.simpleMessage(
             "Convenience Fee"),
+        "labelCouponAffiliateEmail": MessageLookupByLibrary.simpleMessage(
+            "Affiliate Email Id"),
+        "labelCouponChooseEvent": MessageLookupByLibrary.simpleMessage(
+            "Choose Event"),
+        "labelCouponChoosePastEvent": MessageLookupByLibrary.simpleMessage(
+            "Choose Past Event"),
+        "labelCouponCode": MessageLookupByLibrary.simpleMessage("Code"),
+        "labelCouponDiscountValue": MessageLookupByLibrary.simpleMessage(
+            "Discount Value"),
+        "labelCouponMaxTicketNo": MessageLookupByLibrary.simpleMessage(
+            "Max Ticket No"),
+        "labelCouponMinTicketNo": MessageLookupByLibrary.simpleMessage(
+            "Min Ticket No"),
+        "labelCouponNoOfDiscounts": MessageLookupByLibrary.simpleMessage(
+            "No. of Discount"),
         "labelCouponOff": MessageLookupByLibrary.simpleMessage("Off"),
         "labelCouponQuantityLeft": MessageLookupByLibrary.simpleMessage(
             "Left : "),
+        "labelCouponSelectTicket": MessageLookupByLibrary.simpleMessage(
+            "Select Ticket"),
         "labelCouponValidTill": MessageLookupByLibrary.simpleMessage(
             "Valid till:"),
         "labelCoupons": MessageLookupByLibrary.simpleMessage("Coupons"),
@@ -289,6 +393,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelDeleteTicket": MessageLookupByLibrary.simpleMessage(
             "Delete Ticket"),
         "labelDescription": MessageLookupByLibrary.simpleMessage("Description"),
+        "labelDiscountAvailFrom": MessageLookupByLibrary.simpleMessage(
+            "Discount avail from"),
+        "labelDiscountAvailTill": MessageLookupByLibrary.simpleMessage(
+            "Discount avail till"),
+        "labelDiscountName": MessageLookupByLibrary.simpleMessage(
+            "Discount Name"),
         "labelDoNotAccount": MessageLookupByLibrary.simpleMessage(
             "Dont\'t have an account?"),
         "labelEditAddon": MessageLookupByLibrary.simpleMessage("Edit Addon"),
@@ -303,6 +413,16 @@ class MessageLookup extends MessageLookupByLibrary {
             "ADD THIS DATE"),
         "labelEventDaily": MessageLookupByLibrary.simpleMessage("Daily"),
         "labelEventDay": MessageLookupByLibrary.simpleMessage("Event Day"),
+        "labelEventDetailAttendees": MessageLookupByLibrary.simpleMessage(
+            "Attendee"),
+        "labelEventDetailDetails": MessageLookupByLibrary.simpleMessage(
+            "Details"),
+        "labelEventDetailStatusFailed": MessageLookupByLibrary.simpleMessage(
+            "Failed"),
+        "labelEventDetailStatusSuccess": MessageLookupByLibrary.simpleMessage(
+            "Success"),
+        "labelEventDetailTicket": MessageLookupByLibrary.simpleMessage(
+            "Ticket: "),
         "labelEventFormDate": MessageLookupByLibrary.simpleMessage("Date"),
         "labelEventFormMultiSelect": MessageLookupByLibrary.simpleMessage(
             "Multi-Select"),
@@ -342,10 +462,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelNo": MessageLookupByLibrary.simpleMessage("No"),
         "labelPaymentGatewayCharge": MessageLookupByLibrary.simpleMessage(
             "Who will pay payment Gateway charges"),
+        "labelPercentage": MessageLookupByLibrary.simpleMessage("Percentage"),
         "labelPercentageValue": MessageLookupByLibrary.simpleMessage(
             "Percentage Value"),
         "labelPostalCode": MessageLookupByLibrary.simpleMessage("Postal code"),
         "labelPrice": MessageLookupByLibrary.simpleMessage("Price"),
+        "labelPriceOnwards": MessageLookupByLibrary.simpleMessage("Onwards"),
         "labelRegistrationButton": MessageLookupByLibrary.simpleMessage(
             "Registration button label"),
         "labelRemainingTickets": MessageLookupByLibrary.simpleMessage(
@@ -355,6 +477,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelSaturday": MessageLookupByLibrary.simpleMessage("Saturday"),
         "labelSelectState": MessageLookupByLibrary.simpleMessage(
             "Select state"),
+        "labelSendAnnouncement": MessageLookupByLibrary.simpleMessage(
+            "Send Announcement"),
+        "labelSendAnnouncementFromName": MessageLookupByLibrary.simpleMessage(
+            "From Name"),
+        "labelSendAnnouncementMessage": MessageLookupByLibrary.simpleMessage(
+            "Message"),
+        "labelSendAnnouncementReplyTo": MessageLookupByLibrary.simpleMessage(
+            "Reply To"),
+        "labelSendAnnouncementSubject": MessageLookupByLibrary.simpleMessage(
+            "Subject"),
         "labelSignIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "labelSignUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "labelSignUpAgreement": MessageLookupByLibrary.simpleMessage(
@@ -378,8 +510,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelTicketsSold": MessageLookupByLibrary.simpleMessage(
             "Tickets Sold"),
         "labelTimeZone": MessageLookupByLibrary.simpleMessage("Time zone"),
-        "labelTotalAvailable": MessageLookupByLibrary.simpleMessage(
-            "Total Available"),
+        "labelTotalAvailable": MessageLookupByLibrary.simpleMessage("Quantity"),
         "labelTuesday": MessageLookupByLibrary.simpleMessage("Tuesday"),
         "labelTwitterLink": MessageLookupByLibrary.simpleMessage(
             "Twitter Link"),
@@ -415,14 +546,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "menuTickets": MessageLookupByLibrary.simpleMessage("Tickets"),
         "msgNoData": MessageLookupByLibrary.simpleMessage("No Data"),
         "notAvailable": MessageLookupByLibrary.simpleMessage("NA"),
+        "signupSuccess": MessageLookupByLibrary.simpleMessage(
+            "Your account is created. Please login"),
         "subtitleCancellationPolicy": MessageLookupByLibrary.simpleMessage(
             "Cancellation Policy"),
         "titleAddress": MessageLookupByLibrary.simpleMessage("Address"),
         "titleBasicInfo": MessageLookupByLibrary.simpleMessage("Basic Info"),
         "titleCreateAddon": MessageLookupByLibrary.simpleMessage(
             "Create Add-ons"),
+        "titleCreateAffiliateDiscount": MessageLookupByLibrary.simpleMessage(
+            "Affiliate Discount"),
+        "titleCreateCodeDiscount": MessageLookupByLibrary.simpleMessage(
+            "Code Discount"),
         "titleCreateEvent": MessageLookupByLibrary.simpleMessage(
             "Create Event"),
+        "titleCreateFlatDiscount": MessageLookupByLibrary.simpleMessage(
+            "Flat Discount"),
+        "titleCreateGroupDiscount": MessageLookupByLibrary.simpleMessage(
+            "Group Discount"),
+        "titleCreateLoyaltyDiscount": MessageLookupByLibrary.simpleMessage(
+            "Loyalty Discount"),
         "titleCustomField": MessageLookupByLibrary.simpleMessage(
             "Create your custom field"),
         "titleCustomLabels": MessageLookupByLibrary.simpleMessage(

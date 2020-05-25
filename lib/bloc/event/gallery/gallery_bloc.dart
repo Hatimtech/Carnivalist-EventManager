@@ -32,7 +32,11 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   }
 
   void addGalleryItem(GalleryData galleryData) {
-    add(AddGalleryItem(galleryData: galleryData));
+    add(AddGalleryItem(galleryData: [galleryData]));
+  }
+
+  void addGalleryItems(List<GalleryData> galleryDataList) {
+    add(AddGalleryItem(galleryData: List.of(galleryDataList)));
   }
 
   void removeGalleryItem(GalleryData galleryData) {
@@ -75,7 +79,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
 
     if (event is AddGalleryItem) {
       final galleryList = List.of(state.galleryList);
-      galleryList.add(event.galleryData);
+      galleryList.addAll(event.galleryData);
       yield state.copyWith(
         galleryList: galleryList,
         uploadRequired: true,
@@ -93,6 +97,12 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     }
 
     if (event is UploadGallery) {
+      if (!isValid(state.banner)) {
+        yield state.copyWith(uiMsg: ERR_GALLERY_BANNER);
+        event.callback(ERR_GALLERY_BANNER);
+        return;
+      }
+
       if (state.uploadRequired) {
         try {
           if (state.bannerUploadRequired) {
@@ -113,10 +123,15 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
                       newBannerLink.substring(newBannerLink.lastIndexOf('/')));
 
                   state.banner = newBannerLink;
+                } else {
+                  yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
+                  event.callback(ERR_SOMETHING_WENT_WRONG);
+                  return;
                 }
               } else {
                 yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
                 event.callback(ERR_SOMETHING_WENT_WRONG);
+                return;
               }
             } else {
               yield state.copyWith(
@@ -124,6 +139,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
                   networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG);
               event.callback(
                   networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG);
+              return;
             }
           }
 
@@ -174,16 +190,22 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
 //                }
 
                     galleryData.link = newGalleryDataLink;
+                  } else {
+                    yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
+                    event.callback(ERR_SOMETHING_WENT_WRONG);
+                    return;
                   }
                 } else {
                   yield state.copyWith(uiMsg: ERR_SOMETHING_WENT_WRONG);
                   event.callback(ERR_SOMETHING_WENT_WRONG);
+                  return;
                 }
               } else {
                 yield state.copyWith(
                     uiMsg: networkServiceResponse.error ??
                         ERR_SOMETHING_WENT_WRONG);
                 event.callback(networkServiceResponse.error);
+                return;
               }
             }
           }

@@ -6,6 +6,7 @@ class CouponParameters {
   String discountName;
   String code;
   int discountValue;
+  String currency;
   String prefix;
   List<String> checkedTicket;
   DateTime startDateTime;
@@ -29,6 +30,7 @@ class CouponParameters {
     this.startDateTime,
     this.endDateTime,
     this.discountValue,
+    this.currency,
     this.noOfDiscount,
     this.discountType,
     this.minQuantity,
@@ -53,6 +55,7 @@ class CouponParameters {
         ? DateTime.parse(json['endDateTime'])
         : null;
     discountValue = json['discountValue'];
+    currency = json['currency'];
     prefix = json['prefix'];
     noOfDiscount = json['noOfDiscount'];
     discountType = json['discountType'];
@@ -83,6 +86,7 @@ class CouponParameters {
     if (this.endDateTime != null)
       data['endDateTime'] = this.endDateTime.toIso8601String();
     if (this.discountValue != null) data['discountValue'] = this.discountValue;
+    if (this.currency != null) data['currency'] = this.currency;
     if (this.prefix != null) data['prefix'] = this.prefix;
     if (this.noOfDiscount != null) data['noOfDiscount'] = this.noOfDiscount;
 
