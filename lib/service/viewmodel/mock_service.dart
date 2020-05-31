@@ -7,7 +7,7 @@ import 'package:eventmanagement/service/abstract/api_service.dart';
 
 class MockService implements APIService {
   @override
-  login(Map<String, dynamic> param) {
+  login(Map<String, dynamic> param, bool staffLogin) {
     return null;
   }
 
@@ -86,6 +86,11 @@ class MockService implements APIService {
   }
 
   @override
+  getAllEventsForStaff(String authToken) {
+    return null;
+  }
+
+  @override
   activeInactiveEvent(String authToken, Map<String, dynamic> param,
       String eventId) {
     return null;
@@ -149,5 +154,10 @@ class MockService implements APIService {
   @override
   updateUserDetails(String authToken, Map<String, dynamic> param) {
     return null;
+  }
+
+  @override
+  uploadTagScanned(String authToken, Map<String, dynamic> param, bool isNFC) {
+    throw null;
   }
 }

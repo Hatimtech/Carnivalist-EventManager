@@ -955,7 +955,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorEndTimeLess": "End date can not be less than start date",
+  "errorEndTimeLess": "End date can not be less than or equal to start date",
   "@errorEndTimeLess": {
     "type": "text",
     "placeholders": {}

@@ -44,3 +44,19 @@ class ResendTicketEventResult extends EventDetailEvent {
 
   ResendTicketEventResult(this.success, {this.uiMsg});
 }
+
+class TagScannedEvent extends EventDetailEvent {
+  final String tag;
+  final bool isNFC;
+  final Function callback;
+
+  TagScannedEvent({this.tag, this.isNFC, this.callback});
+}
+
+class TagScannedEventResult extends EventDetailEvent {
+  final bool success;
+  final dynamic uiMsg;
+  final String eventDetailId;
+
+  TagScannedEventResult(this.success, {this.uiMsg, this.eventDetailId});
+}

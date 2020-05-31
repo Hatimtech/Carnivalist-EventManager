@@ -38,6 +38,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     add(SaveAddress(address: address));
   }
 
+  void saveEventStaff(eventStaff) {
+    add(SaveEventStaff(eventStaff: eventStaff));
+  }
+
   void saveProfilePicture(profilePicture) {
     add(SaveProfilePicture(profilePicture: profilePicture));
   }
@@ -108,6 +112,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       pref.setString("profilePicture", event.profilePicture);
     }
 
+    if (event is SaveEventStaff) {
+      pref = await SharedPreferences.getInstance();
+      pref.setBool("eventStaff", event.eventStaff);
+    }
+
     //GET LOGIN DETAILS
     if (event is GetLoginDetails) {
       pref = await SharedPreferences.getInstance();
@@ -118,6 +127,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           authToken: pref.getString('authToken'),
           email: pref.getString('email'),
           address: pref.getString('address'),
+          eventStaff: pref.getBool('eventStaff'),
           profilePicture: pref.getString('profilePicture'),
           isLogin: pref.getBool('isLogin'));
     }
@@ -145,6 +155,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           authToken: pref.getString('authToken'),
           email: pref.getString('email'),
           address: pref.getString('address'),
+          eventStaff: pref.getBool('bandStaff'),
           profilePicture: pref.getString('profilePicture'),
           isLogin: pref.getBool('isLogin'),
           uiMsg: event.uiMsg,

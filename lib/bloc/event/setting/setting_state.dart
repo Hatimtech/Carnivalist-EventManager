@@ -85,7 +85,7 @@ class SettingState {
       bookButtonLabel: '',
       cancellationPolicyDesc: '',
       cancellationOptions: [
-        CancellationOption(refundType: 'amount', refundValue: 0)
+        CancellationOption(refundType: 'amount')
       ],
       tnc: false,
       uiMsg: null,

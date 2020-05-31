@@ -3,6 +3,7 @@ import 'package:eventmanagement/bloc/login/login_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
+import 'package:eventmanagement/ui/widget/labeled_checkbox.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +55,9 @@ class _LoginState extends State<LoginPage> {
               child: SingleChildScrollView(
                 child: Column(children: <Widget>[
                   _buildErrorReceiverEmptyBloc(),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Image.asset(logoImage, scale: 2.0),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Container(
                       margin: EdgeInsets.all(20),
                       child: Card(
@@ -74,7 +75,9 @@ class _LoginState extends State<LoginPage> {
                                         fontFamily: montserratBoldFont))),
                                 _phoneEmailInput(),
                                 _passwordInput(),
-                                SizedBox(height: 15),
+                                const SizedBox(height: 8.0),
+                                _buildStaffLoginCheckbox(),
+                                const SizedBox(height: 15),
                                 _signInButton(),
                                 RawMaterialButton(
                                     padding: EdgeInsets.all(10),
@@ -157,12 +160,15 @@ class _LoginState extends State<LoginPage> {
             state.uiMsg = null;
           }
 
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         },
       );
 
-  _phoneEmailInput() => BlocBuilder(
+  _phoneEmailInput() =>
+      BlocBuilder<LoginBloc, LoginState>(
       bloc: _loginBloc,
+          condition: (prevState, newState) =>
+          prevState.mobile != newState.mobile,
       builder: (BuildContext context, LoginState state) {
         return Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
@@ -184,8 +190,11 @@ class _LoginState extends State<LoginPage> {
             ));
       });
 
-  _passwordInput() => BlocBuilder(
+  _passwordInput() =>
+      BlocBuilder<LoginBloc, LoginState>(
       bloc: _loginBloc,
+          condition: (prevState, newState) =>
+          prevState.password != newState.password,
       builder: (BuildContext context, LoginState state) {
         return Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
@@ -207,6 +216,22 @@ class _LoginState extends State<LoginPage> {
                         Icon(visible ? Icons.visibility_off : Icons.visibility),
                     onTap: () => setState(() => visible = !visible))));
       });
+
+  Widget _buildStaffLoginCheckbox() =>
+      BlocBuilder<LoginBloc, LoginState>(
+          bloc: _loginBloc,
+          condition: (prevState, newState) =>
+          prevState.eventStaffLogin != newState.eventStaffLogin,
+          builder: (BuildContext context, LoginState state) {
+            return LabeledCheckbox(
+              label: AppLocalizations
+                  .of(context)
+                  .labelEventStaffLogin,
+              value: state.eventStaffLogin,
+              padding: const EdgeInsets.all(0.0),
+              onChanged: _loginBloc.eventStaffLoginInput,
+            );
+          });
 
   _signInButton() => GestureDetector(
       onTap: () => _loginValidate(),
@@ -238,12 +263,18 @@ class _LoginState extends State<LoginPage> {
           _userBloc.saveMobile(loginDetailResponse.loginDetail.mobileNumber);
           _userBloc.saveProfilePicture(loginDetailResponse.loginDetail.avatar);
           _userBloc.saveUserId(loginDetailResponse.loginDetail.userId);
+          _userBloc.saveEventStaff(_loginBloc.state.eventStaffLogin);
           _userBloc.savAuthToken(authToken);
           _userBloc.saveIsLogin(true);
           _userBloc.getLoginDetails();
 
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              bottomMenuRoute, (Route<dynamic> route) => false);
+          if (_loginBloc.state.eventStaffLogin ?? false) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                bandStaffHomeRoute, (Route<dynamic> route) => false);
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                bottomMenuRoute, (Route<dynamic> route) => false);
+          }
         }
       } else if (results is String) {
 //        context.toast(results);

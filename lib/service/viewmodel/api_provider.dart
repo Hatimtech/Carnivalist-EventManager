@@ -11,8 +11,9 @@ import '../network_service_response.dart';
 class ApiProvider {
   APIService apiService = new Injector().flavor;
 
-  Future<NetworkServiceResponse> getLogin(Map<String, dynamic> param) async {
-    return await apiService.login(param);
+  Future<NetworkServiceResponse> getLogin(Map<String, dynamic> param,
+      bool staffLogin) async {
+    return await apiService.login(param, staffLogin);
   }
 
   Future<NetworkServiceResponse> getLoginDetail(String authToken) async {
@@ -89,6 +90,10 @@ class ApiProvider {
     return await apiService.getAllEvents(authToken);
   }
 
+  Future<NetworkServiceResponse> getAllEventsForStaff(String authToken) async {
+    return await apiService.getAllEventsForStaff(authToken);
+  }
+
   Future<NetworkServiceResponse> deleteEvent(String authToken,
       String eventId) async {
     return await apiService.deleteEvent(authToken, eventId);
@@ -151,5 +156,10 @@ class ApiProvider {
   Future<NetworkServiceResponse> updateUserDetails(String authToken,
       Map<String, dynamic> param) async {
     return await apiService.updateUserDetails(authToken, param);
+  }
+
+  Future<NetworkServiceResponse> uploadTagScanned(String authToken,
+      Map<String, dynamic> param, bool isNFC) async {
+    return await apiService.uploadTagScanned(authToken, param, isNFC);
   }
 }

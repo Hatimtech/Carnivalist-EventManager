@@ -5,7 +5,7 @@ import 'package:eventmanagement/model/event/settings/settings_data.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 
 abstract class APIService {
-  login(Map<String, dynamic> param);
+  login(Map<String, dynamic> param, bool staffLogin);
 
   loginDetail(String authToken);
 
@@ -38,6 +38,8 @@ abstract class APIService {
 
   getAllEvents(String authToken);
 
+  getAllEventsForStaff(String authToken);
+
   deleteEvent(String authToken, String eventId);
 
   activeInactiveEvent(String authToken, Map<String, dynamic> param,
@@ -64,4 +66,6 @@ abstract class APIService {
   uploadProfilePic(String authToken, String mediaPath);
 
   updateUserDetails(String authToken, Map<String, dynamic> param);
+
+  uploadTagScanned(String authToken, Map<String, dynamic> param, bool isNFC);
 }

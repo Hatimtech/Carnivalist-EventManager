@@ -25,10 +25,10 @@ dependencies:
   video_thumbnail: 0.2.1
   url_launcher: ^5.4.5
   webview_flutter: ^0.3.21
-  flutter_webview_plugin: ^0.3.11
   fluttertoast: ^4.0.0
   html_editor: ^1.0.1
   file_picker: ^1.9.0+1
+  barcode_scan: ^2.0.1
   flutter_nfc_reader: ^0.1.0
 
 dev_dependencies:
@@ -49,3 +49,6 @@ flutter:
         - asset: assets/fonts/montserrat_bold.ttf
         - asset: assets/fonts/montserrat_medium.ttf
         - asset: assets/fonts/montserrat_regular.ttf
+    - family:  CarnivalistIcons
+      fonts:
+        - asset: assets/fonts/CarnivalistIcons.ttf

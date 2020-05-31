@@ -1,3 +1,5 @@
+import 'package:eventmanagement/utils/vars.dart';
+
 class PageNavState {
   int page;
 
@@ -7,7 +9,7 @@ class PageNavState {
 
   factory PageNavState.initial() {
     return PageNavState(
-      page: 0,
+      page: PAGE_DASHBOARD,
     );
   }
 

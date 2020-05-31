@@ -12,5 +12,7 @@ class PlatformProgressIndicator extends PlatformWidget<
 
   @override
   CircularProgressIndicator createAndroidWidget(BuildContext context) =>
-      CircularProgressIndicator(backgroundColor: Colors.white,);
+      CircularProgressIndicator(
+        backgroundColor: Colors.white,
+      );
 }

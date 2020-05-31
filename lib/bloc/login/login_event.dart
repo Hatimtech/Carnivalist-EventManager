@@ -14,6 +14,12 @@ class PasswordInput extends LoginEvent {
   PasswordInput({this.password});
 }
 
+class EventStaffInput extends LoginEvent {
+  final bool eventStaffLogin;
+
+  EventStaffInput({this.eventStaffLogin});
+}
+
 class Login extends LoginEvent {
   Function callback;
   String authToken;

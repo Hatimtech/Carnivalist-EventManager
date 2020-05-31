@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -25,7 +26,8 @@ class _WebViewPageState extends State<WebViewPage> {
 
   double _MAX_WEBVIEW_HEIGHT;
   double _webViewHeight;
-  bool _loaded = false;
+  bool _loaded = false,
+      webviewLoading = false;
 
   @override
   void initState() {
@@ -36,10 +38,13 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   void didUpdateWidget(WebViewPage oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     _controller.future.then((webViewController) {
-      webViewController.loadUrl(Uri.dataFromString(widget.data,
+      webViewController.loadUrl(widget.raw
+          ? Uri.dataFromString(widget.data,
           mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-          .toString());
+          .toString()
+          : widget.data);
     });
   }
 
@@ -56,50 +61,66 @@ class _WebViewPageState extends State<WebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: _webViewHeight,
-      child: WebView(
-        initialUrl: widget.raw
-            ? 'data:text/html;base64,${base64Encode(
-            const Utf8Encoder().convert(widget.data))}'
-            : widget.data,
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },
+    return Stack(
+      children: <Widget>[
+        Container(
+          height: _webViewHeight,
+          child: WebView(
+            initialUrl: widget.raw
+                ? 'data:text/html;base64,${base64Encode(
+                const Utf8Encoder().convert(widget.data))}'
+                : widget.data,
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              _controller.complete(webViewController);
+            },
 //      gestureRecognizers: [
 //        Factory(() => PlatformViewVerticalGestureRecognizer()),
 //      ].toSet(),
-        navigationDelegate: (NavigationRequest request) {
-          print('navigationDelegate--->$request');
-          if (widget.mockNativeView) {
-            _launchURL(request.url);
-            return NavigationDecision.prevent;
-          } else {
-            return NavigationDecision.navigate;
-          }
-        },
-        onPageStarted: (String url) {
-          print('Page started loading: $url');
-        },
-        onPageFinished: (String url) async {
-          print('Page finished loading: $url');
+            navigationDelegate: (NavigationRequest request) {
+              print('navigationDelegate--->$request');
+              if (widget.mockNativeView) {
+                _launchURL(request.url);
+                return NavigationDecision.prevent;
+              } else {
+                return NavigationDecision.navigate;
+              }
+            },
+            onPageStarted: (String url) {
+              print('Page started loading: $url');
+              if (!widget.raw ?? false)
+                setState(() {
+                  webviewLoading = true;
+                });
+            },
+            onPageFinished: (String url) async {
+              print('Page finished loading: $url');
+              if (!widget.raw ?? false)
+                setState(() {
+                  webviewLoading = false;
+                });
 
-          if (widget.applyContentHeight) {
-            final _webViewController = await _controller.future;
+              if (widget.applyContentHeight) {
+                final _webViewController = await _controller.future;
 
-            final height = double.tryParse(
-                await _webViewController.evaluateJavascript(
-                    "document.documentElement.scrollHeight;")) ??
-                250;
-            _webViewHeight =
-            height > _MAX_WEBVIEW_HEIGHT ? _MAX_WEBVIEW_HEIGHT : height;
-            print('WebView Scroll Height--->$_webViewHeight');
-            setState(() {});
-          }
-        },
-        gestureNavigationEnabled: true,
-      ),
+                final height = double.tryParse(
+                    await _webViewController.evaluateJavascript(
+                        "document.documentElement.scrollHeight;")) ??
+                    250;
+                _webViewHeight =
+                height > _MAX_WEBVIEW_HEIGHT ? _MAX_WEBVIEW_HEIGHT : height;
+                print('WebView Scroll Height--->$_webViewHeight');
+                setState(() {});
+              }
+            },
+            gestureNavigationEnabled: true,
+          ),
+        ),
+        if (webviewLoading)
+          Center(
+            child: const PlatformProgressIndicator(),
+          ),
+      ],
     );
   }
 

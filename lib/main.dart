@@ -10,6 +10,7 @@ import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/menu/event_menu_page.dart';
+import 'package:eventmanagement/ui/page/dashboard/event_staff_home.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_detail_root_page.dart';
 import 'package:eventmanagement/ui/page/user_info_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_app.dart';
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
           eventDetailRoute: (BuildContext context) =>
               eventDetailPageRoute(context),
           userInfoRoute: (BuildContext context) => UserInfoPage(),
+          bandStaffHomeRoute: (BuildContext context) => EventStaffHomePage(),
         });
   }
 

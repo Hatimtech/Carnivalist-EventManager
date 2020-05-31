@@ -6,6 +6,7 @@ import 'package:eventmanagement/bloc/event/eventdetail/event_detail_event.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/event_detail_state.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail_action_response.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail_response.dart';
+import 'package:eventmanagement/model/eventdetails/tag_scanned_response.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
 import 'package:eventmanagement/utils/vars.dart';
 
@@ -31,6 +32,10 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     add(ResendTicketEvent(orderId: orderId, email: email, callback: callback));
   }
 
+  void uploadNewScannedTag(String tag, bool isNFC, Function callback) {
+    add(TagScannedEvent(tag: tag, isNFC: isNFC ?? false, callback: callback));
+  }
+
   String get selectedEventId => eventId;
 
   @override
@@ -51,7 +56,7 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
       yield state.copyWith(
         loading: false,
         uiMsg: !event.success ? event.error : null,
-        couponList: event.success ? event.couponList : null,
+        eventDetailList: event.success ? event.couponList : null,
       );
     }
 
@@ -61,6 +66,35 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
 
     if (event is ResendTicketEventResult) {
       if (!event.success) {
+        yield state.copyWith(loading: false, uiMsg: event.uiMsg);
+      }
+    }
+
+    if (event is TagScannedEvent) {
+      uploadScannedTagApi(event);
+    }
+
+    if (event is TagScannedEventResult) {
+      print(
+          'TagScannedEventResult event.eventDetailId--->${event.success} ${event
+              .eventDetailId}');
+      if (event.success) {
+        if (event.eventDetailId != null) {
+          final item = state.eventDetailList.firstWhere(
+                  (element) => element.id == event.eventDetailId,
+              orElse: () => null);
+
+          print('TagScannedEventResult item--->$item');
+          if (item != null) {
+            item.isEventAttended = true;
+          }
+        }
+        yield state.copyWith(
+          loading: false,
+          uiMsg: event.uiMsg,
+          eventDetailList: List.of(state.eventDetailList),
+        );
+      } else {
         yield state.copyWith(loading: false, uiMsg: event.uiMsg);
       }
     }
@@ -125,6 +159,48 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     }).catchError((error) {
       print('Error in resendTicketApi--->$error');
       add(ResendTicketEventResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(ERR_SOMETHING_WENT_WRONG);
+    });
+  }
+
+  void uploadScannedTagApi(TagScannedEvent event) {
+    Map<String, dynamic> requestBody = HashMap();
+
+    if (event.isNFC) {
+      requestBody.putIfAbsent('userId', () => event.tag);
+      requestBody.putIfAbsent('eventId', () => eventId);
+    } else {
+      requestBody.putIfAbsent('_id', () => event.tag);
+    }
+    apiProvider
+        .uploadTagScanned(state.authToken, requestBody, event.isNFC)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        final eventActionResponse =
+        networkServiceResponse.response as TagScannedResponse;
+
+        if (eventActionResponse.code == apiCodeSuccess) {
+          add(TagScannedEventResult(true,
+              uiMsg: eventActionResponse.message,
+              eventDetailId: eventActionResponse.eventDetailId));
+          event.callback(eventActionResponse);
+        } else {
+          add(TagScannedEventResult(
+            false,
+            uiMsg: eventActionResponse.message ?? ERR_SOMETHING_WENT_WRONG,
+          ));
+          event.callback(eventActionResponse.message);
+        }
+      } else {
+        add(TagScannedEventResult(
+          false,
+          uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG,
+        ));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error, stack) {
+      print('Error in uploadScannedTagApi--->$error\n$stack');
+      add(TagScannedEventResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
       event.callback(ERR_SOMETHING_WENT_WRONG);
     });
   }

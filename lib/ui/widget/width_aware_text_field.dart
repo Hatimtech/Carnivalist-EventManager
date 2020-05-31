@@ -64,7 +64,7 @@ class _WidthAwareTextFieldState extends State<WidthAwareTextField> {
           },
           onFieldSubmitted: (value) {
             if (value != null && value.isNotEmpty && value.trim().isNotEmpty) {
-              _textEditingController.text = '';
+              _textEditingController.clear();
               currentFieldWidth = minTagFieldWidth;
               if (widget.onActionDone != null) widget.onActionDone(value);
             }

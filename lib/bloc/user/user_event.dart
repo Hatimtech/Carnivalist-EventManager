@@ -56,6 +56,12 @@ class SaveAddress extends UserEvent {
   SaveAddress({this.address});
 }
 
+class SaveEventStaff extends UserEvent {
+  final bool eventStaff;
+
+  SaveEventStaff({this.eventStaff});
+}
+
 class UpdateUserDetails extends UserEvent {
   final String name;
   final String email;

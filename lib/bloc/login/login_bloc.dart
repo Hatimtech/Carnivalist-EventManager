@@ -18,6 +18,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     add(PasswordInput(password: password));
   }
 
+  void eventStaffLoginInput(eventStaff) {
+    add(EventStaffInput(eventStaffLogin: eventStaff));
+  }
+
   void login(callback) {
     add(Login(callback: callback));
   }
@@ -33,6 +37,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is PasswordInput) {
       yield state.copyWith(password: event.password);
+    }
+
+    if (event is EventStaffInput) {
+      yield state.copyWith(eventStaffLogin: event.eventStaffLogin);
     }
 
     if (event is Login) {
@@ -51,11 +59,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   void loginApi(Login event) {
     Map<String, dynamic> param = Map();
-    param.putIfAbsent('username', () => state.mobile);
-    param.putIfAbsent('password', () => state.password);
-    param.putIfAbsent('userType', () => 'manager');
 
-    apiProvider.getLogin(param).then((networkServiceResponse) {
+    if (state.eventStaffLogin ?? false) {
+      param.putIfAbsent('email', () => state.mobile);
+      param.putIfAbsent('password', () => state.password);
+      param.putIfAbsent('userStaffType', () => 'eventstaff');
+    } else {
+      param.putIfAbsent('username', () => state.mobile);
+      param.putIfAbsent('password', () => state.password);
+      param.putIfAbsent('userType', () => 'manager');
+    }
+
+    apiProvider.getLogin(param, state.eventStaffLogin).then((
+        networkServiceResponse) {
       if (networkServiceResponse.responseCode == ok200) {
         final loginResponse = networkServiceResponse.response as LoginResponse;
         if (loginResponse.code == apiCodeSuccess) {

@@ -8,6 +8,7 @@ class EventDetail {
   List<UserDetail> user;
   List<TicketDetail> tickets;
   PaymentResponse paymentResponse;
+  bool isEventAttended;
 
 //  List<EventData> eventDetails;
 
@@ -17,6 +18,7 @@ class EventDetail {
     this.user,
     this.paymentResponse,
     this.tickets,
+    this.isEventAttended,
 //    this.eventDetails,
   });
 
@@ -31,7 +33,7 @@ class EventDetail {
     tickets = (json['tickets'] as List)
         ?.map((e) => TicketDetail.fromJson(e))
         ?.toList();
-
+    isEventAttended = json['isEventAttended'];
 //    eventDetails = (json['eventDetails'] as List)
 //        ?.map((e) => EventData.fromJson(e))
 //        ?.toList();
@@ -48,6 +50,9 @@ class EventDetail {
     }
     if (this.tickets != null)
       data['tickets'] = this.tickets.map((ticket) => ticket.toJson())?.toList();
+
+    if (this.isEventAttended != null)
+      data['isEventAttended'] = this.isEventAttended;
 //    if (this.eventDetails != null)
 //      data['eventDetails'] =
 //          this.eventDetails.map((eventData) => eventData.toJson())?.toList();

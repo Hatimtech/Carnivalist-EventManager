@@ -16,12 +16,14 @@ import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
 import 'package:eventmanagement/model/event/gallery/media_upload_response.dart';
 import 'package:eventmanagement/model/event/settings/setting_response.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
+import 'package:eventmanagement/model/event/staff_event_response.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/model/event/tickets/tickets_response.dart';
 import 'package:eventmanagement/model/event/user_profile_response.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail_action_response.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail_response.dart';
+import 'package:eventmanagement/model/eventdetails/tag_scanned_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
@@ -39,6 +41,7 @@ class NetworkService extends NetworkType implements APIService {
 
   static final _subUrl = '/api/';
   final _loginUrl = _baseUrl + _subUrl + 'user/login';
+  final _loginUrlStaff = _baseUrl + _subUrl + 'user/section-leader-login';
   final _loginDetailUrl = _baseUrl + _subUrl + 'user/get-user-details';
   final _signUpUrl = _baseUrl + _subUrl + 'user/register';
   final _forgotPasswordUrl = _baseUrl + _subUrl + 'user/forgot-password';
@@ -58,6 +61,7 @@ class NetworkService extends NetworkType implements APIService {
 
   final _uploadMediaUrl = _baseUrl + _subUrl + 'upload-media';
   final _eventsListUrl = _baseUrl + _subUrl + 'get-events-for-managers';
+  final _staffEventsListUrl = _baseUrl + _subUrl + 'get-events-for-eventstaff';
 
   final _activeInactiveEventUrl = _baseUrl + _subUrl + 'toggle-active';
   final _deleteEventUrl = _baseUrl + _subUrl + 'delete-event/';
@@ -78,12 +82,17 @@ class NetworkService extends NetworkType implements APIService {
   final _uploadProfilePic = _baseUrl + _subUrl + 'user/change-profile-pic';
   final _updateProfileUrl = _baseUrl + _subUrl + 'user/change-profile-info';
 
+  final _qrCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-order-id/';
+  final _nfcCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-user-id/';
+
   NetworkService(RestClient rest) : super(rest);
 
   @override
-  login(Map<String, dynamic> param) async {
-    var result = await rest.post<LoginResponse>(_loginUrl,
-        body: param, encoding: Encoding.getByName("utf-8"));
+  login(Map<String, dynamic> param, bool staffLogin) async {
+    var result = await rest.post<LoginResponse>(
+        staffLogin ? _loginUrlStaff : _loginUrl,
+        body: param,
+        encoding: Encoding.getByName("utf-8"));
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = LoginResponse.fromJson(json.decode(result.mappedResult));
@@ -361,6 +370,23 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
+  getAllEventsForStaff(String authToken) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<StaffEventResponse>(
+        _staffEventsListUrl, headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = StaffEventResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
   deleteEvent(String authToken, String eventId) async {
     var headers = {
       'Authorization': authToken,
@@ -622,8 +648,29 @@ class NetworkService extends NetworkType implements APIService {
         headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
+      var res = UserProfileResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  uploadTagScanned(String authToken, Map<String, dynamic> param,
+      bool isNFC) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<TagScannedResponse>(
+        isNFC ? _nfcCodeScannedUrl : _qrCodeScannedUrl,
+        body: json.encode(param),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
       var res =
-      UserProfileResponse.fromJson(json.decode(result.mappedResult));
+      TagScannedResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
     return result.networkServiceResponse;

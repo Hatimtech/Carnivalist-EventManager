@@ -25,13 +25,13 @@ class EventDetailState {
   EventDetailState copyWith({
     bool loading,
     String authToken,
-    List<EventDetail> couponList,
+    List<EventDetail> eventDetailList,
     dynamic uiMsg,
   }) {
     return EventDetailState(
       authToken: authToken ?? this.authToken,
       loading: loading ?? this.loading,
-      eventDetailList: couponList ?? this.eventDetailList,
+      eventDetailList: eventDetailList ?? this.eventDetailList,
       uiMsg: uiMsg,
     );
   }

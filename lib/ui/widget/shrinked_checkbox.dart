@@ -182,7 +182,8 @@ class _CheckboxState extends State<ShrinkedCheckbox>
             2 * kRadialReactionRadius + 8.0, 2 * kRadialReactionRadius + 8.0);
         break;
       case MaterialTapTargetSize.shrinkWrap:
-        size = const Size(kRadialReactionRadius, 2 * kRadialReactionRadius);
+        size =
+        const Size(kRadialReactionRadius + 8.0, 2 * kRadialReactionRadius);
         break;
     }
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/bloc/user/user_state.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
@@ -244,6 +245,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
             child: Text(AppLocalizations.of(context).btnCancel)),
         FlatButton(
             onPressed: () {
+              BlocProvider.of<EventBloc>(context).clearState();
               _userBloc.clearLoginDetails();
               Navigator.pop(context);
               Navigator.of(context).pushNamedAndRemoveUntil(

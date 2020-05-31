@@ -9,6 +9,7 @@ import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_filter.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_list.dart';
 import 'package:eventmanagement/utils/extensions.dart';
@@ -74,53 +75,55 @@ class _DashboardState extends State<DashboardPage> {
         body: Column(children: <Widget>[
           _buildErrorReceiverEmptyBloc(),
           Container(
-              padding: EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Wrap(spacing: 2.0, children: <Widget>[
-                      _category(
-                        Icons.account_balance_wallet,
-                        AppLocalizations
-                            .of(context)
-                            .labelCoupons
-                            .toUpperCase(),
-                            () {
-                          _pageNavBloc.currentPage(PAGE_COUPONS);
-                        },
-                      ),
-                      _category(
-                        Icons.note_add,
-                        AppLocalizations
-                            .of(context)
-                            .labelAddons
-                            .toUpperCase(),
-                            () {
-                          _pageNavBloc.currentPage(PAGE_ADDONS);
-                        },
-                      ),
-                      _category(
-                        Icons.note,
-                        AppLocalizations
-                            .of(context)
-                            .labelReports
-                            .toUpperCase(),
-                            () {
-//                          _pageNavBloc.currentPage(PAGE_REPORTS);
-                        },
-                      ),
-                      _category(
-                        Icons.people,
-                        AppLocalizations
-                            .of(context)
-                            .labelStaff
-                            .toUpperCase(),
-                            () {
-//                          _pageNavBloc.currentPage(PAGE_STAFF);
-                        },
-                      )
-                    ])
-                  ])),
+              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+              child: Row(children: <Widget>[
+                Expanded(
+                    child: _category(
+                      CarnivalistIcons.discount,
+                      AppLocalizations
+                          .of(context)
+                          .labelCoupons
+                          .toUpperCase(),
+                          () {
+                        _pageNavBloc.currentPage(PAGE_COUPONS);
+                      },
+                      size: 16.0,
+                    )),
+                Expanded(
+                    child: _category(
+                      CarnivalistIcons.addon_filled,
+                      AppLocalizations
+                          .of(context)
+                          .labelAddons
+                          .toUpperCase(),
+                          () {
+                        _pageNavBloc.currentPage(PAGE_ADDONS);
+                      },
+                      size: 16.0,
+                    )),
+                Expanded(
+                    child: _category(
+                      Icons.poll,
+                      AppLocalizations
+                          .of(context)
+                          .labelReports
+                          .toUpperCase(),
+                          () {
+                        _pageNavBloc.currentPage(PAGE_REPORTS);
+                      },
+                    )),
+                Expanded(
+                    child: _category(
+                      Icons.people,
+                      AppLocalizations
+                          .of(context)
+                          .labelStaff
+                          .toUpperCase(),
+                          () {
+                        _pageNavBloc.currentPage(PAGE_STAFF);
+                      },
+                    )),
+              ])),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
@@ -201,26 +204,30 @@ class _DashboardState extends State<DashboardPage> {
         ]));
   }
 
-  _category(IconData iconData, String name, Function handler) =>
+  _category(IconData iconData, String name, Function handler,
+      {double size = 18}) =>
       GestureDetector(
         onTap: handler,
         child: Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
-            child: Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 4.5,
+            child: Padding(
                 padding: new EdgeInsets.all(10.0),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Icon(iconData, size: 18, color: colorIconSecondary),
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: Icon(iconData,
+                            size: size, color: colorIconSecondary),
+                      ),
                       const SizedBox(height: 10),
                       Text(
                         name,
+                        overflow: TextOverflow.fade,
+                        maxLines: 1,
                         style: Theme
                             .of(context)
                             .textTheme

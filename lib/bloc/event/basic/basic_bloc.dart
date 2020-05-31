@@ -655,7 +655,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
         return;
       }
 
-      if (startDateTime.isAfter(endDateTime)) {
+      if (startDateTime == endDateTime || startDateTime.isAfter(endDateTime)) {
         yield state.copyWith(uiMsg: ERR_END_TIME_LESS);
         return;
       }
@@ -837,14 +837,16 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       if (state.eventEndDate == null) return ERR_END_DATE;
       if (state.eventEndTime == null) return ERR_END_TIME;
 
-      if (startDateTime.isAfter(endDateTime)) return ERR_END_TIME_LESS;
+      if (startDateTime == endDateTime || startDateTime.isAfter(endDateTime))
+        return ERR_END_TIME_LESS;
     } else if (state.eventFreqName == menuList[1].name) {
       if (state.eventStartDate == null) return ERR_START_DATE;
       if (state.eventStartTime == null) return ERR_START_TIME;
       if (state.eventEndDate == null) return ERR_END_DATE;
       if (state.eventEndTime == null) return ERR_END_TIME;
 
-      if (startDateTime.isAfter(endDateTime)) return ERR_END_TIME_LESS;
+      if (startDateTime == endDateTime || startDateTime.isAfter(endDateTime))
+        return ERR_END_TIME_LESS;
     } else if (state.eventFreqName == menuList[2].name) {
       if (state.eventStartDate == null) return ERR_START_DATE;
       if (state.eventStartTime == null) return ERR_START_TIME;
@@ -863,7 +865,8 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
         final endDateWeekday = DateFormat('EEEE').format(state.eventEndDate);
         if (endDateWeekday != state.eventWeekday) return ERR_END_DATE_WEEK_DAY;
 
-        if (startDateTime.isAfter(endDateTime)) return ERR_END_TIME_LESS;
+        if (startDateTime == endDateTime || startDateTime.isAfter(endDateTime))
+          return ERR_END_TIME_LESS;
       }
     } else if (state.eventFreqName == menuList[3].name) {
       if (state.eventCustomDateTimeList.length < 2) return ERR_TWO_DATES_REQ;

@@ -24,7 +24,7 @@ class CancellationOption {
     if (this.refundType != null) data['refundType'] = this.refundType;
     if (this.cancellationEndDate != null)
       data['cancellationEndDate'] = this.cancellationEndDate.toIso8601String();
-    if (this.refundValue != null) data['refundValue'] = this.refundValue;
+    data['refundValue'] = this.refundValue ?? 0.0;
     return data;
   }
 }

@@ -6,6 +6,7 @@ import 'package:eventmanagement/bloc/event/event/event_main.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
 import 'package:eventmanagement/model/event/event_action_response.dart';
 import 'package:eventmanagement/model/event/event_response.dart';
+import 'package:eventmanagement/model/event/staff_event_response.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
 import 'package:eventmanagement/utils/vars.dart';
 
@@ -24,12 +25,20 @@ class EventBloc extends Bloc<EventMain, EventState> {
     add(GetAllEvents(downloadCompleter: downloadCompleter));
   }
 
+  void getAllEventsForStaff({Completer<bool> downloadCompleter}) {
+    add(GetAllEventsForStaff(downloadCompleter: downloadCompleter));
+  }
+
   void deleteEvent(String eventId, Function callback) {
     add(DeleteEvent(eventId, callback));
   }
 
   void activeInactiveEvent(String eventId, String status, Function callback) {
     add(ActiveInactiveEvent(eventId, status, callback));
+  }
+
+  void clearState() {
+    add(ClearState());
   }
 
   @override
@@ -46,6 +55,11 @@ class EventBloc extends Bloc<EventMain, EventState> {
     if (event is GetAllEvents) {
       if (event.downloadCompleter == null) yield state.copyWith(loading: true);
       getAllEventsApi(event);
+    }
+
+    if (event is GetAllEventsForStaff) {
+      if (event.downloadCompleter == null) yield state.copyWith(loading: true);
+      getAllEventsForStaffApi(event);
     }
 
     if (event is EventListAvailable) {
@@ -92,6 +106,10 @@ class EventBloc extends Bloc<EventMain, EventState> {
         yield state.copyWith(loading: false, uiMsg: event.uiMsg);
       }
     }
+
+    if (event is ClearState) {
+      yield EventState.initial();
+    }
   }
 
   void getAllEventsApi(GetAllEvents event) {
@@ -110,6 +128,31 @@ class EventBloc extends Bloc<EventMain, EventState> {
         event.downloadCompleter.complete(true);
     }).catchError((error) {
       print('Error in getAllEventsApi--->$error');
+      add(EventListAvailable(false, error: ERR_SOMETHING_WENT_WRONG));
+      if (event.downloadCompleter != null)
+        event.downloadCompleter.complete(false);
+    });
+  }
+
+  void getAllEventsForStaffApi(GetAllEventsForStaff event) {
+    apiProvider
+        .getAllEventsForStaff(state.authToken)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        var eventResponse = networkServiceResponse
+            .response as StaffEventResponse;
+        if (eventResponse.code == apiCodeSuccess)
+          add(EventListAvailable(true, eventList: eventResponse.events));
+        else
+          add(EventListAvailable(false, error: ERR_SOMETHING_WENT_WRONG));
+      } else {
+        add(EventListAvailable(false,
+            error: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+      }
+      if (event.downloadCompleter != null)
+        event.downloadCompleter.complete(true);
+    }).catchError((error, stack) {
+      print('Error in getAllEventsForStaffApi--->$error\n$stack');
       add(EventListAvailable(false, error: ERR_SOMETHING_WENT_WRONG));
       if (event.downloadCompleter != null)
         event.downloadCompleter.complete(false);

@@ -1,13 +1,15 @@
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_state.dart';
+import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
+import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart';
 import 'package:eventmanagement/ui/page/addons/addon_page.dart';
 import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
-import 'package:eventmanagement/ui/page/webview_plugin_page.dart';
+import 'package:eventmanagement/ui/page/webview_page.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +26,9 @@ class _BottomMenuState extends State<BottomMenuPage> {
 
   final List<Widget> _pages = [
     DashboardPage(key: PageStorageKey(PAGE_STORAGE_KEY_DASHBOARD)),
-    CouponPage(key: PageStorageKey(PAGE_STORAGE_KEY_COUPONS)),
     AddonPage(key: PageStorageKey(PAGE_STORAGE_KEY_ADDON)),
-    const WebViewPluginPage('https://manager.carnivalist.tk/reports'),
-    const WebViewPluginPage('https://manager.carnivalist.tk/staff'),
+    CouponPage(key: PageStorageKey(PAGE_STORAGE_KEY_COUPONS)),
+    Container(),
   ];
 
   final List<String> _title = [];
@@ -43,6 +44,16 @@ class _BottomMenuState extends State<BottomMenuPage> {
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
     _pageNavBloc = BlocProvider.of<PageNavBloc>(context);
+    _pages.insert(
+        0,
+        WebViewPage(
+            'https://manager.carnivalist.tk/redirect-to-reports/${_userBloc
+                .state.authToken}'));
+    _pages.insert(
+        1,
+        WebViewPage(
+            'https://manager.carnivalist.tk/redirect-to-accounts/${_userBloc
+                .state.authToken}'));
   }
 
   @override
@@ -50,10 +61,11 @@ class _BottomMenuState extends State<BottomMenuPage> {
     super.didChangeDependencies();
     if (!loaded) {
       final appLoc = AppLocalizations.of(context);
-      _title.add(appLoc.titleDashboard);
-      _title.add(appLoc.labelCoupons);
-      _title.add(appLoc.labelAddons);
       _title.add(appLoc.labelReports);
+      _title.add(appLoc.labelAccount);
+      _title.add(appLoc.titleDashboard);
+      _title.add(appLoc.labelAddons);
+      _title.add(appLoc.labelCoupons);
       _title.add(appLoc.labelStaff);
       loaded = true;
     }
@@ -71,50 +83,75 @@ class _BottomMenuState extends State<BottomMenuPage> {
           //notchMargin: 4.0,
           child: Container(
               color: colorBottomBarMenu,
-              height: 50,
+              height: 56.0,
               child: Container(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () {
-                            _pageNavBloc.currentPage(PAGE_COUPONS);
-                          },
-                          icon: Icon(
-                            Icons.account_balance_wallet,
-                            color: colorIconBottomBar,
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: BlocBuilder<PageNavBloc, PageNavState>(
+                  bloc: _pageNavBloc,
+                  condition: (prevState, newState) =>
+                  prevState.page != newState.page,
+                  builder: (_, state) {
+                    return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          _bottomMenuItem(
+                            Icons.poll,
+                            AppLocalizations
+                                .of(context)
+                                .labelReports
+                                .toUpperCase(),
+                                () {
+                              _pageNavBloc.currentPage(PAGE_REPORTS);
+                            },
+                            size: 16.0,
+                            selected: PAGE_REPORTS == _pageNavBloc.state.page,
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            _pageNavBloc.currentPage(PAGE_ADDONS);
-                          },
-                          icon: Icon(
-                            Icons.note_add,
-                            color: colorIconBottomBar,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 24.0),
+                            child: _bottomMenuItem(
+                              Icons.monetization_on,
+                              AppLocalizations
+                                  .of(context)
+                                  .labelAccount
+                                  .toUpperCase(),
+                                  () {
+                                _pageNavBloc.currentPage(PAGE_ACCOUNTS);
+                              },
+                              size: 16.0,
+                              selected:
+                              PAGE_ACCOUNTS == _pageNavBloc.state.page,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            _pageNavBloc.currentPage(PAGE_REPORTS);
-                          },
-                          icon: Icon(
-                            Icons.note,
-                            color: colorIconBottomBar,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 24.0),
+                            child: _bottomMenuItem(
+                              CarnivalistIcons.addon_filled,
+                              AppLocalizations
+                                  .of(context)
+                                  .labelAddons
+                                  .toUpperCase(),
+                                  () {
+                                _pageNavBloc.currentPage(PAGE_ADDONS);
+                              },
+                              size: 14.0,
+                              selected: PAGE_ADDONS == _pageNavBloc.state.page,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(userInfoRoute);
-                          },
-                          icon: Icon(
+                          _bottomMenuItem(
                             Icons.account_circle,
-                            color: colorIconBottomBar,
+                            AppLocalizations
+                                .of(context)
+                                .labelProfile
+                                .toUpperCase(),
+                                () {
+                              Navigator.of(context).pushNamed(userInfoRoute);
+                            },
+                            size: 16.0,
                           ),
-                        ),
-                      ])))),
+                        ]);
+                  },
+                ),
+              ))),
       body: WillPopScope(
         onWillPop: doubleBackPressToExit,
         child: Column(
@@ -186,6 +223,50 @@ class _BottomMenuState extends State<BottomMenuPage> {
       ),
     );
   }
+
+  _bottomMenuItem(IconData iconData, String name, Function handler,
+      {double size = 18, bool selected = false}) =>
+      GestureDetector(
+        onTap: handler,
+        child: Container(
+          color: Colors.transparent,
+          padding: const EdgeInsets.all(6.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                AnimatedContainer(
+                  width: 18 + (selected ? 4.0 : 0.0),
+                  height: 18 + (selected ? 4.0 : 0.0),
+                  duration: const Duration(milliseconds: 500),
+                  child: Icon(iconData,
+                      size: size + (selected ? 4.0 : 0.0),
+                      color: selected
+                          ? colorIcon
+                          : colorUnselectedIconBottomBar),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  name,
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subhead
+                      .copyWith(
+                    color: selected ? null : colorUnselectedTextBottomBar,
+                    fontSize: selected
+                        ? Theme
+                        .of(context)
+                        .textTheme
+                        .subhead
+                        .fontSize + 2
+                        : null,
+                  ),
+                )
+              ]),
+        ),
+      );
 
   Widget _buildHomeFAB() {
     return _buildFABDecorationByPlatform(
@@ -274,6 +355,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
                 .btnCancel)),
         FlatButton(
             onPressed: () {
+              BlocProvider.of<EventBloc>(context).clearState();
               _userBloc.clearLoginDetails();
               Navigator.pop(context);
               Navigator.of(context).pushNamedAndRemoveUntil(

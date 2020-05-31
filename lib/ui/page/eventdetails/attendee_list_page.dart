@@ -53,6 +53,8 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
     return BlocBuilder<EventDetailBloc, EventDetailState>(
         bloc: _eventDetailBloc,
         condition: (prevState, newState) {
+          print('build BlocBuilder condition--->${prevState
+              .eventDetailList} ${newState.eventDetailList}');
           return (prevState.loading != newState.loading) ||
               (prevState.eventDetailList != newState.eventDetailList ||
                   prevState.eventDetailList.length !=
@@ -124,15 +126,32 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
     return GestureDetector(
       onTap: () => showAttendeesActions(eventDetail),
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
+        clipBehavior: Clip.antiAlias,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 84.0,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Expanded(
-                child: _buildUserInfoView(user),
+              VerticalDivider(
+                thickness: 6,
+                width: 6,
+                color: (eventDetail.isEventAttended ?? false)
+                    ? colorActive
+                    : Colors.transparent,
               ),
-              _buildEventInfoView(ticketCount, paymentStatus, txnAmount, date),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                  child: _buildUserInfoView(user),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                child: _buildEventInfoView(
+                    ticketCount, paymentStatus, txnAmount, date),
+              ),
             ],
           ),
         ),

@@ -17,10 +17,15 @@ class EventFilterValue extends EventMain {
 }
 
 class GetAllEvents extends EventMain {
-
   Completer<bool> downloadCompleter;
 
   GetAllEvents({this.downloadCompleter});
+}
+
+class GetAllEventsForStaff extends EventMain {
+  Completer<bool> downloadCompleter;
+
+  GetAllEventsForStaff({this.downloadCompleter});
 }
 
 class EventListAvailable extends EventMain {
@@ -32,7 +37,6 @@ class EventListAvailable extends EventMain {
 }
 
 class ActiveInactiveEvent extends EventMain {
-
   final String eventId;
   final String status;
   final Function callback;
@@ -64,3 +68,5 @@ class DeleteEventResult extends EventMain {
 
   DeleteEventResult(this.success, {this.eventId, this.uiMsg});
 }
+
+class ClearState extends EventMain {}

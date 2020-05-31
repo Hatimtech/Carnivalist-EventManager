@@ -255,7 +255,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
     if (event is AddCancellationPolicyOption) {
       final options = List.of(state.cancellationOptions);
-      options.add(CancellationOption(refundType: 'amount', refundValue: 0));
+      options.add(CancellationOption(refundType: 'amount'));
       yield state.copyWith(
         cancellationOptions: options,
         uploadRequired: true,

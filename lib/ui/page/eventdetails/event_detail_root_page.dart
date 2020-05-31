@@ -1,15 +1,20 @@
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/event_detail_bloc.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/event_detail_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
+import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/eventdetails/attendee_list_page.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_info_page.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 
 class EventDetailRootPage extends StatefulWidget {
   @override
@@ -18,7 +23,8 @@ class EventDetailRootPage extends StatefulWidget {
 
 class _EventDetailRootPageState extends State<EventDetailRootPage> {
   PageController _pageController;
-  bool _showAttendee = true;
+  bool _showAttendee = true,
+      showScannerControls;
   EventDetailBloc _eventDetailBloc;
 
   @override
@@ -32,20 +38,122 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
         .authToken);
     _eventDetailBloc.getEventDetail();
     _pageController = PageController(initialPage: _showAttendee ? 0 : 1);
+    initSelectedEventData();
+  }
+
+  void initSelectedEventData() {
+    final eventData = BlocProvider
+        .of<EventBloc>(context)
+        .state
+        .eventDataList
+        .firstWhere(
+            (eventData) => eventData.id == _eventDetailBloc.selectedEventId);
+
+    final dateTimeNow = DateTime.now();
+
+    showScannerControls = isValid(eventData.endDateTime) &&
+        DateTime.parse(eventData.endDateTime).isAfter(dateTimeNow) &&
+        isValid(eventData.startDateTime) &&
+        DateTime.parse(eventData.startDateTime).isBefore(dateTimeNow) &&
+        eventData.status == 'ACTIVE';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      floatingActionButton: showScannerControls
+          ? Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          _buildErrorReceiverEmptyBloc(),
-          _buildTopBgContainer(),
-          _buildDetailTypeRadioButton(),
-          Expanded(child: _buildRootPageView()),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: _buildScanQRCodeFAB(),
+          ),
+          const SizedBox(
+            width: 16.0,
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: _buildScanNFCCodeFAB(),
+          ),
+        ],
+      )
+          : null,
+      body: Stack(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              _buildErrorReceiverEmptyBloc(),
+              _buildTopBgContainer(),
+              _buildDetailTypeRadioButton(),
+              Expanded(child: _buildRootPageView()),
+            ],
+          ),
         ],
       ),
     );
+  }
+
+  FloatingActionButton _buildScanQRCodeFAB() {
+    return FloatingActionButton(
+      heroTag: 'Scan',
+      child: Icon(CarnivalistIcons.qrcode, color: Colors.white),
+      onPressed: () => _scanQRCode(context),
+    );
+  }
+
+  FloatingActionButton _buildScanNFCCodeFAB() {
+    return FloatingActionButton(
+      heroTag: 'NFC',
+      child: Icon(CarnivalistIcons.nfc, color: Colors.white),
+      onPressed: () => _scanNFCTag(),
+    );
+  }
+
+  Future<void> _scanQRCode(context) async {
+    try {
+      String qrCode = await BarcodeScanner.scan();
+      print("Scanned QR Code--->$qrCode");
+      _uploadScannedTag(qrCode, false);
+    } on FormatException catch (fe) {
+      print(fe.message);
+    } on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) {
+        print("Camera Permission Denied");
+      } else {
+        print("Unknown Error: $ex");
+      }
+    } catch (ex) {
+      print("Unknown Error: $ex");
+    }
+  }
+
+  Future<void> _scanNFCTag() async {
+    try {
+      final nfcData = await FlutterNfcReader.read();
+      if (nfcData.content != null && nfcData.content is String) {
+        print("Scanned NFC Code--->${nfcData.content}");
+        _uploadScannedTag(nfcData.content, true);
+      } else {
+        print("Scanned NFC Code Error--->${nfcData.error}");
+        context.toast('NFC Code Scan Error--->${nfcData.error}');
+      }
+    } on PlatformException catch (ex) {
+      print("Unknown Error: $ex");
+      if (isValid(ex.message)) {
+        context.toast(ex.message);
+      }
+    } catch (ex) {
+      print("Unknown Error: $ex");
+    }
+  }
+
+  void _uploadScannedTag(String tag, bool isNFC) {
+    context.showProgress(context);
+    _eventDetailBloc.uploadNewScannedTag(tag, isNFC, (response) {
+      context.hideProgress(context);
+    });
   }
 
   Widget _buildErrorReceiverEmptyBloc() =>

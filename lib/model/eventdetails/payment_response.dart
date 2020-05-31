@@ -6,7 +6,9 @@ class PaymentResponse {
 
   PaymentResponse.fromJson(Map<String, dynamic> json) {
     orderId = json['ORDERID'];
-    txnAmount = json['TXNAMOUNT']?.toDouble();
+    txnAmount = (json['TXNAMOUNT'] != null && json['TXNAMOUNT'] is String)
+        ? double.parse(json['TXNAMOUNT'])
+        : json['TXNAMOUNT']?.toDouble();
     currency = json['CURRENCY'];
     txnStatus = json['STATUS'];
   }

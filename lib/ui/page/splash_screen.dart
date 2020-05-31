@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,7 @@ class _SplashState extends State<SplashPage> {
 
     //TODO change timer screen duration
     five = const Duration(seconds: 3);
-     t2 = new Timer(five, () => _loginGo());
+    t2 = new Timer(five, () => _loginGo());
   }
 
   @override
@@ -45,10 +46,11 @@ class _SplashState extends State<SplashPage> {
                     fit: BoxFit.fill))));
   }
 
-
   _loginGo() {
     _userBloc.state.isLogin == true
-        ? Navigator.pushReplacementNamed(context, bottomMenuRoute)
+        ? ((_userBloc.state.eventStaff ?? false)
+        ? Navigator.pushReplacementNamed(context, bandStaffHomeRoute)
+        : Navigator.pushReplacementNamed(context, bottomMenuRoute))
         : Navigator.pushReplacementNamed(context, loginRoute);
   }
 }

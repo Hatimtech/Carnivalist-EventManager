@@ -801,6 +801,8 @@ class _SettingState extends State<SettingPage> {
                       .of(context)
                       .labelCancellationDeductPercentageInput,
                   textAlign: TextAlign.left,
+                  maxLines: 1,
+                  overflow: TextOverflow.fade,
                   style: Theme
                       .of(context)
                       .textTheme
@@ -816,7 +818,7 @@ class _SettingState extends State<SettingPage> {
                     _settingBloc.cancellationPolicyDeductionInput(index, value),
                 hintText: AppLocalizations
                     .of(context)
-                    .inputValue,
+                    .zeroInputHint,
                 labelStyle: Theme
                     .of(context)
                     .textTheme
@@ -838,6 +840,8 @@ class _SettingState extends State<SettingPage> {
                 .of(context)
                 .labelCancellationEndDate,
                 textAlign: TextAlign.left,
+                maxLines: 1,
+                overflow: TextOverflow.fade,
                 style: Theme
                     .of(context)
                     .textTheme

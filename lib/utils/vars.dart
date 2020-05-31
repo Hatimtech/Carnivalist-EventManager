@@ -46,6 +46,7 @@ const String bottomMenuRoute = '/bottomMenu';
 const String eventMenuRoute = '/eventMenu';
 const String eventDetailRoute = '/eventDetail';
 const String userInfoRoute = '/userInfo';
+const String bandStaffHomeRoute = '/bandStaffHome';
 
 const String profileImage = 'assets/images/user_profile.png';
 const String headerBackgroundImage = 'assets/images/header_background.png';
@@ -59,11 +60,12 @@ const String bottomMenuBarAddImage = 'assets/images/bottom_menu_bar_user.png';
 const String bottomMenuBarUserImage = 'assets/images/bottom_menu_bar_user.png';
 
 // Navigation Pages Constants
-const int PAGE_DASHBOARD = 0;
-const int PAGE_COUPONS = 1;
-const int PAGE_ADDONS = 2;
-const int PAGE_REPORTS = 3;
-const int PAGE_STAFF = 4;
+const int PAGE_REPORTS = 0;
+const int PAGE_ACCOUNTS = 1;
+const int PAGE_DASHBOARD = 2;
+const int PAGE_ADDONS = 3;
+const int PAGE_COUPONS = 4;
+const int PAGE_STAFF = 5;
 
 //TODO COLOR
 const Color colorPrimary = Color(0xFF0713D1);
@@ -88,7 +90,8 @@ const Color bgColorFilterRow = Color(0xFFEEEEEE);
 
 const Color colorIcon = Color(0xFF8C3EE9);
 const Color colorIconSecondary = Color(0xFF6700E2);
-const Color colorIconBottomBar = Color(0xFF5D5D5D);
+const Color colorUnselectedIconBottomBar = Color(0xFF5D5D5D);
+const Color colorUnselectedTextBottomBar = Color(0xFF5D5D5D);
 
 const Color colorFocusedBorder = Color(0xFF8C3EE9);
 
@@ -186,8 +189,6 @@ String validateMobile(String value, AppLocalizations appLocalizations) {
 String validatePassword(String value, AppLocalizations appLocalizations) {
   if (value.isEmpty) {
     return appLocalizations.errorPassword;
-  } else if (value.length < 4) {
-    return appLocalizations.errorPasswordLength;
   }
   return null;
 }

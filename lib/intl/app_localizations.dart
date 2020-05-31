@@ -65,6 +65,12 @@ class AppLocalizations {
   String get labelStaff =>
       Intl.message('Staff', name: "labelStaff", locale: _localeName);
 
+  String get labelAccount =>
+      Intl.message('Account', name: "labelAccount", locale: _localeName);
+
+  String get labelProfile =>
+      Intl.message('Profile', name: "labelProfile", locale: _localeName);
+
   String get labelActiveEvent =>
       Intl.message('Activate Event',
           name: "labelActiveEvent", locale: _localeName);
@@ -428,6 +434,10 @@ class AppLocalizations {
   String get inputHintPassword =>
       Intl.message('Password', name: "inputHintPassword", locale: _localeName);
 
+  String get labelEventStaffLogin =>
+      Intl.message('Event Staff Login', name: "labelEventStaffLogin",
+          locale: _localeName);
+
   String get inputHintConfirmPassword => Intl.message('Confirm Password',
       name: "inputHintConfirmPassword", locale: _localeName);
 
@@ -610,8 +620,8 @@ class AppLocalizations {
   String get labelGallery =>
       Intl.message('Gallery', name: "labelGallery", locale: _localeName);
 
-  String get inputValue =>
-      Intl.message('Input Value', name: "inputValue", locale: _localeName);
+  String get zeroInputHint =>
+      Intl.message('0.0', name: "zeroInputHint", locale: _localeName);
 
   // Event Detail Strings
   String get titleEventDetails =>
@@ -668,7 +678,7 @@ class AppLocalizations {
           name: "errorEndTime", locale: _localeName);
 
   String get errorEndTimeLess =>
-      Intl.message('End date can not be less than start date',
+      Intl.message('End date can not be less than or equal to start date',
           name: "errorEndTimeLess", locale: _localeName);
 
   String get errorWeekday =>
