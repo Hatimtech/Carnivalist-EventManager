@@ -24,6 +24,8 @@ class CreateStaffDialog extends StatefulWidget {
 class _CreateStaffState extends State<CreateStaffDialog> {
   CreateStaffBloc _createStaffBloc;
 
+  ScrollController _scrollController;
+
   final FocusNode _focusNodeName = FocusNode();
   final FocusNode _focusNodeEmail = FocusNode();
   final FocusNode _focusNodeCity = FocusNode();
@@ -40,6 +42,18 @@ class _CreateStaffState extends State<CreateStaffDialog> {
     _createStaffBloc = BlocProvider.of<CreateStaffBloc>(context);
     final _userBloc = BlocProvider.of<UserBloc>(context);
     _createStaffBloc.authTokenSave(_userBloc.state.authToken);
+    if (!isPlatformAndroid) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_scrollListener);
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 
   @override
@@ -55,6 +69,7 @@ class _CreateStaffState extends State<CreateStaffDialog> {
 
   dialogContent(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Container(
         padding: EdgeInsets.all(10),
         child: Column(

@@ -26,6 +26,8 @@ class CreateAddonDialog extends StatefulWidget {
 class _CreateAddonState extends State<CreateAddonDialog> {
   CreateAddonBloc _createAddonBloc;
 
+  ScrollController _scrollController;
+
   final FocusNode _focusNodeName = FocusNode();
   final FocusNode _focusNodeTotalAva = FocusNode();
   final FocusNode _focusNodePrice = FocusNode();
@@ -42,6 +44,18 @@ class _CreateAddonState extends State<CreateAddonDialog> {
     _createAddonBloc.authTokenSave(_userBloc.state.authToken);
     _createAddonBloc.createAddonDefault();
     _futureSystemPath = getSystemDirPath();
+    if (!isPlatformAndroid) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_scrollListener);
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 
   @override
@@ -57,6 +71,7 @@ class _CreateAddonState extends State<CreateAddonDialog> {
 
   dialogContent(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Container(
         padding: EdgeInsets.all(10),
         child: Column(

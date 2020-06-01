@@ -25,6 +25,8 @@ class _SettingState extends State<SettingPage> {
   SettingBloc _settingBloc;
   BasicBloc _basicBloc;
 
+  ScrollController _scrollController;
+
   final FocusNode _focusNodePercentage = FocusNode();
   final FocusNode _focusNodeAmount = FocusNode();
   final FocusNode _focusNodeRegistration = FocusNode();
@@ -38,12 +40,25 @@ class _SettingState extends State<SettingPage> {
     super.initState();
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     _basicBloc = BlocProvider.of<BasicBloc>(context);
+    if (!isPlatformAndroid) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_scrollListener);
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return PlatformScrollbar(
       child: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(children: <Widget>[
           _buildErrorCodeHandleView(),
           _buildPaymentAndFeesCard(),
@@ -927,7 +942,10 @@ class _SettingState extends State<SettingPage> {
 //            TimeOfDay(hour: currentTime.hour, minute: currentTime.minute),
 //      );
 
-      pickedDate = DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
+      pickedDate = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
           23,
           59,
           59,

@@ -1,5 +1,6 @@
 import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/basic/basic_state.dart';
+import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/ui/page/event/basic/basic_info_page.dart';
 import 'package:eventmanagement/ui/page/event/basic/event_datetime_info_page.dart';
 import 'package:eventmanagement/ui/page/event/basic/event_description_info_page.dart';
@@ -18,17 +19,32 @@ class BasicPage extends StatefulWidget {
 
 class _BasicState extends State<BasicPage> {
   BasicBloc _basicBloc;
+  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     _basicBloc = BlocProvider.of<BasicBloc>(context);
+
+    if (!isPlatformAndroid) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_scrollListener);
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return PlatformScrollbar(
       child: SingleChildScrollView(
+        controller: _scrollController,
         padding: EdgeInsets.all(0),
         child: Column(
           children: <Widget>[
@@ -70,8 +86,9 @@ class _BasicState extends State<BasicPage> {
         condition: (prevState, newState) => newState.uiMsg != null,
         builder: (context, BasicState state) {
           if (state.uiMsg != null) {
-            String errorMsg = state.uiMsg is int ? getErrorMessage(
-                state.uiMsg, context) : state.uiMsg;
+            String errorMsg = state.uiMsg is int
+                ? getErrorMessage(state.uiMsg, context)
+                : state.uiMsg;
             if (state.uiMsg == ERR_START_DATE_WEEK_DAY ||
                 state.uiMsg == ERR_END_DATE_WEEK_DAY)
               context.toast(

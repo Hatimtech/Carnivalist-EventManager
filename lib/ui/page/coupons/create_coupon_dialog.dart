@@ -27,6 +27,8 @@ class CreateCouponDialog extends StatefulWidget {
 class _CreateCouponState extends State<CreateCouponDialog> {
   CreateCouponBloc _createCouponBloc;
 
+  ScrollController _scrollController;
+
   final FocusNode _focusNodeName = FocusNode();
   final FocusNode _focusNodeQuantity = FocusNode();
   final FocusNode _focusNodeCodeAffiliateMin = FocusNode();
@@ -44,6 +46,18 @@ class _CreateCouponState extends State<CreateCouponDialog> {
     final _userBloc = BlocProvider.of<UserBloc>(context);
     _createCouponBloc.authTokenSave(_userBloc.state.authToken);
     _createCouponBloc.createCouponDefault();
+    if (!isPlatformAndroid) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_scrollListener);
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 
   @override
@@ -68,6 +82,7 @@ class _CreateCouponState extends State<CreateCouponDialog> {
 
   dialogContent(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Container(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -77,7 +92,7 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             BlocBuilder(
               bloc: _createCouponBloc,
               condition: (prevState, newState) =>
-                  prevState.couponType != newState.couponType,
+              prevState.couponType != newState.couponType,
               builder: (_, state) {
                 return Text(titleText,
                     textAlign: TextAlign.left,

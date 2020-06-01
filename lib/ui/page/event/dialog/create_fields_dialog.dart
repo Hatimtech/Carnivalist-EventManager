@@ -1,6 +1,7 @@
 import 'package:eventmanagement/bloc/event/createfield/create_field_bloc.dart';
 import 'package:eventmanagement/bloc/event/createfield/create_field_state.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/service/viewmodel/mock_data.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
@@ -17,6 +18,8 @@ class CreateFieldsDialog extends StatefulWidget {
 class _CreateFieldsState extends State<CreateFieldsDialog> {
   CreateFieldBloc _createFieldBloc;
 
+  ScrollController _scrollController;
+
   final TextEditingController _listItemController = TextEditingController();
   final FocusNode _focusNodeFieldLabel = FocusNode();
   final FocusNode _focusNodeFieldPlaceholder = FocusNode();
@@ -30,6 +33,18 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
     _createFieldBloc = BlocProvider.of<CreateFieldBloc>(context);
     _createFieldBloc.customFieldMenu();
 //    _createFieldBloc.selectCustomFieldName(getCustomField()[0]);
+    if (!isPlatformAndroid) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_scrollListener);
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 
   @override
@@ -45,6 +60,7 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
 
   dialogContent(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Container(
           padding: EdgeInsets.all(10),
           child:

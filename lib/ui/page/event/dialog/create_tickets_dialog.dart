@@ -22,6 +22,8 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   CreateTicketBloc _createTicketBloc;
   UserBloc _userBloc;
 
+  ScrollController _scrollController;
+
   final FocusNode _focusNodeName = FocusNode();
   final FocusNode _focusNodePrice = FocusNode();
   final FocusNode _focusNodeTotalAva = FocusNode();
@@ -40,6 +42,19 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
       final defaultCurrencyUI = _createTicketBloc.mapCurrency['USD'];
       _createTicketBloc.ticketCurrencyInput('USD', defaultCurrencyUI);
     }
+
+    if (!isPlatformAndroid) {
+      _scrollController = ScrollController();
+      _scrollController.addListener(_scrollListener);
+    }
+  }
+
+  _scrollListener() {
+    if (_scrollController.offset >=
+        _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 
   @override
@@ -55,6 +70,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   dialogContent(BuildContext context) {
     return SingleChildScrollView(
+        controller: _scrollController,
         child: Container(
             padding: EdgeInsets.all(10),
             child: Column(
@@ -100,14 +116,14 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
                                   Text(AppLocalizations
                                       .of(context)
                                       .labelPrice,
-                                  textAlign: TextAlign.left,
+                                      textAlign: TextAlign.left,
                                       style: Theme
                                           .of(context)
                                           .textTheme
                                           .body2),
-                              SizedBox(height: 4.0),
-                              ticketPriceInput(),
-                            ])),
+                                  SizedBox(height: 4.0),
+                                  ticketPriceInput(),
+                                ])),
                         const SizedBox(width: 10.0),
                         Expanded(
                             child: Column(
@@ -116,14 +132,14 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
                                   Text(AppLocalizations
                                       .of(context)
                                       .labelSalesEnds,
-                                  textAlign: TextAlign.left,
+                                      textAlign: TextAlign.left,
                                       style: Theme
                                           .of(context)
                                           .textTheme
                                           .body2),
-                              const SizedBox(height: 4.0),
-                              saleEndDateInput(),
-                            ]))
+                                  const SizedBox(height: 4.0),
+                                  saleEndDateInput(),
+                                ]))
                       ]),
                   const SizedBox(height: 10.0),
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: <
