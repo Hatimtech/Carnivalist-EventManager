@@ -182,6 +182,7 @@ extension WidgetExtensions on Widget {
   }) =>
       TextFormField(
           controller: textEditingController,
+          obscureText: obscureText,
           initialValue: textEditingController == null ? initialValue : null,
           validator: validation,
           onChanged: onChanged,

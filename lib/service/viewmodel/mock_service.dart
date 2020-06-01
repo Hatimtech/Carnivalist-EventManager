@@ -160,4 +160,19 @@ class MockService implements APIService {
   uploadTagScanned(String authToken, Map<String, dynamic> param, bool isNFC) {
     throw null;
   }
+
+  @override
+  activeInactiveStaff(String authToken, String staffId, bool enable) {
+    return null;
+  }
+
+  @override
+  getAllStaffs(String authToken) {
+    return null;
+  }
+
+  @override
+  createStaff(String authToken, Map<String, dynamic> staff, {String staffId}) {
+    return null;
+  }
 }

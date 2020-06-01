@@ -245,7 +245,7 @@ String uiLabelWeekday(String label, BuildContext context) {
 const String PAGE_STORAGE_KEY_DASHBOARD = 'DashboardPage';
 const String PAGE_STORAGE_KEY_COUPONS = 'CouponPage';
 const String PAGE_STORAGE_KEY_ADDON = 'AddonPage';
-const String PAGE_STORAGE_KEY_USER = 'UserPage';
+const String PAGE_STORAGE_KEY_STAFF = 'StaffPage';
 
 // Error Codes
 const int ERR_EVENT_NAME = 1;
@@ -330,6 +330,18 @@ const int ERR_CONV_FEE_PERCENT = 67;
 const int ERR_CONV_FEE_PERCENT_VALID = 68;
 const int ERR_CONV_FEE_AMOUNT = 69;
 const int ERR_CONV_FEE_AMOUNT_VALID = 70;
+
+const int ERR_STAFF_NAME = 71;
+const int ERR_STAFF_EMAIL = 72;
+const int ERR_STAFF_EMAIL_VALID = 73;
+const int ERR_STAFF_DOB = 74;
+const int ERR_STAFF_STATE = 75;
+const int ERR_STAFF_CITY = 76;
+const int ERR_STAFF_MOBILE_NO = 77;
+const int ERR_STAFF_MOBILE_NO_LENGTH = 78;
+const int ERR_STAFF_USERNAME = 79;
+const int ERR_STAFF_PASSWORD = 80;
+const int ERR_STAFF_SELECT_EVENTS = 81;
 
 const int ERR_NO_INTERNET = 99;
 const int ERR_SOMETHING_WENT_WRONG = 100;
@@ -487,6 +499,29 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorMailMessage;
     case ERR_GALLERY_BANNER:
       return appLoc.errorGalleryBanner;
+
+    case ERR_STAFF_NAME:
+      return appLoc.errorStaffName;
+    case ERR_STAFF_EMAIL:
+      return appLoc.errorStaffEmail;
+    case ERR_STAFF_EMAIL_VALID:
+      return appLoc.errorStaffInvalidEmail;
+    case ERR_STAFF_DOB:
+      return appLoc.errorStaffDOB;
+    case ERR_STAFF_STATE:
+      return appLoc.errorStaffState;
+    case ERR_STAFF_CITY:
+      return appLoc.errorStaffCity;
+    case ERR_STAFF_MOBILE_NO:
+      return appLoc.errorStaffMobileNo;
+    case ERR_STAFF_MOBILE_NO_LENGTH:
+      return appLoc.errorStaffMobileNoLength;
+    case ERR_STAFF_USERNAME:
+      return appLoc.errorStaffUsername;
+    case ERR_STAFF_PASSWORD:
+      return appLoc.errorStaffPassword;
+    case ERR_STAFF_SELECT_EVENTS:
+      return appLoc.errorStaffSelectEvents;
 
     case ERR_NO_INTERNET:
       return appLoc.errorNoInternet;

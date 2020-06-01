@@ -162,4 +162,18 @@ class ApiProvider {
       Map<String, dynamic> param, bool isNFC) async {
     return await apiService.uploadTagScanned(authToken, param, isNFC);
   }
+
+  Future<NetworkServiceResponse> getAllStaffs(String authToken) async {
+    return await apiService.getAllStaffs(authToken);
+  }
+
+  Future<NetworkServiceResponse> activeInactiveStaff(String authToken,
+      String staffId, bool enable) async {
+    return await apiService.activeInactiveStaff(authToken, staffId, enable);
+  }
+
+  Future<NetworkServiceResponse> createUpdateStaff(String authToken,
+      Map<String, dynamic> staff, {String staffId}) async {
+    return await apiService.createStaff(authToken, staff, staffId: staffId);
+  }
 }

@@ -68,4 +68,10 @@ abstract class APIService {
   updateUserDetails(String authToken, Map<String, dynamic> param);
 
   uploadTagScanned(String authToken, Map<String, dynamic> param, bool isNFC);
+
+  getAllStaffs(String authToken);
+
+  activeInactiveStaff(String authToken, String staffId, bool enable);
+
+  createStaff(String authToken, Map<String, dynamic> staff, {String staffId});
 }

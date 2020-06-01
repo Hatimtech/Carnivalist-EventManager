@@ -26,6 +26,9 @@ import 'package:eventmanagement/model/eventdetails/event_detail_response.dart';
 import 'package:eventmanagement/model/eventdetails/tag_scanned_response.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
+import 'package:eventmanagement/model/staff/create_staff_response.dart';
+import 'package:eventmanagement/model/staff/staff_action_response.dart';
+import 'package:eventmanagement/model/staff/staff_response.dart';
 import 'package:eventmanagement/service/abstract/api_service.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:http/http.dart' as http;
@@ -84,6 +87,12 @@ class NetworkService extends NetworkType implements APIService {
 
   final _qrCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-order-id/';
   final _nfcCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-user-id/';
+
+  final _staffListUrl = _baseUrl + _subUrl + 'user/get-event-staffs';
+  final _activeInactiveStaffUrl = _baseUrl + _subUrl + 'user/toggle-enable/';
+
+  final _staffCreateUrl = _baseUrl + _subUrl + 'user/save-new-staff';
+  final _staffEditUrl = _baseUrl + _subUrl + 'user/edit-event-staffs/';
 
   NetworkService(RestClient rest) : super(rest);
 
@@ -376,8 +385,8 @@ class NetworkService extends NetworkType implements APIService {
       "Content-Type": "application/json"
     };
 
-    var result = await rest.get<StaffEventResponse>(
-        _staffEventsListUrl, headers);
+    var result =
+    await rest.get<StaffEventResponse>(_staffEventsListUrl, headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = StaffEventResponse.fromJson(json.decode(result.mappedResult));
@@ -669,10 +678,64 @@ class NetworkService extends NetworkType implements APIService {
         headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
-      var res =
-      TagScannedResponse.fromJson(json.decode(result.mappedResult));
+      var res = TagScannedResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  getAllStaffs(String authToken) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<StaffResponse>(_staffListUrl, headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      final res = StaffResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  activeInactiveStaff(String authToken, String staffId, bool enable) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<StaffActionResponse>(
+        '$_activeInactiveStaffUrl$staffId/$enable', headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = StaffActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  createStaff(String authToken, Map<String, dynamic> staff,
+      {String staffId}) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<CreateStaffResponse>(
+        isValid(staffId) ? '$_staffEditUrl$staffId' : _staffCreateUrl,
+        body: json.encode(staff),
+        encoding: Encoding.getByName("utf-8"),
+        headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = CreateStaffResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
     return result.networkServiceResponse;
   }
 }

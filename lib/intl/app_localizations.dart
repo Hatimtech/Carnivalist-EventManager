@@ -1251,6 +1251,140 @@ class AppLocalizations {
       Intl.message('Onwards',
           name: "labelPriceOnwards", locale: _localeName);
 
+  String get labelEditStaff =>
+      Intl.message('Edit User', name: "labelEditStaff", locale: _localeName);
+
+  String get labelActiveStaff =>
+      Intl.message('Active User',
+          name: "labelActiveStaff", locale: _localeName);
+
+  String get labelInActiveStaff =>
+      Intl.message('Inactive User',
+          name: "labelInActiveStaff", locale: _localeName);
+
+  String get titleCreateStaff =>
+      Intl.message('Add Staff',
+          name: "titleCreateStaff", locale: _localeName);
+
+  String get labelStaffName =>
+      Intl.message('Name',
+          name: "labelStaffName", locale: _localeName);
+
+  String get labelStaffEmail =>
+      Intl.message('Email',
+          name: "labelStaffEmail", locale: _localeName);
+
+  String get labelStaffDOB =>
+      Intl.message('DOB',
+          name: "labelStaffDOB", locale: _localeName);
+
+  String get labelStaffState =>
+      Intl.message('State',
+          name: "labelStaffState", locale: _localeName);
+
+  String get labelStaffCity =>
+      Intl.message('City',
+          name: "labelStaffCity", locale: _localeName);
+
+  String get labelStaffUsername =>
+      Intl.message('Username',
+          name: "labelStaffUsername", locale: _localeName);
+
+  String get labelStaffPassword =>
+      Intl.message('Password',
+          name: "labelStaffPassword", locale: _localeName);
+
+  String get labelStaffMobileNo =>
+      Intl.message('Mobile No',
+          name: "labelStaffMobileNo", locale: _localeName);
+
+  String get labelStaffEvents =>
+      Intl.message('Events',
+          name: "labelStaffEvents", locale: _localeName);
+
+  String get inputHintStaffName =>
+      Intl.message('Type User Name',
+          name: "inputHintStaffName", locale: _localeName);
+
+  String get inputHintStaffEmail =>
+      Intl.message('Type User Email',
+          name: "inputHintStaffEmail", locale: _localeName);
+
+  String get inputHintStaffDOB =>
+      Intl.message('Select DOB',
+          name: "inputHintStaffDOB", locale: _localeName);
+
+  String get inputHintStaffState =>
+      Intl.message('Select State',
+          name: "inputHintStaffState", locale: _localeName);
+
+  String get inputHintStaffCity =>
+      Intl.message('Enter City',
+          name: "inputHintStaffCity", locale: _localeName);
+
+  String get inputHintStaffUsername =>
+      Intl.message('Enter Username',
+          name: "inputHintStaffUsername", locale: _localeName);
+
+  String get inputHintStaffMobileNo =>
+      Intl.message('Enter Mobile No',
+          name: "inputHintStaffMobileNo", locale: _localeName);
+
+  String get inputHintStaffPassword =>
+      Intl.message('Enter Password',
+          name: "inputHintStaffPassword", locale: _localeName);
+
+  String get errorStaffName =>
+      Intl.message(
+          'Name can not be empty', name: "errorStaffName", locale: _localeName);
+
+  String get errorStaffEmail =>
+      Intl.message(
+          'Email can not be empty', name: "errorStaffEmail",
+          locale: _localeName);
+
+  String get errorStaffInvalidEmail =>
+      Intl.message(
+          'Invalid email', name: "errorStaffInvalidEmail", locale: _localeName);
+
+  String get errorStaffDOB =>
+      Intl.message(
+          'DOB can not be empty', name: "errorStaffDOB", locale: _localeName);
+
+  String get errorStaffState =>
+      Intl.message(
+          'State can not be empty', name: "errorStaffState",
+          locale: _localeName);
+
+  String get errorStaffCity =>
+      Intl.message(
+          'City can not be empty', name: "errorStaffCity", locale: _localeName);
+
+  String get errorStaffUsername =>
+      Intl.message(
+          'Username can not be empty', name: "errorStaffUsername",
+          locale: _localeName);
+
+  String get errorStaffMobileNo =>
+      Intl.message(
+          'Mobile no can not be empty', name: "errorStaffMobileNo",
+          locale: _localeName);
+
+  String get errorStaffMobileNoLength =>
+      Intl.message(
+          'Valid mobile no is required', name: "errorStaffMobileNoLength",
+          locale: _localeName);
+
+  String get errorStaffPassword =>
+      Intl.message(
+          'Password can not be empty', name: "errorStaffPassword",
+          locale: _localeName);
+
+  String get errorStaffSelectEvents =>
+      Intl.message(
+          'Please add atleast 1 event', name: "errorStaffSelectEvents",
+          locale: _localeName);
+
   String get eventDeleteTitle =>
       Intl.message(
           'Delete Event', name: "eventDeleteTitle", locale: _localeName);

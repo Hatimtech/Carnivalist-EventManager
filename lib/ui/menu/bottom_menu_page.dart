@@ -9,6 +9,7 @@ import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart
 import 'package:eventmanagement/ui/page/addons/addon_page.dart';
 import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
+import 'package:eventmanagement/ui/page/staff/staff_page.dart';
 import 'package:eventmanagement/ui/page/webview_page.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +29,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
     DashboardPage(key: PageStorageKey(PAGE_STORAGE_KEY_DASHBOARD)),
     AddonPage(key: PageStorageKey(PAGE_STORAGE_KEY_ADDON)),
     CouponPage(key: PageStorageKey(PAGE_STORAGE_KEY_COUPONS)),
-    Container(),
+    StaffPage(key: PageStorageKey(PAGE_STORAGE_KEY_STAFF)),
   ];
 
   final List<String> _title = [];
@@ -240,9 +241,8 @@ class _BottomMenuState extends State<BottomMenuPage> {
                   duration: const Duration(milliseconds: 500),
                   child: Icon(iconData,
                       size: size + (selected ? 4.0 : 0.0),
-                      color: selected
-                          ? colorIcon
-                          : colorUnselectedIconBottomBar),
+                      color:
+                      selected ? colorIcon : colorUnselectedIconBottomBar),
                 ),
                 const SizedBox(height: 4.0),
                 Text(

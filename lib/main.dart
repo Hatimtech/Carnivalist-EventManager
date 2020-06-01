@@ -8,6 +8,7 @@ import 'package:eventmanagement/bloc/event/eventdetail/event_detail_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
 import 'package:eventmanagement/bloc/event/gallery/gallery_bloc.dart';
 import 'package:eventmanagement/bloc/login/login_bloc.dart';
+import 'package:eventmanagement/bloc/staff/staff_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/menu/event_menu_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_staff_home.dart';
@@ -109,7 +110,10 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
         create: (context) => AddonBloc(),
         child: BlocProvider(
           create: (context) => CouponBloc(),
-          child: BottomMenuPage(),
+          child: BlocProvider(
+            create: (context) => StaffBloc(),
+            child: BottomMenuPage(),
+          ),
         ),
       ),
     );

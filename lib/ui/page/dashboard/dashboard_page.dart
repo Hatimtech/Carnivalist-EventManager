@@ -7,6 +7,7 @@ import 'package:eventmanagement/bloc/coupon/coupon_bloc.dart';
 import 'package:eventmanagement/bloc/coupon/coupon_state.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
+import 'package:eventmanagement/bloc/staff/staff_bloc.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
@@ -31,6 +32,7 @@ class _DashboardState extends State<DashboardPage> {
   EventBloc _eventBloc;
   CouponBloc _couponBloc;
   AddonBloc _addonBloc;
+  StaffBloc _staffBloc;
 
   @override
   void initState() {
@@ -45,6 +47,10 @@ class _DashboardState extends State<DashboardPage> {
 
     _couponBloc = BlocProvider.of<CouponBloc>(context);
     _couponBloc.authTokenSave(_userBloc.state.authToken);
+
+    _staffBloc = BlocProvider.of<StaffBloc>(context);
+    _staffBloc.authTokenSave(_userBloc.state.authToken);
+
     initDownload();
   }
 
@@ -55,6 +61,7 @@ class _DashboardState extends State<DashboardPage> {
       _eventBloc.getAllEvents();
       _addonBloc.getAllAddons();
       _couponBloc.getAllCoupons();
+      _staffBloc.getAllStaffs();
       PageStorage.of(context)
           .writeState(context, false, identifier: 'INIT_DOWNLOAD');
     }
