@@ -14,7 +14,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 
 class EventDetailRootPage extends StatefulWidget {
   @override
@@ -70,13 +69,13 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
             alignment: Alignment.bottomLeft,
             child: _buildScanQRCodeFAB(),
           ),
-          const SizedBox(
+          /*const SizedBox(
             width: 16.0,
           ),
           Align(
             alignment: Alignment.bottomRight,
             child: _buildScanNFCCodeFAB(),
-          ),
+          ),*/
         ],
       )
           : null,
@@ -103,13 +102,13 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
     );
   }
 
-  FloatingActionButton _buildScanNFCCodeFAB() {
+  /*FloatingActionButton _buildScanNFCCodeFAB() {
     return FloatingActionButton(
       heroTag: 'NFC',
       child: Icon(CarnivalistIcons.nfc, color: Colors.white),
       onPressed: () => _scanNFCTag(),
     );
-  }
+  }*/
 
   Future<void> _scanQRCode(context) async {
     try {
@@ -129,7 +128,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
     }
   }
 
-  Future<void> _scanNFCTag() async {
+  /*Future<void> _scanNFCTag() async {
     try {
       final nfcData = await FlutterNfcReader.read();
       if (nfcData.content != null && nfcData.content is String) {
@@ -147,7 +146,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
     } catch (ex) {
       print("Unknown Error: $ex");
     }
-  }
+  }*/
 
   void _uploadScannedTag(String tag, bool isNFC) {
     context.showProgress(context);

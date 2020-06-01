@@ -46,7 +46,5 @@
     <true/>
     <key>io.flutter.embedded_views_preview</key>
     <string>YES</string>
-    <key>Privacy - NFC Scan Usage Description</key>
-    <string>This app requires access to the NFC in order to scan and read the tags.</string>
 </dict>
 </plist>
