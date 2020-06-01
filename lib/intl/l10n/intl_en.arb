@@ -185,7 +185,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelEventType": "Event type",
+  "labelEventType": "Select Carnival",
   "@labelEventType": {
     "type": "text",
     "placeholders": {}
@@ -630,7 +630,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "inputHintEventType": "Select event tpye",
+  "inputHintEventType": "Select Carnival",
   "@inputHintEventType": {
     "type": "text",
     "placeholders": {}

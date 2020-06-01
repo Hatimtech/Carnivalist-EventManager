@@ -155,7 +155,8 @@ class AppLocalizations {
       Intl.message('Event name', name: "labelEventName", locale: _localeName);
 
   String get labelEventType =>
-      Intl.message('Event type', name: "labelEventType", locale: _localeName);
+      Intl.message(
+          'Select Carnival', name: "labelEventType", locale: _localeName);
 
   String get labelTimeZone =>
       Intl.message('Time zone', name: "labelTimeZone", locale: _localeName);
@@ -451,7 +452,7 @@ class AppLocalizations {
       name: "inputHintEventName", locale: _localeName);
 
   String get inputHintEventType =>
-      Intl.message('Select event tpye',
+      Intl.message('Select Carnival',
           name: "inputHintEventType", locale: _localeName);
 
   String get inputHintTimeZone => Intl.message('Select your zone',

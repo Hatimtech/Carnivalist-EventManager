@@ -240,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "inputHintEventName":
         MessageLookupByLibrary.simpleMessage("Type your event name"),
         "inputHintEventType":
-        MessageLookupByLibrary.simpleMessage("Select event tpye"),
+        MessageLookupByLibrary.simpleMessage("Select Carnival"),
         "inputHintFacebookLink": MessageLookupByLibrary.simpleMessage(
             "Ex:-https://faecbook.com/hat..."),
         "inputHintFieldName":
@@ -435,7 +435,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelEventPaymentMe": MessageLookupByLibrary.simpleMessage("Me"),
         "labelEventPrivate": MessageLookupByLibrary.simpleMessage("Private"),
         "labelEventPublic": MessageLookupByLibrary.simpleMessage("Public"),
-        "labelEventType": MessageLookupByLibrary.simpleMessage("Event type"),
+            "labelEventType": MessageLookupByLibrary.simpleMessage(
+                "Select Carnival"),
         "labelEventWeekly": MessageLookupByLibrary.simpleMessage("Weekly"),
         "labelFacebookLink":
         MessageLookupByLibrary.simpleMessage("Facebook Link"),

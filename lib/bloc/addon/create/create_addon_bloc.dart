@@ -285,10 +285,10 @@ class CreateAddonBloc extends Bloc<CreateAddonEvent, CreateAddonState> {
     if (!isValid(state.price)) return ERR_ADDON_PRICE;
     if (!isValid(state.description)) return ERR_ADDON_DESCRIPTION;
 
-    if (state.chargeConvenienceFee ?? false) {
-      if (!isValid(state.convenienceFeeType)) return ERR_ADDON_CONV_FEE_TYPE;
-      if (!isValid(state.convenienceFee)) return ERR_ADDON_CONV_FEE;
-    }
+//    if (state.chargeConvenienceFee ?? false) {
+//      if (!isValid(state.convenienceFeeType)) return ERR_ADDON_CONV_FEE_TYPE;
+//      if (!isValid(state.convenienceFee)) return ERR_ADDON_CONV_FEE;
+//    }
     if (!isValid(state.image)) return ERR_ADDON_IMAGE;
 
     return 0;

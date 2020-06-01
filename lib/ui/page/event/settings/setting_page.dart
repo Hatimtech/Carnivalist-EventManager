@@ -59,13 +59,15 @@ class _SettingState extends State<SettingPage> {
     return PlatformScrollbar(
       child: SingleChildScrollView(
         controller: _scrollController,
-        child: Column(children: <Widget>[
-          _buildErrorCodeHandleView(),
-          _buildPaymentAndFeesCard(),
-          _buildCustomSettingCard(context),
-          _buildCustomLabelCard(context),
-          _buildTnCCard(context),
-        ]),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _buildErrorCodeHandleView(),
+              _buildPaymentAndFeesCard(),
+              _buildCustomSettingCard(context),
+              _buildCustomLabelCard(context),
+              _buildTnCCard(context),
+            ]),
       ),
     );
   }
@@ -110,8 +112,8 @@ class _SettingState extends State<SettingPage> {
                         .of(context)
                         .textTheme
                         .title),
-                const SizedBox(height: 7.0),
-                BlocBuilder<SettingBloc, SettingState>(
+                const SizedBox(height: 16.0),
+                /*BlocBuilder<SettingBloc, SettingState>(
                     bloc: _settingBloc,
                     condition: (prevState, newState) {
                       return prevState.convenienceFee !=
@@ -222,19 +224,18 @@ class _SettingState extends State<SettingPage> {
                                 ]),
                           if (state.convenienceFee ?? false)
                             const SizedBox(height: 18.0),
-                          Text(
-                              AppLocalizations
-                                  .of(context)
-                                  .labelPaymentGatewayCharge,
-                              textAlign: TextAlign.left,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .body1),
-                          const SizedBox(height: 5),
                         ],
                       );
-                    }),
+                    }),*/
+                Text(AppLocalizations
+                    .of(context)
+                    .labelPaymentGatewayCharge,
+                    textAlign: TextAlign.left,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body1),
+                const SizedBox(height: 5),
                 Container(
                     child: BlocBuilder<SettingBloc, SettingState>(
                         bloc: _settingBloc,
@@ -368,7 +369,7 @@ class _SettingState extends State<SettingPage> {
                           },
                         )
                       ]),
-                  Row(
+                  /*Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(AppLocalizations
@@ -392,7 +393,7 @@ class _SettingState extends State<SettingPage> {
                                 onChanged: _settingBloc.remainingTicketsInput);
                           },
                         )
-                      ])
+                      ])*/
                 ])));
   }
 
@@ -419,7 +420,7 @@ class _SettingState extends State<SettingPage> {
                         .of(context)
                         .textTheme
                         .title),
-                const SizedBox(height: 12.0),
+                const SizedBox(height: 16.0),
                 Text(AppLocalizations
                     .of(context)
                     .labelRegistrationButton,
