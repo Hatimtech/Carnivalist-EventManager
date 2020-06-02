@@ -11,6 +11,7 @@ import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
 import 'package:eventmanagement/ui/page/staff/staff_page.dart';
 import 'package:eventmanagement/ui/page/webview_page.dart';
+import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -161,9 +162,14 @@ class _BottomMenuState extends State<BottomMenuPage> {
             Expanded(
               child: BlocBuilder<PageNavBloc, PageNavState>(
                 bloc: _pageNavBloc,
-                condition: (prevState, newState) =>
-                prevState.page != newState.page,
+                condition: (prevState, newState) {
+                  Logger.log(
+                      'condition prevState.page--->${prevState
+                          .page}, newState.page--->${newState.page}');
+                  return prevState.page != newState.page;
+                },
                 builder: (_, state) {
+                  Logger.log('builder state.page--->${state.page}');
                   return PageStorage(
                     child: _pages[state.page],
                     bucket: bucket,
