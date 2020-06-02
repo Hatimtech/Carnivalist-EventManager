@@ -30,6 +30,7 @@ dependencies:
   file_picker: ^1.9.0+1
   barcode_scan: ^2.0.1
   flutter_nfc_reader: ^0.1.0
+  synchronized: 2.1.0+1
 
 dev_dependencies:
   flutter_test:

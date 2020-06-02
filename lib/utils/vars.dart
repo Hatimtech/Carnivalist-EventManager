@@ -554,3 +554,15 @@ String get userBase64 =>
 extension NumExtension on num {
   bool get isInt => this is int || this == this.roundToDouble();
 }
+
+bool get isInDebugMode {
+  // Assume you're in production mode.
+  bool inDebugMode = false;
+
+  // Assert expressions are only evaluated during development. They are ignored
+  // in production. Therefore, this code only sets `inDebugMode` to true
+  // in a development environment.
+  assert(inDebugMode = true);
+
+  return inDebugMode;
+}

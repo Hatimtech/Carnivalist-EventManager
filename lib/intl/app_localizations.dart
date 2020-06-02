@@ -76,7 +76,7 @@ class AppLocalizations {
           name: "labelActiveEvent", locale: _localeName);
 
   String get labelInactiveEvent =>
-      Intl.message('Make Offline',
+      Intl.message('Inactive Event',
           name: "labelInactiveEvent", locale: _localeName);
 
   String get labelViewEvent =>

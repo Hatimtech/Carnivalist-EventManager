@@ -65,7 +65,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelInactiveEvent": "Make Offline",
+  "labelInactiveEvent": "Inactive Event",
   "@labelInactiveEvent": {
     "type": "text",
     "placeholders": {}

@@ -15,6 +15,7 @@ import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -25,48 +26,86 @@ class CouponPage extends StatefulWidget {
   createState() => _CouponState();
 }
 
-class _CouponState extends State<CouponPage> {
+class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
+  AnimationController _hideFabAnimation;
   CouponBloc _couponBloc;
+
+  @override
+  void dispose() {
+    _hideFabAnimation.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    _hideFabAnimation = AnimationController(
+        vsync: this, duration: kThemeAnimationDuration, value: 1.0);
     _couponBloc = BlocProvider.of<CouponBloc>(context);
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (_hideFabAnimation.value == 0.0) {
+              _hideFabAnimation.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (_hideFabAnimation.value == 1.0) {
+              _hideFabAnimation.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        heroTag: "FAB",
-        backgroundColor: bgColorFAB,
-        onPressed: showCouponCreateActions,
-        child: Icon(
-          Icons.add,
-          size: 48.0,
+      floatingActionButton: ScaleTransition(
+        scale: _hideFabAnimation,
+        child: FloatingActionButton(
+          heroTag: "FAB",
+          backgroundColor: bgColorFAB,
+          onPressed: showCouponCreateActions,
+          child: Icon(
+            Icons.add,
+            size: 48.0,
+          ),
         ),
       ),
-      body: Column(children: <Widget>[
-        _buildErrorReceiverEmptyBloc(),
-        Expanded(
-            child: BlocBuilder<CouponBloc, CouponState>(
-                bloc: _couponBloc,
-                condition: (prevState, newState) {
-                  return (prevState.loading != newState.loading) ||
-                      (prevState.couponList != newState.couponList ||
-                          prevState.couponList.length !=
-                              newState.couponList.length);
-                },
-                builder: (context, CouponState state) {
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      couponList(state.couponList),
-                      if (state.loading) const PlatformProgressIndicator(),
-                    ],
-                  );
-                })),
-      ]),
+      body: NotificationListener(
+        onNotification: _handleScrollNotification,
+        child: Column(children: <Widget>[
+          _buildErrorReceiverEmptyBloc(),
+          Expanded(
+              child: BlocBuilder<CouponBloc, CouponState>(
+                  bloc: _couponBloc,
+                  condition: (prevState, newState) {
+                    return (prevState.loading != newState.loading) ||
+                        (prevState.couponList != newState.couponList ||
+                            prevState.couponList.length !=
+                                newState.couponList.length);
+                  },
+                  builder: (context, CouponState state) {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        couponList(state.couponList),
+                        if (state.loading) const PlatformProgressIndicator(),
+                      ],
+                    );
+                  })),
+        ]),
+      ),
     );
   }
 
@@ -131,7 +170,10 @@ class _CouponState extends State<CouponPage> {
               VerticalDivider(
                 thickness: 6,
                 width: 6,
-                color: coupon.active ? colorActive : colorInactive,
+                color: coupon.active &&
+                    couponParams.endDateTime.isAfter(DateTime.now())
+                    ? colorActive
+                    : colorInactive,
               ),
               const SizedBox(width: 8.0),
               Expanded(

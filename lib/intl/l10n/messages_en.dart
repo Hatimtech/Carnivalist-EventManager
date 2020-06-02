@@ -450,7 +450,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "labelInActiveCoupon":
         MessageLookupByLibrary.simpleMessage("Inactive Coupon"),
         "labelInactiveEvent":
-        MessageLookupByLibrary.simpleMessage("Make Offline"),
+        MessageLookupByLibrary.simpleMessage("Inactive Event"),
         "labelInactiveTicket":
         MessageLookupByLibrary.simpleMessage("Inactive Ticket"),
         "labelLinkedInLink":

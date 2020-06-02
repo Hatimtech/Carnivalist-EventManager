@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:eventmanagement/ui/page/dashboard/event_staff_home.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_detail_root_page.dart';
 import 'package:eventmanagement/ui/page/user_info_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_app.dart';
+import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/orientation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ import 'ui/page/signup_page.dart';
 import 'ui/page/splash_screen.dart';
 import 'utils/vars.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
@@ -50,7 +52,36 @@ void main() {
 
   Injector.configure(Flavor.Network);
 
-  runApp(MyApp());
+  var docsDir = await getSystemDirPath();
+  String canonFilename = '$docsDir/back_to_now.txt';
+  await Logger.initializeLogging(canonFilename);
+  await Logger.log('ENTERED main() ...');
+
+  runZonedGuarded<Future<void>>(
+        () async {
+      runApp(MyApp());
+    },
+        (dynamic error, StackTrace stackTrace) async {
+      if (isInDebugMode) {
+        print('Error--->$error');
+      } else {
+        await Logger.log('$error\n${stackTrace.toString()}');
+      }
+      // Send report
+    },
+  );
+
+  // This captures errors reported by the Flutter framework.
+  FlutterError.onError = (FlutterErrorDetails details) {
+    if (isInDebugMode) {
+      // In development mode, simply print to console.
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      // In production mode, report to the application zone to report to
+      // Sentry.
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
 }
 
 class MyApp extends StatelessWidget with PortraitModeMixin {

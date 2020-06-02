@@ -14,9 +14,11 @@ import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_filter.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_list.dart';
 import 'package:eventmanagement/utils/extensions.dart';
+import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -26,7 +28,10 @@ class DashboardPage extends StatefulWidget {
   createState() => _DashboardState();
 }
 
-class _DashboardState extends State<DashboardPage> {
+class _DashboardState extends State<DashboardPage>
+    with TickerProviderStateMixin {
+  AnimationController _hideFabAnimation;
+
   PageNavBloc _pageNavBloc;
   UserBloc _userBloc;
   EventBloc _eventBloc;
@@ -35,8 +40,17 @@ class _DashboardState extends State<DashboardPage> {
   StaffBloc _staffBloc;
 
   @override
+  void dispose() {
+    _hideFabAnimation.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
+    _hideFabAnimation = AnimationController(
+        vsync: this, duration: kThemeAnimationDuration, value: 1.0);
+
     _pageNavBloc = BlocProvider.of<PageNavBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
     _eventBloc = BlocProvider.of<EventBloc>(context);
@@ -67,18 +81,44 @@ class _DashboardState extends State<DashboardPage> {
     }
   }
 
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (_hideFabAnimation.value == 0.0) {
+              _hideFabAnimation.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (_hideFabAnimation.value == 1.0) {
+              _hideFabAnimation.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: bgColor,
-        floatingActionButton: FloatingActionButton(
-            heroTag: "FAB",
-            backgroundColor: bgColorFAB,
-            onPressed: onCreateEventButtonPressed,
-            child: Icon(
-              Icons.add,
-              size: 48.0,
-            )),
+        floatingActionButton: ScaleTransition(
+          scale: _hideFabAnimation,
+          child: FloatingActionButton(
+              heroTag: "FAB",
+              backgroundColor: bgColorFAB,
+              onPressed: onCreateEventButtonPressed,
+              child: Icon(
+                Icons.add,
+                size: 48.0,
+              )),
+        ),
         body: Column(children: <Widget>[
           _buildErrorReceiverEmptyBloc(),
           Container(
@@ -91,7 +131,8 @@ class _DashboardState extends State<DashboardPage> {
                           .of(context)
                           .labelCoupons
                           .toUpperCase(),
-                          () {
+                          () async {
+                        await Logger.log('Dashboard Coupon Clicked');
                         _pageNavBloc.currentPage(PAGE_COUPONS);
                       },
                       size: 16.0,
@@ -103,7 +144,8 @@ class _DashboardState extends State<DashboardPage> {
                           .of(context)
                           .labelAddons
                           .toUpperCase(),
-                          () {
+                          () async {
+                        await Logger.log('Dashboard Addons Clicked');
                         _pageNavBloc.currentPage(PAGE_ADDONS);
                       },
                       size: 16.0,
@@ -115,7 +157,8 @@ class _DashboardState extends State<DashboardPage> {
                           .of(context)
                           .labelReports
                           .toUpperCase(),
-                          () {
+                          () async {
+                        await Logger.log('Dashboard Reports Clicked');
                         _pageNavBloc.currentPage(PAGE_REPORTS);
                       },
                     )),
@@ -126,7 +169,8 @@ class _DashboardState extends State<DashboardPage> {
                           .of(context)
                           .labelStaff
                           .toUpperCase(),
-                          () {
+                          () async {
+                        await Logger.log('Dashboard Staff Clicked');
                         _pageNavBloc.currentPage(PAGE_STAFF);
                       },
                     )),
@@ -138,73 +182,78 @@ class _DashboardState extends State<DashboardPage> {
                 _eventBloc.getAllEvents(downloadCompleter: downloadCompleter);
                 return downloadCompleter.future;
               },
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Column(children: <Widget>[
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                _categoryCounter(
-                                    AppLocalizations
-                                        .of(context)
-                                        .labelTicketsSold,
-                                    '00'),
-                                SizedBox(width: 10),
-                                BlocBuilder<EventBloc, EventState>(
-                                    bloc: _eventBloc,
-                                    condition: (prevState, newState) =>
-                                    prevState.eventDataList !=
-                                        newState.eventDataList,
-                                    builder: (_, state) {
-                                      return _categoryCounter(
-                                          AppLocalizations
-                                              .of(context)
-                                              .labelUpcomingEvent,
-                                          state.upcomingEventsCount.toString());
-                                    })
-                              ]),
-                          const SizedBox(height: 5),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                BlocBuilder<CouponBloc, CouponState>(
-                                    bloc: _couponBloc,
-                                    condition: (prevState, newState) =>
-                                    prevState.couponList !=
-                                        newState.couponList,
-                                    builder: (_, state) {
-                                      return _categoryCounter(
-                                          AppLocalizations
-                                              .of(context)
-                                              .labelCoupons,
-                                          state.couponList?.length
-                                              ?.toString() ??
-                                              '00');
-                                    }),
-                                SizedBox(width: 10),
-                                BlocBuilder<AddonBloc, AddonState>(
-                                    bloc: _addonBloc,
-                                    condition: (prevState, newState) =>
-                                    prevState.addonList !=
-                                        newState.addonList,
-                                    builder: (_, state) {
-                                      return _categoryCounter(
-                                          AppLocalizations
-                                              .of(context)
-                                              .labelAddons,
-                                          state.addonList?.length?.toString() ??
-                                              '00');
-                                    })
-                              ])
-                        ])),
-                  ),
-                  EventFilter(),
-                  EventList(),
-                ],
+              child: NotificationListener<ScrollNotification>(
+                onNotification: _handleScrollNotification,
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverToBoxAdapter(
+                      child: Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Column(children: <Widget>[
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  _categoryCounter(
+                                      AppLocalizations
+                                          .of(context)
+                                          .labelTicketsSold,
+                                      '00'),
+                                  SizedBox(width: 10),
+                                  BlocBuilder<EventBloc, EventState>(
+                                      bloc: _eventBloc,
+                                      condition: (prevState, newState) =>
+                                      prevState.eventDataList !=
+                                          newState.eventDataList,
+                                      builder: (_, state) {
+                                        return _categoryCounter(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelUpcomingEvent,
+                                            state.upcomingEventsCount
+                                                .toString());
+                                      })
+                                ]),
+                            const SizedBox(height: 5),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  BlocBuilder<CouponBloc, CouponState>(
+                                      bloc: _couponBloc,
+                                      condition: (prevState, newState) =>
+                                      prevState.couponList !=
+                                          newState.couponList,
+                                      builder: (_, state) {
+                                        return _categoryCounter(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelCoupons,
+                                            state.couponList?.length
+                                                ?.toString() ??
+                                                '00');
+                                      }),
+                                  SizedBox(width: 10),
+                                  BlocBuilder<AddonBloc, AddonState>(
+                                      bloc: _addonBloc,
+                                      condition: (prevState, newState) =>
+                                      prevState.addonList !=
+                                          newState.addonList,
+                                      builder: (_, state) {
+                                        return _categoryCounter(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelAddons,
+                                            state.addonList?.length
+                                                ?.toString() ??
+                                                '00');
+                                      })
+                                ])
+                          ])),
+                    ),
+                    EventFilter(),
+                    EventList(),
+                  ],
+                ),
               ),
             ),
           )

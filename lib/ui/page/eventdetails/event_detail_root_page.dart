@@ -9,9 +9,11 @@ import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/eventdetails/attendee_list_page.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_info_page.dart';
 import 'package:eventmanagement/utils/extensions.dart';
+import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
@@ -21,15 +23,48 @@ class EventDetailRootPage extends StatefulWidget {
   _EventDetailRootPageState createState() => _EventDetailRootPageState();
 }
 
-class _EventDetailRootPageState extends State<EventDetailRootPage> {
+class _EventDetailRootPageState extends State<EventDetailRootPage>
+    with TickerProviderStateMixin {
+  AnimationController _hideFabAnimation;
   PageController _pageController;
   bool _showAttendee = true,
       showScannerControls;
   EventDetailBloc _eventDetailBloc;
 
   @override
+  void dispose() {
+    _hideFabAnimation.dispose();
+    super.dispose();
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (_hideFabAnimation.value == 0.0) {
+              _hideFabAnimation.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (_hideFabAnimation.value == 1.0) {
+              _hideFabAnimation.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
+  @override
   void initState() {
     super.initState();
+    _hideFabAnimation = AnimationController(
+        vsync: this, duration: kThemeAnimationDuration, value: 1.0);
     _eventDetailBloc = BlocProvider.of<EventDetailBloc>(context);
     _eventDetailBloc
         .authTokenSave(BlocProvider
@@ -51,6 +86,10 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
 
     final dateTimeNow = DateTime.now();
 
+    print(
+        'endDateTime--->${eventData.endDateTime}, startDateTime--->${eventData
+            .startDateTime} ${dateTimeNow}');
+
     showScannerControls = isValid(eventData.endDateTime) &&
         DateTime.parse(eventData.endDateTime).isAfter(dateTimeNow) &&
         isValid(eventData.startDateTime) &&
@@ -62,22 +101,25 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: showScannerControls
-          ? Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: _buildScanQRCodeFAB(),
-          ),
-          const SizedBox(
-            width: 16.0,
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: _buildScanNFCCodeFAB(),
-          ),
-        ],
+          ? ScaleTransition(
+        scale: _hideFabAnimation,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: _buildScanQRCodeFAB(),
+            ),
+            const SizedBox(
+              width: 16.0,
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: _buildScanNFCCodeFAB(),
+            ),
+          ],
+        ),
       )
           : null,
       body: Stack(
@@ -107,7 +149,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
     return FloatingActionButton(
       heroTag: 'NFC',
       child: Icon(CarnivalistIcons.nfc, color: Colors.white),
-      onPressed: () => _scanNFCTag(),
+      onPressed: _scanNFCTag,
     );
   }
 
@@ -131,21 +173,28 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
 
   Future<void> _scanNFCTag() async {
     try {
+      await Logger.log('Before FlutterNfcReader.read');
       final nfcData = await FlutterNfcReader.read();
+      await Logger.log('After FlutterNfcReader.read');
       if (nfcData.content != null && nfcData.content is String) {
         print("Scanned NFC Code--->${nfcData.content}");
+        await Logger.log('Scanned NFC Code--->${nfcData.content}');
         _uploadScannedTag(nfcData.content, true);
       } else {
         print("Scanned NFC Code Error--->${nfcData.error}");
         context.toast('NFC Code Scan Error--->${nfcData.error}');
+        await Logger.log('Scanned NFC Code Error--->${nfcData.error}');
       }
     } on PlatformException catch (ex) {
       print("Unknown Error: $ex");
       if (isValid(ex.message)) {
         context.toast(ex.message);
       }
+      await Logger.log(
+          'Scanned NFC Code--->PlatformException--->${ex.message}');
     } catch (ex) {
       print("Unknown Error: $ex");
+      await Logger.log('Scanned NFC Code--->Unknown Error--->${ex.message}');
     }
   }
 
@@ -303,7 +352,9 @@ class _EventDetailRootPageState extends State<EventDetailRootPage> {
     itemCount: 2,
     itemBuilder: (_, pos) {
       if (pos == 0)
-        return AttendeeListPage();
+        return NotificationListener(
+            onNotification: _handleScrollNotification,
+            child: AttendeeListPage());
       else
         return EventInfoPage();
     },

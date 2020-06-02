@@ -13,6 +13,7 @@ import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StaffPage extends StatefulWidget {
@@ -22,47 +23,85 @@ class StaffPage extends StatefulWidget {
   createState() => _StaffState();
 }
 
-class _StaffState extends State<StaffPage> {
+class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
+  AnimationController _hideFabAnimation;
   StaffBloc _staffBloc;
+
+  @override
+  void dispose() {
+    _hideFabAnimation.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    _hideFabAnimation = AnimationController(
+        vsync: this, duration: kThemeAnimationDuration, value: 1.0);
     _staffBloc = BlocProvider.of<StaffBloc>(context);
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (_hideFabAnimation.value == 0.0) {
+              _hideFabAnimation.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (_hideFabAnimation.value == 1.0) {
+              _hideFabAnimation.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        heroTag: "FAB",
-        backgroundColor: bgColorFAB,
-        onPressed: _onCreateStaffButtonClicked,
-        child: Icon(
-          Icons.add,
-          size: 48.0,
+      floatingActionButton: ScaleTransition(
+        scale: _hideFabAnimation,
+        child: FloatingActionButton(
+          heroTag: "FAB",
+          backgroundColor: bgColorFAB,
+          onPressed: _onCreateStaffButtonClicked,
+          child: Icon(
+            Icons.add,
+            size: 48.0,
+          ),
         ),
       ),
-      body: Column(children: <Widget>[
-        _buildErrorReceiverEmptyBloc(),
-        Expanded(
-            child: BlocBuilder<StaffBloc, StaffState>(
-                bloc: _staffBloc,
-                condition: (prevState, newState) {
-                  return (prevState.loading != newState.loading) ||
-                      (prevState.staffs != newState.staffs ||
-                          prevState.staffs.length != newState.staffs.length);
-                },
-                builder: (context, StaffState state) {
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      staffs(state.staffs),
-                      if (state.loading) const PlatformProgressIndicator(),
-                    ],
-                  );
-                })),
-      ]),
+      body: NotificationListener(
+        onNotification: _handleScrollNotification,
+        child: Column(children: <Widget>[
+          _buildErrorReceiverEmptyBloc(),
+          Expanded(
+              child: BlocBuilder<StaffBloc, StaffState>(
+                  bloc: _staffBloc,
+                  condition: (prevState, newState) {
+                    return (prevState.loading != newState.loading) ||
+                        (prevState.staffs != newState.staffs ||
+                            prevState.staffs.length != newState.staffs.length);
+                  },
+                  builder: (context, StaffState state) {
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        staffs(state.staffs),
+                        if (state.loading) const PlatformProgressIndicator(),
+                      ],
+                    );
+                  })),
+        ]),
+      ),
     );
   }
 
