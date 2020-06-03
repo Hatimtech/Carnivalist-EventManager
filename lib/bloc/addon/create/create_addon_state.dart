@@ -73,8 +73,8 @@ class CreateAddonState {
     return CreateAddonState(
       authToken: '',
       addonName: addon.name ?? '',
-      startDate: addon.startDateTime,
-      endDate: addon.endDateTime,
+      startDate: addon.startDateTime?.toLocal(),
+      endDate: addon.endDateTime?.toLocal(),
       totalAvailable: addon.quantity?.toString() ?? '',
       price: addon.price?.toString() ?? '',
       description: addon.description ?? '',

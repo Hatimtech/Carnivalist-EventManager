@@ -497,7 +497,8 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       DateTime eventStartDate;
       TimeOfDay eventStartTime;
       if (isValid(existingData.startDateTime)) {
-        final startDateTime = DateTime.parse(existingData.startDateTime);
+        final startDateTime = DateTime.parse(existingData.startDateTime)
+            .toLocal();
         eventStartDate = DateTime(
             startDateTime.year, startDateTime.month, startDateTime.day);
         eventStartTime =
@@ -507,7 +508,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       DateTime eventEndDate;
       TimeOfDay eventEndTime;
       if (isValid(existingData.endDateTime)) {
-        final endDateTime = DateTime.parse(existingData.endDateTime);
+        final endDateTime = DateTime.parse(existingData.endDateTime).toLocal();
         eventEndDate =
             DateTime(endDateTime.year, endDateTime.month, endDateTime.day);
         eventEndTime =
@@ -528,10 +529,10 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
             .addAll(existingData.custom.selectedDays.map((eventCustomDateTime) {
           return EventCustomDate(
             eventStartDateTime: isValid(eventCustomDateTime.startDateTime)
-                ? DateTime.parse(eventCustomDateTime.startDateTime)
+                ? DateTime.parse(eventCustomDateTime.startDateTime).toLocal()
                 : null,
             eventEndDateTime: isValid(eventCustomDateTime.endDateTime)
-                ? DateTime.parse(eventCustomDateTime.endDateTime)
+                ? DateTime.parse(eventCustomDateTime.endDateTime).toLocal()
                 : null,
           );
         }).toList());
@@ -918,8 +919,10 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
     customSelectedDateTime
         .addAll(state.eventCustomDateTimeList.map((eventCustomDateTime) {
       return CustomDateTime(
-        startDateTime: eventCustomDateTime.eventStartDateTime.toIso8601String(),
-        endDateTime: eventCustomDateTime.eventEndDateTime.toIso8601String(),
+        startDateTime: eventCustomDateTime.eventStartDateTime.toUtc()
+            .toIso8601String(),
+        endDateTime: eventCustomDateTime.eventEndDateTime.toUtc()
+            .toIso8601String(),
       );
     }));
     return customSelectedDateTime;
@@ -965,8 +968,8 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
         tags: state.eventTags,
         eventFrequency: eventFreq,
         eventPrivacy: eventPrivacy,
-        startDateTime: startDate.toIso8601String(),
-        endDateTime: endDate.toIso8601String(),
+        startDateTime: startDate.toUtc().toIso8601String(),
+        endDateTime: endDate.toUtc().toIso8601String(),
         description: state.eventDescription,
         status: state.status,
         place: Place(

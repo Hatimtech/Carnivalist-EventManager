@@ -929,11 +929,12 @@ class _SettingState extends State<SettingPage> {
     if (isPlatformAndroid) {
       final currentTime = DateTime.now();
       final eventStartTime = _basicBloc.startDateTime;
+      final eventEndTime = _basicBloc.endDateTime;
       pickedDate = await showDatePicker(
         context: context,
         firstDate:
         currentTime.isBefore(eventStartTime) ? currentTime : eventStartTime,
-        lastDate: eventStartTime,
+        lastDate: eventEndTime,
         initialDate: eventStartTime,
       );
 
@@ -966,6 +967,7 @@ class _SettingState extends State<SettingPage> {
         context: context,
         builder: (context) {
           final eventStartTime = _basicBloc.startDateTime;
+          final eventEndTime = _basicBloc.endDateTime;
           DateTime localPickedTime = eventStartTime;
           final currentTime = DateTime.now();
           return SizedBox(
@@ -1002,7 +1004,7 @@ class _SettingState extends State<SettingPage> {
                         localPickedTime = date;
                       },
                       initialDateTime: eventStartTime,
-                      maximumDate: eventStartTime,
+                      maximumDate: eventEndTime,
                       minimumDate: currentTime.isBefore(eventStartTime)
                           ? currentTime
                           : eventStartTime,

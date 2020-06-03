@@ -381,7 +381,9 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
           ),
           Text(AppLocalizations.of(context).labelAddonSaleEnd,
               style: Theme.of(context).textTheme.body2),
-          Text(saleEnd != null ? DateFormat.yMMMd().format(saleEnd) : '--',
+          Text(saleEnd != null
+              ? DateFormat.yMMMd().format(saleEnd.toLocal())
+              : '--',
               style: Theme.of(context).textTheme.body2)
         ]);
   }

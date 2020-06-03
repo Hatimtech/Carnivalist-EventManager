@@ -13,7 +13,7 @@ class Logger {
 
     /// per its documentation, `writeAsString` “Opens the file, writes
     /// the string in the given encoding, and closes the file”
-    return _logFile.writeAsString(text, mode: FileMode.write, flush: true);
+    return _logFile.writeAsString(text, mode: FileMode.append, flush: true);
   }
 
   static Future log(String s) async {

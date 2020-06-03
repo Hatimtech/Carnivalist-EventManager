@@ -69,7 +69,7 @@ class CreateTicketState {
       ticketCurrencyUI: currencyUI ?? '',
       ticketPrice: ticket.price?.toString() ?? '',
       salesEndDate: isValid(ticket.sellingEndDate) ? DateTime.parse(
-          ticket.sellingEndDate) : null,
+          ticket.sellingEndDate).toLocal() : null,
       totalAvailable: ticket.quantity?.toString() ?? '',
       minBooking: ticket.minOrderQuantity?.toString() ?? '',
       maxBooking: ticket.maxOrderQuantity?.toString() ?? '',

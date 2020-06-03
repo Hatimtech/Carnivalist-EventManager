@@ -93,7 +93,8 @@ class _EventListItemState extends State<EventListItem> {
                         Text(
                           isValid(_eventData.startDateTime)
                               ? DateFormat.yMMMd().format(
-                                  DateTime.parse(_eventData.startDateTime))
+                              DateTime.parse(_eventData.startDateTime)
+                                  .toLocal())
                               : AppLocalizations.of(context).notAvailable,
                           style: Theme.of(context).textTheme.body2.copyWith(
                                 color: colorTextSubhead,

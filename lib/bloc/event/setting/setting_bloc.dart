@@ -174,7 +174,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
       String cancellationPolicyDesc = eventData.cancellationPolicy?.description;
       List<CancellationOption> cancellationOptions =
-          eventData.cancellationPolicy?.options;
+      eventData.cancellationPolicy?.options?.map(
+            (e) {
+          return CancellationOption(
+              refundType: e.refundType,
+              refundValue: e.refundValue,
+              cancellationEndDate: e.cancellationEndDate.toLocal());
+        },
+      )?.toList();
 
       yield state.copyWith(
         precentage: precentage,
@@ -441,7 +448,14 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
               )),
           cancellationPolicy: CancellationPolicy(
             description: state.cancellationPolicyDesc,
-            options: state.cancellationOptions,
+            options: state.cancellationOptions.map(
+                  (e) {
+                return CancellationOption(
+                    refundType: e.refundType,
+                    refundValue: e.refundValue,
+                    cancellationEndDate: e.cancellationEndDate.toUtc());
+              },
+            )?.toList(),
           ),
           websiteSettings: WebsiteSetting(
             paymentGatewayPayPerson: state.paymentGatewayPayPerson.value,

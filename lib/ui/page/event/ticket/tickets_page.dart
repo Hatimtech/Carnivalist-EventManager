@@ -202,7 +202,8 @@ class _TicketsState extends State<TicketsPage> {
                                           isValid(ticket.sellingEndDate)
                                               ? DateFormat.yMMMd().format(
                                               DateTime.parse(
-                                                  ticket.sellingEndDate))
+                                                  ticket.sellingEndDate)
+                                                  .toLocal())
                                               : '--',
                                           style:
                                           Theme

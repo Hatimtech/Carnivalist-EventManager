@@ -234,7 +234,7 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
             ? double.parse(state.ticketPrice)
             : 0);
     param.putIfAbsent(
-        'sellingEndDate', () => state.salesEndDate.toIso8601String());
+        'sellingEndDate', () => state.salesEndDate.toUtc().toIso8601String());
     param.putIfAbsent('quantity', () => int.parse(state.totalAvailable));
     param.putIfAbsent('minOrderQuantity', () => int.parse(state.minBooking));
     param.putIfAbsent('maxOrderQuantity', () => int.parse(state.maxBooking));

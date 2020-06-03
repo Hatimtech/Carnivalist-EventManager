@@ -259,7 +259,9 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
           ),
           Text(AppLocalizations.of(context).labelCouponValidTill,
               style: Theme.of(context).textTheme.body2),
-          Text(saleEnd != null ? DateFormat.yMMMd().format(saleEnd) : '--',
+          Text(saleEnd != null
+              ? DateFormat.yMMMd().format(saleEnd.toLocal())
+              : '--',
               style: Theme.of(context).textTheme.body2)
         ]);
   }
