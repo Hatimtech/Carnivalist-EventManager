@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_state.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
@@ -215,7 +217,10 @@ class _BottomMenuState extends State<BottomMenuPage> {
                       .iconTheme
                       .color,
                 ),
-                onPressed: () => showLogoutConfirmationDialog()),
+                onPressed: () {
+                  showLogs();
+//                  showLogoutConfirmationDialog();
+                }),
           ),
         ],
       ),
@@ -371,6 +376,24 @@ class _BottomMenuState extends State<BottomMenuPage> {
                 .of(context)
                 .btnLogout)),
       ],
+    );
+
+    showDialog(context: context, builder: (context) => alertDialog);
+  }
+
+  void showLogs() async {
+    var docsDir = await getSystemDirPath();
+    String canonFilename = '$docsDir/back_to_now.txt';
+    String content = File(canonFilename).readAsStringSync();
+    AlertDialog alertDialog = AlertDialog(
+      content: SelectableText(
+        content,
+        style: Theme
+            .of(context)
+            .textTheme
+            .title
+            .copyWith(fontSize: 16.0, fontWeight: FontWeight.normal),
+      ),
     );
 
     showDialog(context: context, builder: (context) => alertDialog);
