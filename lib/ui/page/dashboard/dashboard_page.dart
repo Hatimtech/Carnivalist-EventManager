@@ -264,7 +264,7 @@ class _DashboardState extends State<DashboardPage>
       {double size = 18}) =>
       GestureDetector(
         onTap: handler,
-        behavior: HitTestBehavior.translucent,
+        behavior: HitTestBehavior.opaque,
         child: Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(
