@@ -898,6 +898,10 @@ class AppLocalizations {
   String get labelEditAddon =>
       Intl.message('Edit Addon', name: "labelEditAddon", locale: _localeName);
 
+  String get labelDeleteAddon =>
+      Intl.message(
+          'Delete Addon', name: "labelDeleteAddon", locale: _localeName);
+
   String get errorAddonName =>
       Intl.message('Addon name can not be empty',
           name: "errorAddonName", locale: _localeName);
@@ -959,6 +963,10 @@ class AppLocalizations {
   String get labelInActiveCoupon =>
       Intl.message('Inactive Coupon',
           name: "labelInActiveCoupon", locale: _localeName);
+
+  String get labelDeleteCoupon =>
+      Intl.message(
+          'Delete Coupon', name: "labelDeleteCoupon", locale: _localeName);
 
   String get labelCreateDiscountCoupon =>
       Intl.message('Code Discount',
@@ -1417,6 +1425,22 @@ class AppLocalizations {
   String get mediaDeleteMsg =>
       Intl.message('Are you sure, you want to delete this media file?',
           name: "mediaDeleteMsg", locale: _localeName);
+
+  String get couponDeleteTitle =>
+      Intl.message(
+          'Delete Coupon', name: "couponDeleteTitle", locale: _localeName);
+
+  String get couponDeleteMsg =>
+      Intl.message('Are you sure, you want to delete this coupon?',
+          name: "couponDeleteMsg", locale: _localeName);
+
+  String get addonDeleteTitle =>
+      Intl.message(
+          'Delete Addon', name: "addonDeleteTitle", locale: _localeName);
+
+  String get addonDeleteMsg =>
+      Intl.message('Are you sure, you want to delete this addon?',
+          name: "addonDeleteMsg", locale: _localeName);
 
   String get deleteButton =>
       Intl.message('Delete', name: "eventDeleteButton", locale: _localeName);

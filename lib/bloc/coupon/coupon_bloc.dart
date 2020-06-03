@@ -28,8 +28,8 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
     add(UpdateCoupon(coupon));
   }
 
-  void deleteCoupon(String id) {
-    add(DeleteCoupon(id));
+  void deleteCoupon(String id, Function callback) {
+    add(DeleteCoupon(id, callback));
   }
 
   void activeInactiveCoupon(String couponId, bool active, Function callback) {
@@ -81,6 +81,23 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
 
     if (event is ActiveInactiveCoupon) {
       activeInactiveCouponsApi(event);
+    }
+
+    if (event is DeleteCoupon) {
+      deleteCouponApi(event);
+    }
+
+    if (event is DeleteCouponResult) {
+      if (event.success) {
+        state.couponList.removeWhere((coupon) => coupon.id == event.couponId);
+
+        yield state.copyWith(
+            couponList: List.of(state.couponList),
+            loading: false,
+            uiMsg: event.uiMsg);
+      } else {
+        yield state.copyWith(loading: false, uiMsg: event.uiMsg);
+      }
     }
 
     if (event is ActiveInactiveCouponResult) {
@@ -154,6 +171,34 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
     }).catchError((error) {
       print('Error in activeInactiveCouponsApi--->$error');
       add(ActiveInactiveCouponResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(ERR_SOMETHING_WENT_WRONG);
+    });
+  }
+
+  void deleteCouponApi(DeleteCoupon event) {
+    apiProvider
+        .deleteCoupon(state.authToken, event.id)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        final ticketActionResponse =
+        networkServiceResponse.response as CouponActionResponse;
+        if (ticketActionResponse.code == apiCodeSuccess) {
+          add(DeleteCouponResult(true,
+              couponId: event.id, uiMsg: ticketActionResponse.message));
+          event.callback(ticketActionResponse);
+        } else {
+          add(DeleteCouponResult(false,
+              uiMsg: ticketActionResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(ticketActionResponse);
+        }
+      } else {
+        add(DeleteCouponResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error) {
+      print('Error in deleteCouponApi--->$error');
+      add(DeleteCouponResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
       event.callback(ERR_SOMETHING_WENT_WRONG);
     });
   }

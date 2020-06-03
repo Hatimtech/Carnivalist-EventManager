@@ -73,9 +73,12 @@ class NetworkService extends NetworkType implements APIService {
   final _addonTicketListUrl = _baseUrl + _subUrl + 'get-addons-for-tickets/';
   final _addonUploadUrl = _baseUrl + _subUrl + 'create-addons/';
 
+  final _deleteAddonUrl = _baseUrl + _subUrl + 'delete-addon/';
+
   final _couponListUrl = _baseUrl + _subUrl + 'get-coupons/';
 
   final _activeInactiveCouponUrl = _baseUrl + _subUrl + 'active-toggle/';
+  final _deleteCouponUrl = _baseUrl + _subUrl + 'delete-coupon/';
   final _couponUploadUrl = _baseUrl + _subUrl + 'save-new-coupon/';
 
   final _eventDetailUrl = _baseUrl + _subUrl + 'ticketreports/';
@@ -498,6 +501,23 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
+  deleteAddon(String authToken, String addonId) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<AddonResponse>(
+        '$_deleteAddonUrl$addonId', headers: headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = AddonResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
   getAllCoupons(String authToken) async {
     var headers = {
       'Authorization': authToken,
@@ -522,6 +542,23 @@ class NetworkService extends NetworkType implements APIService {
 
     var result = await rest.get<CouponActionResponse>(
         '$_activeInactiveCouponUrl$couponId', headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = CouponActionResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  deleteCoupon(String authToken, String couponId) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.post<CouponActionResponse>(
+        '$_deleteCouponUrl$couponId', headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = CouponActionResponse.fromJson(json.decode(result.mappedResult));

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:eventmanagement/bloc/addon/addon_event.dart';
 import 'package:eventmanagement/bloc/addon/addon_state.dart';
 import 'package:eventmanagement/model/addons/addon.dart';
+import 'package:eventmanagement/model/addons/addon_response.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
 import 'package:eventmanagement/utils/vars.dart';
 
@@ -39,8 +40,8 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
     add(UpdateAddon(addon));
   }
 
-  void deleteAddon(String id) {
-    add(DeleteAddon(id));
+  void deleteAddon(String id, Function callback) {
+    add(DeleteAddon(id, callback));
   }
 
   void addonSelectionChange(String addonId) {
@@ -71,6 +72,23 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
         uiMsg: !event.success ? event.error : null,
         addonList: event.success ? event.addonList : null,
       );
+    }
+
+    if (event is DeleteAddon) {
+      deleteAddonApi(event);
+    }
+
+    if (event is DeleteAddonResult) {
+      if (event.success) {
+        state.addonList.removeWhere((addon) => addon.id == event.addonId);
+
+        yield state.copyWith(
+            addonList: List.of(state.addonList),
+            loading: false,
+            uiMsg: event.uiMsg);
+      } else {
+        yield state.copyWith(loading: false, uiMsg: event.uiMsg);
+      }
     }
 
     if (event is AddAddon) {
@@ -135,6 +153,34 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
       add(AddonListAvailable(false, error: ERR_SOMETHING_WENT_WRONG));
       if (event.downloadCompleter != null)
         event.downloadCompleter.complete(false);
+    });
+  }
+
+  void deleteAddonApi(DeleteAddon event) {
+    apiProvider
+        .deleteAddon(state.authToken, event.id)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        final ticketActionResponse =
+        networkServiceResponse.response as AddonResponse;
+        if (ticketActionResponse.code == apiCodeSuccess) {
+          add(DeleteAddonResult(true,
+              addonId: event.id, uiMsg: ticketActionResponse.message));
+          event.callback(ticketActionResponse);
+        } else {
+          add(DeleteAddonResult(false,
+              uiMsg: ticketActionResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(ticketActionResponse);
+        }
+      } else {
+        add(DeleteAddonResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error) {
+      print('Error in deleteAddonApi--->$error');
+      add(DeleteAddonResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(ERR_SOMETHING_WENT_WRONG);
     });
   }
 }

@@ -175,4 +175,14 @@ class MockService implements APIService {
   createStaff(String authToken, Map<String, dynamic> staff, {String staffId}) {
     return null;
   }
+
+  @override
+  deleteCoupon(String authToken, String couponId) {
+    return null;
+  }
+
+  @override
+  deleteAddon(String authToken, String addonId) {
+    return null;
+  }
 }

@@ -36,8 +36,9 @@ class UpdateAddon extends AddonEvent {
 
 class DeleteAddon extends AddonEvent {
   final String id;
+  final Function callback;
 
-  DeleteAddon(this.id);
+  DeleteAddon(this.id, this.callback);
 }
 
 class GetAllAddons extends AddonEvent {
@@ -58,4 +59,12 @@ class AddonListAvailable extends AddonEvent {
   final List<Addon> addonList;
 
   AddonListAvailable(this.success, {this.error, this.addonList});
+}
+
+class DeleteAddonResult extends AddonEvent {
+  final bool success;
+  final String addonId;
+  final dynamic uiMsg;
+
+  DeleteAddonResult(this.success, {this.addonId, this.uiMsg});
 }

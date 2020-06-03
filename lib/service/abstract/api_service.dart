@@ -51,9 +51,13 @@ abstract class APIService {
 
   assignAddon(String authToken, Ticket ticket, {String ticketId});
 
+  deleteAddon(String authToken, String addonId);
+
   getAllCoupons(String authToken);
 
   activeInactiveCoupons(String authToken, String couponId);
+
+  deleteCoupon(String authToken, String couponId);
 
   uploadCoupon(String authToken, Coupon coupon);
 

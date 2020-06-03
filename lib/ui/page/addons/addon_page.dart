@@ -405,18 +405,27 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
   Widget _buildMaterialAddonActionSheet(Addon addon) => ListView(
         shrinkWrap: true,
         children: <Widget>[
+          _buildMaterialFieldAction(AppLocalizations
+              .of(context)
+              .labelEditAddon,
+                  () => editAddon(addon),
+              showDivider: true),
           _buildMaterialFieldAction(
-              AppLocalizations.of(context).labelEditAddon, addon, editAddon,
-              showDivider: false),
+            AppLocalizations
+                .of(context)
+                .labelDeleteAddon,
+                () => deleteAddon(addon.id),
+            showDivider: false,
+          ),
         ],
       );
 
-  Widget _buildMaterialFieldAction(String name, Addon addon, Function handler,
+  Widget _buildMaterialFieldAction(String name, Function handler,
       {bool showDivider = true}) {
     return InkWell(
         onTap: () {
           Navigator.pop(context);
-          handler(addon);
+          handler();
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,8 +451,15 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
   Widget _buildCupertinoAddonActionSheet(Addon addon) {
     return CupertinoActionSheet(
       actions: [
+        _buildCupertinoAddonAction(AppLocalizations
+            .of(context)
+            .labelEditAddon,
+                () => editAddon(addon)),
         _buildCupertinoAddonAction(
-            AppLocalizations.of(context).labelEditAddon, addon, editAddon),
+            AppLocalizations
+                .of(context)
+                .labelDeleteAddon,
+                () => deleteAddon(addon.id)),
       ],
       cancelButton: CupertinoActionSheetAction(
         child: Text(
@@ -460,12 +476,11 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildCupertinoAddonAction(
-      String name, Addon addon, Function handler) {
+  Widget _buildCupertinoAddonAction(String name, Function handler) {
     return CupertinoActionSheetAction(
       onPressed: () {
         Navigator.pop(context);
-        handler(addon);
+        handler();
       },
       child: Text(
         name,
@@ -479,6 +494,29 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
 
   void editAddon(Addon addon) {
     _onCreateAddonButtonPressed(addonId: addon.id);
+  }
+
+  Future<void> deleteAddon(String addonId) async {
+    bool delete = await context.showConfirmationDialog(
+        AppLocalizations
+            .of(context)
+            .addonDeleteTitle,
+        AppLocalizations
+            .of(context)
+            .addonDeleteMsg,
+        posText: AppLocalizations
+            .of(context)
+            .deleteButton,
+        negText: AppLocalizations
+            .of(context)
+            .btnCancel);
+
+    if (delete ?? false) {
+      context.showProgress(context);
+      _addonBloc.deleteAddon(addonId, (response) {
+        context.hideProgress(context);
+      });
+    }
   }
 
   Future<void> _onCreateAddonButtonPressed({String addonId}) async {

@@ -119,6 +119,11 @@ class ApiProvider {
     return await apiService.assignAddon(authToken, ticket, ticketId: ticketId);
   }
 
+  Future<NetworkServiceResponse> deleteAddon(String authToken,
+      String addonId) async {
+    return await apiService.deleteAddon(authToken, addonId);
+  }
+
   Future<NetworkServiceResponse> getAllCoupons(String authToken) async {
     return await apiService.getAllCoupons(authToken);
   }
@@ -126,6 +131,11 @@ class ApiProvider {
   Future<NetworkServiceResponse> activeInactiveCoupons(String authToken,
       String couponId) async {
     return await apiService.activeInactiveCoupons(authToken, couponId);
+  }
+
+  Future<NetworkServiceResponse> deleteCoupon(String authToken,
+      String couponId) async {
+    return await apiService.deleteCoupon(authToken, couponId);
   }
 
   Future<NetworkServiceResponse> uploadCoupon(String authToken,

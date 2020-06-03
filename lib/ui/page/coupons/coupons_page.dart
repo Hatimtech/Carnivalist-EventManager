@@ -294,6 +294,13 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
                 ? AppLocalizations.of(context).labelInActiveCoupon
                 : AppLocalizations.of(context).labelActiveCoupon,
             () => activeInactiveCoupon(coupon),
+            showDivider: true,
+          ),
+          _buildMaterialFieldAction(
+            AppLocalizations
+                .of(context)
+                .labelDeleteCoupon,
+                () => deleteCoupon(coupon.id),
             showDivider: false,
           ),
         ],
@@ -340,6 +347,11 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
                 ? AppLocalizations.of(context).labelInActiveCoupon
                 : AppLocalizations.of(context).labelActiveCoupon,
             () => activeInactiveCoupon(coupon)),
+        _buildCupertinoCouponAction(
+            AppLocalizations
+                .of(context)
+                .labelDeleteCoupon,
+                () => deleteCoupon(coupon.id)),
       ],
       cancelButton: CupertinoActionSheetAction(
         child: Text(
@@ -377,6 +389,29 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
     _couponBloc.activeInactiveCoupon(coupon.id, !coupon.active, (response) {
       context.hideProgress(context);
     });
+  }
+
+  Future<void> deleteCoupon(String couponId) async {
+    bool delete = await context.showConfirmationDialog(
+        AppLocalizations
+            .of(context)
+            .couponDeleteTitle,
+        AppLocalizations
+            .of(context)
+            .couponDeleteMsg,
+        posText: AppLocalizations
+            .of(context)
+            .deleteButton,
+        negText: AppLocalizations
+            .of(context)
+            .btnCancel);
+
+    if (delete ?? false) {
+      context.showProgress(context);
+      _couponBloc.deleteCoupon(couponId, (response) {
+        context.hideProgress(context);
+      });
+    }
   }
 
   Future<void> showCouponCreateActions() async {

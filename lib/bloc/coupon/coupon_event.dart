@@ -24,8 +24,9 @@ class UpdateCoupon extends CouponEvent {
 
 class DeleteCoupon extends CouponEvent {
   final String id;
+  final Function callback;
 
-  DeleteCoupon(this.id);
+  DeleteCoupon(this.id, this.callback);
 }
 
 class GetAllCoupons extends CouponEvent {
@@ -58,4 +59,13 @@ class ActiveInactiveCouponResult extends CouponEvent {
 
   ActiveInactiveCouponResult(this.success,
       {this.couponId, this.active, this.uiMsg});
+}
+
+
+class DeleteCouponResult extends CouponEvent {
+  final bool success;
+  final String couponId;
+  final dynamic uiMsg;
+
+  DeleteCouponResult(this.success, {this.couponId, this.uiMsg});
 }
