@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
@@ -62,7 +61,7 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
                   Icons.power_settings_new,
                   color: Theme.of(context).appBarTheme.iconTheme.color,
                 ),
-                onPressed: () => /*showLogoutConfirmationDialog()*/showLogs()),
+                onPressed: () => showLogoutConfirmationDialog()),
           ),
         ],
       ),
@@ -159,23 +158,5 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
         );
       },
     );
-  }
-
-  void showLogs() async {
-    var docsDir = await getSystemDirPath();
-    String canonFilename = '$docsDir/back_to_now.txt';
-    String content = File(canonFilename).readAsStringSync();
-    AlertDialog alertDialog = AlertDialog(
-      content: SelectableText(
-        content,
-        style: Theme
-            .of(context)
-            .textTheme
-            .title
-            .copyWith(fontSize: 16.0, fontWeight: FontWeight.normal),
-      ),
-    );
-
-    showDialog(context: context, builder: (context) => alertDialog);
   }
 }
