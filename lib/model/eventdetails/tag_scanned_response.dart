@@ -9,6 +9,6 @@ class TagScannedResponse {
     code = json['code'];
     message = json['message'];
     eventDetailId =
-        json['updatedData'] != null ? json['updatedData']['_id'] : null;
+    json['orderData'] != null ? json['orderData']['_id'] : null;
   }
 }

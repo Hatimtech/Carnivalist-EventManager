@@ -90,11 +90,12 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
         'endDateTime--->${eventData.endDateTime}, startDateTime--->${eventData
             .startDateTime} ${dateTimeNow}');
 
-    showScannerControls = isValid(eventData.endDateTime) &&
+    /*showScannerControls = isValid(eventData.endDateTime) &&
         DateTime.parse(eventData.endDateTime).isAfter(dateTimeNow) &&
         isValid(eventData.startDateTime) &&
         DateTime.parse(eventData.startDateTime).isBefore(dateTimeNow) &&
-        eventData.status == 'ACTIVE';
+        eventData.status == 'ACTIVE';*/
+    showScannerControls = true;
   }
 
   @override

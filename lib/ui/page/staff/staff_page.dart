@@ -153,7 +153,7 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
       clipBehavior: Clip.antiAlias,
       child: ConstrainedBox(
         constraints: const BoxConstraints(
-          maxHeight: 72.0,
+          maxHeight: 78.0,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +166,7 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
             const SizedBox(width: 8.0),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 8.0,),
                 child: _buildUserInfoView(
                   staff.name ?? '--',
                   staff.username ?? '--',

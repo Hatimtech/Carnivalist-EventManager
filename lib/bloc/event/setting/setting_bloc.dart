@@ -453,7 +453,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
                 return CancellationOption(
                     refundType: e.refundType,
                     refundValue: e.refundValue,
-                    cancellationEndDate: e.cancellationEndDate.toUtc());
+                    cancellationEndDate: e.cancellationEndDate?.toUtc());
               },
             )?.toList(),
           ),
