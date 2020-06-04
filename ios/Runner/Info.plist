@@ -42,16 +42,21 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSAppTransportSecurity</key>
-    <true/>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-    <key>io.flutter.embedded_views_preview</key>
-    <string>YES</string>
-    <key>NSCameraUsageDescription</key>
-    <string>Require camera permission in order to add images to Event Gallery and Addons.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Require microphone permission in order to add videos to Event Gallery.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Require photo library permission in order to add media to Event Gallery and Addons.</string>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Require camera permission in order to add images to Event Gallery and Addons.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Require microphone permission in order to add videos to Event Gallery.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Require photo library permission in order to add media to Event Gallery and Addons.</string>
+	<key>NFCReaderUsageDescription</key>
+	<string>Require NFC permission in order to Scan  Event Tickets </string>
+	<key>Allow Arbitrary Loads</key>
+	<true/>
 </dict>
 </plist>
