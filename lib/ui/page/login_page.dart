@@ -165,57 +165,45 @@ class _LoginState extends State<LoginPage> {
       );
 
   _phoneEmailInput() =>
-      BlocBuilder<LoginBloc, LoginState>(
-      bloc: _loginBloc,
-          condition: (prevState, newState) =>
-          prevState.mobile != newState.mobile,
-      builder: (BuildContext context, LoginState state) {
-        return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-            child: widget.inputField(
-              _phoneEmailController,
-              onChanged: _loginBloc.mobileInput,
+      Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
+          child: widget.inputField(
+            _phoneEmailController,
+            onChanged: _loginBloc.mobileInput,
+            labelText: AppLocalizations
+                .of(context)
+                .inputHintPhoneEmail,
+            labelStyle: Theme
+                .of(context)
+                .textTheme
+                .body1,
+            validation: (value) =>
+                validatePhoneEmail(value, AppLocalizations.of(context)),
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            nextFocusNode: _focusNodePassword,
+          ));
+
+  _passwordInput() =>
+      Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
+          child: widget.inputField(_passwordController,
+              onChanged: _loginBloc.passwordInput,
               labelText: AppLocalizations
                   .of(context)
-                  .inputHintPhoneEmail,
+                  .inputHintPassword,
               labelStyle: Theme
                   .of(context)
                   .textTheme
                   .body1,
+              obscureText: visible,
               validation: (value) =>
-                  validatePhoneEmail(value, AppLocalizations.of(context)),
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              nextFocusNode: _focusNodePassword,
-            ));
-      });
-
-  _passwordInput() =>
-      BlocBuilder<LoginBloc, LoginState>(
-      bloc: _loginBloc,
-          condition: (prevState, newState) =>
-          prevState.password != newState.password,
-      builder: (BuildContext context, LoginState state) {
-        return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
-            child: widget.inputField(_passwordController,
-                onChanged: _loginBloc.passwordInput,
-                labelText: AppLocalizations
-                    .of(context)
-                    .inputHintPassword,
-                labelStyle: Theme
-                    .of(context)
-                    .textTheme
-                    .body1,
-                obscureText: visible,
-                validation: (value) =>
-                    validatePassword(value, AppLocalizations.of(context)),
-                focusNode: _focusNodePassword,
-                inkWell: InkWell(
-                    child:
-                        Icon(visible ? Icons.visibility_off : Icons.visibility),
-                    onTap: () => setState(() => visible = !visible))));
-      });
+                  validatePassword(value, AppLocalizations.of(context)),
+              focusNode: _focusNodePassword,
+              inkWell: InkWell(
+                  child: Icon(
+                      visible ? Icons.visibility_off : Icons.visibility),
+                  onTap: () => setState(() => visible = !visible))));
 
   Widget _buildStaffLoginCheckbox() =>
       BlocBuilder<LoginBloc, LoginState>(

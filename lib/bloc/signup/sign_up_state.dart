@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 
 class SignUpState {
   final String name;
+  final String lastName;
   final String email;
   final String mobile;
   final String password;
@@ -11,6 +12,7 @@ class SignUpState {
 
   SignUpState({
     @required this.name,
+    @required this.lastName,
     @required this.email,
     @required this.mobile,
     @required this.password,
@@ -23,6 +25,7 @@ class SignUpState {
     return SignUpState(
       loading: false,
       name: null,
+      lastName: null,
       email: null,
       mobile: null,
       password: null,
@@ -34,6 +37,7 @@ class SignUpState {
   SignUpState copyWith({
     bool loading,
     String name,
+    String lastName,
     String email,
     String mobile,
     String password,
@@ -43,6 +47,7 @@ class SignUpState {
     return SignUpState(
       loading: loading ?? this.loading,
       name: name ?? this.name,
+      lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       mobile: mobile ?? this.mobile,
       password: password ?? this.password,

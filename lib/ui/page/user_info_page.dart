@@ -27,9 +27,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
   String name, email, mobile, avatar;
   Future _futureSystemPath;
 
+  final _focusNodeLastName = FocusNode();
   final _focusNodePhone = FocusNode();
 
   final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNoController = TextEditingController();
 
@@ -40,6 +42,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
     _firstNameController.text = _userBloc.state.userName;
+    _lastNameController.text = _userBloc.state.lastName;
     _emailController.text = _userBloc.state.email;
     _phoneNoController.text = _userBloc.state.mobile;
     avatar = _userBloc.state.profilePicture;
@@ -64,6 +67,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       _firstNameInput(),
+                      const SizedBox(height: 16.0),
+                      _lastNameInput(),
                       const SizedBox(height: 16.0),
                       _phoneNoInput(),
                       const SizedBox(height: 16.0),
@@ -166,6 +171,24 @@ class _UserInfoPageState extends State<UserInfoPage> {
             validateName(value, AppLocalizations.of(context)),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
+    nextFocusNode: _focusNodeLastName,
+  );
+
+  _lastNameInput() =>
+      widget.inputField(
+        _lastNameController,
+        labelText: AppLocalizations
+            .of(context)
+            .inputHintLastName,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
+        validation: (value) =>
+            validateName(value, AppLocalizations.of(context)),
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        focusNode: _focusNodeLastName,
         nextFocusNode: _focusNodePhone,
       );
 
@@ -261,7 +284,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
   void showImagePickerBottomSheet() {
     if (isPlatformAndroid)
       showModalBottomSheet(
-          context: context, builder: (ctx) => _buildImagePickerView());
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          builder: (ctx) => _buildImagePickerView());
     else
       showCupertinoModalPopup(
         context: context,
@@ -270,8 +300,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0),
               ),
             ),
             child: _buildImagePickerView(),
@@ -376,8 +406,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
     FocusScope.of(context).requestFocus(FocusNode());
     if (validateData()) {
       context.showProgress(context);
-      _userBloc.updateLoginDetails(_firstNameController.text,
-          _emailController.text, _phoneNoController.text, avatar, (results) {
+      _userBloc.updateLoginDetails(
+          _firstNameController.text,
+          _lastNameController.text,
+          _emailController.text,
+          _phoneNoController.text,
+          avatar, (results) {
         context.hideProgress(context);
         if (results is LoginDetailResponse) {
           if (results.code == apiCodeSuccess) {

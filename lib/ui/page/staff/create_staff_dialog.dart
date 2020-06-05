@@ -489,6 +489,12 @@ class _CreateStaffState extends State<CreateStaffDialog> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialSelectStateSheet(handler);
           });
@@ -519,26 +525,35 @@ class _CreateStaffState extends State<CreateStaffDialog> {
                 Navigator.pop(context);
                 handler(state);
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 8.0,
-                    ),
-                    child: Text(
-                      state,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: colorTextAction,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                  const Divider(),
-                ],
-              ));
+              child:
+              _buildStatesItem(state, position != statesList.length - 1));
         });
+  }
+
+  Widget _buildStatesItem(String state, bool showDivider) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12.0,
+            horizontal: 8.0,
+          ),
+          child: Text(
+            state,
+            style: Theme
+                .of(context)
+                .textTheme
+                .subtitle
+                .copyWith(
+              color: colorTextAction,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        if (showDivider) const Divider(),
+      ],
+    );
   }
 
   Widget _buildCupertinoSelectStateActionSheet(Function handler) {

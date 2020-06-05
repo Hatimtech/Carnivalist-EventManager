@@ -20,6 +20,10 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     add(AuthTokenSave(authToken: authToken));
   }
 
+  void updateCurrentAttendeesFilter(filter) {
+    add(CurrentAttendeesFilter(currentFilter: filter));
+  }
+
   void getEventDetail({Completer<bool> downloadCompleter}) {
     add(GetEventDetail(downloadCompleter: downloadCompleter));
   }
@@ -45,6 +49,10 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
   Stream<EventDetailState> mapEventToState(EventDetailEvent event) async* {
     if (event is AuthTokenSave) {
       yield state.copyWith(authToken: event.authToken);
+    }
+
+    if (event is CurrentAttendeesFilter) {
+      yield state.copyWith(currentFilter: event.currentFilter);
     }
 
     if (event is GetEventDetail) {

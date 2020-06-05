@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:eventmanagement/model/eventdetails/event_detail.dart';
+import 'package:eventmanagement/model/menu_custom.dart';
 
 abstract class EventDetailEvent {}
 
@@ -14,6 +15,12 @@ class DeleteCoupon extends EventDetailEvent {
   final String id;
 
   DeleteCoupon(this.id);
+}
+
+class CurrentAttendeesFilter extends EventDetailEvent {
+  MenuCustom currentFilter;
+
+  CurrentAttendeesFilter({this.currentFilter});
 }
 
 class GetEventDetail extends EventDetailEvent {

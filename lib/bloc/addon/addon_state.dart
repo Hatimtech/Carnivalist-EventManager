@@ -18,7 +18,7 @@ class AddonState {
   factory AddonState.initial() {
     return AddonState(
       authToken: "",
-      showPublic: true,
+      showPublic: null,
       addonList: List(),
       loading: false,
       uiMsg: null,

@@ -596,6 +596,12 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _ticketCurrencyList();
           });
@@ -623,30 +629,35 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
                     currencies[position].key, currencies[position].value);
                 print(currencies[position].key);
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 8.0,
-                    ),
-                    child: Text(
-                      currencies[position].value,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .subtitle
-                          .copyWith(
-                        color: colorTextAction,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  const Divider(),
-                ],
-              ));
+              child: _buildCurrencyItem(currencies[position].value,
+                  position != currencies.length - 1));
         });
+  }
+
+  Widget _buildCurrencyItem(String value, bool showDivider) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12.0,
+            horizontal: 8.0,
+          ),
+          child: Text(
+            value,
+            style: Theme
+                .of(context)
+                .textTheme
+                .subtitle
+                .copyWith(
+              color: colorTextAction,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        if (showDivider) const Divider(),
+      ],
+    );
   }
 
   Widget _buildCupertinoTicketCurrencyActionSheet() {

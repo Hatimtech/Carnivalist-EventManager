@@ -33,6 +33,13 @@ class _AssignAddonPageState extends State<AssignAddonPage> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * .8,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -79,7 +86,8 @@ class _AssignAddonPageState extends State<AssignAddonPage> {
   }
 
   Widget _buildSaveButton() {
-    return Padding(
+    return Container(
+      color: Colors.white,
       padding: const EdgeInsets.symmetric(
         horizontal: 32.0,
         vertical: 8.0,

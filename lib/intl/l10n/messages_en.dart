@@ -319,7 +319,7 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage("Upload Image"),
         "labelAddons": MessageLookupByLibrary.simpleMessage("Add ons"),
         "labelAlredyAccount":
-        MessageLookupByLibrary.simpleMessage("Alredy have an account?"),
+        MessageLookupByLibrary.simpleMessage("Already have an account?"),
         "labelAmount": MessageLookupByLibrary.simpleMessage("Amount"),
         "labelAmountValue":
         MessageLookupByLibrary.simpleMessage("Amount Value"),

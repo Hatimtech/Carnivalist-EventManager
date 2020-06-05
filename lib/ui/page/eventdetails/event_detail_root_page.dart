@@ -28,7 +28,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
   AnimationController _hideFabAnimation;
   PageController _pageController;
   bool _showAttendee = true,
-      showScannerControls;
+      isEventStarted;
   EventDetailBloc _eventDetailBloc;
 
   @override
@@ -90,39 +90,27 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
         'endDateTime--->${eventData.endDateTime}, startDateTime--->${eventData
             .startDateTime} ${dateTimeNow}');
 
-    /*showScannerControls = isValid(eventData.endDateTime) &&
+    isEventStarted = isValid(eventData.endDateTime) &&
         DateTime.parse(eventData.endDateTime).isAfter(dateTimeNow) &&
         isValid(eventData.startDateTime) &&
         DateTime.parse(eventData.startDateTime).isBefore(dateTimeNow) &&
-        eventData.status == 'ACTIVE';*/
-    showScannerControls = true;
+        eventData.status == 'ACTIVE';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: showScannerControls
-          ? ScaleTransition(
-        scale: _hideFabAnimation,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: _buildScanQRCodeFAB(),
-            ),
-            const SizedBox(
-              width: 16.0,
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: _buildScanNFCCodeFAB(),
-            ),
-          ],
-        ),
-      )
-          : null,
+      floatingActionButton: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          ScaleTransition(
+              scale: _hideFabAnimation, child: _buildScanQRCodeFAB()),
+          const SizedBox(width: 16.0),
+          ScaleTransition(
+              scale: _hideFabAnimation, child: _buildScanNFCCodeFAB()),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           Column(
@@ -142,7 +130,15 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
     return FloatingActionButton(
       heroTag: 'Scan',
       child: Icon(CarnivalistIcons.qrcode, color: Colors.white),
-      onPressed: () => _scanQRCode(context),
+      onPressed: () {
+        if (isEventStarted)
+          _scanQRCode();
+        else
+          context
+              .toast(AppLocalizations
+              .of(context)
+              .labelEventDetailNotStarted);
+      },
     );
   }
 
@@ -150,11 +146,19 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
     return FloatingActionButton(
       heroTag: 'NFC',
       child: Icon(CarnivalistIcons.nfc, color: Colors.white),
-      onPressed: _scanNFCTag,
+      onPressed: () {
+        if (isEventStarted)
+          _scanNFCTag();
+        else
+          context
+              .toast(AppLocalizations
+              .of(context)
+              .labelEventDetailNotStarted);
+      },
     );
   }
 
-  Future<void> _scanQRCode(context) async {
+  Future<void> _scanQRCode() async {
     try {
       String qrCode = await BarcodeScanner.scan();
       print("Scanned QR Code--->$qrCode");
@@ -355,7 +359,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
       if (pos == 0)
         return NotificationListener(
             onNotification: _handleScrollNotification,
-            child: AttendeeListPage());
+            child: AttendeeListPage(isEventStarted));
       else
         return EventInfoPage();
     },

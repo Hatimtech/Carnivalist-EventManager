@@ -173,6 +173,12 @@ class _FormsState extends State<FormsPage> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialFormActionSheet(fieldData);
           });
@@ -189,21 +195,27 @@ class _FormsState extends State<FormsPage> {
       ListView(
         shrinkWrap: true,
         children: <Widget>[
-          _buildMaterialFieldAction(AppLocalizations
-              .of(context)
-              .labelEditField,
-              fieldData, editField),
           _buildMaterialFieldAction(
-              AppLocalizations
-                  .of(context)
-                  .labelDeleteField,
-              fieldData,
-              deleteField),
+            AppLocalizations
+                .of(context)
+                .labelEditField,
+            fieldData,
+            editField,
+            true,
+          ),
+          _buildMaterialFieldAction(
+            AppLocalizations
+                .of(context)
+                .labelDeleteField,
+            fieldData,
+            deleteField,
+            false,
+          ),
         ],
       );
 
   Widget _buildMaterialFieldAction(String name, FieldData fieldData,
-      Function handler) {
+      Function handler, bool showDivider) {
     return InkWell(
         onTap: () {
           Navigator.pop(context);
@@ -229,7 +241,7 @@ class _FormsState extends State<FormsPage> {
                 ),
               ),
             ),
-            const Divider(),
+            if (showDivider) const Divider(),
           ],
         ));
   }

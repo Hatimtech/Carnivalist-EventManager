@@ -125,55 +125,70 @@ class _DashboardState extends State<DashboardPage>
               padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
               child: Row(children: <Widget>[
                 Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      await Logger.log('Dashboard Coupon Clicked');
+                      _pageNavBloc.currentPage(PAGE_COUPONS);
+                    },
                     child: _category(
                       CarnivalistIcons.discount,
                       AppLocalizations
                           .of(context)
                           .labelCoupons
                           .toUpperCase(),
-                          () async {
-                        await Logger.log('Dashboard Coupon Clicked');
-                        _pageNavBloc.currentPage(PAGE_COUPONS);
-                      },
+                      Colors.blue,
                       size: 16.0,
-                    )),
+                    ),
+                  ),
+                ),
                 Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      await Logger.log('Dashboard Addons Clicked');
+                      _pageNavBloc.currentPage(PAGE_ADDONS);
+                    },
                     child: _category(
                       CarnivalistIcons.addon_filled,
                       AppLocalizations
                           .of(context)
                           .labelAddons
                           .toUpperCase(),
-                          () async {
-                        await Logger.log('Dashboard Addons Clicked');
-                        _pageNavBloc.currentPage(PAGE_ADDONS);
-                      },
+                      Colors.red,
                       size: 16.0,
-                    )),
+                    ),
+                  ),
+                ),
                 Expanded(
-                    child: _category(
-                      Icons.poll,
-                      AppLocalizations
-                          .of(context)
-                          .labelReports
-                          .toUpperCase(),
-                          () async {
-                        await Logger.log('Dashboard Reports Clicked');
-                        _pageNavBloc.currentPage(PAGE_REPORTS);
-                      },
-                    )),
+                  child: _category1(
+                    Icons.poll,
+                    AppLocalizations
+                        .of(context)
+                        .labelReports
+                        .toUpperCase(),
+                    Colors.blue,
+                        () async {
+                      await Logger.log('Dashboard Reports Clicked');
+                      _pageNavBloc.currentPage(PAGE_REPORTS);
+                    },
+                  ),
+                ),
                 Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () async {
+                      await Logger.log('Dashboard Staff Clicked');
+                      _pageNavBloc.currentPage(PAGE_STAFF);
+                    },
                     child: _category(
                       Icons.people,
                       AppLocalizations
                           .of(context)
                           .labelStaff
                           .toUpperCase(),
-                          () async {
-                        await Logger.log('Dashboard Staff Clicked');
-                        _pageNavBloc.currentPage(PAGE_STAFF);
-                      },
-                    )),
+                      Colors.red,
+                    ),
+                  ),
+                ),
               ])),
           Expanded(
             child: RefreshIndicator(
@@ -260,17 +275,15 @@ class _DashboardState extends State<DashboardPage>
         ]));
   }
 
-  _category(IconData iconData, String name, Function handler,
-      {double size = 18}) =>
-      GestureDetector(
-        onTap: handler,
-        behavior: HitTestBehavior.opaque,
-        child: Card(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0))),
-            child: Padding(
-                padding: new EdgeInsets.all(10.0),
+  _category(IconData iconData, String name, Color color, {double size = 18}) =>
+      Card(
+          color: color,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          child: Padding(
+              padding: new EdgeInsets.all(10.0),
+              child: Container(
+                color: Colors.white,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -290,7 +303,42 @@ class _DashboardState extends State<DashboardPage>
                             .textTheme
                             .subhead,
                       )
-                    ]))),
+                    ]),
+              )));
+
+  _category1(IconData iconData, String name, Color color, Function handler,
+      {double size = 18}) =>
+      GestureDetector(
+        onTap: handler,
+        child: Card(
+            color: color,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            child: Padding(
+                padding: new EdgeInsets.all(10.0),
+                child: Container(
+                  color: Colors.white,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: 18,
+                          height: 18,
+                          child: Icon(iconData,
+                              size: size, color: colorIconSecondary),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          name,
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .subhead,
+                        )
+                      ]),
+                ))),
       );
 
   _categoryCounter(String name, String counter) => Card(

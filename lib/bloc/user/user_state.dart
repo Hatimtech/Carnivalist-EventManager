@@ -1,5 +1,5 @@
 class UserState {
-  final String userId, authToken, userName, mobile, email, address;
+  final String userId, authToken, userName, lastName, mobile, email, address;
   final bool eventStaff;
   final String profilePicture;
   final bool isLogin;
@@ -9,6 +9,7 @@ class UserState {
     this.userId,
     this.authToken,
     this.userName,
+    this.lastName,
     this.email,
     this.mobile,
     this.address,
@@ -23,6 +24,7 @@ class UserState {
       userId: null,
       authToken: null,
       userName: null,
+      lastName: null,
       email: null,
       mobile: null,
       address: null,
@@ -37,6 +39,7 @@ class UserState {
     String userId,
     String authToken,
     String userName,
+    String lastName,
     String email,
     String mobile,
     String address,
@@ -49,6 +52,7 @@ class UserState {
       userId: userId ?? this.userId,
       authToken: authToken ?? this.authToken,
       userName: userName ?? this.userName,
+      lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       mobile: mobile ?? this.mobile,
       address: address ?? this.address,

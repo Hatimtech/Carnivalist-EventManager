@@ -175,7 +175,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelAlredyAccount": "Alredy have an account?",
+  "labelAlredyAccount": "Already have an account?",
   "@labelAlredyAccount": {
     "type": "text",
     "placeholders": {}

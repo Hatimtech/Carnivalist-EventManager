@@ -382,6 +382,12 @@ class _GalleryState extends State<GalleryPage> {
     if (isPlatformAndroid)
       showModalBottomSheet(
           context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
           builder: (ctx) => _buildImagePickerView(banner, video));
     else
       showCupertinoModalPopup(
@@ -391,8 +397,8 @@ class _GalleryState extends State<GalleryPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0),
               ),
             ),
             child: _buildImagePickerView(banner, video),

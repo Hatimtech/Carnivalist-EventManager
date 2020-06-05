@@ -19,12 +19,14 @@ class _SignUpState extends State<SignUpPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNoController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  final _focusNodeLastName = FocusNode();
   final _focusNodePhone = FocusNode();
   final _focusNodeEmail = FocusNode();
   final _focusNodePassword = FocusNode();
@@ -84,6 +86,7 @@ class _SignUpState extends State<SignUpPage> {
                                 color: colorTitle,
                                 fontFamily: montserratBoldFont))),
                         _firstNameInput(),
+                        _lastNameInput(),
                         _phoneNoInput(),
                         _emailInput(),
                         _passwordInput(),
@@ -160,9 +163,8 @@ class _SignUpState extends State<SignUpPage> {
         },
       );
 
-  _firstNameInput() => BlocBuilder(
-      bloc: _signUpBloc,
-      builder: (BuildContext context, SignUpState state) => Padding(
+  _firstNameInput() =>
+      Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(
             _firstNameController,
@@ -178,12 +180,31 @@ class _SignUpState extends State<SignUpPage> {
                 validateName(value, AppLocalizations.of(context)),
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
-            nextFocusNode: _focusNodePhone,
-          )));
+            nextFocusNode: _focusNodeLastName,
+          ));
 
-  _phoneNoInput() => BlocBuilder(
-      bloc: _signUpBloc,
-      builder: (BuildContext context, SignUpState state) => Padding(
+  _lastNameInput() =>
+      Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
+          child: widget.inputField(
+            _lastNameController,
+            labelText: AppLocalizations
+                .of(context)
+                .inputHintLastName,
+            labelStyle: Theme
+                .of(context)
+                .textTheme
+                .body1,
+            onChanged: _signUpBloc.lastNameInput,
+            validation: (value) =>
+                validateLastName(value, AppLocalizations.of(context)),
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            nextFocusNode: _focusNodePhone,
+          ));
+
+  _phoneNoInput() =>
+      Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(
             _phoneNoController,
@@ -202,11 +223,10 @@ class _SignUpState extends State<SignUpPage> {
             textInputAction: TextInputAction.next,
             focusNode: _focusNodePhone,
             nextFocusNode: _focusNodeEmail,
-          )));
+          ));
 
-  _emailInput() => BlocBuilder(
-      bloc: _signUpBloc,
-      builder: (BuildContext context, SignUpState state) => Padding(
+  _emailInput() =>
+      Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(
             _emailController,
@@ -224,11 +244,10 @@ class _SignUpState extends State<SignUpPage> {
             textInputAction: TextInputAction.next,
             focusNode: _focusNodeEmail,
             nextFocusNode: _focusNodePassword,
-          )));
+          ));
 
-  _passwordInput() => BlocBuilder(
-      bloc: _signUpBloc,
-      builder: (BuildContext context, SignUpState state) => Padding(
+  _passwordInput() =>
+      Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_passwordController,
               labelText: AppLocalizations
@@ -247,13 +266,12 @@ class _SignUpState extends State<SignUpPage> {
               focusNode: _focusNodePassword,
               nextFocusNode: _focusNodeConfirmPassword,
               inkWell: InkWell(
-                  child:
-                      Icon(visible ? Icons.visibility_off : Icons.visibility),
-                  onTap: () => setState(() => visible = !visible)))));
+                  child: Icon(
+                      visible ? Icons.visibility_off : Icons.visibility),
+                  onTap: () => setState(() => visible = !visible))));
 
-  _confirmPasswordInput() => BlocBuilder(
-      bloc: _signUpBloc,
-      builder: (BuildContext context, SignUpState state) => Padding(
+  _confirmPasswordInput() =>
+      Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_confirmPasswordController,
               labelText: AppLocalizations
@@ -265,26 +283,27 @@ class _SignUpState extends State<SignUpPage> {
                   .body1,
               onChanged: _signUpBloc.passwordInput,
               focusNode: _focusNodeConfirmPassword,
-              obscureText: visible, validation: (confirmation) {
-            return confirmation.isEmpty
-                ? AppLocalizations
-                .of(context)
-                .errorConfirmPassword
-                : confirmation.length < 4
-                ? AppLocalizations
-                .of(context)
-                .errorConfirmPasswordLength
+              obscureText: visible,
+              validation: (confirmation) {
+                return confirmation.isEmpty
+                    ? AppLocalizations
+                    .of(context)
+                    .errorConfirmPassword
+                    : confirmation.length < 4
+                    ? AppLocalizations
+                    .of(context)
+                    .errorConfirmPasswordLength
                     : validationEqual(confirmation, _passwordController.text)
-                        ? null
-                : AppLocalizations
-                .of(context)
-                .errorConfirmPasswordMatch;
-          },
+                    ? null
+                    : AppLocalizations
+                    .of(context)
+                    .errorConfirmPasswordMatch;
+              },
               maxLength: 20,
               inkWell: InkWell(
-                  child:
-                      Icon(visible ? Icons.visibility_off : Icons.visibility),
-                  onTap: () => setState(() => visible = !visible)))));
+                  child: Icon(
+                      visible ? Icons.visibility_off : Icons.visibility),
+                  onTap: () => setState(() => visible = !visible))));
 
   _signUpButton() => GestureDetector(
       onTap: () => _signUpValidate(),

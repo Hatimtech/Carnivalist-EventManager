@@ -8,6 +8,12 @@ class NameInput extends SignUpEvent {
   NameInput({this.name});
 }
 
+class LastNameInput extends SignUpEvent {
+  final String lastName;
+
+  LastNameInput({this.lastName});
+}
+
 class MobileInput extends SignUpEvent {
   final String mobile;
 

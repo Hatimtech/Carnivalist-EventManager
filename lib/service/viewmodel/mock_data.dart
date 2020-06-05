@@ -110,3 +110,31 @@ getCouponType({BuildContext context}) =>
             : 'Affiliate Discount',
       ),
     ];
+
+getAttendeesFilterType({BuildContext context}) =>
+    <MenuCustom>[
+      MenuCustom(
+        value: 'All',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelAttendeesFilterAll
+            : 'All',
+      ),
+      MenuCustom(
+        value: 'Attended',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelAttendeesFilterAttended
+            : 'Attended',
+      ),
+      MenuCustom(
+        value: 'Pending',
+        name: context != null
+            ? AppLocalizations
+            .of(context)
+            .labelAttendeesFilterPending
+            : 'Pending',
+      ),
+    ];

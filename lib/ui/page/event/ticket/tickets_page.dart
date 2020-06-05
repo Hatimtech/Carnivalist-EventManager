@@ -221,6 +221,12 @@ class _TicketsState extends State<TicketsPage> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialTicketActionSheet(ticket);
           });
@@ -242,7 +248,8 @@ class _TicketsState extends State<TicketsPage> {
                   .of(context)
                   .labelAssignAddon,
               ticket,
-              assignAddon),
+              assignAddon,
+              true),
 //          _buildMaterialTicketAction(
 //              AppLocalizations
 //                  .of(context)
@@ -258,22 +265,27 @@ class _TicketsState extends State<TicketsPage> {
                   .of(context)
                   .labelActiveTicket,
               ticket,
-              inactiveActiveTicket),
+              inactiveActiveTicket,
+              true),
           _buildMaterialTicketAction(
               AppLocalizations
                   .of(context)
-                  .labelEditTicket, ticket, editTicket),
+                  .labelEditTicket,
+              ticket,
+              editTicket,
+              true),
           _buildMaterialTicketAction(
               AppLocalizations
                   .of(context)
                   .labelDeleteTicket,
               ticket,
-              deleteTicket),
+              deleteTicket,
+              false),
         ],
       );
 
   Widget _buildMaterialTicketAction(String name, Ticket ticket,
-      Function handler) {
+      Function handler, bool showDivider) {
     return InkWell(
         onTap: () {
           Navigator.pop(context);
@@ -299,7 +311,7 @@ class _TicketsState extends State<TicketsPage> {
                 ),
               ),
             ),
-            const Divider(),
+            if (showDivider) const Divider(),
           ],
         ));
   }
@@ -387,6 +399,12 @@ class _TicketsState extends State<TicketsPage> {
     if (isPlatformAndroid)
       addonIds = await showModalBottomSheet(
           context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
           isScrollControlled: true,
           builder: (context) {
             return BlocProvider(

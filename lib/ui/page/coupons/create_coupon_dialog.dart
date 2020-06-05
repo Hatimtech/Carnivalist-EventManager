@@ -746,6 +746,12 @@ class _CreateCouponState extends State<CreateCouponDialog> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialSelectEventSheet(showUpcoming, handler);
           });
@@ -801,31 +807,41 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         shrinkWrap: true,
         itemBuilder: (context, position) {
           final eventData = eventDataList[position];
-          return InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                handler(eventData);
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 8.0,
-                    ),
-                    child: Text(
-                      eventData.title,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: colorTextAction,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                  const Divider(),
-                ],
-              ));
+          return _buildEventListItem(
+              eventData, handler, position != eventDataList.length - 1);
         });
+  }
+
+  Widget _buildEventListItem(EventData eventData, Function handler,
+      bool showDivider) {
+    return InkWell(
+        onTap: () {
+          Navigator.pop(context);
+          handler(eventData);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 12.0,
+                horizontal: 8.0,
+              ),
+              child: Text(
+                eventData.title,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle
+                    .copyWith(
+                  color: colorTextAction,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            if (showDivider) const Divider(),
+          ],
+        ));
   }
 
   Widget _buildCupertinoSelectEventActionSheet(

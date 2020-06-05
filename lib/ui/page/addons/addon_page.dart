@@ -99,13 +99,13 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
         onNotification: _handleScrollNotification,
         child: Column(children: <Widget>[
           _buildErrorReceiverEmptyBloc(),
-          _buildAddonTypeRadioButton(),
+//          _buildAddonTypeRadioButton(),
           Expanded(
               child: BlocBuilder<AddonBloc, AddonState>(
                   bloc: _addonBloc,
                   condition: (prevState, newState) {
                     return (prevState.loading != newState.loading) ||
-                        (prevState.showPublic != newState.showPublic) ||
+                        /*(prevState.showPublic != newState.showPublic) ||*/
                         (prevState.addonList != newState.addonList ||
                             prevState.addonList.length !=
                                 newState.addonList.length);
@@ -114,7 +114,7 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
                     return Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        addonList(state.addonListByType),
+                        addonList(state.addonList),
                         if (state.loading) const PlatformProgressIndicator(),
                       ],
                     );
@@ -392,6 +392,12 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialAddonActionSheet(addon);
           });

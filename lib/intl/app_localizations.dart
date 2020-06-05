@@ -148,7 +148,8 @@ class AppLocalizations {
       Intl.message("By signing up, you agree to our \nTerms & Privacy Policy.",
           name: "labelSignUpAgreement", locale: _localeName);
 
-  String get labelAlredyAccount => Intl.message("Alredy have an account?",
+  String get labelAlredyAccount =>
+      Intl.message("Already have an account?",
       name: "labelAlredyAccount", locale: _localeName);
 
   String get labelEventName =>
@@ -444,6 +445,10 @@ class AppLocalizations {
 
   String get inputHintFirstName => Intl.message('First Name',
       name: "inputHintFirstName", locale: _localeName);
+
+  String get inputHintLastName =>
+      Intl.message('Last Name',
+          name: "inputHintLastName", locale: _localeName);
 
   String get inputHintPhoneNo =>
       Intl.message('Phone No', name: "inputHintPhoneNo", locale: _localeName);
@@ -1184,6 +1189,26 @@ class AppLocalizations {
       Intl.message('Failed',
           name: "labelEventDetailStatusFailed", locale: _localeName);
 
+  String get labelEventDetailNotStarted =>
+      Intl.message('Event is not started yet or not active.',
+          name: "labelEventDetailNotStarted", locale: _localeName);
+
+  String get labelAttendeesFilter =>
+      Intl.message('Filter',
+          name: "labelAttendeesFilter", locale: _localeName);
+
+  String get labelAttendeesFilterAll =>
+      Intl.message('All',
+          name: "labelAttendeesFilterAll", locale: _localeName);
+
+  String get labelAttendeesFilterAttended =>
+      Intl.message('Attended',
+          name: "labelAttendeesFilterAttended", locale: _localeName);
+
+  String get labelAttendeesFilterPending =>
+      Intl.message('Pending',
+          name: "labelAttendeesFilterPending", locale: _localeName);
+
   String get labelAttendeesResendTicket =>
       Intl.message('Resend Ticket', name: "labelAttendeesResendTicket",
           locale: _localeName);
@@ -1191,6 +1216,10 @@ class AppLocalizations {
   String get labelAttendeesSendMail =>
       Intl.message('Send Mail',
           name: "labelAttendeesSendMail", locale: _localeName);
+
+  String get labelAttendeesMarkAttended =>
+      Intl.message('Mark As Attended',
+          name: "labelAttendeesMarkAttended", locale: _localeName);
 
   String get errorMailSubject =>
       Intl.message('Subject can not be empty',
@@ -1262,6 +1291,14 @@ class AppLocalizations {
 
   String get labelEditStaff =>
       Intl.message('Edit User', name: "labelEditStaff", locale: _localeName);
+
+  String get labelStaffUsernameView =>
+      Intl.message('username: ',
+          name: "labelStaffUsernameView", locale: _localeName);
+
+  String get labelStaffEmailView =>
+      Intl.message('email: ',
+          name: "labelStaffEmailView", locale: _localeName);
 
   String get labelActiveStaff =>
       Intl.message('Active User',
@@ -1493,6 +1530,15 @@ class AppLocalizations {
   String get errorFirstNameValid =>
       Intl.message(
           'First name must be a-z and A-Z', name: "errorFirstNameValid",
+          locale: _localeName);
+
+  String get errorLastName =>
+      Intl.message('Last name is required', name: "errorFirstName",
+          locale: _localeName);
+
+  String get errorLastNameValid =>
+      Intl.message(
+          'Last name must be a-z and A-Z', name: "errorFirstNameValid",
           locale: _localeName);
 
   String get logoutTitle =>

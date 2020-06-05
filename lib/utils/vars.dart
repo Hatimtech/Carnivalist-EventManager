@@ -212,6 +212,17 @@ String validateName(String value, AppLocalizations appLocalizations) {
   return null;
 }
 
+String validateLastName(String value, AppLocalizations appLocalizations) {
+  String pattern = r'(^[a-zA-Z ]*$)';
+  RegExp regExp = RegExp(pattern);
+  if (value.isEmpty) {
+    return appLocalizations.errorLastName;
+  } else if (!regExp.hasMatch(value)) {
+    return appLocalizations.errorLastNameValid;
+  }
+  return null;
+}
+
 bool isValid(String value) =>
     value != null && value
         .trim()

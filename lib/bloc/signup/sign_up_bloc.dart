@@ -13,6 +13,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     add(NameInput(name: name));
   }
 
+  void lastNameInput(lastName) {
+    add(LastNameInput(lastName: lastName));
+  }
+
   void mobileInput(mobile) {
     add(MobileInput(mobile: mobile));
   }
@@ -40,6 +44,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   Stream<SignUpState> mapEventToState(SignUpEvent event) async* {
     if (event is NameInput) {
       yield state.copyWith(name: event.name);
+    }
+
+    if (event is LastNameInput) {
+      yield state.copyWith(lastName: event.lastName);
     }
 
     if (event is MobileInput) {
@@ -75,6 +83,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   void signupApi(SignUp event) {
     Map<String, dynamic> param = Map();
     param.putIfAbsent('name', () => state.name);
+    param.putIfAbsent('lastName', () => state.lastName);
     param.putIfAbsent('email', () => state.email);
     param.putIfAbsent('mobile', () => state.mobile);
     param.putIfAbsent('password', () => state.password);

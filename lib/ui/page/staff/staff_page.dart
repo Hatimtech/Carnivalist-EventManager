@@ -194,20 +194,24 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 5),
           Text(
-            username,
+            '${AppLocalizations
+                .of(context)
+                .labelStaffUsernameView}$username',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.body1.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              fontSize: 12.0,
+            ),
           ),
           Text(
-            email,
+            '${AppLocalizations
+                .of(context)
+                .labelStaffEmailView}$email',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.body1.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+              fontSize: 12.0,
+            ),
           ),
         ]);
   }
@@ -216,6 +220,12 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialStaffActionSheet(staff);
           });
@@ -329,59 +339,6 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
       context.hideProgress(context);
     });
   }
-
-  /*Future<void> showStaffCreateActions() async {
-    if (isPlatformAndroid)
-      await showModalBottomSheet(
-          context: this.context,
-          builder: (context) {
-            return _buildMaterialStaffCreateActionSheet();
-          });
-    else {
-      await showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext context) =>
-            _buildCupertinoStaffCreateActionSheet(),
-      );
-    }
-  }
-
-  Widget _buildMaterialStaffCreateActionSheet() {
-    final couponTypes = getStaffType(context: context) as List<MenuCustom>;
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: couponTypes.length,
-      itemBuilder: (_, pos) {
-        final menu = couponTypes[pos];
-        return _buildMaterialFieldAction(
-          menu.name,
-          () => _onCreateStaffTypeSelected(menu.value),
-          showDivider: pos == couponTypes.length - 1 ? false : true,
-        );
-      },
-    );
-  }
-
-  Widget _buildCupertinoStaffCreateActionSheet() {
-    return CupertinoActionSheet(
-      actions: (getStaffType(context: context) as List<MenuCustom>).map((menu) {
-        return _buildCupertinoStaffAction(
-            menu.name, () => _onCreateStaffTypeSelected(menu.value));
-      }).toList(),
-      cancelButton: CupertinoActionSheetAction(
-        child: Text(
-          AppLocalizations.of(context).btnCancel,
-          style: Theme.of(context).textTheme.title.copyWith(
-                color: colorTextAction,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-  }*/
 
   void _onCreateStaffButtonClicked({String staffId}) {
     showDialog(

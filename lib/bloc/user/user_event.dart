@@ -64,20 +64,21 @@ class SaveEventStaff extends UserEvent {
 
 class UpdateUserDetails extends UserEvent {
   final String name;
+  final String lastName;
   final String email;
   final String mobile;
   final String profilePic;
   final Function callback;
 
   UpdateUserDetails(
-      {this.name, this.email, this.mobile, this.profilePic, this.callback});
+      {this.name, this.lastName, this.email, this.mobile, this.profilePic, this.callback});
 }
 
 class UpdateUserResult extends UserEvent {
   final bool success;
   final dynamic uiMsg;
-  final String name, mobile, profilePic;
+  final String name, lastName, mobile, profilePic;
 
   UpdateUserResult(this.success,
-      {this.uiMsg, this.name, this.mobile, this.profilePic});
+      {this.uiMsg, this.name, this.lastName, this.mobile, this.profilePic});
 }

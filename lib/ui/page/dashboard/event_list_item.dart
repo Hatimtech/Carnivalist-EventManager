@@ -78,13 +78,36 @@ class _EventListItemState extends State<EventListItem> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        _eventData.title ??
-                            AppLocalizations.of(context).notAvailable,
-                        maxLines: 2,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.subtitle,
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              _eventData.title ??
+                                  AppLocalizations
+                                      .of(context)
+                                      .notAvailable,
+                              maxLines: 2,
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .subtitle,
+                            ),
+                          ),
+                          Text(
+                            _eventData.status,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(
+                              color: _eventData.status == 'ACTIVE'
+                                  ? colorActive
+                                  : colorInactive,
+                            ),
+                          )
+                        ],
                       ),
                       const SizedBox(height: 2.0),
                       Row(children: <Widget>[
@@ -181,6 +204,12 @@ class _EventListItemState extends State<EventListItem> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialTicketActionSheet();
           });
@@ -201,17 +230,27 @@ class _EventListItemState extends State<EventListItem> {
                 _eventData.status == 'ACTIVE'
                     ? AppLocalizations.of(context).labelInactiveEvent
                     : AppLocalizations.of(context).labelActiveEvent,
-                inactiveActiveEvent),
+                inactiveActiveEvent,
+                true),
           _buildMaterialEventAction(
-              AppLocalizations.of(context).labelViewEvent, viewEvent),
+              AppLocalizations
+                  .of(context)
+                  .labelViewEvent, viewEvent, true),
           _buildMaterialEventAction(
-              AppLocalizations.of(context).labelEditEvent, editEvent),
+              AppLocalizations
+                  .of(context)
+                  .labelEditEvent, editEvent, true),
           _buildMaterialEventAction(
-              AppLocalizations.of(context).labelDeleteEvent, deleteEvent),
+              AppLocalizations
+                  .of(context)
+                  .labelDeleteEvent,
+              deleteEvent,
+              false),
         ],
       );
 
-  Widget _buildMaterialEventAction(String name, Function handler) {
+  Widget _buildMaterialEventAction(String name, Function handler,
+      bool showDivider) {
     return InkWell(
         onTap: () {
           Navigator.pop(context);
@@ -233,7 +272,7 @@ class _EventListItemState extends State<EventListItem> {
                     ),
               ),
             ),
-            const Divider(),
+            if (showDivider) const Divider(),
           ],
         ));
   }

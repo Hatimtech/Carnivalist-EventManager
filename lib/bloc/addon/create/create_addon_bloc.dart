@@ -106,7 +106,7 @@ class CreateAddonBloc extends Bloc<CreateAddonEvent, CreateAddonState> {
           addonConvFeeTypeList: addConvFeeTypeList,
           convinenceFeeType: addConvFeeTypeList[0].name,
           addonPrivacyList: addonPrivacyList,
-          privacy: addonPrivacyList[0].name);
+          privacy: addonPrivacyList[1].name);
     }
 
     if (event is AddonPrivacyInput) {

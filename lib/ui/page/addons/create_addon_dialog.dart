@@ -148,7 +148,7 @@ class _CreateAddonState extends State<CreateAddonDialog> {
             );
           },
         ),
-        const SizedBox(width: 16.0),
+        /*const SizedBox(width: 16.0),
         Text(AppLocalizations.of(context).labelAddonPrivacy,
             style: Theme.of(context).textTheme.body1),
         BlocBuilder<CreateAddonBloc, CreateAddonState>(
@@ -162,7 +162,7 @@ class _CreateAddonState extends State<CreateAddonDialog> {
               onChanged: _createAddonBloc.addonPrivacyInput,
             );
           },
-        ),
+        ),*/
       ],
     );
   }
@@ -544,7 +544,14 @@ class _CreateAddonState extends State<CreateAddonDialog> {
   void showImagePickerBottomSheet() {
     if (isPlatformAndroid)
       showModalBottomSheet(
-          context: context, builder: (ctx) => _buildImagePickerView());
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          builder: (ctx) => _buildImagePickerView());
     else
       showCupertinoModalPopup(
         context: context,
@@ -553,8 +560,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0),
               ),
             ),
             child: _buildImagePickerView(),

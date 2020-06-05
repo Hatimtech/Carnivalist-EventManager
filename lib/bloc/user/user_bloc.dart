@@ -58,9 +58,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     add(ClearLoginDetails());
   }
 
-  void updateLoginDetails(name, email, mobile, profilePic, callback) {
+  void updateLoginDetails(name, lastName, email, mobile, profilePic, callback) {
     add(UpdateUserDetails(
         name: name,
+        lastName: lastName,
         email: email,
         mobile: mobile,
         profilePic: profilePic,
@@ -123,6 +124,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield state.copyWith(
           mobile: pref.getString('mobile'),
           userName: pref.getString('username'),
+          lastName: pref.getString('lastName'),
           userId: pref.getString('userId'),
           authToken: pref.getString('authToken'),
           email: pref.getString('email'),
@@ -151,6 +153,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield state.copyWith(
           mobile: pref.getString('mobile'),
           userName: pref.getString('username'),
+          lastName: pref.getString('lastName'),
           userId: pref.getString('userId'),
           authToken: pref.getString('authToken'),
           email: pref.getString('email'),
@@ -196,6 +199,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void updateUserDetailJson(UpdateUserDetails event) {
     Map<String, dynamic> param = Map();
     param.putIfAbsent('name', () => event.name);
+    param.putIfAbsent('lastName', () => event.lastName);
     param.putIfAbsent('mobileNumber', () => event.mobile);
 
     _apiProvider
@@ -233,6 +237,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             true,
             uiMsg: successMsg,
             name: loginDetailResponse.loginDetail.name,
+            lastName: loginDetailResponse.loginDetail.lastName,
             mobile: loginDetailResponse.loginDetail.mobileNumber,
             profilePic: loginDetailResponse.loginDetail.avatar,
           ));

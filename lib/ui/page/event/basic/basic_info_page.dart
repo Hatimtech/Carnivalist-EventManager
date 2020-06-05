@@ -165,32 +165,47 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
                 _basicBloc.eventTypeInput(carnivals.category);
                 print(carnivals.category);
               },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 8.0,
-                    ),
-                    child: Text(
-                      carnivals.category,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: colorTextAction,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ),
-                  const Divider(),
-                ],
-              ));
+              child: _buildEventListItem(
+                  carnivals.category, position != carnivalList.length - 1));
         });
+  }
+
+  Widget _buildEventListItem(String category, bool showDivider) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12.0,
+            horizontal: 8.0,
+          ),
+          child: Text(
+            category,
+            style: Theme
+                .of(context)
+                .textTheme
+                .subtitle
+                .copyWith(
+              color: colorTextAction,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        if (showDivider) const Divider(),
+      ],
+    );
   }
 
   Future<void> _onEventTypeButtonPressed() async {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _eventTypeSelect();
 //              Container(
@@ -219,6 +234,12 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _timeZonelist(_basicBloc.timeZoneList);
 //              Container(
@@ -252,26 +273,35 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
               _basicBloc.eventTimeZoneInput(timeZonelist[position]);
               print(timeZonelist[position]);
             },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12.0,
-                    horizontal: 8.0,
-                  ),
-                  child: Text(
-                    timeZonelist[position],
-                    style: Theme.of(context).textTheme.subtitle.copyWith(
-                          color: colorTextAction,
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ),
-                const Divider(),
-              ],
-            ));
+            child: _buildTimzoneListItem(
+                timeZonelist[position], position != timeZonelist.length - 1));
       });
+
+  Widget _buildTimzoneListItem(String timezone, bool showDivider) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 12.0,
+            horizontal: 8.0,
+          ),
+          child: Text(
+            timezone,
+            style: Theme
+                .of(context)
+                .textTheme
+                .subtitle
+                .copyWith(
+              color: colorTextAction,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        if (showDivider) const Divider(),
+      ],
+    );
+  }
 
   Widget _buildCupertinoTimezoneActionSheet() {
     return CupertinoActionSheet(

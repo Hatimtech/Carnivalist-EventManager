@@ -259,9 +259,10 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
           ),
           Text(AppLocalizations.of(context).labelCouponValidTill,
               style: Theme.of(context).textTheme.body2),
-          Text(saleEnd != null
-              ? DateFormat.yMMMd().format(saleEnd.toLocal())
-              : '--',
+          Text(
+              saleEnd != null
+                  ? DateFormat.yMMMd().format(saleEnd.toLocal())
+                  : '--',
               style: Theme.of(context).textTheme.body2)
         ]);
   }
@@ -270,6 +271,12 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialCouponActionSheet(coupon);
           });
@@ -420,6 +427,12 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialCouponCreateActionSheet();
           });

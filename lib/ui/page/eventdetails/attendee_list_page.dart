@@ -17,23 +17,61 @@ import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class AttendeeListPage extends StatefulWidget {
+  final bool isEventStarted;
+
+  const AttendeeListPage(this.isEventStarted);
+
   @override
   _AttendeeListPageState createState() => _AttendeeListPageState();
 }
 
-class _AttendeeListPageState extends State<AttendeeListPage> {
+class _AttendeeListPageState extends State<AttendeeListPage>
+    with TickerProviderStateMixin {
+  AnimationController _hideFabAnimation;
   UserBloc _userBloc;
   EventDetailBloc _eventDetailBloc;
   EventData _eventData;
 
   @override
+  void dispose() {
+    _hideFabAnimation.dispose();
+    super.dispose();
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (_hideFabAnimation.value == 0.0) {
+              _hideFabAnimation.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (_hideFabAnimation.value == 1.0) {
+              _hideFabAnimation.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
+  @override
   void initState() {
     super.initState();
+    _hideFabAnimation = AnimationController(
+        vsync: this, duration: kThemeAnimationDuration, value: 1.0);
     _userBloc = BlocProvider.of<UserBloc>(context);
     _eventDetailBloc = BlocProvider.of<EventDetailBloc>(context);
     initSelectedEventData();
@@ -53,19 +91,30 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
     return BlocBuilder<EventDetailBloc, EventDetailState>(
         bloc: _eventDetailBloc,
         condition: (prevState, newState) {
-          print('build BlocBuilder condition--->${prevState
-              .eventDetailList} ${newState.eventDetailList}');
           return (prevState.loading != newState.loading) ||
               (prevState.eventDetailList != newState.eventDetailList ||
                   prevState.eventDetailList.length !=
-                      newState.eventDetailList.length);
+                      newState.eventDetailList.length ||
+                  prevState.currentFilter != newState.currentFilter);
         },
         builder: (context, state) {
           return Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              _attendeesList(state.eventDetailList),
+              _attendeesList(state.eventDetailListByFilter),
               if (state.loading) const PlatformProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: ScaleTransition(
+                    scale: _hideFabAnimation,
+                    child: FloatingActionButton(
+                        child: Icon(Icons.filter_list, color: Colors.white),
+                        onPressed: _showFilterBottomSheet),
+                  ),
+                ),
+              )
             ],
           );
         });
@@ -80,7 +129,9 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
                 downloadCompleter: downloadCompleter);
             return downloadCompleter.future;
           },
-          child: _buildEventDetailList(eventDetailList),
+          child: NotificationListener(
+              onNotification: _handleScrollNotification,
+              child: _buildEventDetailList(eventDetailList)),
         ),
       );
 
@@ -292,6 +343,12 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
           builder: (context) {
             return _buildMaterialAttendeesActionSheet(eventDetail);
           });
@@ -335,8 +392,28 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
                 _userBloc.state.email,
               );
             },
-            showDivider: false,
+            showDivider: widget.isEventStarted &&
+                (eventDetail.isEventAttended != null
+                    ? !eventDetail.isEventAttended
+                    : true),
           ),
+          if (widget.isEventStarted &&
+              (eventDetail.isEventAttended != null
+                  ? !eventDetail.isEventAttended
+                  : true))
+            _buildMaterialFieldAction(
+              AppLocalizations
+                  .of(context)
+                  .labelAttendeesMarkAttended,
+                  () {
+                context.showProgress(context);
+                _eventDetailBloc.uploadNewScannedTag(eventDetail.id, false,
+                        (response) {
+                      context.hideProgress(context);
+                    });
+              },
+              showDivider: false,
+            ),
         ],
       );
 
@@ -400,6 +477,19 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
             _userBloc.state.email,
           );
         }),
+        if (eventDetail.isEventAttended != null
+            ? !eventDetail.isEventAttended
+            : true)
+          _buildCupertinoCouponAction(
+              AppLocalizations
+                  .of(context)
+                  .labelAttendeesMarkAttended, () {
+            context.showProgress(context);
+            _eventDetailBloc.uploadNewScannedTag(eventDetail.id, false,
+                    (response) {
+                  context.hideProgress(context);
+                });
+          }),
       ],
       cancelButton: CupertinoActionSheetAction(
         child: Text(
@@ -472,6 +562,129 @@ class _AttendeeListPageState extends State<AttendeeListPage> {
                 ),
             child: SendMailDialog(),
           ),
+    );
+  }
+
+  void _showFilterBottomSheet() {
+    if (isPlatformAndroid)
+      showModalBottomSheet(
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          builder: (context) {
+            return _buildFilterView();
+          });
+    else
+      showCupertinoModalPopup(
+          context: context,
+          builder: (context) {
+            return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0),
+                  ),
+                ),
+                child: _buildFilterView());
+          });
+  }
+
+  Widget _buildFilterView() {
+    int selectedFilter = 0;
+
+    if (_eventDetailBloc.state.currentFilter.value ==
+        _eventDetailBloc.state.attendeesFilterType[0].value)
+      selectedFilter = 1;
+    else if (_eventDetailBloc.state.currentFilter.value ==
+        _eventDetailBloc.state.attendeesFilterType[1].value)
+      selectedFilter = 2;
+    else if (_eventDetailBloc.state.currentFilter.value ==
+        _eventDetailBloc.state.attendeesFilterType[2].value) selectedFilter = 3;
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            AppLocalizations
+                .of(context)
+                .labelAttendeesFilter,
+            style: Theme
+                .of(context)
+                .textTheme
+                .title
+                .copyWith(fontWeight: FontWeight.w500),
+          ),
+          _buildFilterItem(
+            AppLocalizations
+                .of(context)
+                .labelAttendeesFilterAll,
+            selectedFilter == 1,
+                () {
+              Navigator.pop(context);
+              _eventDetailBloc.updateCurrentAttendeesFilter(
+                  _eventDetailBloc.state.attendeesFilterType[0]);
+            },
+          ),
+          _buildFilterItem(
+            AppLocalizations
+                .of(context)
+                .labelAttendeesFilterAttended,
+            selectedFilter == 2,
+                () {
+              Navigator.pop(context);
+              _eventDetailBloc.updateCurrentAttendeesFilter(
+                  _eventDetailBloc.state.attendeesFilterType[1]);
+            },
+          ),
+          _buildFilterItem(
+            AppLocalizations
+                .of(context)
+                .labelAttendeesFilterPending,
+            selectedFilter == 3,
+                () {
+              Navigator.pop(context);
+              _eventDetailBloc.updateCurrentAttendeesFilter(
+                  _eventDetailBloc.state.attendeesFilterType[2]);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterItem(String label, bool isSelected, Function handler) {
+    return GestureDetector(
+      onTap: handler,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                label,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(
+                    fontWeight: isSelected ? FontWeight.bold : null,
+                    color: isSelected ? colorActive : null),
+              ),
+            ),
+            Icon(
+              Icons.check,
+              color: isSelected ? colorActive : Colors.transparent,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
