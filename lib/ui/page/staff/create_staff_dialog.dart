@@ -389,7 +389,7 @@ class _CreateStaffState extends State<CreateStaffDialog> {
               return prevState.selectedEvents != newState.selectedEvents;
             },
             builder: (_, state) {
-              final events = eventState.upcomingEvents;
+              final events = eventState.activeAndRunningEvents;
               return ListView.builder(
                   itemCount: events.length,
                   shrinkWrap: true,

@@ -603,7 +603,7 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         initialValue: _createCouponBloc.state.code,
         onChanged: _createCouponBloc.codeInput,
         textInputAction: TextInputAction.next,
-        maxLength: 6,
+    maxLength: 50,
         hintText: AppLocalizations.of(context).inputHintCouponCode,
         labelStyle: Theme.of(context).textTheme.body1,
         focusNode: _focusNodeCodeAffiliateMin,

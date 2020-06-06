@@ -102,6 +102,19 @@ class EventState {
     }).toList();
   }
 
+  List<EventData> get activeAndRunningEvents {
+    final dateTimeNow = DateTime.now();
+    return eventDataList.where((event) {
+      try {
+        return isValid(event.endDateTime) &&
+            DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
+            event.status == 'ACTIVE';
+      } catch (error) {
+        return false;
+      }
+    }).toList();
+  }
+
   EventData findById(String eventId) {
     return eventDataList.firstWhere(
           (eventData) => eventData.id == eventId,

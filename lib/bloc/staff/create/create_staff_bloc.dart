@@ -248,7 +248,7 @@ class CreateStaffBloc extends Bloc<CreateStaffEvent, CreateStaffState> {
     if (!isValid(state.username)) return ERR_STAFF_USERNAME;
     if (!isValid(state.mobileNumber)) return ERR_STAFF_MOBILE_NO;
     if (state.mobileNumber.length < 10) return ERR_STAFF_MOBILE_NO_LENGTH;
-    if (!isValid(state.password)) return ERR_STAFF_PASSWORD;
+    if (staffId == null && !isValid(state.password)) return ERR_STAFF_PASSWORD;
     if (state.selectedEvents == null || state.selectedEvents.length == 0)
       return ERR_STAFF_SELECT_EVENTS;
     return 0;
