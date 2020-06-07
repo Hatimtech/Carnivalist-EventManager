@@ -121,7 +121,7 @@ class _DashboardState extends State<DashboardPage>
         ),
         body: Column(children: <Widget>[
           _buildErrorReceiverEmptyBloc(),
-          Container(
+          Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
               child: Row(children: <Widget>[
                 Expanded(
