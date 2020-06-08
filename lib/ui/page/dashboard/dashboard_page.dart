@@ -136,7 +136,6 @@ class _DashboardState extends State<DashboardPage>
                           .of(context)
                           .labelCoupons
                           .toUpperCase(),
-                      Colors.blue,
                       size: 16.0,
                     ),
                   ),
@@ -153,7 +152,6 @@ class _DashboardState extends State<DashboardPage>
                           .of(context)
                           .labelAddons
                           .toUpperCase(),
-                      Colors.red,
                       size: 16.0,
                     ),
                   ),
@@ -165,7 +163,7 @@ class _DashboardState extends State<DashboardPage>
                         .of(context)
                         .labelReports
                         .toUpperCase(),
-                    Colors.blue,
+                    null,
                         () async {
                       await Logger.log('Dashboard Reports Clicked');
                       _pageNavBloc.currentPage(PAGE_REPORTS);
@@ -179,13 +177,16 @@ class _DashboardState extends State<DashboardPage>
                       await Logger.log('Dashboard Staff Clicked');
                       _pageNavBloc.currentPage(PAGE_STAFF);
                     },
-                    child: _category(
+                    child: _category2(
                       Icons.people,
                       AppLocalizations
                           .of(context)
                           .labelStaff
                           .toUpperCase(),
-                      Colors.red,
+                          () async {
+                        await Logger.log('Dashboard Staff Clicked');
+                        _pageNavBloc.currentPage(PAGE_STAFF);
+                      },
                     ),
                   ),
                 ),
@@ -275,23 +276,21 @@ class _DashboardState extends State<DashboardPage>
         ]));
   }
 
-  _category(IconData iconData, String name, Color color, {double size = 18}) =>
+  _category(IconData iconData, String name, {double size = 18}) =>
       Card(
-          color: color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.0))),
           child: Padding(
               padding: new EdgeInsets.all(10.0),
               child: Container(
-                color: Colors.white,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
                         width: 18,
                         height: 18,
-                        child: Icon(iconData,
-                            size: size, color: colorIconSecondary),
+                        child:
+                        Icon(iconData, size: size, color: colorIconSecondary),
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -314,10 +313,44 @@ class _DashboardState extends State<DashboardPage>
             color: color,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            child: IgnorePointer(
+                ignoring: true,
+                child: Padding(
+                    padding: new EdgeInsets.all(10.0),
+                    child: Container(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: Icon(iconData,
+                                  size: size, color: colorIconSecondary),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              name,
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .subhead,
+                            )
+                          ]),
+                    )))),
+      );
+
+  _category2(IconData iconData, String name, Function handler,
+      {double size = 18}) =>
+      GestureDetector(
+        onTap: handler,
+        child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
             child: Padding(
                 padding: new EdgeInsets.all(10.0),
                 child: Container(
-                  color: Colors.white,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
