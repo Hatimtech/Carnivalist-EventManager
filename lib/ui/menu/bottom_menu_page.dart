@@ -12,7 +12,6 @@ import 'package:eventmanagement/ui/page/addons/addon_page.dart';
 import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
 import 'package:eventmanagement/ui/page/staff/staff_page.dart';
-import 'package:eventmanagement/ui/page/webview_page.dart';
 import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +47,7 @@ class _BottomMenuState extends State<BottomMenuPage> {
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
     _pageNavBloc = BlocProvider.of<PageNavBloc>(context);
-    _pages.insert(
+    /*_pages.insert(
         0,
         WebViewPage(
             'https://manager.carnivalist.tk/redirect-to-reports/${_userBloc
@@ -57,7 +56,13 @@ class _BottomMenuState extends State<BottomMenuPage> {
         1,
         WebViewPage(
             'https://manager.carnivalist.tk/redirect-to-accounts/${_userBloc
-                .state.authToken}'));
+                .state.authToken}'));*/
+    _pages.insert(
+        0,
+        Center(child: Text('Reports'),));
+    _pages.insert(
+        1,
+        Center(child: Text('Account'),));
   }
 
   @override

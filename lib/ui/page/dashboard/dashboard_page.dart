@@ -141,7 +141,7 @@ class _DashboardState extends State<DashboardPage>
                   ),
                 ),
                 Expanded(
-                  child: InkWell(
+                  child: GestureDetector(
                     onTap: () async {
                       await Logger.log('Dashboard Addons Clicked');
                       _pageNavBloc.currentPage(PAGE_ADDONS);
@@ -157,36 +157,34 @@ class _DashboardState extends State<DashboardPage>
                   ),
                 ),
                 Expanded(
-                  child: _category1(
-                    Icons.poll,
-                    AppLocalizations
-                        .of(context)
-                        .labelReports
-                        .toUpperCase(),
-                    null,
-                        () async {
+                  child: GestureDetector(
+                    onTap: () async {
                       await Logger.log('Dashboard Reports Clicked');
                       _pageNavBloc.currentPage(PAGE_REPORTS);
                     },
+                    child: _category(
+                      Icons.poll,
+                      AppLocalizations
+                          .of(context)
+                          .labelReports
+                          .toUpperCase(),
+                      size: 16.0,
+                    ),
                   ),
                 ),
                 Expanded(
                   child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
                     onTap: () async {
                       await Logger.log('Dashboard Staff Clicked');
                       _pageNavBloc.currentPage(PAGE_STAFF);
                     },
-                    child: _category2(
+                    child: _category(
                       Icons.people,
                       AppLocalizations
                           .of(context)
                           .labelStaff
                           .toUpperCase(),
-                          () async {
-                        await Logger.log('Dashboard Staff Clicked');
-                        _pageNavBloc.currentPage(PAGE_STAFF);
-                      },
+                      size: 16.0,
                     ),
                   ),
                 ),

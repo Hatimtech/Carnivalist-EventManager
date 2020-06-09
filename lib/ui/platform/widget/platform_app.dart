@@ -53,6 +53,9 @@ class PlatformApp extends PlatformWidget<Theme, MaterialApp> {
           .copyWith(
         color: colorIcon,
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white,
+      ),
       textTheme: ThemeData.light().textTheme.copyWith(
             title: const TextStyle(
               fontSize: 18,
