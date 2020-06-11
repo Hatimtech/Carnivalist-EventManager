@@ -223,8 +223,8 @@ class _BottomMenuState extends State<BottomMenuPage> {
                       .color,
                 ),
                 onPressed: () {
-                  showLogs();
-//                  showLogoutConfirmationDialog();
+//                  showLogs();
+                  showLogoutConfirmationDialog();
                 }),
           ),
         ],

@@ -218,9 +218,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             const SizedBox(width: 8.0),
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 96.0, maxHeight: 36.0),
-              child: couponDiscountValueInput(state.discountTypeList
-                      .firstWhere((menu) => menu.isSelected, orElse: () => null)
-                      ?.name ??
+              child: couponDiscountValueInput(state.discountTypeList.firstWhere(
+                      (menu) => menu.isSelected,
+                  orElse: () => null) ??
                   ''),
             ),
           ],
@@ -650,18 +650,29 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         nextFocusNode: _focusNodeDiscountValue,
       );
 
-  Widget couponDiscountValueInput(String hint) {
-    return widget.inputFieldRectangle(
-      null,
-      initialValue: _createCouponBloc.state.discountValue,
-      onChanged: _createCouponBloc.discountValueInput,
-      keyboardType: TextInputType.number,
-      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-      maxLength: 6,
-      hintText: hint,
-      labelStyle: Theme.of(context).textTheme.body1,
-      focusNode: _focusNodeDiscountValue,
-    );
+  Widget couponDiscountValueInput(MenuCustom hint) {
+    return widget.inputFieldRectangle(null,
+        initialValue: _createCouponBloc.state.discountValue,
+        onChanged: _createCouponBloc.discountValueInput,
+        keyboardType: TextInputType.number,
+        inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+        maxLength: 6,
+        hintText: hint.name,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
+        focusNode: _focusNodeDiscountValue,
+        suffix: hint.value == 'percentage'
+            ? Text(
+          '%',
+          style: Theme
+              .of(context)
+              .textTheme
+              .subtitle,
+          textAlign: TextAlign.center,
+        )
+            : null);
   }
 
   _pickDate(DateTime initialDate, Function dateHandler) async {

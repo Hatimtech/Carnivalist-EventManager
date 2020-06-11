@@ -229,6 +229,13 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
       );
 
   Widget _buildTopBgContainer() {
+    final eventData = BlocProvider
+        .of<EventBloc>(context)
+        .state
+        .eventDataList
+        .firstWhere(
+            (eventData) => eventData.id == _eventDetailBloc.selectedEventId);
+
     return Container(
         child: Stack(
           children: <Widget>[
@@ -243,7 +250,7 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
             ),
             Center(
               child: Text(
-                AppLocalizations.of(context).titleEventDetails,
+                eventData.title,
                 style: Theme.of(context).appBarTheme.textTheme.title,
                 textAlign: TextAlign.center,
               ),

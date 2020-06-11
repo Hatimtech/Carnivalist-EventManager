@@ -83,9 +83,6 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     }
 
     if (event is TagScannedEventResult) {
-      print(
-          'TagScannedEventResult event.eventDetailId--->${event.success} ${event
-              .eventDetailId}');
       if (event.success) {
         if (event.eventDetailId != null) {
           final item = state.eventDetailList.firstWhere(
@@ -96,6 +93,8 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
           if (item != null) {
             item.isEventAttended = true;
           }
+          state.eventDetailList.remove(item);
+          state.eventDetailList.insert(0, item);
         }
         yield state.copyWith(
           loading: false,

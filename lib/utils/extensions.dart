@@ -175,6 +175,8 @@ extension WidgetExtensions on Widget {
     int maxLines = 1,
     List<TextInputFormatter> inputFormatters,
     InkWell inkWell,
+    Widget suffix,
+    Icon suffixIcon,
     TextInputAction textInputAction,
     FocusNode focusNode,
     FocusNode nextFocusNode,
@@ -215,6 +217,8 @@ extension WidgetExtensions on Widget {
             contentPadding: EdgeInsets.all(5),
             hintText: hintText,
             hintStyle: hintStyle,
+            suffix: suffix,
+            suffixIcon: suffixIcon,
           ));
 
   customFloatForm(

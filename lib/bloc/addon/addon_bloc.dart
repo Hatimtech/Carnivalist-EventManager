@@ -92,7 +92,7 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
     }
 
     if (event is AddAddon) {
-      state.addonList.add(event.addon);
+      state.addonList.insert(0, event.addon);
       yield state.copyWith(
         addonList: List.of(state.addonList),
       );
