@@ -60,7 +60,7 @@ class EventData {
   EventData.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     title = json['title'];
-    tags = json['tags'].cast<String>();
+    tags = json['tags']?.cast<String>();
     description = json['description'];
     type = json['type'];
     eventFrequency = json['eventFrequency'];
