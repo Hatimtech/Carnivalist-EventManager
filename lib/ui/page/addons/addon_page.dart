@@ -351,7 +351,9 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 5),
           Text(
-            '${AppLocalizations.of(context).labelAddonQuanity} ${quantity ?? 0}   ${AppLocalizations.of(context).labelAddonConvFeeView} ${convenienceFee ?? 0}',
+            '${AppLocalizations
+                .of(context)
+                .labelAddonQuanity} ${quantity ?? 0}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.body1.copyWith(
