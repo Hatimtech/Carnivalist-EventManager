@@ -227,11 +227,10 @@ class _EventInfoPageState extends State<EventInfoPage> {
 
   String getStartEndDateText() {
     try {
-      return '${DateFormat.yMMMd().add_Hm().format(
+      return '${DateFormat.yMMMd().add_jm().format(
           DateTime.parse(_eventData.startDateTime).toLocal())} - ${DateFormat
-          .yMMMd()
-          .add_Hm()
-          .format(DateTime.parse(_eventData.endDateTime).toLocal())}';
+          .yMMMd().add_jm().format(
+          DateTime.parse(_eventData.endDateTime).toLocal())}';
     } on Exception catch (e) {
       return AppLocalizations
           .of(context)

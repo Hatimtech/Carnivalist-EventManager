@@ -579,7 +579,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
         bloc: _basicBloc,
         builder: (BuildContext context, state) {
           print('_buildCustomDateTimeChips builder');
-          final dateFormat = DateFormat.yMMMd().add_Hm();
+          final dateFormat = DateFormat.yMMMd().add_jm();
           return Wrap(
             children:
                 state.eventCustomDateTimeList.map<Widget>((customDateTime) {
