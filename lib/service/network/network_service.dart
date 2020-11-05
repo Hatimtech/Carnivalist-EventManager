@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:eventmanagement/model/addons/addon.dart';
@@ -5,6 +6,7 @@ import 'package:eventmanagement/model/addons/addon_response.dart';
 import 'package:eventmanagement/model/coupons/coupon.dart';
 import 'package:eventmanagement/model/coupons/coupon_action_response.dart';
 import 'package:eventmanagement/model/coupons/coupon_response.dart';
+import 'package:eventmanagement/model/dashboard/payment_summary_response.dart';
 import 'package:eventmanagement/model/event/basic/basic_response.dart';
 import 'package:eventmanagement/model/event/carnivals/carnival_resonse.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
@@ -39,6 +41,7 @@ import '../restclient.dart';
 
 class NetworkService extends NetworkType implements APIService {
   static final _baseUrl = 'https://backend.carnivalist.tk';
+  static final baseUrlWebview = 'https://event.carnivalist.tk';
 
   /*'https://backend.aktv.life';*/
 
@@ -63,8 +66,10 @@ class NetworkService extends NetworkType implements APIService {
   final _deleteTicketUrl = _baseUrl + _subUrl + 'tickets/delete-tickets/';
 
   final _uploadMediaUrl = _baseUrl + _subUrl + 'upload-media';
-  final _eventsListUrl = _baseUrl + _subUrl + 'get-events-for-managers';
+  final _eventsListUrl = _baseUrl + _subUrl + 'get-events-for-managers/';
   final _staffEventsListUrl = _baseUrl + _subUrl + 'get-events-for-eventstaff';
+
+  final _paymentSummaryUrl = _baseUrl + _subUrl + 'payment-summary';
 
   final _activeInactiveEventUrl = _baseUrl + _subUrl + 'toggle-active';
   final _deleteEventUrl = _baseUrl + _subUrl + 'delete-event/';
@@ -366,13 +371,14 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
-  getAllEvents(String authToken) async {
+  getAllEvents(String authToken, String userId) async {
     var headers = {
       'Authorization': authToken,
       "Content-Type": "application/json"
     };
 
-    var result = await rest.get<EventResponse>(_eventsListUrl, headers);
+    var result = await rest.get<EventResponse>(
+        '$_eventsListUrl$userId', headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = EventResponse.fromJson(json.decode(result.mappedResult));
@@ -393,6 +399,28 @@ class NetworkService extends NetworkType implements APIService {
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = StaffEventResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+    return result.networkServiceResponse;
+  }
+
+  @override
+  getPaymentSummary(String authToken) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var hashMap = HashMap<String, String>();
+    hashMap.putIfAbsent("eventId", () => "ns");
+    hashMap.putIfAbsent("time", () => "ns");
+    var result =
+    await rest.post<PaymentSummaryResponse>(
+        _paymentSummaryUrl, headers: headers, body: json.encode(hashMap));
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = PaymentSummaryResponse.fromJson(
+          json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
     return result.networkServiceResponse;

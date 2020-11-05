@@ -24,7 +24,7 @@ class SendMailBloc extends Bloc<SendMailEvent, SendMailState> {
     this.subject,
     this.fromName,
     this.replyTo,
-  });
+  }) : super(initialState(subject, fromName, replyTo));
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -50,9 +50,10 @@ class SendMailBloc extends Bloc<SendMailEvent, SendMailState> {
     add(SendMail(callback: callback));
   }
 
-  @override
-  SendMailState get initialState => SendMailState.initial(
-      subject: subject, fromName: fromName, replyTo: replyTo);
+  static SendMailState initialState(String subject, String fromName,
+      String replyTo) =>
+      SendMailState.initial(
+          subject: subject, fromName: fromName, replyTo: replyTo);
 
   @override
   Stream<SendMailState> mapEventToState(SendMailEvent event) async* {

@@ -102,8 +102,8 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
 //          _buildAddonTypeRadioButton(),
           Expanded(
               child: BlocBuilder<AddonBloc, AddonState>(
-                  bloc: _addonBloc,
-                  condition: (prevState, newState) {
+                  cubit: _addonBloc,
+                  buildWhen: (prevState, newState) {
                     return (prevState.loading != newState.loading) ||
                         /*(prevState.showPublic != newState.showPublic) ||*/
                         (prevState.addonList != newState.addonList ||
@@ -114,7 +114,7 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
                     return Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        addonList(state.addonList),
+                        addonList(state.addonsByDescending),
                         if (state.loading) const PlatformProgressIndicator(),
                       ],
                     );
@@ -125,8 +125,8 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
   }
 
   Widget _buildErrorReceiverEmptyBloc() => BlocBuilder<AddonBloc, AddonState>(
-        bloc: _addonBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+    cubit: _addonBloc,
+    buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -154,8 +154,8 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child: BlocBuilder<AddonBloc, AddonState>(
-            bloc: _addonBloc,
-            condition: (prevState, newState) =>
+            cubit: _addonBloc,
+            buildWhen: (prevState, newState) =>
                 prevState.showPublic != newState.showPublic,
             builder: (_, state) {
               return Row(
@@ -254,8 +254,8 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
             },
             child: widget.enableSelection
                 ? BlocBuilder<AddonBloc, AddonState>(
-              bloc: _addonBloc,
-              condition: (prevState, newState) {
+              cubit: _addonBloc,
+              buildWhen: (prevState, newState) {
                 final newStateAddon = newState.addonList
                     .firstWhere((addon) => addon.id == currentAddon.id);
                 final isChanged =
@@ -516,7 +516,7 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
             .addonDeleteMsg,
         posText: AppLocalizations
             .of(context)
-            .deleteButton,
+            .eventDeleteButton,
         negText: AppLocalizations
             .of(context)
             .btnCancel);

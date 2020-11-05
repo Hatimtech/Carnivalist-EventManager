@@ -86,12 +86,17 @@ class ApiProvider {
         eventDataId: eventDataId);
   }
 
-  Future<NetworkServiceResponse> getAllEvents(String authToken) async {
-    return await apiService.getAllEvents(authToken);
+  Future<NetworkServiceResponse> getAllEvents(String authToken,
+      String userId) async {
+    return await apiService.getAllEvents(authToken, userId);
   }
 
   Future<NetworkServiceResponse> getAllEventsForStaff(String authToken) async {
     return await apiService.getAllEventsForStaff(authToken);
+  }
+
+  Future<NetworkServiceResponse> getPaymentSummary(String authToken) async {
+    return await apiService.getPaymentSummary(authToken);
   }
 
   Future<NetworkServiceResponse> deleteEvent(String authToken,

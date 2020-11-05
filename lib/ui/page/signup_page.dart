@@ -147,8 +147,8 @@ class _SignUpState extends State<SignUpPage> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<SignUpBloc, SignUpState>(
-        bloc: _signUpBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _signUpBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int

@@ -12,6 +12,8 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
   final ApiProvider apiProvider = ApiProvider();
   String eventDataId;
 
+  TicketsBloc() : super(initialState);
+
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
   }
@@ -44,8 +46,7 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
     add(AssignAddon(ticketId, addonIds, callback));
   }
 
-  @override
-  TicketsState get initialState => TicketsState.initial();
+  static TicketsState get initialState => TicketsState.initial();
 
   @override
   Stream<TicketsState> mapEventToState(TicketsEvent event) async* {

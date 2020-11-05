@@ -4,7 +4,6 @@ import 'package:eventmanagement/model/event/settings/cancellation_policy.dart';
 import 'package:eventmanagement/model/event/settings/payment_and_taxes.dart';
 import 'package:eventmanagement/model/event/settings/website_setting.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
-import 'package:flutter/material.dart';
 
 class EventData {
   String id;
@@ -28,6 +27,7 @@ class EventData {
   List<GalleryData> gallery;
 
   String status;
+  bool userContractCheck;
   CancellationPolicy cancellationPolicy;
   PaymentAndTaxes paymentAndTaxes;
   WebsiteSetting websiteSettings;
@@ -52,6 +52,7 @@ class EventData {
     this.banner,
     this.gallery,
     this.status,
+    this.userContractCheck,
     this.cancellationPolicy,
     this.paymentAndTaxes,
     this.websiteSettings,
@@ -85,6 +86,7 @@ class EventData {
         ?.toList();
 
     status = json['status'];
+    userContractCheck = json['userContractCheck'];
     cancellationPolicy = json['cancellationPolicy'] != null
         ? new CancellationPolicy.fromJson(json['cancellationPolicy'])
         : null;
@@ -135,6 +137,8 @@ class EventData {
           this.gallery?.map((formData) => formData.toJson())?.toList();
 
     if (this.status != null) data['status'] = this.status;
+    if (this.userContractCheck != null)
+      data['userContractCheck'] = this.userContractCheck;
     if (this.cancellationPolicy != null) {
       data['cancellationPolicy'] = this.cancellationPolicy.toJson();
     }

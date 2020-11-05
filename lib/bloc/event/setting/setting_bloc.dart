@@ -20,6 +20,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   final ApiProvider apiProvider = ApiProvider();
   String eventDataId;
 
+  SettingBloc() : super(initialState);
+
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
   }
@@ -118,8 +120,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     add(UploadSettings(callback: callback));
   }
 
-  @override
-  SettingState get initialState => SettingState.initial();
+  static SettingState get initialState => SettingState.initial();
 
   @override
   Stream<SettingState> mapEventToState(SettingEvent event) async* {
@@ -131,7 +132,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       final paymentTypeList = getPaymentType();
       yield state.copyWith(
           paymentTypeList: getPaymentType(),
-          paymentGatewayPayPerson: paymentTypeList[0]);
+          paymentGatewayPayPerson: paymentTypeList[1]);
     }
 
     if (event is PopulateExistingEvent) {
@@ -203,6 +204,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         bookButtonLabel: bookButtonLabel,
         cancellationPolicyDesc: cancellationPolicyDesc,
         cancellationOptions: cancellationOptions,
+        tnc: eventData.userContractCheck,
       );
     }
 
@@ -394,7 +396,10 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         networkServiceResponse.response as SettingResponse;
         if (settingResponse.code == apiCodeSuccess) {
           state.uploadRequired = false;
-          add(SettingDataUploadResult(true, uiMsg: settingResponse.message));
+          add(SettingDataUploadResult(true,
+              uiMsg: eventDataId != null
+                  ? SUCCESS_EVENT_UPDATED
+                  : SUCCESS_EVENT_CREATED));
           event.callback(settingResponse);
         } else {
           add(SettingDataUploadResult(false,
@@ -434,6 +439,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   SettingData get settingDataToUpload =>
       SettingData(
           status: 'ACTIVE',
+          userContractCheck: state.tnc,
           paymentAndTaxes: PaymentAndTaxes(
               gstCharge: GSTCharge.defaultInstance(),
               convenienceCharge: ConvenienceCharge(

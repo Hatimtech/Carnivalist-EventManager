@@ -14,6 +14,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   ApiProvider _apiProvider = ApiProvider();
   SharedPreferences pref;
 
+  UserBloc() : super(initialState);
+
   void saveUserId(userId) {
     add(SaveUserId(userId: userId));
   }
@@ -24,6 +26,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   void saveUserName(username) {
     add(SaveUserName(username: username));
+  }
+
+  void saveLastName(lastName) {
+    add(SaveLastName(lastName: lastName));
   }
 
   void saveMobile(mobile) {
@@ -68,14 +74,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         callback: callback));
   }
 
-  @override
-  UserState get initialState => UserState.initial();
+  static UserState get initialState => UserState.initial();
 
   @override
   Stream<UserState> mapEventToState(UserEvent event,) async* {
     if (event is SaveUserName) {
       pref = await SharedPreferences.getInstance();
       pref.setString("username", event.username);
+    }
+
+    if (event is SaveLastName) {
+      pref = await SharedPreferences.getInstance();
+      pref.setString("lastName", event.lastName);
     }
 
     if (event is SaveEmail) {
@@ -148,6 +158,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       if (event.success) {
         pref = await SharedPreferences.getInstance();
         pref.setString("username", event.name);
+        pref.setString("lastName", event.lastName);
         pref.setString("mobile", event.mobile);
         pref.setString("profilePicture", event.profilePic);
         yield state.copyWith(

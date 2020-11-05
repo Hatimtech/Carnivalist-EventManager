@@ -50,8 +50,8 @@ class _TicketsState extends State<TicketsPage> {
           Expanded(
               child: Container(
                   child: BlocBuilder<TicketsBloc, TicketsState>(
-                      bloc: _ticketsBloc,
-                      condition: (prevState, nextState) {
+                      cubit: _ticketsBloc,
+                      buildWhen: (prevState, nextState) {
                         return prevState.ticketsList != nextState.ticketsList ||
                             prevState.ticketsList.length !=
                                 nextState.ticketsList.length;
@@ -70,8 +70,8 @@ class _TicketsState extends State<TicketsPage> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<TicketsBloc, TicketsState>(
-        bloc: _ticketsBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _ticketsBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -455,7 +455,7 @@ class _TicketsState extends State<TicketsPage> {
             .ticketDeleteMsg,
         posText: AppLocalizations
             .of(context)
-            .deleteButton,
+            .eventDeleteButton,
         negText: AppLocalizations
             .of(context)
             .btnCancel);

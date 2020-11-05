@@ -11,6 +11,12 @@ class SaveUserName extends UserEvent {
   SaveUserName({this.username});
 }
 
+class SaveLastName extends UserEvent {
+  final String lastName;
+
+  SaveLastName({this.lastName});
+}
+
 class SaveUserId extends UserEvent {
   final String userId;
   SaveUserId({this.userId});

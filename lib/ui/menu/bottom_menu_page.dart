@@ -6,15 +6,15 @@ import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
+import 'package:eventmanagement/service/network/network_service.dart';
 import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/cliper/circular_notched_rectangle_custom.dart';
 import 'package:eventmanagement/ui/page/addons/addon_page.dart';
 import 'package:eventmanagement/ui/page/coupons/coupons_page.dart';
 import 'package:eventmanagement/ui/page/dashboard/dashboard_page.dart';
 import 'package:eventmanagement/ui/page/staff/staff_page.dart';
-import 'package:eventmanagement/utils/logger.dart';
-import 'package:eventmanagement/utils/vars.dart';
 import 'package:eventmanagement/ui/page/webview_page.dart';
+import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,12 +51,12 @@ class _BottomMenuState extends State<BottomMenuPage> {
     _pages.insert(
         0,
         WebViewPage(
-            'https://manager.carnivalist.tk/redirect-to-reports/${_userBloc
+            '${NetworkService.baseUrlWebview}/redirect-to-reports/${_userBloc
                 .state.authToken}'));
     _pages.insert(
         1,
         WebViewPage(
-            'https://manager.carnivalist.tk/redirect-to-accounts/${_userBloc
+            '${NetworkService.baseUrlWebview}/redirect-to-accounts/${_userBloc
                 .state.authToken}'));
     /*_pages.insert(
         0,
@@ -97,8 +97,8 @@ class _BottomMenuState extends State<BottomMenuPage> {
               child: Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: BlocBuilder<PageNavBloc, PageNavState>(
-                  bloc: _pageNavBloc,
-                  condition: (prevState, newState) =>
+                  cubit: _pageNavBloc,
+                  buildWhen: (prevState, newState) =>
                   prevState.page != newState.page,
                   builder: (_, state) {
                     return Row(
@@ -169,15 +169,11 @@ class _BottomMenuState extends State<BottomMenuPage> {
             _buildTopBgContainer(),
             Expanded(
               child: BlocBuilder<PageNavBloc, PageNavState>(
-                bloc: _pageNavBloc,
-                condition: (prevState, newState) {
-                  Logger.log(
-                      'condition prevState.page--->${prevState
-                          .page}, newState.page--->${newState.page}');
+                cubit: _pageNavBloc,
+                buildWhen: (prevState, newState) {
                   return prevState.page != newState.page;
                 },
                 builder: (_, state) {
-                  Logger.log('builder state.page--->${state.page}');
                   return PageStorage(
                     child: _pages[state.page],
                     bucket: bucket,
@@ -197,8 +193,8 @@ class _BottomMenuState extends State<BottomMenuPage> {
         children: <Widget>[
           Center(
             child: BlocBuilder<PageNavBloc, PageNavState>(
-              bloc: _pageNavBloc,
-              condition: (prevState, newState) =>
+              cubit: _pageNavBloc,
+              buildWhen: (prevState, newState) =>
               prevState.page != newState.page,
               builder: (_, state) {
                 return Text(

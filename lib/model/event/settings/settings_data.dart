@@ -4,12 +4,14 @@ import 'package:eventmanagement/model/event/settings/website_setting.dart';
 
 class SettingData {
   String status;
+  bool userContractCheck;
   PaymentAndTaxes paymentAndTaxes;
   CancellationPolicy cancellationPolicy;
   WebsiteSetting websiteSettings;
 
   SettingData({
     this.status,
+    this.userContractCheck,
     this.paymentAndTaxes,
     this.cancellationPolicy,
     this.websiteSettings,
@@ -17,6 +19,7 @@ class SettingData {
 
   SettingData.fromJson(Map<String, dynamic> json) {
     status = json['status'];
+    userContractCheck = json['userContractCheck'];
 
     paymentAndTaxes = json['paymentAndTaxes'] != null
         ? new PaymentAndTaxes.fromJson(json['paymentAndTaxes'])
@@ -34,6 +37,8 @@ class SettingData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.status != null) data['status'] = this.status;
+    if (this.userContractCheck != null)
+      data['userContractCheck'] = this.userContractCheck;
     if (this.paymentAndTaxes != null)
       data['paymentAndTaxes'] = this.paymentAndTaxes.toJson();
     if (this.cancellationPolicy != null)

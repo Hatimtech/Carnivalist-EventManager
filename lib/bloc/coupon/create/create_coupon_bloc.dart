@@ -15,7 +15,8 @@ class CreateCouponBloc extends Bloc<CreateCouponEvent, CreateCouponState> {
   final CouponBloc couponBloc;
   final String couponType, couponId;
 
-  CreateCouponBloc(this.couponBloc, this.couponType, {this.couponId});
+  CreateCouponBloc(this.couponBloc, this.couponType, {this.couponId})
+      : super(initialState(couponBloc, couponType, couponId));
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -93,8 +94,8 @@ class CreateCouponBloc extends Bloc<CreateCouponEvent, CreateCouponState> {
     add(UploadCoupon(callback: callback));
   }
 
-  @override
-  CreateCouponState get initialState {
+  static CreateCouponState initialState(CouponBloc couponBloc,
+      String couponType, String couponId) {
     if (couponId == null)
       return CreateCouponState.initial(couponType: couponType);
     else {

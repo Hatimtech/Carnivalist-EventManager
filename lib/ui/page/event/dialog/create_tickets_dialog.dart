@@ -39,7 +39,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
     _createTicketBloc.authTokenSave(_userBloc.state.authToken);
 
     if (!isValid(_createTicketBloc.state.ticketCurrency)) {
-      final defaultCurrencyUI = _createTicketBloc.mapCurrency['USD'];
+      final defaultCurrencyUI = CreateTicketBloc.mapCurrency['USD'];
       _createTicketBloc.ticketCurrencyInput('USD', defaultCurrencyUI);
     }
 
@@ -242,8 +242,8 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<CreateTicketBloc, CreateTicketState>(
-        bloc: _createTicketBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _createTicketBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -310,7 +310,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: BlocBuilder<CreateTicketBloc, CreateTicketState>(
-            condition: (prevState, newState) =>
+            buildWhen: (prevState, newState) =>
             prevState.ticketCurrencyUI != newState.ticketCurrencyUI,
             builder: (BuildContext context, state) =>
                 Text(
@@ -330,7 +330,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
                           .of(context)
                           .hintColor),
                 ),
-            bloc: _createTicketBloc,
+            cubit: _createTicketBloc,
           ),
         ),
       ),
@@ -357,7 +357,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
       );
 
 //  salesEndDateInput() => BlocBuilder(
-//      bloc: _createTicketBloc,
+//      cubit: _createTicketBloc,
 //      builder: (BuildContext context, CreateTicketState state) =>
 //          widget.inputFieldRectangle(
 //            _salesEndDateController,
@@ -369,9 +369,9 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
   saleEndDateInput() =>
       BlocBuilder<CreateTicketBloc, CreateTicketState>(
-          condition: (prevState, newState) =>
+          buildWhen: (prevState, newState) =>
           prevState.salesEndDate != newState.salesEndDate,
-      bloc: _createTicketBloc,
+          cubit: _createTicketBloc,
           builder: (BuildContext context, CreateTicketState state) {
             return InkWell(
               onTap: () =>
@@ -489,8 +489,8 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
                     .inputHintDescription,
                 _createTicketBloc.descriptionInput),
         child: BlocBuilder<CreateTicketBloc, CreateTicketState>(
-          bloc: _createTicketBloc,
-          condition: (prevState, newState) {
+          cubit: _createTicketBloc,
+          buildWhen: (prevState, newState) {
             return prevState.description != newState.description;
           },
           builder: (_, state) =>
@@ -617,9 +617,9 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   }
 
   Widget _ticketCurrencyList() {
-    final currencies = _createTicketBloc.mapCurrency.entries.toList();
+    final currencies = CreateTicketBloc.mapCurrency.entries.toList();
     return ListView.builder(
-        itemCount: _createTicketBloc.mapCurrency.length,
+        itemCount: CreateTicketBloc.mapCurrency.length,
         shrinkWrap: true,
         itemBuilder: (context, position) {
           return InkWell(
@@ -661,7 +661,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   }
 
   Widget _buildCupertinoTicketCurrencyActionSheet() {
-    final currencies = _createTicketBloc.mapCurrency.entries.toList();
+    final currencies = CreateTicketBloc.mapCurrency.entries.toList();
     return CupertinoActionSheet(
       actions: currencies.map<Widget>((ticketCurrencyMapEntry) {
         return CupertinoActionSheetAction(

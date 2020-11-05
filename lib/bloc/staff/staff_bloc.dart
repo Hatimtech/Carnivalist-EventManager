@@ -12,6 +12,8 @@ import 'package:eventmanagement/utils/vars.dart';
 class StaffBloc extends Bloc<StaffEvent, StaffState> {
   final ApiProvider apiProvider = ApiProvider();
 
+  StaffBloc() : super(initialState);
+
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
   }
@@ -36,8 +38,7 @@ class StaffBloc extends Bloc<StaffEvent, StaffState> {
     add(ActiveInactiveStaff(staffId, active, callback));
   }
 
-  @override
-  StaffState get initialState => StaffState.initial();
+  static StaffState get initialState => StaffState.initial();
 
   @override
   Stream<StaffState> mapEventToState(StaffEvent event) async* {

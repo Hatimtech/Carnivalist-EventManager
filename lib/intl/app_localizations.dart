@@ -271,7 +271,7 @@ class AppLocalizations {
       name: "labelConvenienceFee", locale: _localeName);
 
   String get labelPaymentGatewayCharge =>
-      Intl.message('Who will pay payment Gateway charges',
+      Intl.message('Who Will Pay Convenience Fee',
           name: "labelPaymentGatewayCharge", locale: _localeName);
 
   String get labelBookingCancel => Intl.message('Booking Cancellation',
@@ -427,7 +427,8 @@ class AppLocalizations {
       Intl.message('ADD MORE',
           name: "btnAddCancellationOption", locale: _localeName);
 
-  String get inputHintPhoneEmail => Intl.message('Phone No/Email',
+  String get inputHintPhoneEmail =>
+      Intl.message('Email',
       name: "inputHintPhoneEmail", locale: _localeName);
 
   String get inputHintEmail =>
@@ -627,7 +628,7 @@ class AppLocalizations {
       Intl.message('Gallery', name: "labelGallery", locale: _localeName);
 
   String get zeroInputHint =>
-      Intl.message('0.0', name: "zeroInputHint", locale: _localeName);
+      Intl.message('0', name: "zeroInputHint", locale: _localeName);
 
   // Event Detail Strings
   String get titleEventDetails =>
@@ -831,6 +832,10 @@ class AppLocalizations {
 
   String get labelAddonIsActive =>
       Intl.message('Active', name: "labelAddonIsActive", locale: _localeName);
+
+  String get labelAddonIsInActive =>
+      Intl.message(
+          'Inactive', name: "labelAddonIsInActive", locale: _localeName);
 
   String get labelAddonName =>
       Intl.message('Add on Name', name: "labelAddonName", locale: _localeName);
@@ -1479,7 +1484,7 @@ class AppLocalizations {
       Intl.message('Are you sure, you want to delete this addon?',
           name: "addonDeleteMsg", locale: _localeName);
 
-  String get deleteButton =>
+  String get eventDeleteButton =>
       Intl.message('Delete', name: "eventDeleteButton", locale: _localeName);
 
   String get errorPhoneEmail =>
@@ -1533,12 +1538,12 @@ class AppLocalizations {
           locale: _localeName);
 
   String get errorLastName =>
-      Intl.message('Last name is required', name: "errorFirstName",
+      Intl.message('Last name is required', name: "errorLastName",
           locale: _localeName);
 
   String get errorLastNameValid =>
       Intl.message(
-          'Last name must be a-z and A-Z', name: "errorFirstNameValid",
+          'Last name must be a-z and A-Z', name: "errorLastNameValid",
           locale: _localeName);
 
   String get logoutTitle =>
@@ -1565,6 +1570,42 @@ class AppLocalizations {
   String get exitWarning =>
       Intl.message("Press back again to exit",
           name: "exitWarning", locale: _localeName);
+
+  String get successEventCreated =>
+      Intl.message('Event Created',
+          name: "successEventCreated", locale: _localeName);
+
+  String get successEventUpdated =>
+      Intl.message('Event Updated',
+          name: "successEventUpdated", locale: _localeName);
+
+  String get successStaffCreated =>
+      Intl.message('Staff Created',
+          name: "successStaffCreated", locale: _localeName);
+
+  String get successStaffUpdated =>
+      Intl.message('Staff Updated',
+          name: "successStaffUpdated", locale: _localeName);
+
+  String get successAddonCreated =>
+      Intl.message('Addon Created',
+          name: "successAddonCreated", locale: _localeName);
+
+  String get successAddonUpdated =>
+      Intl.message('Addon Updated',
+          name: "successAddonUpdated", locale: _localeName);
+
+  String get successDataSaved =>
+      Intl.message('Saved',
+          name: "successDataSaved", locale: _localeName);
+
+  String get eventCarnival =>
+      Intl.message('Carnival: ',
+          name: "eventCarnival", locale: _localeName);
+
+  String get eventCity =>
+      Intl.message('City: ',
+          name: "eventCity", locale: _localeName);
 }
 
 class AppTranslationsDelegate extends LocalizationsDelegate<AppLocalizations> {

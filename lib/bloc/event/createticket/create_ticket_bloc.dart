@@ -12,7 +12,7 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
   final TicketsBloc ticketBloc;
   final String eventDataId;
   final String ticketId;
-  Map<String, String> mapCurrency = {
+  static Map<String, String> mapCurrency = {
     'AED': 'AED - United Arab Emirates',
     'ALL': 'ALL - Albanian lek',
     'AMD': 'AMD - Armenian dram',
@@ -107,7 +107,8 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
     'ZAR': 'ZAR - South African rand',
   };
 
-  CreateTicketBloc(this.eventDataId, this.ticketBloc, {this.ticketId});
+  CreateTicketBloc(this.eventDataId, this.ticketBloc, {this.ticketId})
+      : super(initialState(eventDataId, ticketBloc, ticketId));
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -150,8 +151,8 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
     add(CreateUpdateTicket(callback: callback));
   }
 
-  @override
-  CreateTicketState get initialState {
+  static CreateTicketState initialState(String eventDataId,
+      TicketsBloc ticketBloc, String ticketId) {
     if (ticketId == null)
       return CreateTicketState.initial();
     else {
@@ -235,7 +236,24 @@ class CreateTicketBloc extends Bloc<CreateTicketEvent, CreateTicketState> {
             : 0);
     param.putIfAbsent(
         'sellingEndDate', () => state.salesEndDate.toUtc().toIso8601String());
-    param.putIfAbsent('quantity', () => int.parse(state.totalAvailable));
+
+    int initialOriginalQuantity = int.parse(state.totalAvailable);
+    int quantity = int.parse(state.totalAvailable);
+
+    if (ticketId != null) {
+      var ticket = ticketBloc.state.ticketsList
+          .firstWhere((ticket) => ticket.sId == ticketId, orElse: null);
+      if (ticket != null) {
+        int existingOriginalQuantity = ticket.initialOriginalQuantity ?? 0;
+        int existingQuantity = ticket.quantity ?? 0;
+
+        int changeInQuantity = quantity - existingQuantity;
+        initialOriginalQuantity = existingOriginalQuantity + changeInQuantity;
+      }
+    }
+    param.putIfAbsent('quantity', () => quantity);
+    param.putIfAbsent('initialOriginalQuantity', () => initialOriginalQuantity);
+
     param.putIfAbsent('minOrderQuantity', () => int.parse(state.minBooking));
     param.putIfAbsent('maxOrderQuantity', () => int.parse(state.maxBooking));
     param.putIfAbsent('description', () => state.description);

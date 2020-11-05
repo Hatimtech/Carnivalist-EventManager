@@ -64,8 +64,8 @@ class _GalleryState extends State<GalleryPage> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<GalleryBloc, GalleryState>(
-        bloc: _galleryBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _galleryBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -101,8 +101,8 @@ class _GalleryState extends State<GalleryPage> {
                       color: bgColorSecondary,
                     ),
                     child: BlocBuilder(
-                        bloc: _galleryBloc,
-                        condition: (prevState, newState) {
+                        cubit: _galleryBloc,
+                        buildWhen: (prevState, newState) {
                           return prevState.banner != newState.banner;
                         },
                         builder: (context, state) {
@@ -178,8 +178,8 @@ class _GalleryState extends State<GalleryPage> {
             );
           else
             return BlocBuilder<GalleryBloc, GalleryState>(
-                bloc: _galleryBloc,
-                condition: (prevState, newState) {
+                cubit: _galleryBloc,
+                buildWhen: (prevState, newState) {
                   return prevState.galleryList != newState.galleryList;
                 },
                 builder: (context, state) {
@@ -273,7 +273,7 @@ class _GalleryState extends State<GalleryPage> {
                   .mediaDeleteMsg,
               posText: AppLocalizations
                   .of(context)
-                  .deleteButton,
+                  .eventDeleteButton,
               negText: AppLocalizations
                   .of(context)
                   .btnCancel);

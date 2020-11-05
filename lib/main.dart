@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:eventmanagement/bloc/addon/addon_bloc.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/coupon/coupon_bloc.dart';
+import 'package:eventmanagement/bloc/dashboard/dashboard_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/event_detail_bloc.dart';
 import 'package:eventmanagement/bloc/event/form/form_bloc.dart';
@@ -16,7 +16,6 @@ import 'package:eventmanagement/ui/page/dashboard/event_staff_home.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_detail_root_page.dart';
 import 'package:eventmanagement/ui/page/user_info_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_app.dart';
-import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/orientation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ import 'ui/page/signup_page.dart';
 import 'ui/page/splash_screen.dart';
 import 'utils/vars.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
@@ -52,36 +51,7 @@ Future<void> main() async {
 
   Injector.configure(Flavor.Network);
 
-  var docsDir = await getSystemDirPath();
-  String canonFilename = '$docsDir/back_to_now.txt';
-  await Logger.initializeLogging(canonFilename);
-  await Logger.log('ENTERED main() ...');
-
-  runZonedGuarded<Future<void>>(
-        () async {
-      runApp(MyApp());
-    },
-        (dynamic error, StackTrace stackTrace) async {
-      if (isInDebugMode) {
-        print('Error--->$error');
-      } else {
-        await Logger.log('$error\n${stackTrace.toString()}');
-      }
-      // Send report
-    },
-  );
-
-  // This captures errors reported by the Flutter framework.
-  FlutterError.onError = (FlutterErrorDetails details) {
-    if (isInDebugMode) {
-      // In development mode, simply print to console.
-      FlutterError.dumpErrorToConsole(details);
-    } else {
-      // In production mode, report to the application zone to report to
-      // Sentry.
-      Zone.current.handleUncaughtError(details.exception, details.stack);
-    }
-  };
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget with PortraitModeMixin {
@@ -138,12 +108,15 @@ class MyApp extends StatelessWidget with PortraitModeMixin {
     return BlocProvider(
       create: (context) => PageNavBloc(),
       child: BlocProvider(
-        create: (context) => AddonBloc(),
+        create: (context) => DashboardBloc(),
         child: BlocProvider(
-          create: (context) => CouponBloc(),
+          create: (context) => AddonBloc(),
           child: BlocProvider(
-            create: (context) => StaffBloc(),
-            child: BottomMenuPage(),
+            create: (context) => CouponBloc(),
+            child: BlocProvider(
+              create: (context) => StaffBloc(),
+              child: BottomMenuPage(),
+            ),
           ),
         ),
       ),

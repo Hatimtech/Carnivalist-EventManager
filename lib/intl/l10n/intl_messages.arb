@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-05-21T17:07:55.329846",
+  "@@last_modified": "2020-11-04T01:33:04.569693",
   "appTitle": "Carnivalist",
   "@appTitle": {
     "type": "text",
@@ -57,6 +57,16 @@
   },
   "labelStaff": "Staff",
   "@labelStaff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAccount": "Account",
+  "@labelAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelProfile": "Profile",
+  "@labelProfile": {
     "type": "text",
     "placeholders": {}
   },
@@ -360,7 +370,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "labelPaymentGatewayCharge": "Who will pay payment Gateway charges",
+  "labelPaymentGatewayCharge": "Who Will Pay Convenience Fee",
   "@labelPaymentGatewayCharge": {
     "type": "text",
     "placeholders": {}
@@ -580,6 +590,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "btnUpdate": "Update",
+  "@btnUpdate": {
+    "type": "text",
+    "placeholders": {}
+  },
   "btnCreateTicket": "Create Ticket",
   "@btnCreateTicket": {
     "type": "text",
@@ -595,7 +610,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "inputHintPhoneEmail": "Phone No/Email",
+  "inputHintPhoneEmail": "Email",
   "@inputHintPhoneEmail": {
     "type": "text",
     "placeholders": {}
@@ -610,6 +625,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelEventStaffLogin": "Event Staff Login",
+  "@labelEventStaffLogin": {
+    "type": "text",
+    "placeholders": {}
+  },
   "inputHintConfirmPassword": "Confirm Password",
   "@inputHintConfirmPassword": {
     "type": "text",
@@ -617,6 +637,11 @@
   },
   "inputHintFirstName": "First Name",
   "@inputHintFirstName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintLastName": "Last Name",
+  "@inputHintLastName": {
     "type": "text",
     "placeholders": {}
   },
@@ -885,8 +910,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "inputValue": "Input Value",
-  "@inputValue": {
+  "zeroInputHint": "0",
+  "@zeroInputHint": {
     "type": "text",
     "placeholders": {}
   },
@@ -1130,6 +1155,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelAddonIsInActive": "Inactive",
+  "@labelAddonIsInActive": {
+    "type": "text",
+    "placeholders": {}
+  },
   "labelAddonName": "Add on Name",
   "@labelAddonName": {
     "type": "text",
@@ -1230,6 +1260,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelDeleteAddon": "Delete Addon",
+  "@labelDeleteAddon": {
+    "type": "text",
+    "placeholders": {}
+  },
   "errorAddonName": "Addon name can not be empty",
   "@errorAddonName": {
     "type": "text",
@@ -1307,6 +1342,11 @@
   },
   "labelInActiveCoupon": "Inactive Coupon",
   "@labelInActiveCoupon": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelDeleteCoupon": "Delete Coupon",
+  "@labelDeleteCoupon": {
     "type": "text",
     "placeholders": {}
   },
@@ -1580,6 +1620,31 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelEventDetailNotStarted": "Event is not started yet or not active.",
+  "@labelEventDetailNotStarted": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAttendeesFilter": "Filter",
+  "@labelAttendeesFilter": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAttendeesFilterAll": "All",
+  "@labelAttendeesFilterAll": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAttendeesFilterAttended": "Attended",
+  "@labelAttendeesFilterAttended": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAttendeesFilterPending": "Pending",
+  "@labelAttendeesFilterPending": {
+    "type": "text",
+    "placeholders": {}
+  },
   "labelAttendeesResendTicket": "Resend Ticket",
   "@labelAttendeesResendTicket": {
     "type": "text",
@@ -1587,6 +1652,11 @@
   },
   "labelAttendeesSendMail": "Send Mail",
   "@labelAttendeesSendMail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelAttendeesMarkAttended": "Mark As Attended",
+  "@labelAttendeesMarkAttended": {
     "type": "text",
     "placeholders": {}
   },
@@ -1675,6 +1745,311 @@
     "type": "text",
     "placeholders": {}
   },
+  "labelEditStaff": "Edit User",
+  "@labelEditStaff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffUsernameView": "username: ",
+  "@labelStaffUsernameView": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffEmailView": "email: ",
+  "@labelStaffEmailView": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelActiveStaff": "Active User",
+  "@labelActiveStaff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelInActiveStaff": "Inactive User",
+  "@labelInActiveStaff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleCreateStaff": "Add Staff",
+  "@titleCreateStaff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffName": "Name",
+  "@labelStaffName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffEmail": "Email",
+  "@labelStaffEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffDOB": "DOB",
+  "@labelStaffDOB": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffState": "State",
+  "@labelStaffState": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffCity": "City",
+  "@labelStaffCity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffUsername": "Username",
+  "@labelStaffUsername": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffPassword": "Password",
+  "@labelStaffPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffMobileNo": "Mobile No",
+  "@labelStaffMobileNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelStaffEvents": "Events",
+  "@labelStaffEvents": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffName": "Type User Name",
+  "@inputHintStaffName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffEmail": "Type User Email",
+  "@inputHintStaffEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffDOB": "Select DOB",
+  "@inputHintStaffDOB": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffState": "Select State",
+  "@inputHintStaffState": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffCity": "Enter City",
+  "@inputHintStaffCity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffUsername": "Enter Username",
+  "@inputHintStaffUsername": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffMobileNo": "Enter Mobile No",
+  "@inputHintStaffMobileNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "inputHintStaffPassword": "Enter Password",
+  "@inputHintStaffPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffName": "Name can not be empty",
+  "@errorStaffName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffEmail": "Email can not be empty",
+  "@errorStaffEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffInvalidEmail": "Invalid email",
+  "@errorStaffInvalidEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffDOB": "DOB can not be empty",
+  "@errorStaffDOB": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffState": "State can not be empty",
+  "@errorStaffState": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffCity": "City can not be empty",
+  "@errorStaffCity": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffUsername": "Username can not be empty",
+  "@errorStaffUsername": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffMobileNo": "Mobile no can not be empty",
+  "@errorStaffMobileNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffMobileNoLength": "Valid mobile no is required",
+  "@errorStaffMobileNoLength": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffPassword": "Password can not be empty",
+  "@errorStaffPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorStaffSelectEvents": "Please add atleast 1 event",
+  "@errorStaffSelectEvents": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eventDeleteTitle": "Delete Event",
+  "@eventDeleteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eventDeleteMsg": "Are you sure, you want to delete this event?",
+  "@eventDeleteMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ticketDeleteTitle": "Delete Ticket",
+  "@ticketDeleteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "ticketDeleteMsg": "Are you sure, you want to delete this ticket?",
+  "@ticketDeleteMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fieldDeleteTitle": "Delete Field",
+  "@fieldDeleteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fieldDeleteMsg": "Are you sure, you want to delete this form field?",
+  "@fieldDeleteMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaDeleteTitle": "Delete Media",
+  "@mediaDeleteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mediaDeleteMsg": "Are you sure, you want to delete this media file?",
+  "@mediaDeleteMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "couponDeleteTitle": "Delete Coupon",
+  "@couponDeleteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "couponDeleteMsg": "Are you sure, you want to delete this coupon?",
+  "@couponDeleteMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addonDeleteTitle": "Delete Addon",
+  "@addonDeleteTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addonDeleteMsg": "Are you sure, you want to delete this addon?",
+  "@addonDeleteMsg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eventDeleteButton": "Delete",
+  "@eventDeleteButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorPhoneEmail": "Phone No/Email is required",
+  "@errorPhoneEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEmail": "Email is required",
+  "@errorEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorInvalidEmail": "Invalid email",
+  "@errorInvalidEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorPhoneNo": "Phone no is required",
+  "@errorPhoneNo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorPhoneNoLength": "Valid phone number is required",
+  "@errorPhoneNoLength": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorPassword": "Password is required",
+  "@errorPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorPasswordLength": "Password at least 4 characters",
+  "@errorPasswordLength": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorConfirmPassword": "Confirm Password is required",
+  "@errorConfirmPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorConfirmPasswordLength": "Confirm Password at least 4 characters",
+  "@errorConfirmPasswordLength": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorConfirmPasswordMatch": "Password and confirm password not match",
+  "@errorConfirmPasswordMatch": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorFirstName": "First name is required",
+  "@errorFirstName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorFirstNameValid": "First name must be a-z and A-Z",
+  "@errorFirstNameValid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLastName": "Last name is required",
+  "@errorLastName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLastNameValid": "Last name must be a-z and A-Z",
+  "@errorLastNameValid": {
+    "type": "text",
+    "placeholders": {}
+  },
   "logoutTitle": "Logout",
   "@logoutTitle": {
     "type": "text",
@@ -1707,6 +2082,51 @@
   },
   "exitWarning": "Press back again to exit",
   "@exitWarning": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successEventCreated": "Event Created",
+  "@successEventCreated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successEventUpdated": "Event Updated",
+  "@successEventUpdated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successStaffCreated": "Staff Created",
+  "@successStaffCreated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successStaffUpdated": "Staff Updated",
+  "@successStaffUpdated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successAddonCreated": "Addon Created",
+  "@successAddonCreated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successAddonUpdated": "Addon Updated",
+  "@successAddonUpdated": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "successDataSaved": "Saved",
+  "@successDataSaved": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eventCarnival": "Carnival: ",
+  "@eventCarnival": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "eventCity": "City: ",
+  "@eventCity": {
     "type": "text",
     "placeholders": {}
   }

@@ -90,8 +90,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
           children: <Widget>[
             _buildErrorReceiverEmptyBloc(),
             BlocBuilder(
-              bloc: _createCouponBloc,
-              condition: (prevState, newState) =>
+              cubit: _createCouponBloc,
+              buildWhen: (prevState, newState) =>
               prevState.couponType != newState.couponType,
               builder: (_, state) {
                 return Text(titleText,
@@ -176,8 +176,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
 
   Widget _buildCouponDiscountType() {
     return BlocBuilder<CreateCouponBloc, CreateCouponState>(
-      bloc: _createCouponBloc,
-      condition: (prevState, newState) =>
+      cubit: _createCouponBloc,
+      buildWhen: (prevState, newState) =>
           prevState.discountTypeList != newState.discountTypeList,
       builder: (_, state) {
         return Row(
@@ -337,8 +337,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<CreateCouponBloc, CreateCouponState>(
-        bloc: _createCouponBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _createCouponBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -355,9 +355,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
 
   Widget _couponAvailStartDateInput() =>
       BlocBuilder<CreateCouponBloc, CreateCouponState>(
-          condition: (prevState, newState) =>
+          buildWhen: (prevState, newState) =>
               prevState.startDateTime != newState.startDateTime,
-          bloc: _createCouponBloc,
+          cubit: _createCouponBloc,
           builder: (BuildContext context, state) {
             return InkWell(
               onTap: () => _pickDate(
@@ -384,9 +384,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
 
   Widget _couponAvailEndDateInput() =>
       BlocBuilder<CreateCouponBloc, CreateCouponState>(
-          condition: (prevState, newState) =>
+          buildWhen: (prevState, newState) =>
               prevState.endDateTime != newState.endDateTime,
-          bloc: _createCouponBloc,
+          cubit: _createCouponBloc,
           builder: (BuildContext context, state) {
             return InkWell(
               onTap: () =>
@@ -420,8 +420,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             style: Theme.of(context).textTheme.body2),
         const SizedBox(height: 4.0),
         BlocBuilder<CreateCouponBloc, CreateCouponState>(
-            bloc: _createCouponBloc,
-            condition: (prevState, newState) {
+            cubit: _createCouponBloc,
+            buildWhen: (prevState, newState) {
               return prevState.selectedEvent != newState.selectedEvent;
             },
             builder: (BuildContext context, state) {
@@ -454,8 +454,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                   ),
                   (state.selectedEvent?.tickets?.length ?? 0) > 0
                       ? BlocBuilder<CreateCouponBloc, CreateCouponState>(
-                          bloc: _createCouponBloc,
-                          condition: (prevState, newState) {
+                    cubit: _createCouponBloc,
+                    buildWhen: (prevState, newState) {
                             return prevState.checkedTicket !=
                                 newState.checkedTicket;
                           },
@@ -472,7 +472,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                                     textAlign: TextAlign.left,
                                     style: Theme.of(context).textTheme.body2)
                               ]..addAll(
-                                  state.selectedEvent.tickets.map((ticket) {
+                                state.selectedEvent.tickets
+                                    .where((element) => (element.price > 0))
+                                    .map((ticket) {
                                     return LabeledCheckbox(
                                       onChanged: (value) {
                                         if (value)
@@ -511,8 +513,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             style: Theme.of(context).textTheme.body2),
         const SizedBox(height: 4.0),
         BlocBuilder<CreateCouponBloc, CreateCouponState>(
-            bloc: _createCouponBloc,
-            condition: (prevState, newState) {
+            cubit: _createCouponBloc,
+            buildWhen: (prevState, newState) {
               return prevState.selectedPastEvent != newState.selectedPastEvent;
             },
             builder: (BuildContext context, state) {
@@ -780,9 +782,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
   Widget _buildMaterialSelectEventSheet(bool showUpcoming, Function handler) {
     final eventBloc = BlocProvider.of<EventBloc>(context);
     return BlocBuilder<EventBloc, EventState>(
-        condition: (prevState, newState) =>
+        buildWhen: (prevState, newState) =>
             prevState.eventDataList != newState.eventDataList,
-        bloc: eventBloc,
+        cubit: eventBloc,
         builder: (context, state) {
           if (state.loading)
             return Container(
@@ -791,8 +793,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                     valueColor:
                         AlwaysStoppedAnimation<Color>(colorProgressBar)));
           else {
-            final events =
-                showUpcoming ? state.upcomingEvents : state.pastEvents;
+            final events = showUpcoming
+                ? state.activeEventsWithTicket
+                : state.pastEventsWithTicket;
             return events.length > 0
                 ? eventList(events, handler)
                 : Padding(
@@ -859,9 +862,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
       bool showUpcoming, Function handler) {
     final eventBloc = BlocProvider.of<EventBloc>(context);
     return BlocBuilder<EventBloc, EventState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventDataList != newState.eventDataList,
-      bloc: eventBloc,
+      cubit: eventBloc,
       builder: (context, state) {
         if (state.loading)
           return Container(

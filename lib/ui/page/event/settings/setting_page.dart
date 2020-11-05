@@ -74,8 +74,8 @@ class _SettingState extends State<SettingPage> {
 
   Widget _buildErrorCodeHandleView() =>
       BlocBuilder<SettingBloc, SettingState>(
-        bloc: _settingBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _settingBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -114,8 +114,8 @@ class _SettingState extends State<SettingPage> {
                         .title),
                 const SizedBox(height: 16.0),
                 /*BlocBuilder<SettingBloc, SettingState>(
-                    bloc: _settingBloc,
-                    condition: (prevState, newState) {
+                    cubit: _settingBloc,
+                    buildWhen: (prevState, newState) {
                       return prevState.convenienceFee !=
                           newState.convenienceFee;
                     },
@@ -238,8 +238,8 @@ class _SettingState extends State<SettingPage> {
                 const SizedBox(height: 5),
                 Container(
                     child: BlocBuilder<SettingBloc, SettingState>(
-                        bloc: _settingBloc,
-                        condition: (prevState, newState) {
+                        cubit: _settingBloc,
+                        buildWhen: (prevState, newState) {
                           return prevState.paymentGatewayPayPerson?.name !=
                               newState.paymentGatewayPayPerson?.name;
                         },
@@ -310,8 +310,8 @@ class _SettingState extends State<SettingPage> {
                           .title),
                   const SizedBox(height: 7.0),
                   BlocBuilder<SettingBloc, SettingState>(
-                    bloc: _settingBloc,
-                    condition: (prevState, newState) {
+                    cubit: _settingBloc,
+                    buildWhen: (prevState, newState) {
                       return prevState.bookingCancellation !=
                           newState.bookingCancellation;
                     },
@@ -356,8 +356,8 @@ class _SettingState extends State<SettingPage> {
                                 .body1),
                         const SizedBox(width: 10.0),
                         BlocBuilder<SettingBloc, SettingState>(
-                          bloc: _settingBloc,
-                          condition: (prevState, newState) {
+                          cubit: _settingBloc,
+                          buildWhen: (prevState, newState) {
                             return prevState.transferBooking !=
                                 newState.transferBooking;
                           },
@@ -382,8 +382,8 @@ class _SettingState extends State<SettingPage> {
                                 .body1),
                         const SizedBox(width: 10.0),
                         BlocBuilder<SettingBloc, SettingState>(
-                          bloc: _settingBloc,
-                          condition: (prevState, newState) {
+                          cubit: _settingBloc,
+                          buildWhen: (prevState, newState) {
                             return prevState.remaningTickets !=
                                 newState.remaningTickets;
                           },
@@ -594,8 +594,8 @@ class _SettingState extends State<SettingPage> {
         child: Container(
             padding: EdgeInsets.symmetric(vertical: 10.0),
             child: BlocBuilder(
-              bloc: _settingBloc,
-              condition: (prevState, newState) {
+              cubit: _settingBloc,
+              buildWhen: (prevState, newState) {
                 return prevState.tnc != newState.tnc;
               },
               builder: (BuildContext context, state) {
@@ -642,8 +642,8 @@ class _SettingState extends State<SettingPage> {
                 ),
                 _cancellationPolicyDescriptionInput(),
                 BlocBuilder<SettingBloc, SettingState>(
-                    bloc: _settingBloc,
-                    condition: (prevState, newState) {
+                    cubit: _settingBloc,
+                    buildWhen: (prevState, newState) {
                       return prevState.cancellationOptions !=
                           newState.cancellationOptions;
                     },
@@ -713,8 +713,8 @@ class _SettingState extends State<SettingPage> {
                   .inputHintCancellationDesc,
               _settingBloc.bookingCancellationDescInput),
       child: BlocBuilder<SettingBloc, SettingState>(
-        bloc: _settingBloc,
-        condition: (prevState, newState) {
+        cubit: _settingBloc,
+        buildWhen: (prevState, newState) {
           return prevState.cancellationPolicyDesc !=
               newState.cancellationPolicyDesc;
         },
@@ -733,8 +733,8 @@ class _SettingState extends State<SettingPage> {
       int index, int currentOptionsLength) {
     return BlocBuilder<SettingBloc, SettingState>(
       key: ValueKey(cancellationOption.hashCode),
-      bloc: _settingBloc,
-      condition: (prevState, newState) {
+      cubit: _settingBloc,
+      buildWhen: (prevState, newState) {
         return newState.cancellationOptions.length == currentOptionsLength &&
             (prevState.cancellationOptions[index].refundType !=
                 newState.cancellationOptions[index].refundType);
@@ -804,6 +804,7 @@ class _SettingState extends State<SettingPage> {
       CancellationOption cancellationOption,
       int index,
       int currentOptionsLength) {
+    var refundValue = _settingBloc.state.cancellationOptions[index].refundValue;
     return Expanded(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -826,10 +827,9 @@ class _SettingState extends State<SettingPage> {
               const SizedBox(height: 4.0),
               widget.inputFieldRectangle(
                 null,
-                initialValue: _settingBloc
-                    .state.cancellationOptions[index].refundValue
-                    ?.toString() ??
-                    '',
+                initialValue: refundValue != null && refundValue > 0
+                    ? refundValue.toString()
+                    : '',
                 onChanged: (value) =>
                     _settingBloc.cancellationPolicyDeductionInput(index, value),
                 hintText: AppLocalizations
@@ -875,7 +875,7 @@ class _SettingState extends State<SettingPage> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: BlocBuilder<SettingBloc, SettingState>(
-                    condition: (prevState, newState) {
+                    buildWhen: (prevState, newState) {
                       return newState.cancellationOptions.length ==
                           currentOptionsLength &&
                           prevState

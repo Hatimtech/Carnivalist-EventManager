@@ -7,6 +7,7 @@ class Ticket {
   String currency;
   double price;
   int quantity;
+  int initialOriginalQuantity;
   int minOrderQuantity;
   int maxOrderQuantity;
   String name;
@@ -26,6 +27,7 @@ class Ticket {
     currency = json['currency'];
     price = json['price']?.toDouble();
     quantity = json['quantity'];
+    initialOriginalQuantity = json['initialOriginalQuantity'];
     minOrderQuantity = json['minOrderQuantity'];
     maxOrderQuantity = json['maxOrderQuantity'];
     name = json['name'];
@@ -45,6 +47,7 @@ class Ticket {
     data['currency'] = this.currency;
     data['price'] = this.price;
     data['quantity'] = this.quantity;
+    data['initialOriginalQuantity'] = this.initialOriginalQuantity;
     data['minOrderQuantity'] = this.minOrderQuantity;
     data['maxOrderQuantity'] = this.maxOrderQuantity;
     data['name'] = this.name;

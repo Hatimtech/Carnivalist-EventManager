@@ -131,39 +131,34 @@ class _CreateAddonState extends State<CreateAddonDialog> {
     );
   }
 
-  Row _buildActiveAndPrivacySwitch() {
-    return Row(
-      children: <Widget>[
-        Text(AppLocalizations.of(context).labelAddonIsActive,
-            style: Theme.of(context).textTheme.body1),
-        BlocBuilder<CreateAddonBloc, CreateAddonState>(
-          bloc: _createAddonBloc,
-          condition: (prevState, newState) {
-            return prevState.active != newState.active;
-          },
-          builder: (_, state) {
-            return Switch.adaptive(
+  Widget _buildActiveAndPrivacySwitch() {
+    return BlocBuilder<CreateAddonBloc, CreateAddonState>(
+      cubit: _createAddonBloc,
+      buildWhen: (prevState, newState) {
+        return prevState.active != newState.active;
+      },
+      builder: (_, state) {
+        return Row(
+          children: <Widget>[
+            Text(
+                state.active
+                    ? AppLocalizations
+                    .of(context)
+                    .labelAddonIsActive
+                    : AppLocalizations
+                    .of(context)
+                    .labelAddonIsInActive,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body1),
+            Switch.adaptive(
               value: state.active,
               onChanged: _createAddonBloc.activeInput,
-            );
-          },
-        ),
-        /*const SizedBox(width: 16.0),
-        Text(AppLocalizations.of(context).labelAddonPrivacy,
-            style: Theme.of(context).textTheme.body1),
-        BlocBuilder<CreateAddonBloc, CreateAddonState>(
-          bloc: _createAddonBloc,
-          condition: (prevState, newState) {
-            return prevState.privacy != newState.privacy;
-          },
-          builder: (_, state) {
-            return Switch.adaptive(
-              value: state.privacy == 'PRIVATE',
-              onChanged: _createAddonBloc.addonPrivacyInput,
-            );
-          },
-        ),*/
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -172,8 +167,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
       children: <Widget>[
         Expanded(
           child: BlocBuilder<CreateAddonBloc, CreateAddonState>(
-            bloc: _createAddonBloc,
-            condition: (prevState, newState) =>
+            cubit: _createAddonBloc,
+            buildWhen: (prevState, newState) =>
                 prevState.convenienceFeeType != newState.convenienceFeeType,
             builder: (_, state) {
               return DecoratedBox(
@@ -223,8 +218,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
         Text(AppLocalizations.of(context).labelAddonConvFee,
             style: Theme.of(context).textTheme.body1),
         BlocBuilder<CreateAddonBloc, CreateAddonState>(
-          bloc: _createAddonBloc,
-          condition: (prevState, newState) {
+          cubit: _createAddonBloc,
+          buildWhen: (prevState, newState) {
             return prevState.chargeConvenienceFee !=
                 newState.chargeConvenienceFee;
           },
@@ -301,8 +296,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<CreateAddonBloc, CreateAddonState>(
-        bloc: _createAddonBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _createAddonBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -319,9 +314,9 @@ class _CreateAddonState extends State<CreateAddonDialog> {
 
   Widget _addonStartDateInput() =>
       BlocBuilder<CreateAddonBloc, CreateAddonState>(
-          condition: (prevState, newState) =>
+          buildWhen: (prevState, newState) =>
               prevState.startDate != newState.startDate,
-          bloc: _createAddonBloc,
+          cubit: _createAddonBloc,
           builder: (BuildContext context, state) {
             return InkWell(
               onTap: () => _pickDate(
@@ -347,8 +342,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
           });
 
   Widget _addonEndDateInput() => BlocBuilder<CreateAddonBloc, CreateAddonState>(
-      condition: (prevState, newState) => prevState.endDate != newState.endDate,
-      bloc: _createAddonBloc,
+      buildWhen: (prevState, newState) => prevState.endDate != newState.endDate,
+      cubit: _createAddonBloc,
       builder: (BuildContext context, state) {
         return InkWell(
           onTap: () =>
@@ -455,11 +450,11 @@ class _CreateAddonState extends State<CreateAddonDialog> {
 
   Widget addonConvenienceFeeInput() {
     return BlocBuilder<CreateAddonBloc, CreateAddonState>(
-        condition: (prevState, newState) {
+        buildWhen: (prevState, newState) {
           return prevState.chargeConvenienceFee !=
               newState.chargeConvenienceFee;
         },
-        bloc: _createAddonBloc,
+        cubit: _createAddonBloc,
         builder: (_, state) {
           return widget.inputFieldRectangle(
             null,
@@ -495,8 +490,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
                           color: bgColorSecondary,
                         ),
                         child: BlocBuilder<CreateAddonBloc, CreateAddonState>(
-                            bloc: _createAddonBloc,
-                            condition: (prevState, newState) {
+                            cubit: _createAddonBloc,
+                            buildWhen: (prevState, newState) {
                               return prevState.image != newState.image;
                             },
                             builder: (context, state) {

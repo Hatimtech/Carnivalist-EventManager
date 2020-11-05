@@ -80,7 +80,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
       ]);
 
   _emailInput() => BlocBuilder(
-      bloc: _forgotPasswordBloc,
+      cubit: _forgotPasswordBloc,
       builder: (BuildContext context, ForgotPasswordState state) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
           child: widget.inputField(_phoneEmailController,

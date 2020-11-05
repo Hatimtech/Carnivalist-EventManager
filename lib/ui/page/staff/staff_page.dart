@@ -85,8 +85,8 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
           _buildErrorReceiverEmptyBloc(),
           Expanded(
               child: BlocBuilder<StaffBloc, StaffState>(
-                  bloc: _staffBloc,
-                  condition: (prevState, newState) {
+                  cubit: _staffBloc,
+                  buildWhen: (prevState, newState) {
                     return (prevState.loading != newState.loading) ||
                         (prevState.staffs != newState.staffs ||
                             prevState.staffs.length != newState.staffs.length);
@@ -106,8 +106,8 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
   }
 
   Widget _buildErrorReceiverEmptyBloc() => BlocBuilder<StaffBloc, StaffState>(
-        bloc: _staffBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+    cubit: _staffBloc,
+    buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int

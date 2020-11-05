@@ -12,6 +12,8 @@ class FormBloc extends Bloc<FormEvent, FormState> {
   String eventDataId;
   EventData eventDataToUpload;
 
+  FormBloc() : super(initialState);
+
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
   }
@@ -40,8 +42,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
     add(UploadFields(callback));
   }
 
-  @override
-  FormState get initialState => FormState.initial();
+  static FormState get initialState => FormState.initial();
 
   @override
   Stream<FormState> mapEventToState(FormEvent event) async* {
@@ -148,7 +149,7 @@ class FormBloc extends Bloc<FormEvent, FormState> {
         networkServiceResponse.response as FormActionResponse;
         if (formActionResponse.code == apiCodeSuccess) {
           state.uploadRequired = false;
-          add(FormDataUploadResult(true, uiMsg: formActionResponse.message));
+          add(FormDataUploadResult(true, uiMsg: SUCCESS_DATA_SAVED));
           event.callback(formActionResponse);
         } else {
           add(FormDataUploadResult(false,

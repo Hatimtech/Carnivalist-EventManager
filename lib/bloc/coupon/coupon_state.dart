@@ -35,4 +35,8 @@ class CouponState {
       uiMsg: uiMsg,
     );
   }
+
+  List<Coupon> get couponsByDescending {
+    return couponList.reversed.toList();
+  }
 }

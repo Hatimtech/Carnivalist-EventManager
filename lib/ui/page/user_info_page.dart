@@ -89,8 +89,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   Widget _buildErrorReceiverEmptyBloc() => BlocBuilder<UserBloc, UserState>(
-        bloc: _userBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+    cubit: _userBloc,
+    buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -185,7 +185,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
             .textTheme
             .body1,
         validation: (value) =>
-            validateName(value, AppLocalizations.of(context)),
+            validateLastName(value, AppLocalizations.of(context)),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
         focusNode: _focusNodeLastName,

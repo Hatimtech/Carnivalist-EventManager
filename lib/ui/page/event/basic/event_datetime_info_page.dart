@@ -48,9 +48,9 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
               style: Theme.of(context).textTheme.title),
           Container(
               child: BlocBuilder<BasicBloc, BasicState>(
-            condition: (prevState, newState) =>
+                buildWhen: (prevState, newState) =>
             prevState.eventFreqName != newState.eventFreqName,
-            bloc: _basicBloc,
+                cubit: _basicBloc,
             builder: (context, BasicState state) => Column(
               children: <Widget>[
                 _buildEventDateTypeSelector(
@@ -206,9 +206,9 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
   }
 
   _eventStartDateInput() => BlocBuilder<BasicBloc, BasicState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventStartDate != newState.eventStartDate,
-      bloc: _basicBloc,
+      cubit: _basicBloc,
       builder: (BuildContext context, BasicState state) {
         return InkWell(
           onTap: () =>
@@ -235,9 +235,9 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
       });
 
   _eventStartTimeInput() => BlocBuilder<BasicBloc, BasicState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventStartTime != newState.eventStartTime,
-      bloc: _basicBloc,
+      cubit: _basicBloc,
       builder: (BuildContext context, BasicState state) {
         return InkWell(
           onTap: () {
@@ -273,9 +273,9 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
       });
 
   _eventEndDateInput() => BlocBuilder<BasicBloc, BasicState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventEndDate != newState.eventEndDate,
-      bloc: _basicBloc,
+      cubit: _basicBloc,
       builder: (BuildContext context, BasicState state) {
         return InkWell(
           onTap: () => _pickDate(DateTime.now(), _basicBloc.eventEndDateInput),
@@ -304,9 +304,9 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
       });
 
   _eventEndTimeInput() => BlocBuilder<BasicBloc, BasicState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventEndTime != newState.eventEndTime,
-      bloc: _basicBloc,
+      cubit: _basicBloc,
       builder: (BuildContext context, BasicState state) {
         return InkWell(
           onTap: () {
@@ -489,9 +489,9 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
 
   Widget _buildWeeklyDropdown() {
     return BlocBuilder<BasicBloc, BasicState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventWeekday != newState.eventWeekday,
-      bloc: _basicBloc,
+      cubit: _basicBloc,
       builder: (_, state) {
         return Stack(
           alignment: Alignment.centerLeft,
@@ -566,7 +566,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
 
   Widget _buildCustomDateTimeChips() {
     return BlocBuilder<BasicBloc, BasicState>(
-        condition: (prevState, newState) {
+        buildWhen: (prevState, newState) {
           print(
               'prevState.eventCustomDateTimeList ${prevState.eventCustomDateTimeList}');
           print(
@@ -576,7 +576,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
               prevState.eventCustomDateTimeList.length !=
                   newState.eventCustomDateTimeList.length;
         },
-        bloc: _basicBloc,
+        cubit: _basicBloc,
         builder: (BuildContext context, state) {
           print('_buildCustomDateTimeChips builder');
           final dateFormat = DateFormat.yMMMd().add_jm();

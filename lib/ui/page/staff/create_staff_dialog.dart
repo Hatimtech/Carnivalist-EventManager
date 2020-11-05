@@ -216,8 +216,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<CreateStaffBloc, CreateStaffState>(
-        bloc: _createStaffBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _createStaffBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -233,8 +233,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
       );
 
   Widget _staffDOBInput() => BlocBuilder<CreateStaffBloc, CreateStaffState>(
-      condition: (prevState, newState) => prevState.dob != newState.dob,
-      bloc: _createStaffBloc,
+      buildWhen: (prevState, newState) => prevState.dob != newState.dob,
+      cubit: _createStaffBloc,
       builder: (BuildContext context, state) {
         return InkWell(
           onTap: () => _pickDate(DateTime.now(), _createStaffBloc.dobInput),
@@ -259,8 +259,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
 
   Widget _buildStateSelectionInput() {
     return BlocBuilder<CreateStaffBloc, CreateStaffState>(
-        bloc: _createStaffBloc,
-        condition: (prevState, newState) {
+        cubit: _createStaffBloc,
+        buildWhen: (prevState, newState) {
           return prevState.state != newState.state;
         },
         builder: (BuildContext context, state) {
@@ -378,14 +378,14 @@ class _CreateStaffState extends State<CreateStaffDialog> {
   Widget eventSelectionInput() {
     final eventBloc = BlocProvider.of<EventBloc>(context);
     return BlocBuilder<EventBloc, EventState>(
-        bloc: eventBloc,
-        condition: (prevState, newState) {
+        cubit: eventBloc,
+        buildWhen: (prevState, newState) {
           return prevState.eventDataList != newState.eventDataList;
         },
         builder: (_, eventState) {
           return BlocBuilder<CreateStaffBloc, CreateStaffState>(
-            bloc: _createStaffBloc,
-            condition: (prevState, newState) {
+            cubit: _createStaffBloc,
+            buildWhen: (prevState, newState) {
               return prevState.selectedEvents != newState.selectedEvents;
             },
             builder: (_, state) {

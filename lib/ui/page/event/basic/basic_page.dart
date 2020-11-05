@@ -62,8 +62,8 @@ class _BasicState extends State<BasicPage> {
 
   Widget _buildFullRefreshBloc() {
     return BlocBuilder<BasicBloc, BasicState>(
-      bloc: _basicBloc,
-      condition: (prevState, newState) {
+      cubit: _basicBloc,
+      buildWhen: (prevState, newState) {
         bool shouldRebuild = newState.fullRefresh ?? false;
         return shouldRebuild;
       },
@@ -82,8 +82,8 @@ class _BasicState extends State<BasicPage> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<BasicBloc, BasicState>(
-        bloc: _basicBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _basicBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, BasicState state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int

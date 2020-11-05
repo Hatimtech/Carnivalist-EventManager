@@ -9,6 +9,8 @@ import 'sign_up_state.dart';
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final ApiProvider apiProvider = ApiProvider();
 
+  SignUpBloc() : super(initialState);
+
   void nameInput(name) {
     add(NameInput(name: name));
   }
@@ -37,8 +39,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     add(SignUp(callback: callback));
   }
 
-  @override
-  SignUpState get initialState => SignUpState.initial();
+  static SignUpState get initialState => SignUpState.initial();
 
   @override
   Stream<SignUpState> mapEventToState(SignUpEvent event) async* {

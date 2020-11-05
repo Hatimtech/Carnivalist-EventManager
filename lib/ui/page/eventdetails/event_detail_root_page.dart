@@ -9,7 +9,6 @@ import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/eventdetails/attendee_list_page.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_info_page.dart';
 import 'package:eventmanagement/utils/extensions.dart';
-import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -178,28 +177,21 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
 
   Future<void> _scanNFCTag() async {
     try {
-      await Logger.log('Before FlutterNfcReader.read');
       final nfcData = await FlutterNfcReader.read();
-      await Logger.log('After FlutterNfcReader.read');
       if (nfcData.content != null && nfcData.content is String) {
         print("Scanned NFC Code--->${nfcData.content}");
-        await Logger.log('Scanned NFC Code--->${nfcData.content}');
         _uploadScannedTag(nfcData.content, true);
       } else {
         print("Scanned NFC Code Error--->${nfcData.error}");
         context.toast('NFC Code Scan Error--->${nfcData.error}');
-        await Logger.log('Scanned NFC Code Error--->${nfcData.error}');
       }
     } on PlatformException catch (ex) {
       print("Unknown Error: $ex");
       if (isValid(ex.message)) {
         context.toast(ex.message);
       }
-      await Logger.log(
-          'Scanned NFC Code--->PlatformException--->${ex.message}');
     } catch (ex) {
       print("Unknown Error: $ex");
-      await Logger.log('Scanned NFC Code--->Unknown Error--->${ex.message}');
     }
   }
 
@@ -212,8 +204,8 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<EventDetailBloc, EventDetailState>(
-        bloc: _eventDetailBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _eventDetailBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int

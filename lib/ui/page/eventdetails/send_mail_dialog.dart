@@ -106,8 +106,8 @@ class _SendMailState extends State<SendMailDialog> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<SendMailBloc, SendMailState>(
-        bloc: _sendMailBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _sendMailBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int

@@ -72,7 +72,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: BlocBuilder<BasicBloc, BasicState>(
-                          condition: (prevState, newState) =>
+                          buildWhen: (prevState, newState) =>
                               prevState.eventType != newState.eventType,
                           builder: (BuildContext context, state) {
                             return Text(
@@ -86,7 +86,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
                                       : Theme.of(context).hintColor),
                             );
                           },
-                          bloc: _basicBloc,
+                          cubit: _basicBloc,
                         ),
                       ),
                     ),
@@ -113,7 +113,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: BlocBuilder<BasicBloc, BasicState>(
-                          condition: (prevState, newState) =>
+                          buildWhen: (prevState, newState) =>
                               prevState.eventTimeZone != newState.eventTimeZone,
                           builder: (BuildContext context, state) => Text(
                             isValid(state.eventTimeZone)
@@ -125,7 +125,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
                                     ? null
                                     : Theme.of(context).hintColor),
                           ),
-                          bloc: _basicBloc,
+                          cubit: _basicBloc,
                         ),
                       ),
                     ),
@@ -345,10 +345,10 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
 
   Widget _eventTypeSelect() {
     return BlocBuilder<BasicBloc, BasicState>(
-        condition: (prevState, newState) =>
+        buildWhen: (prevState, newState) =>
             prevState.eventTypeList != newState.eventTypeList ||
             prevState.eventTypeList.length != newState.eventTypeList.length,
-        bloc: _basicBloc,
+        cubit: _basicBloc,
         builder: (context, BasicState snapshot) {
           return snapshot.loading
               ? Container(
@@ -356,8 +356,8 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
                   child: CircularProgressIndicator(
                       valueColor:
                           AlwaysStoppedAnimation<Color>(colorProgressBar)))
-              : (snapshot.eventTypeList?.length ?? 0) > 0
-              ? eventTypeList(snapshot.eventTypeList)
+              : (snapshot.activeCarnivalsList?.length ?? 0) > 0
+              ? eventTypeList(snapshot.activeCarnivalsList)
               : Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 12.0,
@@ -382,10 +382,10 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
 
   Widget _buildCupertinoEventTypeActionSheet() {
     return BlocBuilder<BasicBloc, BasicState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
       prevState.eventTypeList != newState.eventTypeList ||
           prevState.eventTypeList.length != newState.eventTypeList.length,
-      bloc: _basicBloc,
+      cubit: _basicBloc,
       builder: (context, BasicState snapshot) =>
       snapshot.loading
           ? Container(
@@ -456,7 +456,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
   }
 
 //  _eventTagInput() => BlocBuilder(
-//      bloc: _basicBloc,
+//      cubit: _basicBloc,
 //      builder: (BuildContext context, BasicState state) =>
 //          widget.inputFieldRectangle(
 //            _eventTagsController,
@@ -497,7 +497,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
               border: Border.all(color: Colors.grey)),
           padding: const EdgeInsets.all(4.0),
           child: BlocBuilder<BasicBloc, BasicState>(
-              condition: (prevState, newState) =>
+              buildWhen: (prevState, newState) =>
                   prevState.eventTags != newState.eventTags,
               builder: (BuildContext context, state) {
                 final chips = state.eventTags.map<Widget>((tag) {

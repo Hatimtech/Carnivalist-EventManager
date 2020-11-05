@@ -36,9 +36,11 @@ abstract class APIService {
   uploadSetting(String authToken, SettingData settingData,
       {String eventDataId});
 
-  getAllEvents(String authToken);
+  getAllEvents(String authToken, String userId);
 
   getAllEventsForStaff(String authToken);
+
+  getPaymentSummary(String authToken);
 
   deleteEvent(String authToken, String eventId);
 

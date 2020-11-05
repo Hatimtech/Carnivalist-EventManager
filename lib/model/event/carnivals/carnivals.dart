@@ -1,6 +1,7 @@
 class Carnivals {
 
   String id;
+  bool isCarnivalActive;
   String category;
   String slug;
   String location;
@@ -15,6 +16,7 @@ class Carnivals {
 
   Carnivals.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
+    isCarnivalActive = json['isCarnivalActive'];
     category = json['category'];
     slug = json['slug'];
     location = json['location'];

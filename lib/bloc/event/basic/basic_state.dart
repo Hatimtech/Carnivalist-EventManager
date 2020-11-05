@@ -183,6 +183,14 @@ class BasicState {
       fullRefresh: fullRefresh ?? false,
     );
   }
+
+  List<Carnivals> get activeCarnivalsList {
+    return eventTypeList
+        .where((carnival) =>
+    carnival.isCarnivalActive &&
+        DateTime.parse(carnival.endDate).isAfter(DateTime.now()))
+        .toList();
+  }
 }
 
 class EventCustomDate {

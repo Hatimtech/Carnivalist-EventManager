@@ -30,8 +30,8 @@ class _EventListState extends State<EventList> {
 
   Widget _buildEventSliverList() {
     return BlocBuilder<EventBloc, EventState>(
-      bloc: _eventBloc,
-      condition: (prevState, newState) => prevState.loading != newState.loading,
+      cubit: _eventBloc,
+      buildWhen: (prevState, newState) => prevState.loading != newState.loading,
       builder: (BuildContext context, state) {
         if (state.loading) {
           return SliverFillRemaining(
@@ -52,14 +52,14 @@ class _EventListState extends State<EventList> {
 
   Widget _buildEventSliverListView(String systemPath) {
     return BlocBuilder<EventBloc, EventState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
       prevState.eventCurrentFilter != newState.eventCurrentFilter ||
           prevState.eventDataList != newState.eventDataList,
-      bloc: _eventBloc,
+      cubit: _eventBloc,
       builder: (context, state) {
         final eventDataList = state.data;
         return SliverFixedExtentList(
-          itemExtent: 124.0,
+          itemExtent: 136.0,
           delegate: SliverChildBuilderDelegate(
                 (context, position) {
               return EventListItem(

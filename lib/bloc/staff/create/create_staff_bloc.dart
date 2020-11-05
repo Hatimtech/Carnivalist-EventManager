@@ -75,7 +75,8 @@ class CreateStaffBloc extends Bloc<CreateStaffEvent, CreateStaffState> {
     'Wyoming'
   ];
 
-  CreateStaffBloc(this.staffBloc, {this.staffId});
+  CreateStaffBloc(this.staffBloc, {this.staffId})
+      : super(initialState(staffBloc, staffId));
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -125,8 +126,7 @@ class CreateStaffBloc extends Bloc<CreateStaffEvent, CreateStaffState> {
     add(UploadStaff(callback: callback));
   }
 
-  @override
-  CreateStaffState get initialState {
+  static CreateStaffState initialState(StaffBloc staffBloc, String staffId) {
     if (staffId == null)
       return CreateStaffState.initial();
     else {
@@ -216,10 +216,11 @@ class CreateStaffBloc extends Bloc<CreateStaffEvent, CreateStaffState> {
         if (staffResponse.code == apiCodeSuccess) {
           if (staffId != null) {
             staffBloc.updateStaff(staffDataToUpdate);
+            add(UploadStaffResult(true, uiMsg: SUCCESS_STAFF_UPDATED));
           } else {
             staffBloc.addStaff(staffResponse.userStaff);
+            add(UploadStaffResult(true, uiMsg: SUCCESS_STAFF_CREATED));
           }
-          add(UploadStaffResult(true));
           event.callback(staffResponse);
         } else {
           add(UploadStaffResult(false,

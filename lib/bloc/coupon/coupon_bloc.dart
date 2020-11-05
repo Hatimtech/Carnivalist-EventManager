@@ -12,6 +12,8 @@ import 'package:eventmanagement/utils/vars.dart';
 class CouponBloc extends Bloc<CouponEvent, CouponState> {
   final ApiProvider apiProvider = ApiProvider();
 
+  CouponBloc() : super(initialState);
+
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
   }
@@ -36,8 +38,7 @@ class CouponBloc extends Bloc<CouponEvent, CouponState> {
     add(ActiveInactiveCoupon(couponId, active, callback));
   }
 
-  @override
-  CouponState get initialState => CouponState.initial();
+  static CouponState get initialState => CouponState.initial();
 
   @override
   Stream<CouponState> mapEventToState(CouponEvent event) async* {

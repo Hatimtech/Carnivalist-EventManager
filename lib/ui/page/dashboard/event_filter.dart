@@ -32,9 +32,9 @@ class _EventFilterState extends State<EventFilter>
 
   Widget _buildEventListFilterView() {
     return BlocBuilder<EventBloc, EventState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventCurrentFilter != newState.eventCurrentFilter,
-      bloc: _eventBloc,
+      cubit: _eventBloc,
       builder: (context, state) {
         return _buildEventFilterView(
             state.eventCurrentFilter, state.eventFilterItemList);

@@ -50,8 +50,8 @@ class _FormsState extends State<FormsPage> {
           Expanded(
               child: Container(
                   child: BlocBuilder<FormBloc, FS.FormState>(
-                      bloc: _formBloc,
-                      condition: (prevState, nextState) {
+                      cubit: _formBloc,
+                      buildWhen: (prevState, nextState) {
                         return prevState.fieldList != nextState.fieldList ||
                             prevState.fieldList.length !=
                                 nextState.fieldList.length;
@@ -70,8 +70,8 @@ class _FormsState extends State<FormsPage> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<FormBloc, FS.FormState>(
-        bloc: _formBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _formBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -316,7 +316,7 @@ class _FormsState extends State<FormsPage> {
             .fieldDeleteMsg,
         posText: AppLocalizations
             .of(context)
-            .deleteButton,
+            .eventDeleteButton,
         negText: AppLocalizations
             .of(context)
             .btnCancel);

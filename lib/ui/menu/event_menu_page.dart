@@ -248,8 +248,8 @@ class _EventMenuState extends State<EventMenuPage>
                     length: 5,
                     child: Column(children: <Widget>[
                       BlocBuilder<BasicBloc, BasicState>(
-                          bloc: _basicBloc,
-                          condition: (prevState, newState) =>
+                          cubit: _basicBloc,
+                          buildWhen: (prevState, newState) =>
                           prevState.selectedTab != newState.selectedTab,
                           builder: (context, BasicState state) {
                             return TabBar(

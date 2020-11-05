@@ -14,7 +14,7 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
   final ApiProvider apiProvider = ApiProvider();
   final String eventId;
 
-  EventDetailBloc({this.eventId});
+  EventDetailBloc({this.eventId}) : super(initialState);
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -42,8 +42,7 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
 
   String get selectedEventId => eventId;
 
-  @override
-  EventDetailState get initialState => EventDetailState.initial();
+  static EventDetailState get initialState => EventDetailState.initial();
 
   @override
   Stream<EventDetailState> mapEventToState(EventDetailEvent event) async* {

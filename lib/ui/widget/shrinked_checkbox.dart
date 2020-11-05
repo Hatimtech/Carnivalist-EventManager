@@ -1,6 +1,8 @@
-// Copyright 2015 The Chromium Authors. All rights reserved.
+// Copyright 2014 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
+// @dart = 2.8
 
 import 'dart:math' as math;
 
@@ -10,20 +12,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-class ShrinkedCheckbox extends StatefulWidget {
-  const ShrinkedCheckbox({
+/// A material design checkbox.
+///
+/// The checkbox itself does not maintain any state. Instead, when the state of
+/// the checkbox changes, the widget calls the [onChanged] callback. Most
+/// widgets that use a checkbox will listen for the [onChanged] callback and
+/// rebuild the checkbox with a new [value] to update the visual appearance of
+/// the checkbox.
+///
+/// The checkbox can optionally display three values - true, false, and null -
+/// if [tristate] is true. When [value] is null a dash is displayed. By default
+/// [tristate] is false and the checkbox's [value] must be true or false.
+///
+/// Requires one of its ancestors to be a [Material] widget.
+///
+/// See also:
+///
+///  * [CheckboxListTile], which combines this widget with a [ListTile] so that
+///    you can give the checkbox a label.
+///  * [Switch], a widget with semantics similar to [Checkbox].
+///  * [Radio], for selecting among a set of explicit values.
+///  * [Slider], for selecting a value in a range.
+///  * <https://material.io/design/components/selection-controls.html#checkboxes>
+///  * <https://material.io/design/components/lists.html#types>
+class Checkbox extends StatefulWidget {
+  /// Creates a material design checkbox.
+  ///
+  /// The checkbox itself does not maintain any state. Instead, when the state of
+  /// the checkbox changes, the widget calls the [onChanged] callback. Most
+  /// widgets that use a checkbox will listen for the [onChanged] callback and
+  /// rebuild the checkbox with a new [value] to update the visual appearance of
+  /// the checkbox.
+  ///
+  /// The following arguments are required:
+  ///
+  /// * [value], which determines whether the checkbox is checked. The [value]
+  ///   can only be null if [tristate] is true.
+  /// * [onChanged], which is called when the value of the checkbox should
+  ///   change. It can be set to null to disable the checkbox.
+  ///
+  /// The values of [tristate] and [autofocus] must not be null.
+  const Checkbox({
     Key key,
     @required this.value,
     this.tristate = false,
     @required this.onChanged,
+    this.mouseCursor,
     this.activeColor,
     this.checkColor,
     this.focusColor,
     this.hoverColor,
     this.materialTapTargetSize,
+    this.visualDensity,
     this.focusNode,
     this.autofocus = false,
-  })  : assert(tristate != null),
+  })
+      : assert(tristate != null),
         assert(tristate || value != null),
         assert(autofocus != null),
         super(key: key);
@@ -62,6 +106,23 @@ class ShrinkedCheckbox extends StatefulWidget {
   /// ```
   final ValueChanged<bool> onChanged;
 
+  /// The cursor for a mouse pointer when it enters or is hovering over the
+  /// widget.
+  ///
+  /// If [mouseCursor] is a [MaterialStateProperty<MouseCursor>],
+  /// [MaterialStateProperty.resolve] is used for the following [MaterialState]s:
+  ///
+  ///  * [MaterialState.selected].
+  ///  * [MaterialState.hovered].
+  ///  * [MaterialState.focused].
+  ///  * [MaterialState.disabled].
+  ///
+  /// When [value] is null and [tristate] is true, [MaterialState.selected] is
+  /// included as a state.
+  ///
+  /// If this property is null, [MaterialStateMouseCursor.clickable] will be used.
+  final MouseCursor mouseCursor;
+
   /// The color to use when this checkbox is checked.
   ///
   /// Defaults to [ThemeData.toggleableActiveColor].
@@ -93,6 +154,16 @@ class ShrinkedCheckbox extends StatefulWidget {
   ///  * [MaterialTapTargetSize], for a description of how this affects tap targets.
   final MaterialTapTargetSize materialTapTargetSize;
 
+  /// Defines how compact the checkbox's layout will be.
+  ///
+  /// {@macro flutter.material.themedata.visualDensity}
+  ///
+  /// See also:
+  ///
+  ///  * [ThemeData.visualDensity], which specifies the [visualDensity] for all
+  ///    widgets within a [Theme].
+  final VisualDensity visualDensity;
+
   /// The color for the checkbox's [Material] when it has the input focus.
   final Color focusColor;
 
@@ -112,21 +183,19 @@ class ShrinkedCheckbox extends StatefulWidget {
   _CheckboxState createState() => _CheckboxState();
 }
 
-class _CheckboxState extends State<ShrinkedCheckbox>
-    with TickerProviderStateMixin {
+class _CheckboxState extends State<Checkbox> with TickerProviderStateMixin {
   bool get enabled => widget.onChanged != null;
-  Map<LocalKey, ActionFactory> _actionMap;
+  Map<Type, Action<Intent>> _actionMap;
 
   @override
   void initState() {
     super.initState();
-    _actionMap = <LocalKey, ActionFactory>{
-      SelectAction.key: _createAction,
-      if (!kIsWeb) ActivateAction.key: _createAction,
+    _actionMap = <Type, Action<Intent>>{
+      ActivateIntent: CallbackAction<ActivateIntent>(onInvoke: _actionHandler),
     };
   }
 
-  void _actionHandler(FocusNode node, Intent intent) {
+  void _actionHandler(ActivateIntent intent) {
     if (widget.onChanged != null) {
       switch (widget.value) {
         case false:
@@ -140,19 +209,11 @@ class _CheckboxState extends State<ShrinkedCheckbox>
           break;
       }
     }
-    final RenderObject renderObject = node.context.findRenderObject();
+    final RenderObject renderObject = context.findRenderObject();
     renderObject.sendSemanticsEvent(const TapSemanticEvent());
   }
 
-  Action _createAction() {
-    return CallbackAction(
-      SelectAction.key,
-      onInvoke: _actionHandler,
-    );
-  }
-
   bool _focused = false;
-
   void _handleFocusHighlightChanged(bool focused) {
     if (focused != _focused) {
       setState(() {
@@ -162,7 +223,6 @@ class _CheckboxState extends State<ShrinkedCheckbox>
   }
 
   bool _hovering = false;
-
   void _handleHoverChanged(bool hovering) {
     if (hovering != _hovering) {
       setState(() {
@@ -182,12 +242,25 @@ class _CheckboxState extends State<ShrinkedCheckbox>
             2 * kRadialReactionRadius + 8.0, 2 * kRadialReactionRadius + 8.0);
         break;
       case MaterialTapTargetSize.shrinkWrap:
+//        This is custom code
         size =
         const Size(kRadialReactionRadius + 8.0, 2 * kRadialReactionRadius);
         break;
     }
-
+    size +=
+        (widget.visualDensity ?? themeData.visualDensity).baseSizeAdjustment;
     final BoxConstraints additionalConstraints = BoxConstraints.tight(size);
+    final MouseCursor effectiveMouseCursor = MaterialStateProperty.resolveAs<
+        MouseCursor>(
+      widget.mouseCursor ?? MaterialStateMouseCursor.clickable,
+      <MaterialState>{
+        if (!enabled) MaterialState.disabled,
+        if (_hovering) MaterialState.hovered,
+        if (_focused) MaterialState.focused,
+        if (widget.tristate || widget.value) MaterialState.selected,
+      },
+    );
+
     return FocusableActionDetector(
       actions: _actionMap,
       focusNode: widget.focusNode,
@@ -195,6 +268,7 @@ class _CheckboxState extends State<ShrinkedCheckbox>
       enabled: enabled,
       onShowFocusHighlight: _handleFocusHighlightChanged,
       onShowHoverHighlight: _handleHoverChanged,
+      mouseCursor: effectiveMouseCursor,
       child: Builder(
         builder: (BuildContext context) {
           return _CheckboxRenderObjectWidget(
@@ -202,9 +276,8 @@ class _CheckboxState extends State<ShrinkedCheckbox>
             tristate: widget.tristate,
             activeColor: widget.activeColor ?? themeData.toggleableActiveColor,
             checkColor: widget.checkColor ?? const Color(0xFFFFFFFF),
-            inactiveColor: enabled
-                ? themeData.unselectedWidgetColor
-                : themeData.disabledColor,
+            inactiveColor: enabled ? themeData.unselectedWidgetColor : themeData
+                .disabledColor,
             focusColor: widget.focusColor ?? themeData.focusColor,
             hoverColor: widget.hoverColor ?? themeData.hoverColor,
             onChanged: widget.onChanged,
@@ -234,7 +307,8 @@ class _CheckboxRenderObjectWidget extends LeafRenderObjectWidget {
     @required this.additionalConstraints,
     @required this.hasFocus,
     @required this.hovering,
-  })  : assert(tristate != null),
+  })
+      : assert(tristate != null),
         assert(tristate || value != null),
         assert(activeColor != null),
         assert(inactiveColor != null),
@@ -256,25 +330,27 @@ class _CheckboxRenderObjectWidget extends LeafRenderObjectWidget {
 
   @override
   _RenderCheckbox createRenderObject(BuildContext context) => _RenderCheckbox(
-        value: value,
-        tristate: tristate,
-        activeColor: activeColor,
-        checkColor: checkColor,
-        inactiveColor: inactiveColor,
-        focusColor: focusColor,
-        hoverColor: hoverColor,
-        onChanged: onChanged,
-        vsync: vsync,
-        additionalConstraints: additionalConstraints,
-        hasFocus: hasFocus,
-        hovering: hovering,
-      );
+    value: value,
+    tristate: tristate,
+    activeColor: activeColor,
+    checkColor: checkColor,
+    inactiveColor: inactiveColor,
+    focusColor: focusColor,
+    hoverColor: hoverColor,
+    onChanged: onChanged,
+    vsync: vsync,
+    additionalConstraints: additionalConstraints,
+    hasFocus: hasFocus,
+    hovering: hovering,
+  );
 
   @override
   void updateRenderObject(BuildContext context, _RenderCheckbox renderObject) {
     renderObject
-      ..value = value
+    // The `tristate` must be changed before `value` due to the assertion at
+    // the beginning of `set value`.
       ..tristate = tristate
+      ..value = value
       ..activeColor = activeColor
       ..checkColor = checkColor
       ..inactiveColor = inactiveColor
@@ -306,27 +382,29 @@ class _RenderCheckbox extends RenderToggleable {
     bool hasFocus,
     bool hovering,
     @required TickerProvider vsync,
-  })  : _oldValue = value,
+  })
+      : _oldValue = value,
         super(
-          value: value,
-          tristate: tristate,
-          activeColor: activeColor,
-          inactiveColor: inactiveColor,
-          focusColor: focusColor,
-          hoverColor: hoverColor,
-          onChanged: onChanged,
-          additionalConstraints: additionalConstraints,
-          vsync: vsync,
-          hasFocus: hasFocus,
-          hovering: hovering,
-        );
+        value: value,
+        tristate: tristate,
+        activeColor: activeColor,
+        inactiveColor: inactiveColor,
+        focusColor: focusColor,
+        hoverColor: hoverColor,
+        onChanged: onChanged,
+        additionalConstraints: additionalConstraints,
+        vsync: vsync,
+        hasFocus: hasFocus,
+        hovering: hovering,
+      );
 
   bool _oldValue;
   Color checkColor;
 
   @override
   set value(bool newValue) {
-    if (newValue == value) return;
+    if (newValue == value)
+      return;
     _oldValue = value;
     super.value = newValue;
   }
@@ -344,8 +422,8 @@ class _RenderCheckbox extends RenderToggleable {
   RRect _outerRectAt(Offset origin, double t) {
     final double inset = 1.0 - (t - 0.5).abs() * 2.0;
     final double size = _kEdgeSize - inset * _kStrokeWidth;
-    final Rect rect =
-        Rect.fromLTWH(origin.dx + inset, origin.dy + inset, size, size);
+    final Rect rect = Rect.fromLTWH(
+        origin.dx + inset, origin.dy + inset, size, size);
     return RRect.fromRectAndRadius(rect, _kEdgeRadius);
   }
 
@@ -355,9 +433,8 @@ class _RenderCheckbox extends RenderToggleable {
     // As t goes from 0.0 to 0.25, animate from the inactiveColor to activeColor.
     return onChanged == null
         ? inactiveColor
-        : (t >= 0.25
-            ? activeColor
-            : Color.lerp(inactiveColor, activeColor, t * 4.0));
+        : (t >= 0.25 ? activeColor : Color.lerp(
+        inactiveColor, activeColor, t * 4.0));
   }
 
   // White stroke used to paint the check and dash.
@@ -372,8 +449,8 @@ class _RenderCheckbox extends RenderToggleable {
     assert(t >= 0.0 && t <= 0.5);
     final double size = outer.width;
     // As t goes from 0.0 to 1.0, gradually fill the outer RRect.
-    final RRect inner =
-        outer.deflate(math.min(size / 2.0, _kStrokeWidth + size * t));
+    final RRect inner = outer.deflate(
+        math.min(size / 2.0, _kStrokeWidth + size * t));
     canvas.drawDRRect(outer, inner, paint);
   }
 
@@ -418,13 +495,13 @@ class _RenderCheckbox extends RenderToggleable {
     paintRadialReaction(canvas, offset, size.center(Offset.zero));
 
     final Paint strokePaint = _createStrokePaint();
-    final Offset origin =
-        offset + (size / 2.0 - const Size.square(_kEdgeSize) / 2.0);
+    final Offset origin = offset +
+        (size / 2.0 - const Size.square(_kEdgeSize) / 2.0 as Offset);
     final AnimationStatus status = position.status;
-    final double tNormalized =
-        status == AnimationStatus.forward || status == AnimationStatus.completed
-            ? position.value
-            : 1.0 - position.value;
+    final double tNormalized = status == AnimationStatus.forward ||
+        status == AnimationStatus.completed
+        ? position.value
+        : 1.0 - position.value;
 
     // Four cases: false to null, false to true, null to false, true to false
     if (_oldValue == false || value == false) {
@@ -443,10 +520,10 @@ class _RenderCheckbox extends RenderToggleable {
         else
           _drawCheck(canvas, origin, tShrink, strokePaint);
       }
-    } else {
-      // Two cases: null to true, true to null
+    } else { // Two cases: null to true, true to null
       final RRect outer = _outerRectAt(origin, 1.0);
-      final Paint paint = Paint()..color = _colorAt(1.0);
+      final Paint paint = Paint()
+        ..color = _colorAt(1.0);
       canvas.drawRRect(outer, paint);
 
       if (tNormalized <= 0.5) {

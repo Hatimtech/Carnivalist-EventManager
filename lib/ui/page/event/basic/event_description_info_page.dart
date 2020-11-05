@@ -50,9 +50,9 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
           const SizedBox(height: 10.0),
           Container(
               child: BlocBuilder<BasicBloc, BasicState>(
-                  condition: (prevState, newState) =>
+                  buildWhen: (prevState, newState) =>
                   prevState.eventPrivacy != newState.eventPrivacy,
-                  bloc: _basicBloc,
+                  cubit: _basicBloc,
                   builder: (context, BasicState state) => Container(
                       margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                       decoration: BoxDecoration(
@@ -108,8 +108,8 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
                   .inputHintDescription,
               _basicBloc.eventDescriptionInput),
       child: BlocBuilder<BasicBloc, BasicState>(
-        bloc: _basicBloc,
-        condition: (prevState, newState) {
+        cubit: _basicBloc,
+        buildWhen: (prevState, newState) {
           print('${prevState.eventDescription != newState.eventDescription}');
           return prevState.eventDescription != newState.eventDescription;
         },

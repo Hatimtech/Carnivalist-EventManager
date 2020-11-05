@@ -10,6 +10,8 @@ import 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final ApiProvider apiProvider = ApiProvider();
 
+  LoginBloc() : super(initialState);
+
   void mobileInput(mobile) {
     add(MobileInput(mobile: mobile));
   }
@@ -26,8 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     add(Login(callback: callback));
   }
 
-  @override
-  LoginState get initialState => LoginState.initial();
+  static LoginState get initialState => LoginState.initial();
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {

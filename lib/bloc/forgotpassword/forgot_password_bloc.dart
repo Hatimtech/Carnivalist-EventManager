@@ -8,6 +8,8 @@ import 'forgot_password_state.dart';
 class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   final ApiProvider apiProvider = ApiProvider();
 
+  ForgotPasswordBloc() : super(initialState);
+
   void mobileInput(mobile) {
     add(MobileInput(mobile: mobile));
   }
@@ -16,8 +18,7 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
     add(ForgotPassword(callback: callback));
   }
 
-  @override
-  ForgotPasswordState get initialState => ForgotPasswordState.initial();
+  static ForgotPasswordState get initialState => ForgotPasswordState.initial();
 
   @override
   Stream<ForgotPasswordState> mapEventToState(ForgotPasswordEvent event) async* {

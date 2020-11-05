@@ -89,8 +89,8 @@ class _AttendeeListPageState extends State<AttendeeListPage>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventDetailBloc, EventDetailState>(
-        bloc: _eventDetailBloc,
-        condition: (prevState, newState) {
+        cubit: _eventDetailBloc,
+        buildWhen: (prevState, newState) {
           return (prevState.loading != newState.loading) ||
               (prevState.eventDetailList != newState.eventDetailList ||
                   prevState.eventDetailList.length !=

@@ -25,6 +25,7 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
     _eventBloc = BlocProvider.of<EventBloc>(context);
+    _eventBloc.userIdSave(_userBloc.state.userId);
     _eventBloc.authTokenSave(_userBloc.state.authToken);
     _eventBloc.getAllEventsForStaff();
     _futureSystemPath = getSystemDirPath();
@@ -111,8 +112,8 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
 
   Widget _buildEventList() {
     return BlocBuilder<EventBloc, EventState>(
-      bloc: _eventBloc,
-      condition: (prevState, newState) => prevState.loading != newState.loading,
+      cubit: _eventBloc,
+      buildWhen: (prevState, newState) => prevState.loading != newState.loading,
       builder: (BuildContext context, state) {
         if (state.loading) {
           return Center(child: const PlatformProgressIndicator());
@@ -130,9 +131,9 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
 
   Widget _buildEventListView(String systemPath) {
     return BlocBuilder<EventBloc, EventState>(
-      condition: (prevState, newState) =>
+      buildWhen: (prevState, newState) =>
           prevState.eventDataList != newState.eventDataList,
-      bloc: _eventBloc,
+      cubit: _eventBloc,
       builder: (context, state) {
         final eventDataList = state.eventDataList;
         return RefreshIndicator(
@@ -144,7 +145,7 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
           },
           child: ListView.builder(
             padding: const EdgeInsets.all(0.0),
-            itemExtent: 124.0,
+            itemExtent: 136.0,
             itemCount: eventDataList?.length ?? 0,
             itemBuilder: (context, position) {
               return EventListItem(

@@ -354,6 +354,17 @@ const int ERR_STAFF_USERNAME = 79;
 const int ERR_STAFF_PASSWORD = 80;
 const int ERR_STAFF_SELECT_EVENTS = 81;
 
+const int SUCCESS_EVENT_CREATED = 82;
+const int SUCCESS_EVENT_UPDATED = 83;
+
+const int SUCCESS_STAFF_CREATED = 84;
+const int SUCCESS_STAFF_UPDATED = 85;
+
+const int SUCCESS_ADDON_CREATED = 86;
+const int SUCCESS_ADDON_UPDATED = 87;
+
+const int SUCCESS_DATA_SAVED = 89;
+
 const int ERR_NO_INTERNET = 99;
 const int ERR_SOMETHING_WENT_WRONG = 100;
 
@@ -533,6 +544,22 @@ String getErrorMessage(int errorCode, BuildContext context) {
       return appLoc.errorStaffPassword;
     case ERR_STAFF_SELECT_EVENTS:
       return appLoc.errorStaffSelectEvents;
+
+    case SUCCESS_EVENT_CREATED:
+      return appLoc.successEventCreated;
+    case SUCCESS_EVENT_UPDATED:
+      return appLoc.successEventUpdated;
+    case SUCCESS_STAFF_CREATED:
+      return appLoc.successStaffCreated;
+    case SUCCESS_STAFF_UPDATED:
+      return appLoc.successStaffUpdated;
+    case SUCCESS_ADDON_CREATED:
+      return appLoc.successAddonCreated;
+    case SUCCESS_ADDON_UPDATED:
+      return appLoc.successAddonUpdated;
+
+    case SUCCESS_DATA_SAVED:
+      return appLoc.successDataSaved;
 
     case ERR_NO_INTERNET:
       return appLoc.errorNoInternet;

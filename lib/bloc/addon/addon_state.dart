@@ -41,6 +41,10 @@ class AddonState {
     );
   }
 
+  List<Addon> get addonsByDescending {
+    return addonList.reversed.toList();
+  }
+
   List<Addon> get addonListByType {
     String privacy = showPublic ? 'PUBLIC' : 'PRIVATE';
     return addonList.where((addon) => addon.privacy == privacy).toList();

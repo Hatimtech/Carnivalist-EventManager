@@ -88,8 +88,8 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
           _buildErrorReceiverEmptyBloc(),
           Expanded(
               child: BlocBuilder<CouponBloc, CouponState>(
-                  bloc: _couponBloc,
-                  condition: (prevState, newState) {
+                  cubit: _couponBloc,
+                  buildWhen: (prevState, newState) {
                     return (prevState.loading != newState.loading) ||
                         (prevState.couponList != newState.couponList ||
                             prevState.couponList.length !=
@@ -99,7 +99,7 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
                     return Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        couponList(state.couponList),
+                        couponList(state.couponsByDescending),
                         if (state.loading) const PlatformProgressIndicator(),
                       ],
                     );
@@ -110,8 +110,8 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
   }
 
   Widget _buildErrorReceiverEmptyBloc() => BlocBuilder<CouponBloc, CouponState>(
-        bloc: _couponBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+    cubit: _couponBloc,
+    buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -410,7 +410,7 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
             .couponDeleteMsg,
         posText: AppLocalizations
             .of(context)
-            .deleteButton,
+            .eventDeleteButton,
         negText: AppLocalizations
             .of(context)
             .btnCancel);

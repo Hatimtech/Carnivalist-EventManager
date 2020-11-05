@@ -15,6 +15,8 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
   final ApiProvider apiProvider = ApiProvider();
   String eventDataId;
 
+  BasicBloc() : super(initialState);
+
   List<String> timeZoneList = [
     '(+01:00) Europe/Andorra',
     '(+04:00) Asia/Dubai',
@@ -456,8 +458,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
     add(Carnival());
   }
 
-  @override
-  BasicState get initialState => BasicState.initial();
+  static BasicState get initialState => BasicState.initial();
 
   @override
   Stream<BasicState> mapEventToState(BasicEvent event) async* {
@@ -807,7 +808,7 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
           state.uploadRequired = false;
           if (basicResponse.id != null) eventDataId = basicResponse.id;
 
-          add(EventBasicInfoUploadResult(true, uiMsg: basicResponse.message));
+          add(EventBasicInfoUploadResult(true, uiMsg: SUCCESS_DATA_SAVED));
           event.callback(basicResponse);
         } else {
           add(EventBasicInfoUploadResult(false,

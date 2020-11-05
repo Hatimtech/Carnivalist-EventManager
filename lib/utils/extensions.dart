@@ -49,7 +49,13 @@ extension ContextExtensions on BuildContext {
       margin: EdgeInsets.all(0),
       borderRadius: 0,
       backgroundColor: colorAccent,
-      messageText: Text(message, style: TextStyle(color: Colors.white)),
+      messageText: Center(
+        child: Text(message,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            )),
+      ),
       duration: duration,
     )
       ..show(this);

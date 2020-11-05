@@ -67,8 +67,8 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
               Widget>[
             BlocBuilder<CreateFieldBloc, CreateFieldState>(
-              bloc: _createFieldBloc,
-              condition: (prevState, newState) => newState.errorCode != null,
+              cubit: _createFieldBloc,
+              buildWhen: (prevState, newState) => newState.errorCode != null,
               builder: (context, CreateFieldState state) {
                 if (state.errorCode != null) {
                   String errorMsg = getErrorMessage(state.errorCode, context);
@@ -89,8 +89,8 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
                     .title),
             const SizedBox(height: 20.0),
             BlocBuilder<CreateFieldBloc, CreateFieldState>(
-                bloc: _createFieldBloc,
-                condition: (prevState, newState) {
+                cubit: _createFieldBloc,
+                buildWhen: (prevState, newState) {
                   return prevState.type != newState.type ||
                       prevState.customFieldMeuList !=
                           newState.customFieldMeuList;
@@ -160,8 +160,8 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
                         .body1),
                 const SizedBox(width: 10.0),
                 BlocBuilder<CreateFieldBloc, CreateFieldState>(
-                  bloc: _createFieldBloc,
-                  condition: (prevState, newState) =>
+                  cubit: _createFieldBloc,
+                  buildWhen: (prevState, newState) =>
                   prevState.required != newState.required,
                   builder: (BuildContext context, state) =>
                       Switch.adaptive(
@@ -172,8 +172,8 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
               ],
             ),
             BlocBuilder<CreateFieldBloc, CreateFieldState>(
-                bloc: _createFieldBloc,
-                condition: (prevState, newState) =>
+                cubit: _createFieldBloc,
+                buildWhen: (prevState, newState) =>
                 prevState.type != newState.type,
                 builder: (context, CreateFieldState state) {
                   final customFields = getCustomField();
@@ -198,8 +198,8 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
                         ),
                         const SizedBox(height: 20.0),
                         BlocBuilder<CreateFieldBloc, CreateFieldState>(
-                          bloc: _createFieldBloc,
-                          condition: (prevState, newState) =>
+                          cubit: _createFieldBloc,
+                          buildWhen: (prevState, newState) =>
                           prevState.configurations !=
                               newState.configurations ||
                               prevState.configurations.length !=

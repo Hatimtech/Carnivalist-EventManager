@@ -11,7 +11,14 @@ import 'package:eventmanagement/service/viewmodel/api_provider.dart';
 import 'package:eventmanagement/utils/vars.dart';
 
 class EventBloc extends Bloc<EventMain, EventState> {
+
+  EventBloc() : super(initialState);
+
   final ApiProvider apiProvider = ApiProvider();
+
+  void userIdSave(userId) {
+    add(UserIdSave(userId: userId));
+  }
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -41,11 +48,13 @@ class EventBloc extends Bloc<EventMain, EventState> {
     add(ClearState());
   }
 
-  @override
-  EventState get initialState => EventState.initial();
+  static EventState get initialState => EventState.initial();
 
   @override
   Stream<EventState> mapEventToState(EventMain event) async* {
+    if (event is UserIdSave) {
+      state.userId = event.userId;
+    }
     if (event is AuthTokenSave) {
       state.authToken = event.authToken;
     }
@@ -113,7 +122,8 @@ class EventBloc extends Bloc<EventMain, EventState> {
   }
 
   void getAllEventsApi(GetAllEvents event) {
-    apiProvider.getAllEvents(state.authToken).then((networkServiceResponse) {
+    apiProvider.getAllEvents(state.authToken, state.userId).then((
+        networkServiceResponse) {
       if (networkServiceResponse.responseCode == ok200) {
         var eventResponse = networkServiceResponse.response as EventResponse;
         if (eventResponse.code == apiCodeSuccess)

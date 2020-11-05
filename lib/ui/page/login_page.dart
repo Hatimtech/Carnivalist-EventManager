@@ -148,8 +148,8 @@ class _LoginState extends State<LoginPage> {
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<LoginBloc, LoginState>(
-        bloc: _loginBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _loginBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -178,7 +178,7 @@ class _LoginState extends State<LoginPage> {
                 .textTheme
                 .body1,
             validation: (value) =>
-                validatePhoneEmail(value, AppLocalizations.of(context)),
+                validateEmail(value, AppLocalizations.of(context)),
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             nextFocusNode: _focusNodePassword,
@@ -207,8 +207,8 @@ class _LoginState extends State<LoginPage> {
 
   Widget _buildStaffLoginCheckbox() =>
       BlocBuilder<LoginBloc, LoginState>(
-          bloc: _loginBloc,
-          condition: (prevState, newState) =>
+          cubit: _loginBloc,
+          buildWhen: (prevState, newState) =>
           prevState.eventStaffLogin != newState.eventStaffLogin,
           builder: (BuildContext context, LoginState state) {
             return LabeledCheckbox(
@@ -247,6 +247,7 @@ class _LoginState extends State<LoginPage> {
 
         if (loginDetailResponse.code == apiCodeSuccess) {
           _userBloc.saveUserName(loginDetailResponse.loginDetail.name);
+          _userBloc.saveLastName(loginDetailResponse.loginDetail.lastName);
           _userBloc.saveEmail(loginDetailResponse.loginDetail.email);
           _userBloc.saveMobile(loginDetailResponse.loginDetail.mobileNumber);
           _userBloc.saveProfilePicture(loginDetailResponse.loginDetail.avatar);

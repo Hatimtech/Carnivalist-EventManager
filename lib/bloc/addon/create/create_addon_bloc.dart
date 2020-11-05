@@ -17,7 +17,8 @@ class CreateAddonBloc extends Bloc<CreateAddonEvent, CreateAddonState> {
   final AddonBloc addonBloc;
   final String addonId;
 
-  CreateAddonBloc(this.addonBloc, {this.addonId});
+  CreateAddonBloc(this.addonBloc, {this.addonId})
+      : super(initialState(addonBloc, addonId));
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -79,15 +80,15 @@ class CreateAddonBloc extends Bloc<CreateAddonEvent, CreateAddonState> {
     add(UploadAddon(callback: callback));
   }
 
-  @override
-  CreateAddonState get initialState {
+  static CreateAddonState initialState(AddonBloc addonBloc,
+      String addonId) {
     if (addonId == null)
       return CreateAddonState.initial();
     else {
       final addConvFeeTypeList = getAddonConvFeeType();
       final addonPrivacyList = getAddonPrivacy();
       final addon =
-          addonBloc.state.addonList.firstWhere((addon) => addon.id == addonId);
+      addonBloc.state.addonList.firstWhere((addon) => addon.id == addonId);
       return CreateAddonState.copyWith(
           addon, addConvFeeTypeList, addonPrivacyList);
     }
@@ -135,7 +136,7 @@ class CreateAddonBloc extends Bloc<CreateAddonEvent, CreateAddonState> {
       final saleEndDate = event.endDateTime;
       yield state.copyWith(
           endDate:
-              DateTime(saleEndDate.year, saleEndDate.month, saleEndDate.day));
+          DateTime(saleEndDate.year, saleEndDate.month, saleEndDate.day));
     }
 
     if (event is TotalAvailableInput) {
@@ -196,7 +197,7 @@ class CreateAddonBloc extends Bloc<CreateAddonEvent, CreateAddonState> {
           .then((networkServiceResponse) async {
         if (networkServiceResponse.responseCode == ok200) {
           final mediaUploadRes =
-              networkServiceResponse.response as MediaUploadResponse;
+          networkServiceResponse.response as MediaUploadResponse;
 
           if (mediaUploadRes.code == apiCodeSuccess) {
             final serverImageLink = mediaUploadRes.fileLink;
@@ -252,11 +253,12 @@ class CreateAddonBloc extends Bloc<CreateAddonEvent, CreateAddonState> {
         if (addonResponse.code == apiCodeSuccess) {
           if (addonId != null) {
             addonBloc.updateAddon(addon);
+            add(UploadAddonResult(true, uiMsg: SUCCESS_ADDON_UPDATED));
           } else {
             if (addonResponse.addons != null)
               addonBloc.addAddon(addonResponse.addons);
+            add(UploadAddonResult(true, uiMsg: SUCCESS_ADDON_CREATED));
           }
-          add(UploadAddonResult(true));
           event.callback(addonResponse);
         } else {
           add(UploadAddonResult(false,

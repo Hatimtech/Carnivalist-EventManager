@@ -13,7 +13,7 @@ class RestClient {
 
     try {
       var response = await http.get(url, headers: headers);
-      print('Response Body--->${response.body}');
+//      printWrapped('Response Body--->${response.body}');
       return processResponse<T>(response);
     } catch (e) {
       return new MappedNetworkServiceResponse<T>(
@@ -31,7 +31,7 @@ class RestClient {
 
     try {
       var response = await http.get(url);
-      print('Response Body--->${response.body}');
+//      printWrapped('Response Body--->${response.body}');
       return processResponse<T>(response);
     } catch (e) {
       return new MappedNetworkServiceResponse<T>(
@@ -50,7 +50,7 @@ class RestClient {
     try {
       var response = await http.post(url,
           headers: headers, body: body, encoding: encoding);
-      print('Response Body--->${response.body}');
+//      print('Response Body--->${response.body}');
       return processResponse<T>(response);
     } catch (e) {
       print(e.toString());

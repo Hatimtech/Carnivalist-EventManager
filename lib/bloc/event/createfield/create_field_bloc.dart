@@ -13,7 +13,8 @@ class CreateFieldBloc extends Bloc<CreateFieldEvent, CreateFieldState> {
   final FormBloc formBloc;
   final String fieldId;
 
-  CreateFieldBloc(this.formBloc, this.fieldId);
+  CreateFieldBloc(this.formBloc, this.fieldId)
+      : super(initialState(formBloc, fieldId));
 
   void customFieldMenu() {
     add(CustomFieldMenu());
@@ -47,8 +48,7 @@ class CreateFieldBloc extends Bloc<CreateFieldEvent, CreateFieldState> {
     add(RemoveDropdownConfiguration(configuration: configuration));
   }
 
-  @override
-  CreateFieldState get initialState {
+  static CreateFieldState initialState(FormBloc formBloc, String fieldId) {
     if (fieldId != null) {
       return CreateFieldState.copyWith(
           formBloc.state.fieldList.firstWhere((field) => field.id == fieldId));

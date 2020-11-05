@@ -5,6 +5,7 @@ import 'package:eventmanagement/utils/vars.dart';
 
 class EventState {
   String authToken;
+  String userId;
   final List<EventData> eventDataList;
   final List<MenuCustom> eventFilterItemList;
   final String eventCurrentFilter;
@@ -13,6 +14,7 @@ class EventState {
 
   EventState({
     this.authToken,
+    this.userId,
     this.eventDataList,
     this.eventFilterItemList,
     this.eventCurrentFilter,
@@ -23,6 +25,7 @@ class EventState {
   factory EventState.initial() {
     return EventState(
       authToken: '',
+      userId: '',
       eventDataList: [],
       eventFilterItemList: getEventFilterStatus(),
       loading: false,
@@ -32,6 +35,7 @@ class EventState {
 
   EventState copyWith({
     String authToken,
+    String userId,
     List<EventData> eventDataList,
     List<MenuCustom> eventFilterItemList,
     String eventCurrentFilter,
@@ -40,6 +44,7 @@ class EventState {
   }) {
     return EventState(
       authToken: authToken ?? this.authToken,
+      userId: userId ?? this.userId,
       eventDataList: eventDataList ?? this.eventDataList,
       eventFilterItemList: eventFilterItemList ?? this.eventFilterItemList,
       eventCurrentFilter: eventCurrentFilter ?? this.eventCurrentFilter,
@@ -64,7 +69,7 @@ class EventState {
       try {
         return isValid(event.endDateTime) &&
             DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
-            (event.status == 'ACTIVE' || event.status == 'INACTIVE');
+            (event.status == 'ACTIVE');
       } catch (error) {
         return false;
       }
@@ -73,7 +78,7 @@ class EventState {
 
   List<EventData> get upcomingEvents {
     final dateTimeNow = DateTime.now();
-    return eventDataList.where((event) {
+    return eventDataList.reversed.where((event) {
       try {
         return isValid(event.endDateTime) &&
             DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
@@ -85,14 +90,14 @@ class EventState {
   }
 
   List<EventData> get draftEvents {
-    return eventDataList.where((event) {
+    return eventDataList.reversed.where((event) {
       return event.status == eventFilterItemList[1].name;
     }).toList();
   }
 
   List<EventData> get pastEvents {
     final dateTimeNow = DateTime.now();
-    return eventDataList.where((event) {
+    return eventDataList.reversed.where((event) {
       try {
         return isValid(event.endDateTime) &&
             DateTime.parse(event.endDateTime).isBefore(dateTimeNow);
@@ -109,6 +114,37 @@ class EventState {
         return isValid(event.endDateTime) &&
             DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
             event.status == 'ACTIVE';
+      } catch (error) {
+        return false;
+      }
+    }).toList();
+  }
+
+  List<EventData> get activeEventsWithTicket {
+    final dateTimeNow = DateTime.now();
+    return eventDataList.where((event) {
+      try {
+        return isValid(event.endDateTime) &&
+            DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
+            event.status == 'ACTIVE' &&
+            event.tickets.firstWhere((element) => (element.price ?? 0) > 0,
+                orElse: null) !=
+                null;
+      } catch (error) {
+        return false;
+      }
+    }).toList();
+  }
+
+  List<EventData> get pastEventsWithTicket {
+    final dateTimeNow = DateTime.now();
+    return eventDataList.reversed.where((event) {
+      try {
+        return isValid(event.endDateTime) &&
+            DateTime.parse(event.endDateTime).isBefore(dateTimeNow) &&
+            event.tickets.firstWhere((element) => (element.price ?? 0) > 0,
+                orElse: null) !=
+                null;
       } catch (error) {
         return false;
       }

@@ -5,6 +5,7 @@ import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/service/viewmodel/mock_data.dart';
+import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,129 +48,196 @@ class _EventListItemState extends State<EventListItem> {
     return _buildEventListItemCard(widget.systemPath);
   }
 
-  InkWell _buildEventListItemCard(String systemPath) => InkWell(
-        onTap: () => widget.viewOnly ? viewEvent() : showEventActions(),
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10.0),
-              top: Radius.circular(10.0),
-            ),
+  InkWell _buildEventListItemCard(String systemPath) {
+    var ticketCountAndPriceByEvent = getTicketCountAndPriceByEvent(_eventData);
+    return InkWell(
+      onTap: () => widget.viewOnly ? viewEvent() : showEventActions(),
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10.0),
+            top: Radius.circular(10.0),
           ),
-          child: Container(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                VerticalDivider(
-                  thickness: 6,
-                  width: 6,
-                  color: _eventData.status == 'ACTIVE'
-                      ? colorActive
-                      : colorInactive,
-                ),
-                const SizedBox(width: 8.0),
-                _buildBannerImage(systemPath),
-                const SizedBox(width: 4.0),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              _eventData.title ??
-                                  AppLocalizations
-                                      .of(context)
-                                      .notAvailable,
-                              maxLines: 2,
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .subtitle,
-                            ),
+        ),
+        child: Container(
+          padding: EdgeInsets.only(right: 10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              VerticalDivider(
+                thickness: 6,
+                width: 6,
+                color:
+                _eventData.status == 'ACTIVE' ? colorActive : colorInactive,
+              ),
+              const SizedBox(width: 8.0),
+              _buildBannerImage(systemPath),
+              const SizedBox(width: 4.0),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            _eventData.title ??
+                                AppLocalizations
+                                    .of(context)
+                                    .notAvailable,
+                            maxLines: 2,
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .subtitle,
                           ),
+                        ),
+                        Text(
+                          _eventData.status,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body2
+                              .copyWith(
+                            color: _eventData.status == 'ACTIVE'
+                                ? colorActive
+                                : colorInactive,
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 2.0),
+                    Row(children: <Widget>[
+                      Icon(Icons.event, size: 15.0, color: colorIcon),
+                      const SizedBox(width: 3.0),
+                      Text(
+                        isValid(_eventData.startDateTime)
+                            ? DateFormat.yMMMd().format(
+                            DateTime.parse(_eventData.startDateTime)
+                                .toLocal())
+                            : AppLocalizations
+                            .of(context)
+                            .notAvailable,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(
+                          color: colorTextSubhead,
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 8.0),
+                    Row(children: [
+                      Expanded(
+                        child: Row(children: <Widget>[
+                          Icon(Icons.event_seat, size: 15.0, color: colorIcon),
+                          const SizedBox(width: 4.0),
                           Text(
-                            _eventData.status,
+                            '${ticketCountAndPriceByEvent[1]}/${ticketCountAndPriceByEvent[0]}',
                             style: Theme
                                 .of(context)
                                 .textTheme
                                 .body2
                                 .copyWith(
-                              color: _eventData.status == 'ACTIVE'
-                                  ? colorActive
-                                  : colorInactive,
+                              color: colorTextSubhead,
                             ),
                           )
-                        ],
+                        ]),
                       ),
-                      const SizedBox(height: 2.0),
-                      Row(children: <Widget>[
-                        Icon(Icons.event, size: 15.0, color: colorIcon),
-                        const SizedBox(width: 3.0),
-                        Text(
-                          isValid(_eventData.startDateTime)
-                              ? DateFormat.yMMMd().format(
-                              DateTime.parse(_eventData.startDateTime)
-                                  .toLocal())
-                              : AppLocalizations.of(context).notAvailable,
-                          style: Theme.of(context).textTheme.body2.copyWith(
-                                color: colorTextSubhead,
-                              ),
+                      Expanded(
+                        child: Row(children: <Widget>[
+                          Icon(Icons.monetization_on,
+                              size: 15.0, color: colorIcon),
+                          const SizedBox(width: 4.0),
+                          Text(
+                            ticketCountAndPriceByEvent[2],
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .body2
+                                .copyWith(
+                              color: colorTextSubhead,
+                            ),
+                          )
+                        ]),
+                      )
+                    ]),
+                    const SizedBox(height: 8.0),
+                    Row(children: <Widget>[
+                      Icon(Icons.local_offer, size: 15.0, color: colorIcon),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        '${AppLocalizations
+                            .of(context)
+                            .eventCarnival} ${_eventData.type ?? '--'}',
+                        maxLines: 1,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(
+                          color: colorTextSubhead,
                         ),
-                      ]),
-                      const SizedBox(height: 15.0),
-                      Row(children: [
-                        Expanded(
-                          child: Row(children: <Widget>[
-                            Icon(Icons.event_seat,
-                                size: 15.0, color: colorIcon),
-                            const SizedBox(width: 4.0),
-                            Text(
-                              '0/${getTotalTicketCountByEvent(_eventData)}',
-                              style: Theme.of(context).textTheme.body2.copyWith(
-                                    color: colorTextSubhead,
-                                  ),
-                            )
-                          ]),
+                      )
+                    ]),
+                    const SizedBox(height: 8.0),
+                    Row(children: <Widget>[
+                      Icon(Icons.location_city, size: 15.0, color: colorIcon),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        '${AppLocalizations
+                            .of(context)
+                            .eventCity} ${_eventData.place?.city ?? '--'}',
+                        maxLines: 1,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(
+                          color: colorTextSubhead,
                         ),
-                        Expanded(
-                          child: Row(children: <Widget>[
-                            Icon(Icons.monetization_on,
-                                size: 15.0, color: colorIcon),
-                            const SizedBox(width: 4.0),
-                            Text(
-                              '1000',
-                              style: Theme.of(context).textTheme.body2.copyWith(
-                                    color: colorTextSubhead,
-                                  ),
-                            )
-                          ]),
-                        )
-                      ])
-                    ],
-                  ),
-                )
-              ],
-            ),
+                      )
+                    ]),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
-      );
+      ),
+    );
+  }
 
-  int getTotalTicketCountByEvent(EventData _eventData) {
-    int ticketsCount = 0;
+  List<String> getTicketCountAndPriceByEvent(EventData _eventData) {
+    int totalTicketsCount = 0;
+    int soldTicketsCount = 0;
+    double minTicketPrice;
     if ((_eventData.tickets?.length ?? 0) > 0) {
       _eventData.tickets.forEach((ticket) {
-        ticketsCount += (ticket.quantity ?? 0);
+        totalTicketsCount += (ticket.initialOriginalQuantity ?? 0);
+        soldTicketsCount +=
+            (ticket.initialOriginalQuantity ?? 0) - (ticket.quantity ?? 0);
+
+        if ((minTicketPrice == null && ticket.price != null) ||
+            (ticket.price != null && (ticket.price < (minTicketPrice ?? 0))))
+          minTicketPrice = ticket.price;
       });
     }
-    return ticketsCount;
+    return List.of([
+      totalTicketsCount.toString(),
+      soldTicketsCount.toString(),
+      (minTicketPrice ?? 0).toString()
+    ]);
   }
 
   Widget _buildBannerImage(String systemPath) {
@@ -348,7 +416,9 @@ class _EventListItemState extends State<EventListItem> {
     bool delete = await context.showConfirmationDialog(
         AppLocalizations.of(context).eventDeleteTitle,
         AppLocalizations.of(context).eventDeleteMsg,
-        posText: AppLocalizations.of(context).deleteButton,
+        posText: AppLocalizations
+            .of(context)
+            .eventDeleteButton,
         negText: AppLocalizations.of(context).btnCancel);
 
     if (delete ?? false) {

@@ -5,6 +5,8 @@ import 'package:eventmanagement/bloc/addon/addon_state.dart';
 import 'package:eventmanagement/bloc/bottom_nav_bloc/page_nav_bloc.dart';
 import 'package:eventmanagement/bloc/coupon/coupon_bloc.dart';
 import 'package:eventmanagement/bloc/coupon/coupon_state.dart';
+import 'package:eventmanagement/bloc/dashboard/dashboard_bloc.dart';
+import 'package:eventmanagement/bloc/dashboard/dashboard_state.dart';
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
 import 'package:eventmanagement/bloc/staff/staff_bloc.dart';
@@ -14,7 +16,6 @@ import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_filter.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_list.dart';
 import 'package:eventmanagement/utils/extensions.dart';
-import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _DashboardState extends State<DashboardPage>
 
   PageNavBloc _pageNavBloc;
   UserBloc _userBloc;
+  DashboardBloc _dashboardBloc;
   EventBloc _eventBloc;
   CouponBloc _couponBloc;
   AddonBloc _addonBloc;
@@ -54,7 +56,11 @@ class _DashboardState extends State<DashboardPage>
     _pageNavBloc = BlocProvider.of<PageNavBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
     _eventBloc = BlocProvider.of<EventBloc>(context);
+    _eventBloc.userIdSave(_userBloc.state.userId);
     _eventBloc.authTokenSave(_userBloc.state.authToken);
+
+    _dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    _dashboardBloc.authTokenSave(_userBloc.state.authToken);
 
     _addonBloc = BlocProvider.of<AddonBloc>(context);
     _addonBloc.authTokenSave(_userBloc.state.authToken);
@@ -72,6 +78,7 @@ class _DashboardState extends State<DashboardPage>
     if (PageStorage.of(context)
         .readState(context, identifier: 'INIT_DOWNLOAD') ??
         true) {
+      _dashboardBloc.getPaymentSummary();
       _eventBloc.getAllEvents();
       _addonBloc.getAllAddons();
       _couponBloc.getAllCoupons();
@@ -127,7 +134,6 @@ class _DashboardState extends State<DashboardPage>
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await Logger.log('Dashboard Coupon Clicked');
                       _pageNavBloc.currentPage(PAGE_COUPONS);
                     },
                     child: _category(
@@ -143,7 +149,6 @@ class _DashboardState extends State<DashboardPage>
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await Logger.log('Dashboard Addons Clicked');
                       _pageNavBloc.currentPage(PAGE_ADDONS);
                     },
                     child: _category(
@@ -159,7 +164,6 @@ class _DashboardState extends State<DashboardPage>
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await Logger.log('Dashboard Reports Clicked');
                       _pageNavBloc.currentPage(PAGE_REPORTS);
                     },
                     child: _category(
@@ -175,7 +179,6 @@ class _DashboardState extends State<DashboardPage>
                 Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await Logger.log('Dashboard Staff Clicked');
                       _pageNavBloc.currentPage(PAGE_STAFF);
                     },
                     child: _category(
@@ -194,6 +197,7 @@ class _DashboardState extends State<DashboardPage>
               onRefresh: () async {
                 Completer<bool> downloadCompleter = Completer();
                 _eventBloc.getAllEvents(downloadCompleter: downloadCompleter);
+                _dashboardBloc.getPaymentSummary();
                 return downloadCompleter.future;
               },
               child: NotificationListener<ScrollNotification>(
@@ -208,15 +212,28 @@ class _DashboardState extends State<DashboardPage>
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  _categoryCounter(
-                                      AppLocalizations
-                                          .of(context)
-                                          .labelTicketsSold,
-                                      '00'),
+                                  BlocBuilder<DashboardBloc, DashboardState>(
+                                      cubit: _dashboardBloc,
+                                      buildWhen: (prevState, newState) =>
+                                      prevState.paymentSummary !=
+                                          newState.paymentSummary,
+                                      builder: (_, state) {
+                                        print(
+                                            "Online Ticket Sold--->${state
+                                                .paymentSummary?.quantity
+                                                ?.toString()}");
+                                        return _categoryCounter(
+                                            AppLocalizations
+                                                .of(context)
+                                                .labelTicketsSold,
+                                            state.paymentSummary?.quantity
+                                                ?.toString() ??
+                                                '00');
+                                      }),
                                   SizedBox(width: 10),
                                   BlocBuilder<EventBloc, EventState>(
-                                      bloc: _eventBloc,
-                                      condition: (prevState, newState) =>
+                                      cubit: _eventBloc,
+                                      buildWhen: (prevState, newState) =>
                                       prevState.eventDataList !=
                                           newState.eventDataList,
                                       builder: (_, state) {
@@ -233,8 +250,8 @@ class _DashboardState extends State<DashboardPage>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   BlocBuilder<CouponBloc, CouponState>(
-                                      bloc: _couponBloc,
-                                      condition: (prevState, newState) =>
+                                      cubit: _couponBloc,
+                                      buildWhen: (prevState, newState) =>
                                       prevState.couponList !=
                                           newState.couponList,
                                       builder: (_, state) {
@@ -248,8 +265,8 @@ class _DashboardState extends State<DashboardPage>
                                       }),
                                   SizedBox(width: 10),
                                   BlocBuilder<AddonBloc, AddonState>(
-                                      bloc: _addonBloc,
-                                      condition: (prevState, newState) =>
+                                      cubit: _addonBloc,
+                                      buildWhen: (prevState, newState) =>
                                       prevState.addonList !=
                                           newState.addonList,
                                       builder: (_, state) {
@@ -396,8 +413,8 @@ class _DashboardState extends State<DashboardPage>
 
   Widget _buildErrorReceiverEmptyBloc() =>
       BlocBuilder<EventBloc, EventState>(
-        bloc: _eventBloc,
-        condition: (prevState, newState) => newState.uiMsg != null,
+        cubit: _eventBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int

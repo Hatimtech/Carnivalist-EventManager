@@ -13,7 +13,7 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
   final bool assigning;
   final List<String> addonIds = [];
 
-  AddonBloc({this.assigning = false});
+  AddonBloc({this.assigning = false}) : super(initialState);
 
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
@@ -48,8 +48,7 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
     add(AddonSelectionChange(addonId: addonId));
   }
 
-  @override
-  AddonState get initialState => AddonState.initial();
+  static AddonState get initialState => AddonState.initial();
 
   @override
   Stream<AddonState> mapEventToState(AddonEvent event) async* {
@@ -92,7 +91,7 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
     }
 
     if (event is AddAddon) {
-      state.addonList.insert(0, event.addon);
+      state.addonList.add(event.addon);
       yield state.copyWith(
         addonList: List.of(state.addonList),
       );

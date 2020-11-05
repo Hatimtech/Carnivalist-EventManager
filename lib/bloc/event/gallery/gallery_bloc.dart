@@ -15,6 +15,8 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   String eventDataId;
   EventData eventDataToUpload;
 
+  GalleryBloc() : super(initialState);
+
   void authTokenSave(authToken) {
     add(AuthTokenSave(authToken: authToken));
   }
@@ -47,8 +49,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     add(UploadGallery(callback: callback));
   }
 
-  @override
-  GalleryState get initialState => GalleryState.initial();
+  static GalleryState get initialState => GalleryState.initial();
 
   @override
   Stream<GalleryState> mapEventToState(GalleryEvent event) async* {
@@ -221,7 +222,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
             var galleryResponse =
             networkServiceResponse.response as GalleryResponse;
             if (galleryResponse.code == apiCodeSuccess) {
-              yield state.copyWith(uiMsg: galleryResponse.message);
+              yield state.copyWith(uiMsg: SUCCESS_DATA_SAVED);
               event.callback(galleryResponse);
               state.uploadRequired = false;
             } else {

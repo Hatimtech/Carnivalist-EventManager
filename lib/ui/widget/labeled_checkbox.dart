@@ -1,4 +1,4 @@
-import 'package:eventmanagement/ui/widget/shrinked_checkbox.dart';
+import 'package:eventmanagement/ui/widget/shrinked_checkbox.dart' as CustomCB;
 import 'package:flutter/material.dart';
 
 class LabeledCheckbox extends StatelessWidget {
@@ -24,7 +24,7 @@ class LabeledCheckbox extends StatelessWidget {
         padding: padding,
         child: Row(
           children: <Widget>[
-            ShrinkedCheckbox(
+            CustomCB.Checkbox(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               value: value,
               onChanged: (bool newValue) {

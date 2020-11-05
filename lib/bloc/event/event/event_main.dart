@@ -10,6 +10,12 @@ class AuthTokenSave extends EventMain {
   AuthTokenSave({this.authToken});
 }
 
+class UserIdSave extends EventMain {
+  final String userId;
+
+  UserIdSave({this.userId});
+}
+
 class EventFilterValue extends EventMain {
   final String filter;
 

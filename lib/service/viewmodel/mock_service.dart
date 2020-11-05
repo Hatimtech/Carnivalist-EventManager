@@ -81,12 +81,17 @@ class MockService implements APIService {
   }
 
   @override
-  getAllEvents(String authToken) {
+  getAllEvents(String authToken, String userId) {
     return null;
   }
 
   @override
   getAllEventsForStaff(String authToken) {
+    return null;
+  }
+
+  @override
+  getPaymentSummary(String authToken) {
     return null;
   }
 
