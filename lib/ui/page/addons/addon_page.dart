@@ -421,6 +421,17 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
                   () => editAddon(addon),
               showDivider: true),
           _buildMaterialFieldAction(
+            addon.active
+                ? AppLocalizations
+                .of(context)
+                .labelInactiveAddon
+                : AppLocalizations
+                .of(context)
+                .labelActiveAddon,
+                () => activeInactiveAddon(addon),
+            showDivider: true,
+          ),
+          _buildMaterialFieldAction(
             AppLocalizations
                 .of(context)
                 .labelDeleteAddon,
@@ -466,6 +477,15 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
             .labelEditAddon,
                 () => editAddon(addon)),
         _buildCupertinoAddonAction(
+            addon.active
+                ? AppLocalizations
+                .of(context)
+                .labelInactiveAddon
+                : AppLocalizations
+                .of(context)
+                .labelActiveAddon,
+                () => activeInactiveAddon(addon)),
+        _buildCupertinoAddonAction(
             AppLocalizations
                 .of(context)
                 .labelDeleteAddon,
@@ -504,6 +524,16 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
 
   void editAddon(Addon addon) {
     _onCreateAddonButtonPressed(addonId: addon.id);
+  }
+
+  void activeInactiveAddon(Addon addon) {
+    context.showProgress(context);
+
+    Addon newAddon = Addon.fromJson(addon.toJson());
+    newAddon.active = !newAddon.active;
+    _addonBloc.activeInactiveAddon(newAddon, (response) {
+      context.hideProgress(context);
+    });
   }
 
   Future<void> deleteAddon(String addonId) async {

@@ -303,7 +303,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
     });
   }
 
-  Widget staffNameInput() => widget.inputFieldRectangle(
+  Widget staffNameInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createStaffBloc.state.name,
         textInputAction: TextInputAction.next,
@@ -315,7 +316,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
         nextFocusNode: _focusNodeEmail,
       );
 
-  Widget staffEmailInput() => widget.inputFieldRectangle(
+  Widget staffEmailInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createStaffBloc.state.email,
         textInputAction: TextInputAction.next,
@@ -327,7 +329,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
         nextFocusNode: _focusNodeCity,
       );
 
-  Widget staffCityInput() => widget.inputFieldRectangle(
+  Widget staffCityInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createStaffBloc.state.city,
         textInputAction: TextInputAction.next,
@@ -339,7 +342,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
         nextFocusNode: _focusNodeUsername,
       );
 
-  Widget staffUsernameInput() => widget.inputFieldRectangle(
+  Widget staffUsernameInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createStaffBloc.state.username,
         textInputAction: TextInputAction.next,
@@ -351,7 +355,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
         nextFocusNode: _focusNodeMobileNo,
       );
 
-  Widget staffMobileNoInput() => widget.inputFieldRectangle(
+  Widget staffMobileNoInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createStaffBloc.state.mobileNumber,
         textInputAction: TextInputAction.next,
@@ -364,7 +369,8 @@ class _CreateStaffState extends State<CreateStaffDialog> {
         nextFocusNode: _focusNodePassword,
       );
 
-  Widget staffPasswordInput() => widget.inputFieldRectangle(
+  Widget staffPasswordInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createStaffBloc.state.password,
         onChanged: _createStaffBloc.passwordInput,

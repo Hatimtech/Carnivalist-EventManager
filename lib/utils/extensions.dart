@@ -167,7 +167,8 @@ extension WidgetExtensions on Widget {
               suffix: inkWell),
           validator: validation);
 
-  inputFieldRectangle(TextEditingController textEditingController, {
+  inputFieldRectangle(BuildContext context,
+      TextEditingController textEditingController, {
     String initialValue,
     ValueChanged<String> onChanged,
     int maxLength,
@@ -204,7 +205,8 @@ extension WidgetExtensions on Widget {
           textInputAction: textInputAction,
           onFieldSubmitted: (_) {
             if (focusNode != null) focusNode.unfocus();
-            if (nextFocusNode != null) nextFocusNode.requestFocus();
+            if (nextFocusNode != null)
+              FocusScope.of(context).requestFocus(nextFocusNode);
           },
           autofocus: false,
           enabled: enabled,
@@ -309,6 +311,7 @@ extension WidgetExtensions on Widget {
                         .size
                         .height * .8,
                     showBottomToolbar: false,
+                    returnContent: resultHandler,
                   ),
                   Row(children: <Widget>[
                     Expanded(
@@ -330,9 +333,7 @@ extension WidgetExtensions on Widget {
                     Expanded(
                       child: RaisedButton(
                         onPressed: () async {
-                          final html =
                           await htmlEditorKey.currentState.getText();
-                          resultHandler(html);
                           Navigator.pop(context);
                         },
                         padding: EdgeInsets.symmetric(vertical: 12.0),

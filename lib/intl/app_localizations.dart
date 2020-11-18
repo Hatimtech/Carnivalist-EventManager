@@ -207,6 +207,10 @@ class AppLocalizations {
   String get labelTicketAddons =>
       Intl.message('Add ons: ', name: "labelTicketAddons", locale: _localeName);
 
+  String get labelTicketSold =>
+      Intl.message(
+          'Tickets Sold: ', name: "labelTicketSold", locale: _localeName);
+
   String get labelAssignAddon =>
       Intl.message('Assign Add-on',
           name: "labelAssignAddon", locale: _localeName);
@@ -907,6 +911,14 @@ class AppLocalizations {
 
   String get labelEditAddon =>
       Intl.message('Edit Addon', name: "labelEditAddon", locale: _localeName);
+
+  String get labelActiveAddon =>
+      Intl.message(
+          'Active Addon', name: "labelActiveAddon", locale: _localeName);
+
+  String get labelInactiveAddon =>
+      Intl.message(
+          'Inactive Addon', name: "labelInactiveAddon", locale: _localeName);
 
   String get labelDeleteAddon =>
       Intl.message(

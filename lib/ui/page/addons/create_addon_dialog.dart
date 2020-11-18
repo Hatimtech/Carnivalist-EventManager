@@ -397,7 +397,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
     });
   }
 
-  Widget addonNameInput() => widget.inputFieldRectangle(
+  Widget addonNameInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createAddonBloc.state.addonName,
         textInputAction: TextInputAction.next,
@@ -409,7 +410,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
         nextFocusNode: _focusNodeTotalAva,
       );
 
-  Widget totalAvailableInput() => widget.inputFieldRectangle(
+  Widget totalAvailableInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createAddonBloc.state.totalAvailable,
         keyboardType: TextInputType.number,
@@ -423,7 +425,8 @@ class _CreateAddonState extends State<CreateAddonDialog> {
         nextFocusNode: _focusNodePrice,
       );
 
-  Widget addonPriceInput() => widget.inputFieldRectangle(
+  Widget addonPriceInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createAddonBloc.state.price,
         onChanged: _createAddonBloc.priceInput,
@@ -434,9 +437,18 @@ class _CreateAddonState extends State<CreateAddonDialog> {
         labelStyle: Theme.of(context).textTheme.body1,
         focusNode: _focusNodePrice,
         nextFocusNode: _focusNodeDescription,
+        suffix: Text(
+          '\$',
+          style: Theme
+              .of(context)
+              .textTheme
+              .subtitle,
+          textAlign: TextAlign.center,
+        ),
       );
 
-  descriptionInput() => widget.inputFieldRectangle(
+  descriptionInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createAddonBloc.state.description,
         onChanged: _createAddonBloc.descriptionInput,
@@ -456,7 +468,7 @@ class _CreateAddonState extends State<CreateAddonDialog> {
         },
         cubit: _createAddonBloc,
         builder: (_, state) {
-          return widget.inputFieldRectangle(
+          return widget.inputFieldRectangle(context,
             null,
             initialValue: _createAddonBloc.state.convenienceFee,
             onChanged: _createAddonBloc.convenienceFeeInput,

@@ -143,7 +143,8 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
         ]);
   }
 
-  _eventNameInput() => widget.inputFieldRectangle(
+  _eventNameInput() =>
+      widget.inputFieldRectangle(context,
         _eventNameController,
 //        initialValue: _basicBloc.state.eventName,
     maxLength: 250,
@@ -391,9 +392,9 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
           ? Container(
           alignment: FractionalOffset.center,
           child: CupertinoActivityIndicator())
-          : (snapshot.eventTypeList?.length ?? 0) > 0
+          : (snapshot.activeCarnivalsList?.length ?? 0) > 0
           ? CupertinoActionSheet(
-        actions: snapshot.eventTypeList.map<Widget>((carnival) {
+        actions: snapshot.activeCarnivalsList.map<Widget>((carnival) {
           return CupertinoActionSheetAction(
             onPressed: () {
               Navigator.pop(context);
@@ -458,7 +459,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
 //  _eventTagInput() => BlocBuilder(
 //      cubit: _basicBloc,
 //      builder: (BuildContext context, BasicState state) =>
-//          widget.inputFieldRectangle(
+//          widget.inputFieldRectangle(context,
 //            _eventTagsController,
 //            onChanged: _basicBloc.eventTagsInput,
 //            hintText: AppLocalizations.of(context).inputHintTag,

@@ -71,6 +71,7 @@ class _EventMenuState extends State<EventMenuPage>
 //    _addonBloc.authTokenSave(_userBloc.state.authToken);
 //    _addonBloc.getAllAddons();
 
+    print('widget.eventId--->${widget.eventId}');
     if (isValid(widget.eventId)) {
       _eventData = _eventBloc.state.findById(widget.eventId);
     }

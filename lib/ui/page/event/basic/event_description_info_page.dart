@@ -87,7 +87,7 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
   GlobalKey<HtmlEditorState> keyEditor = GlobalKey();
 
   /*_eventDescriptionInput() {
-    return widget.inputFieldRectangle(
+    return widget.inputFieldRectangle(context,
       _eventDescriptionController,
       onChanged: _basicBloc.eventDescriptionInput,
       hintText: AppLocalizations.of(context).inputHintDescription,

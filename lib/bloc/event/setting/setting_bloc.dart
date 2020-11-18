@@ -19,6 +19,7 @@ import 'setting_state.dart';
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
   final ApiProvider apiProvider = ApiProvider();
   String eventDataId;
+  bool isUpdating = false;
 
   SettingBloc() : super(initialState);
 
@@ -136,6 +137,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     }
 
     if (event is PopulateExistingEvent) {
+      this.isUpdating = true;
       EventData eventData = event.eventData;
       bool precentage =
           eventData.paymentAndTaxes?.convenienceCharge?.precentage;
@@ -180,9 +182,11 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
           return CancellationOption(
               refundType: e.refundType,
               refundValue: e.refundValue,
-              cancellationEndDate: e.cancellationEndDate.toLocal());
+              cancellationEndDate: e.cancellationEndDate?.toLocal());
         },
       )?.toList();
+
+      print('eventData.userContractCheck--->${eventData.userContractCheck}');
 
       yield state.copyWith(
         precentage: precentage,
@@ -387,6 +391,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       return;
     }
 
+    print('uploadSettingsApi: eventDataId--->$eventDataId');
+
     apiProvider
         .uploadSettings(state.authToken, settingDataToUpload,
         eventDataId: eventDataId)
@@ -397,7 +403,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         if (settingResponse.code == apiCodeSuccess) {
           state.uploadRequired = false;
           add(SettingDataUploadResult(true,
-              uiMsg: eventDataId != null
+              uiMsg: isUpdating
                   ? SUCCESS_EVENT_UPDATED
                   : SUCCESS_EVENT_CREATED));
           event.callback(settingResponse);

@@ -40,6 +40,10 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
     add(UpdateAddon(addon));
   }
 
+  void activeInactiveAddon(Addon addon, Function callback) {
+    add(ActiveInactiveAddon(addon, callback));
+  }
+
   void deleteAddon(String id, Function callback) {
     add(DeleteAddon(id, callback));
   }
@@ -71,6 +75,10 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
         uiMsg: !event.success ? event.error : null,
         addonList: event.success ? event.addonList : null,
       );
+    }
+
+    if (event is ActiveInactiveAddon) {
+      activeInactiveAddonApi(event);
     }
 
     if (event is DeleteAddon) {
@@ -152,6 +160,33 @@ class AddonBloc extends Bloc<AddonEvent, AddonState> {
       add(AddonListAvailable(false, error: ERR_SOMETHING_WENT_WRONG));
       if (event.downloadCompleter != null)
         event.downloadCompleter.complete(false);
+    });
+  }
+
+  void activeInactiveAddonApi(ActiveInactiveAddon event) {
+    apiProvider
+        .uploadAddon(state.authToken, event.addon)
+        .then((networkServiceResponse) {
+      if (networkServiceResponse.responseCode == ok200) {
+        var addonResponse = networkServiceResponse.response as AddonResponse;
+        if (addonResponse.code == apiCodeSuccess) {
+          updateAddon(event.addon);
+          add(ActiveInactiveAddonResult(true, uiMsg: SUCCESS_ADDON_UPDATED));
+          event.callback(addonResponse);
+        } else {
+          add(ActiveInactiveAddonResult(false,
+              uiMsg: addonResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+          event.callback(addonResponse.message);
+        }
+      } else {
+        add(ActiveInactiveAddonResult(false,
+            uiMsg: networkServiceResponse.error ?? ERR_SOMETHING_WENT_WRONG));
+        event.callback(networkServiceResponse.error);
+      }
+    }).catchError((error) {
+      print('Error in activeInactiveAddon--->$error');
+      add(ActiveInactiveAddonResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+      event.callback(error);
     });
   }
 

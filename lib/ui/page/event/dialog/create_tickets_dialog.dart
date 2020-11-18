@@ -1,3 +1,4 @@
+import 'package:eventmanagement/bloc/event/basic/basic_bloc.dart';
 import 'package:eventmanagement/bloc/event/createticket/create_ticket_bloc.dart';
 import 'package:eventmanagement/bloc/event/createticket/create_ticket_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
@@ -19,6 +20,7 @@ class CreateTicketsDialog extends StatefulWidget {
 }
 
 class _CreateTicketsState extends State<CreateTicketsDialog> {
+  BasicBloc _basicBloc;
   CreateTicketBloc _createTicketBloc;
   UserBloc _userBloc;
 
@@ -34,6 +36,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   void initState() {
     super.initState();
 
+    _basicBloc = BlocProvider.of<BasicBloc>(context);
     _createTicketBloc = BlocProvider.of<CreateTicketBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
     _createTicketBloc.authTokenSave(_userBloc.state.authToken);
@@ -283,7 +286,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   }
 
   ticketNameInput() =>
-      widget.inputFieldRectangle(
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createTicketBloc.state.ticketName,
         textInputAction: TextInputAction.next,
@@ -338,7 +341,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
   }
 
   ticketPriceInput() =>
-      widget.inputFieldRectangle(
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createTicketBloc.state.ticketPrice,
         onChanged: _createTicketBloc.ticketPriceInput,
@@ -359,7 +362,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 //  salesEndDateInput() => BlocBuilder(
 //      cubit: _createTicketBloc,
 //      builder: (BuildContext context, CreateTicketState state) =>
-//          widget.inputFieldRectangle(
+//          widget.inputFieldRectangle(context,
 //            _salesEndDateController,
 //            onChanged: _createTicketBloc.salesEndDateInput,
 //            validation: validateSalesEndDate,
@@ -406,7 +409,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
           });
 
   totalAvailableInput() =>
-      widget.inputFieldRectangle(
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createTicketBloc.state.totalAvailable,
         keyboardType: TextInputType.number,
@@ -426,7 +429,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
       );
 
   minBookingInput() =>
-      widget.inputFieldRectangle(
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createTicketBloc.state.minBooking,
         onChanged: _createTicketBloc.minBookingInput,
@@ -446,7 +449,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
       );
 
   maxBookingInput() =>
-      widget.inputFieldRectangle(
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createTicketBloc.state.maxBooking,
         onChanged: _createTicketBloc.maxBookingInput,
@@ -464,7 +467,7 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
         focusNode: _focusNodeMaxBook,
       );
 
-  /*descriptionInput() => widget.inputFieldRectangle(
+  /*descriptionInput() => widget.inputFieldRectangle(context,
         null,
         initialValue: _createTicketBloc.state.description,
         onChanged: _createTicketBloc.descriptionInput,
@@ -508,14 +511,14 @@ class _CreateTicketsState extends State<CreateTicketsDialog> {
 
     if (isPlatformAndroid) {
       final currentDate = DateTime.now();
-
+      final firstDate =
+      DateTime(currentDate.year, currentDate.month, currentDate.day);
       pickedDate = await showDatePicker(
         context: context,
-        firstDate:
-        DateTime(currentDate.year, currentDate.month, currentDate.day),
-        lastDate: DateTime(DateTime
-            .now()
-            .year + 20),
+        firstDate: firstDate,
+        lastDate: _basicBloc.endDateTime.isAfter(firstDate)
+            ? _basicBloc.endDateTime
+            : firstDate,
         initialDate: initialDate,
       );
     } else {

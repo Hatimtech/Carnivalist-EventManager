@@ -41,6 +41,21 @@ class DeleteAddon extends AddonEvent {
   DeleteAddon(this.id, this.callback);
 }
 
+class ActiveInactiveAddon extends AddonEvent {
+  final Addon addon;
+  final Function callback;
+
+  ActiveInactiveAddon(this.addon, this.callback);
+}
+
+class ActiveInactiveAddonResult extends AddonEvent {
+  final bool success;
+  final String addonId;
+  final dynamic uiMsg;
+
+  ActiveInactiveAddonResult(this.success, {this.addonId, this.uiMsg});
+}
+
 class GetAllAddons extends AddonEvent {
   Completer<bool> downloadCompleter;
 

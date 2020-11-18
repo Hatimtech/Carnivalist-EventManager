@@ -95,7 +95,8 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
         ]);
   }
 
-  _eventLocationInput() => widget.inputFieldRectangle(
+  _eventLocationInput() =>
+      widget.inputFieldRectangle(context,
         _eventLocationController,
         onChanged: _basicBloc.eventLocationInput,
         hintText: AppLocalizations.of(context).inputHintTypeYourLocation,
@@ -106,7 +107,8 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
         nextFocusNode: _focusNodeState,
       );
 
-  _eventStateInput() => widget.inputFieldRectangle(
+  _eventStateInput() =>
+      widget.inputFieldRectangle(context,
         _eventStateController,
         onChanged: _basicBloc.eventStateInput,
         hintText: AppLocalizations.of(context).labelSelectState,
@@ -117,7 +119,8 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
         nextFocusNode: _focusNodeCity,
       );
 
-  _eventCityInput() => widget.inputFieldRectangle(
+  _eventCityInput() =>
+      widget.inputFieldRectangle(context,
         _eventCityController,
         onChanged: _basicBloc.eventCityInput,
         hintText: AppLocalizations.of(context).labelTypeCityName,
@@ -128,7 +131,8 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
         nextFocusNode: _focusNodePostal,
       );
 
-  _eventPostalCodeInput() => widget.inputFieldRectangle(
+  _eventPostalCodeInput() =>
+      widget.inputFieldRectangle(context,
         _eventPostalCodeController,
         keyboardType: TextInputType.number,
         onChanged: _basicBloc.eventPostalCodeInput,

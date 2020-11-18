@@ -162,7 +162,7 @@ class _SettingState extends State<SettingPage> {
                                                     .textTheme
                                                     .body2),
                                             const SizedBox(height: 4.0),
-                                            widget.inputFieldRectangle(
+                                            widget.inputFieldRectangle(context,
                                               null,
                                               hintText: AppLocalizations
                                                   .of(context)
@@ -201,7 +201,7 @@ class _SettingState extends State<SettingPage> {
                                                     .textTheme
                                                     .body2),
                                             const SizedBox(height: 4.0),
-                                            widget.inputFieldRectangle(
+                                            widget.inputFieldRectangle(context,
                                               null,
                                               hintText: AppLocalizations
                                                   .of(context)
@@ -429,7 +429,7 @@ class _SettingState extends State<SettingPage> {
                         .textTheme
                         .body2),
                 const SizedBox(height: 4.0),
-                widget.inputFieldRectangle(
+                widget.inputFieldRectangle(context,
                   null,
                   hintText: AppLocalizations
                       .of(context)
@@ -462,7 +462,7 @@ class _SettingState extends State<SettingPage> {
                                         .textTheme
                                         .body2),
                                 const SizedBox(height: 4.0),
-                                widget.inputFieldRectangle(
+                                widget.inputFieldRectangle(context,
                                   null,
                                   hintText: AppLocalizations
                                       .of(context)
@@ -493,7 +493,7 @@ class _SettingState extends State<SettingPage> {
                                         .textTheme
                                         .body2),
                                 const SizedBox(height: 4.0),
-                                widget.inputFieldRectangle(
+                                widget.inputFieldRectangle(context,
                                   null,
                                   hintText: AppLocalizations
                                       .of(context)
@@ -528,7 +528,7 @@ class _SettingState extends State<SettingPage> {
                                       .textTheme
                                       .body2),
                               const SizedBox(height: 4.0),
-                              widget.inputFieldRectangle(
+                              widget.inputFieldRectangle(context,
                                 null,
                                 hintText: AppLocalizations
                                     .of(context)
@@ -559,7 +559,7 @@ class _SettingState extends State<SettingPage> {
                                       .textTheme
                                       .body2),
                               const SizedBox(height: 4.0),
-                              widget.inputFieldRectangle(
+                              widget.inputFieldRectangle(context,
                                 null,
                                 hintText: AppLocalizations
                                     .of(context)
@@ -687,7 +687,7 @@ class _SettingState extends State<SettingPage> {
   }
 
   /*Widget _cancellationPolicyDescriptionInput(){
-    return widget.inputFieldRectangle(
+    return widget.inputFieldRectangle(context,
       null,
       hintText:
       AppLocalizations.of(context).inputHintCancellationDesc,
@@ -825,7 +825,7 @@ class _SettingState extends State<SettingPage> {
                       .textTheme
                       .body2),
               const SizedBox(height: 4.0),
-              widget.inputFieldRectangle(
+              widget.inputFieldRectangle(context,
                 null,
                 initialValue: refundValue != null && refundValue > 0
                     ? refundValue.toString()

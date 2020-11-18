@@ -16,11 +16,13 @@ import 'package:eventmanagement/ui/page/dashboard/event_staff_home.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_detail_root_page.dart';
 import 'package:eventmanagement/ui/page/user_info_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_app.dart';
+import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/orientation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/event/basic/basic_bloc.dart';
@@ -37,6 +39,8 @@ import 'ui/page/signup_page.dart';
 import 'ui/page/splash_screen.dart';
 import 'utils/vars.dart';
 
+var _logFilename = 'back_to_now.txt';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
@@ -50,6 +54,15 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(dark);
 
   Injector.configure(Flavor.Network);
+
+  var docsDir = await getSystemDirPath();
+  String canonFilename = '$docsDir/$_logFilename';
+  await Logger.initializeLogging(canonFilename);
+  await Logger.log('ENTERED main() ...');
+
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+  );
 
   runApp(MyApp());
 }

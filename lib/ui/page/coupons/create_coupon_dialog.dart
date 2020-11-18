@@ -96,12 +96,20 @@ class _CreateCouponState extends State<CreateCouponDialog> {
               builder: (_, state) {
                 return Text(titleText,
                     textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.title);
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .title);
               },
             ),
             const SizedBox(height: 16.0),
-            Text(AppLocalizations.of(context).labelDiscountName,
-                style: Theme.of(context).textTheme.body2),
+            Text(AppLocalizations
+                .of(context)
+                .labelDiscountName,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body2),
             const SizedBox(height: 4.0),
             discountNameInput(),
             const SizedBox(height: 10.0),
@@ -111,9 +119,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             if (isGroupDiscount) const SizedBox(height: 10.0),
             if (isGroupDiscount) _buildMinAndMaxQuantityInput(),
             const SizedBox(height: 10.0),
-            Text(AppLocalizations.of(context).labelCouponDiscountValue,
+            Text(AppLocalizations
+                .of(context)
+                .labelCouponDiscountValue,
                 textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.body2),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .body2),
             const SizedBox(height: 4.0),
             _buildCouponDiscountType(),
             const SizedBox(height: 10.0),
@@ -127,8 +140,13 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                   onPressed: () => Navigator.pop(context),
                   padding: EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
-                    AppLocalizations.of(context).btnClose,
-                    style: Theme.of(context).textTheme.button,
+                    AppLocalizations
+                        .of(context)
+                        .btnClose,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .button,
                   ),
                 ),
               ),
@@ -138,8 +156,13 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                   onPressed: _createUpdateCoupon,
                   padding: EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
-                    AppLocalizations.of(context).btnSave,
-                    style: Theme.of(context).textTheme.button,
+                    AppLocalizations
+                        .of(context)
+                        .btnSave,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .button,
                   ),
                 ),
               )
@@ -178,7 +201,7 @@ class _CreateCouponState extends State<CreateCouponDialog> {
     return BlocBuilder<CreateCouponBloc, CreateCouponState>(
       cubit: _createCouponBloc,
       buildWhen: (prevState, newState) =>
-          prevState.discountTypeList != newState.discountTypeList,
+      prevState.discountTypeList != newState.discountTypeList,
       builder: (_, state) {
         return Row(
           children: <Widget>[
@@ -206,7 +229,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                                   textAlign: TextAlign.center,
                                   maxLines: 1,
                                   overflow: TextOverflow.fade,
-                                  style: Theme.of(context)
+                                  style: Theme
+                                      .of(context)
                                       .textTheme
                                       .body1
                                       .copyWith(fontSize: 12.0)))),
@@ -218,10 +242,8 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             const SizedBox(width: 8.0),
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 96.0, maxHeight: 36.0),
-              child: couponDiscountValueInput(state.discountTypeList.firstWhere(
-                      (menu) => menu.isSelected,
-                  orElse: () => null) ??
-                  ''),
+              child: couponDiscountValueInput(state.discountTypeList
+                  .firstWhere((menu) => menu.isSelected, orElse: () => null)),
             ),
           ],
         );
@@ -236,9 +258,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(AppLocalizations.of(context).labelCouponNoOfDiscounts,
+              Text(AppLocalizations
+                  .of(context)
+                  .labelCouponNoOfDiscounts,
                   textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.body2),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2),
               const SizedBox(height: 4.0),
               noOfDiscountInput(),
             ],
@@ -250,9 +277,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(AppLocalizations.of(context).labelCouponCode,
+                Text(AppLocalizations
+                    .of(context)
+                    .labelCouponCode,
                     textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.body2),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2),
                 const SizedBox(height: 4.0),
                 couponCodeInput(),
               ],
@@ -263,9 +295,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(AppLocalizations.of(context).labelCouponAffiliateEmail,
+                Text(AppLocalizations
+                    .of(context)
+                    .labelCouponAffiliateEmail,
                     textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.body2),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body2),
                 const SizedBox(height: 4.0),
                 affiliateEmailInput(),
               ],
@@ -282,9 +319,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(AppLocalizations.of(context).labelCouponMinTicketNo,
+              Text(AppLocalizations
+                  .of(context)
+                  .labelCouponMinTicketNo,
                   textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.body2),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2),
               const SizedBox(height: 4.0),
               minQuantityInput(),
             ],
@@ -295,9 +337,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(AppLocalizations.of(context).labelCouponMaxTicketNo,
+              Text(AppLocalizations
+                  .of(context)
+                  .labelCouponMaxTicketNo,
                   textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.body2),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2),
               SizedBox(height: 4.0),
               maxQuantityInput(),
             ],
@@ -314,23 +361,33 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-              Text(AppLocalizations.of(context).labelDiscountAvailFrom,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.body2),
-              const SizedBox(height: 4.0),
-              _couponAvailStartDateInput(),
-            ])),
+                  Text(AppLocalizations
+                      .of(context)
+                      .labelDiscountAvailFrom,
+                      textAlign: TextAlign.left,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body2),
+                  const SizedBox(height: 4.0),
+                  _couponAvailStartDateInput(),
+                ])),
         const SizedBox(width: 10.0),
         Expanded(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-              Text(AppLocalizations.of(context).labelDiscountAvailTill,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.body2),
-              const SizedBox(height: 4.0),
-              _couponAvailEndDateInput(),
-            ])),
+                  Text(AppLocalizations
+                      .of(context)
+                      .labelDiscountAvailTill,
+                      textAlign: TextAlign.left,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body2),
+                  const SizedBox(height: 4.0),
+                  _couponAvailEndDateInput(),
+                ])),
       ],
     );
   }
@@ -356,12 +413,13 @@ class _CreateCouponState extends State<CreateCouponDialog> {
   Widget _couponAvailStartDateInput() =>
       BlocBuilder<CreateCouponBloc, CreateCouponState>(
           buildWhen: (prevState, newState) =>
-              prevState.startDateTime != newState.startDateTime,
+          prevState.startDateTime != newState.startDateTime,
           cubit: _createCouponBloc,
           builder: (BuildContext context, state) {
             return InkWell(
-              onTap: () => _pickDate(
-                  DateTime.now(), _createCouponBloc.startDateTimeInput),
+              onTap: () =>
+                  _pickDate(
+                      DateTime.now(), _createCouponBloc.startDateTimeInput),
               child: Container(
                 height: 48,
                 padding: EdgeInsets.only(left: 3.0),
@@ -371,11 +429,19 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                   child: Text(
                     state.startDateTime != null
                         ? DateFormat.yMMMMd().format(state.startDateTime)
-                        : AppLocalizations.of(context).inputHintDate,
-                    style: Theme.of(context).textTheme.body1.copyWith(
+                        : AppLocalizations
+                        .of(context)
+                        .inputHintDate,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(
                         color: state.startDateTime != null
                             ? null
-                            : Theme.of(context).hintColor),
+                            : Theme
+                            .of(context)
+                            .hintColor),
                   ),
                 ),
               ),
@@ -385,7 +451,7 @@ class _CreateCouponState extends State<CreateCouponDialog> {
   Widget _couponAvailEndDateInput() =>
       BlocBuilder<CreateCouponBloc, CreateCouponState>(
           buildWhen: (prevState, newState) =>
-              prevState.endDateTime != newState.endDateTime,
+          prevState.endDateTime != newState.endDateTime,
           cubit: _createCouponBloc,
           builder: (BuildContext context, state) {
             return InkWell(
@@ -400,11 +466,19 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                   child: Text(
                     state.endDateTime != null
                         ? DateFormat.yMMMMd().format(state.endDateTime)
-                        : AppLocalizations.of(context).inputHintDate,
-                    style: Theme.of(context).textTheme.body1.copyWith(
+                        : AppLocalizations
+                        .of(context)
+                        .inputHintDate,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(
                         color: state.endDateTime != null
                             ? null
-                            : Theme.of(context).hintColor),
+                            : Theme
+                            .of(context)
+                            .hintColor),
                   ),
                 ),
               ),
@@ -415,9 +489,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(AppLocalizations.of(context).labelCouponChooseEvent,
+        Text(AppLocalizations
+            .of(context)
+            .labelCouponChooseEvent,
             textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.body2),
+            style: Theme
+                .of(context)
+                .textTheme
+                .body2),
         const SizedBox(height: 4.0),
         BlocBuilder<CreateCouponBloc, CreateCouponState>(
             cubit: _createCouponBloc,
@@ -428,11 +507,12 @@ class _CreateCouponState extends State<CreateCouponDialog> {
               return Column(
                 children: <Widget>[
                   InkWell(
-                    onTap: () => _showEventsBottomSheet(
-                      true,
-                      (eventData) =>
-                          _createCouponBloc.selectEventInput(eventData),
-                    ),
+                    onTap: () =>
+                        _showEventsBottomSheet(
+                          true,
+                              (eventData) =>
+                              _createCouponBloc.selectEventInput(eventData),
+                        ),
                     child: Container(
                       height: 48,
                       padding: EdgeInsets.only(left: 3.0),
@@ -442,12 +522,19 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                         child: Text(
                           isValid(state.selectedEvent?.title)
                               ? state.selectedEvent.title
-                              : AppLocalizations.of(context)
-                                  .inputHintSelectEvent,
-                          style: Theme.of(context).textTheme.body1.copyWith(
+                              : AppLocalizations
+                              .of(context)
+                              .inputHintSelectEvent,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body1
+                              .copyWith(
                               color: isValid(state.selectedEvent?.title)
                                   ? null
-                                  : Theme.of(context).hintColor),
+                                  : Theme
+                                  .of(context)
+                                  .hintColor),
                         ),
                       ),
                     ),
@@ -456,45 +543,50 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                       ? BlocBuilder<CreateCouponBloc, CreateCouponState>(
                     cubit: _createCouponBloc,
                     buildWhen: (prevState, newState) {
-                            return prevState.checkedTicket !=
-                                newState.checkedTicket;
-                          },
-                          builder: (_, state) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                    AppLocalizations.of(context)
-                                        .labelCouponSelectTicket,
-                                    textAlign: TextAlign.left,
-                                    style: Theme.of(context).textTheme.body2)
-                              ]..addAll(
-                                state.selectedEvent.tickets
-                                    .where((element) => (element.price > 0))
-                                    .map((ticket) {
-                                    return LabeledCheckbox(
-                                      onChanged: (value) {
-                                        if (value)
-                                          _createCouponBloc
-                                              .addEventTicketInput(ticket.sId);
-                                        else
-                                          _createCouponBloc
-                                              .removeEventTicketInput(
-                                                  ticket.sId);
-                                      },
-                                      value: state.checkedTicket
-                                              ?.contains(ticket.sId) ??
-                                          false,
-                                      label: ticket.name,
-                                    );
-                                  }),
-                                ),
-                            );
-                          },
-                        )
+                      return prevState.checkedTicket !=
+                          newState.checkedTicket;
+                    },
+                    builder: (_, state) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                              AppLocalizations
+                                  .of(context)
+                                  .labelCouponSelectTicket,
+                              textAlign: TextAlign.left,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .body2)
+                        ]
+                          ..addAll(
+                            state.selectedEvent.tickets
+                                .where((element) => (element.price > 0))
+                                .map((ticket) {
+                              return LabeledCheckbox(
+                                onChanged: (value) {
+                                  if (value)
+                                    _createCouponBloc
+                                        .addEventTicketInput(ticket.sId);
+                                  else
+                                    _createCouponBloc
+                                        .removeEventTicketInput(
+                                        ticket.sId);
+                                },
+                                value: state.checkedTicket
+                                    ?.contains(ticket.sId) ??
+                                    false,
+                                label: ticket.name,
+                              );
+                            }),
+                          ),
+                      );
+                    },
+                  )
                       : SizedBox.shrink(),
                 ],
               );
@@ -508,9 +600,14 @@ class _CreateCouponState extends State<CreateCouponDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(AppLocalizations.of(context).labelCouponChoosePastEvent,
+        Text(AppLocalizations
+            .of(context)
+            .labelCouponChoosePastEvent,
             textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.body2),
+            style: Theme
+                .of(context)
+                .textTheme
+                .body2),
         const SizedBox(height: 4.0),
         BlocBuilder<CreateCouponBloc, CreateCouponState>(
             cubit: _createCouponBloc,
@@ -519,11 +616,12 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             },
             builder: (BuildContext context, state) {
               return InkWell(
-                onTap: () => _showEventsBottomSheet(
-                  false,
-                  (eventData) =>
-                      _createCouponBloc.selectPastEventInput(eventData),
-                ),
+                onTap: () =>
+                    _showEventsBottomSheet(
+                      false,
+                          (eventData) =>
+                          _createCouponBloc.selectPastEventInput(eventData),
+                    ),
                 child: Container(
                   height: 48,
                   padding: EdgeInsets.only(left: 3.0),
@@ -533,12 +631,19 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                     child: Text(
                       isValid(state.selectedPastEvent?.title)
                           ? state.selectedPastEvent.title
-                          : AppLocalizations.of(context)
-                              .inputHintSelectPastEvent,
-                      style: Theme.of(context).textTheme.body1.copyWith(
+                          : AppLocalizations
+                          .of(context)
+                          .inputHintSelectPastEvent,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(
                           color: isValid(state.selectedPastEvent?.title)
                               ? null
-                              : Theme.of(context).hintColor),
+                              : Theme
+                              .of(context)
+                              .hintColor),
                     ),
                   ),
                 ),
@@ -572,19 +677,26 @@ class _CreateCouponState extends State<CreateCouponDialog> {
     });
   }
 
-  Widget discountNameInput() => widget.inputFieldRectangle(
+  Widget discountNameInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createCouponBloc.state.discountName,
         textInputAction: TextInputAction.next,
         onChanged: _createCouponBloc.discountNameInput,
         maxLength: 100,
-        hintText: AppLocalizations.of(context).inputHintDiscountName,
-        labelStyle: Theme.of(context).textTheme.body1,
+        hintText: AppLocalizations
+            .of(context)
+            .inputHintDiscountName,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
         focusNode: _focusNodeName,
         nextFocusNode: _focusNodeQuantity,
       );
 
-  Widget noOfDiscountInput() => widget.inputFieldRectangle(
+  Widget noOfDiscountInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createCouponBloc.state.noOfDiscount,
         keyboardType: TextInputType.number,
@@ -592,39 +704,57 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         maxLength: 6,
         onChanged: _createCouponBloc.noOfDiscountInput,
-        hintText: AppLocalizations.of(context).inputHintCouponNoOfDiscount,
-        labelStyle: Theme.of(context).textTheme.body1,
+        hintText: AppLocalizations
+            .of(context)
+            .inputHintCouponNoOfDiscount,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
         focusNode: _focusNodeQuantity,
         nextFocusNode: isCodeDiscount || isAffiliateDiscount || isGroupDiscount
             ? _focusNodeCodeAffiliateMin
             : _focusNodeDiscountValue,
       );
 
-  Widget couponCodeInput() => widget.inputFieldRectangle(
+  Widget couponCodeInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createCouponBloc.state.code,
         onChanged: _createCouponBloc.codeInput,
         textInputAction: TextInputAction.next,
-    maxLength: 50,
-        hintText: AppLocalizations.of(context).inputHintCouponCode,
-        labelStyle: Theme.of(context).textTheme.body1,
+        maxLength: 50,
+        hintText: AppLocalizations
+            .of(context)
+            .inputHintCouponCode,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
         focusNode: _focusNodeCodeAffiliateMin,
         nextFocusNode: _focusNodeDiscountValue,
       );
 
-  Widget affiliateEmailInput() => widget.inputFieldRectangle(
+  Widget affiliateEmailInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createCouponBloc.state.affiliateEmailId,
         onChanged: _createCouponBloc.affiliateEmailInput,
         textInputAction: TextInputAction.next,
         maxLength: 50,
-        hintText: AppLocalizations.of(context).inputHintAffiliateEmailId,
-        labelStyle: Theme.of(context).textTheme.body1,
+        hintText: AppLocalizations
+            .of(context)
+            .inputHintAffiliateEmailId,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
         focusNode: _focusNodeCodeAffiliateMin,
         nextFocusNode: _focusNodeDiscountValue,
       );
 
-  Widget minQuantityInput() => widget.inputFieldRectangle(
+  Widget minQuantityInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createCouponBloc.state.minQuantity,
         keyboardType: TextInputType.number,
@@ -632,13 +762,19 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         maxLength: 6,
         onChanged: _createCouponBloc.minQuantityInput,
-        hintText: AppLocalizations.of(context).inputHintCouponMinTicketNo,
-        labelStyle: Theme.of(context).textTheme.body1,
+        hintText: AppLocalizations
+            .of(context)
+            .inputHintCouponMinTicketNo,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
         focusNode: _focusNodeCodeAffiliateMin,
         nextFocusNode: _focusNodeMaxTicketNo,
       );
 
-  Widget maxQuantityInput() => widget.inputFieldRectangle(
+  Widget maxQuantityInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createCouponBloc.state.maxQuantity,
         keyboardType: TextInputType.number,
@@ -646,35 +782,38 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         maxLength: 6,
         onChanged: _createCouponBloc.maxQuantityInput,
-        hintText: AppLocalizations.of(context).inputHintCouponMaxTicketNo,
-        labelStyle: Theme.of(context).textTheme.body1,
+        hintText: AppLocalizations
+            .of(context)
+            .inputHintCouponMaxTicketNo,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
         focusNode: _focusNodeMaxTicketNo,
         nextFocusNode: _focusNodeDiscountValue,
       );
 
   Widget couponDiscountValueInput(MenuCustom hint) {
-    return widget.inputFieldRectangle(null,
+    return widget.inputFieldRectangle(context, null,
         initialValue: _createCouponBloc.state.discountValue,
         onChanged: _createCouponBloc.discountValueInput,
         keyboardType: TextInputType.number,
         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
         maxLength: 6,
-        hintText: hint.name,
+        hintText: hint?.name ?? '',
         labelStyle: Theme
             .of(context)
             .textTheme
             .body1,
         focusNode: _focusNodeDiscountValue,
-        suffix: hint.value == 'percentage'
-            ? Text(
-          '%',
+        suffix: Text(
+          hint?.value == 'percentage' ? '%' : '\$',
           style: Theme
               .of(context)
               .textTheme
               .subtitle,
           textAlign: TextAlign.center,
-        )
-            : null);
+        ));
   }
 
   _pickDate(DateTime initialDate, Function dateHandler) async {
@@ -686,8 +825,10 @@ class _CreateCouponState extends State<CreateCouponDialog> {
       pickedDate = await showDatePicker(
         context: context,
         firstDate:
-            DateTime(currentDate.year, currentDate.month, currentDate.day),
-        lastDate: DateTime(DateTime.now().year + 20),
+        DateTime(currentDate.year, currentDate.month, currentDate.day),
+        lastDate: DateTime(DateTime
+            .now()
+            .year + 20),
         initialDate: initialDate,
       );
     } else {
@@ -708,7 +849,10 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         builder: (context) {
           DateTime localPickedTime = initialDate;
           return SizedBox(
-            height: MediaQuery.of(context).size.height / 3,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height / 3,
             child: DecoratedBox(
               decoration: BoxDecoration(color: Colors.white),
               child: Column(
@@ -717,11 +861,15 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       CupertinoButton(
-                        child: Text(AppLocalizations.of(context).btnCancel),
+                        child: Text(AppLocalizations
+                            .of(context)
+                            .btnCancel),
                         onPressed: () => Navigator.pop(context),
                       ),
                       CupertinoButton(
-                        child: Text(AppLocalizations.of(context).btnConfirm),
+                        child: Text(AppLocalizations
+                            .of(context)
+                            .btnConfirm),
                         onPressed: () {
                           Navigator.pop(context, localPickedTime);
                         },
@@ -734,7 +882,9 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                       onDateTimeChanged: (DateTime date) {
                         localPickedTime = date;
                       },
-                      maximumDate: DateTime(DateTime.now().year + 20),
+                      maximumDate: DateTime(DateTime
+                          .now()
+                          .year + 20),
                       minimumDate: DateTime(
                           currentDate.year, currentDate.month, currentDate.day),
                       mode: CupertinoDatePickerMode.date,
@@ -747,15 +897,16 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         });
   }
 
-  boxDecorationRectangle() => BoxDecoration(
+  boxDecorationRectangle() =>
+      BoxDecoration(
         border: Border.all(width: 1, color: Colors.grey),
         borderRadius: BorderRadius.all(
             Radius.circular(5.0) //                 <--- border radius here
-            ),
+        ),
       );
 
-  Future<void> _showEventsBottomSheet(
-      bool showUpcoming, Function handler) async {
+  Future<void> _showEventsBottomSheet(bool showUpcoming,
+      Function handler) async {
     if (isPlatformAndroid)
       await showModalBottomSheet(
           context: this.context,
@@ -783,7 +934,7 @@ class _CreateCouponState extends State<CreateCouponDialog> {
     final eventBloc = BlocProvider.of<EventBloc>(context);
     return BlocBuilder<EventBloc, EventState>(
         buildWhen: (prevState, newState) =>
-            prevState.eventDataList != newState.eventDataList,
+        prevState.eventDataList != newState.eventDataList,
         cubit: eventBloc,
         builder: (context, state) {
           if (state.loading)
@@ -791,7 +942,7 @@ class _CreateCouponState extends State<CreateCouponDialog> {
                 alignment: FractionalOffset.center,
                 child: CircularProgressIndicator(
                     valueColor:
-                        AlwaysStoppedAnimation<Color>(colorProgressBar)));
+                    AlwaysStoppedAnimation<Color>(colorProgressBar)));
           else {
             final events = showUpcoming
                 ? state.activeEventsWithTicket
@@ -799,18 +950,24 @@ class _CreateCouponState extends State<CreateCouponDialog> {
             return events.length > 0
                 ? eventList(events, handler)
                 : Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 8.0,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context).errorCouponNoEventAvailable,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            color: colorTextAction,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  );
+              padding: const EdgeInsets.symmetric(
+                vertical: 12.0,
+                horizontal: 8.0,
+              ),
+              child: Text(
+                AppLocalizations
+                    .of(context)
+                    .errorCouponNoEventAvailable,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle
+                    .copyWith(
+                  color: colorTextAction,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
           }
         });
   }
@@ -858,12 +1015,12 @@ class _CreateCouponState extends State<CreateCouponDialog> {
         ));
   }
 
-  Widget _buildCupertinoSelectEventActionSheet(
-      bool showUpcoming, Function handler) {
+  Widget _buildCupertinoSelectEventActionSheet(bool showUpcoming,
+      Function handler) {
     final eventBloc = BlocProvider.of<EventBloc>(context);
     return BlocBuilder<EventBloc, EventState>(
       buildWhen: (prevState, newState) =>
-          prevState.eventDataList != newState.eventDataList,
+      prevState.eventDataList != newState.eventDataList,
       cubit: eventBloc,
       builder: (context, state) {
         if (state.loading)
@@ -874,49 +1031,64 @@ class _CreateCouponState extends State<CreateCouponDialog> {
           final events = showUpcoming ? state.upcomingEvents : state.pastEvents;
           return events.length > 0
               ? CupertinoActionSheet(
-                  actions: events.map<Widget>((eventData) {
-                    return CupertinoActionSheetAction(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        handler(eventData);
-                      },
-                      child: Text(
-                        eventData.title,
-                        style: Theme.of(context).textTheme.subtitle.copyWith(
-                              color: colorTextAction,
-                              fontWeight: FontWeight.w500,
-                            ),
-                      ),
-                    );
-                  }).toList(),
-                  cancelButton: CupertinoActionSheetAction(
-                    child: Text(
-                      AppLocalizations.of(context).btnCancel,
-                      style: Theme.of(context).textTheme.title.copyWith(
-                            color: colorTextAction,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+            actions: events.map<Widget>((eventData) {
+              return CupertinoActionSheetAction(
+                onPressed: () {
+                  Navigator.pop(context);
+                  handler(eventData);
+                },
+                child: Text(
+                  eventData.title,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle
+                      .copyWith(
+                    color: colorTextAction,
+                    fontWeight: FontWeight.w500,
                   ),
-                )
+                ),
+              );
+            }).toList(),
+            cancelButton: CupertinoActionSheetAction(
+              child: Text(
+                AppLocalizations
+                    .of(context)
+                    .btnCancel,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .title
+                    .copyWith(
+                  color: colorTextAction,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          )
               : CupertinoActionSheet(
-                  actions: <Widget>[
-                    CupertinoActionSheetAction(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .errorCouponNoEventAvailable,
-                        style: Theme.of(context).textTheme.subtitle.copyWith(
-                              color: colorTextAction,
-                              fontWeight: FontWeight.w500,
-                            ),
-                      ),
-                    ),
-                  ],
-                );
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  AppLocalizations
+                      .of(context)
+                      .errorCouponNoEventAvailable,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle
+                      .copyWith(
+                    color: colorTextAction,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          );
         }
       },
     );

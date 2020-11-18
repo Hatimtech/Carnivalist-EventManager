@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
+import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
@@ -45,6 +49,9 @@ class _WebViewPageState extends State<WebViewPage> {
           mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
           .toString()
           : widget.data);
+      webViewController
+          .currentUrl()
+          .then((value) => print('Current Url--->$value'));
     });
   }
 
@@ -77,6 +84,7 @@ class _WebViewPageState extends State<WebViewPage> {
 //      gestureRecognizers: [
 //        Factory(() => PlatformViewVerticalGestureRecognizer()),
 //      ].toSet(),
+
             navigationDelegate: (NavigationRequest request) {
               print('navigationDelegate--->$request');
               if (widget.mockNativeView) {
@@ -114,6 +122,38 @@ class _WebViewPageState extends State<WebViewPage> {
               }
             },
             gestureNavigationEnabled: true,
+            onWebResourceError: (WebResourceError webResourceError) {
+              print(
+                  'webResourceError--->${webResourceError
+                      .failingUrl} ${webResourceError.description}');
+            },
+            javascriptChannels: Set.from([
+              JavascriptChannel(
+                  name: 'carnivalist_app',
+                  onMessageReceived: (JavascriptMessage message) async {
+                    //This is where you receive message from
+                    //javascript code and handle in Flutter/Dart
+                    //like here, the message is just being printed
+                    //in Run/LogCat window of android studio
+                    print(message.message);
+
+                    if (message.message?.isNotEmpty ?? false) {
+                      String downloadPath =
+                          "${await getSystemDirPath()}/downloads/";
+                      Directory downloadDir = Directory(downloadPath);
+                      if (!downloadDir.existsSync())
+                        downloadDir.createSync(recursive: true);
+                      await FlutterDownloader.enqueue(
+                        url: message.message,
+                        savedDir: "${await getSystemDirPath()}/downloads/",
+                        showNotification: true,
+                        // show download progress in status bar (for Android)
+                        openFileFromNotification:
+                        true, // click on notification to open downloaded file (for Android)
+                      );
+                    }
+                  })
+            ]),
           ),
         ),
         if (webviewLoading)

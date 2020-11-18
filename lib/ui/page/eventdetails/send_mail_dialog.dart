@@ -135,7 +135,8 @@ class _SendMailState extends State<SendMailDialog> {
     });
   }
 
-  Widget mailSubjectInput() => widget.inputFieldRectangle(
+  Widget mailSubjectInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _sendMailBloc.state.subject,
         textInputAction: TextInputAction.next,
@@ -147,7 +148,8 @@ class _SendMailState extends State<SendMailDialog> {
         nextFocusNode: _focusNodeFromName,
       );
 
-  Widget fromNameInput() => widget.inputFieldRectangle(
+  Widget fromNameInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _sendMailBloc.state.fromName,
         textInputAction: TextInputAction.next,
@@ -159,7 +161,8 @@ class _SendMailState extends State<SendMailDialog> {
         nextFocusNode: _focusNodeCodeReplyTo,
       );
 
-  Widget replyToInput() => widget.inputFieldRectangle(
+  Widget replyToInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _sendMailBloc.state.replyTo,
         keyboardType: TextInputType.emailAddress,
@@ -172,7 +175,8 @@ class _SendMailState extends State<SendMailDialog> {
         nextFocusNode: _focusNodeMessageBody,
       );
 
-  Widget mailMessageInput() => widget.inputFieldRectangle(
+  Widget mailMessageInput() =>
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _sendMailBloc.state.message,
         onChanged: _sendMailBloc.messageInput,

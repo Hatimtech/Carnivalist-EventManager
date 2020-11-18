@@ -330,7 +330,7 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
   }
 
   fieldLabelInput() =>
-      widget.inputFieldRectangle(
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createFieldBloc.state.label,
         onChanged: _createFieldBloc.fieldLabelInput,
@@ -348,7 +348,7 @@ class _CreateFieldsState extends State<CreateFieldsDialog> {
       );
 
   placeholderInput() =>
-      widget.inputFieldRectangle(
+      widget.inputFieldRectangle(context,
         null,
         initialValue: _createFieldBloc.state.placeholder,
         onChanged: _createFieldBloc.fieldPlaceholderInput,

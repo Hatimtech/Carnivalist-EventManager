@@ -30,7 +30,7 @@ getCustomField() => <MenuCustom>[
 
 getEventFilterStatus() =>
     <MenuCustom>[
-      MenuCustom(name: 'UPCOMING'),
+      MenuCustom(name: 'CURRENT'),
       MenuCustom(name: 'DRAFT'),
       MenuCustom(name: 'PAST EVENTS'),
     ];

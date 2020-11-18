@@ -121,6 +121,7 @@ class CreateCouponBloc extends Bloc<CreateCouponEvent, CreateCouponState> {
       final discountTypeList = getCouponDiscountType() as List<MenuCustom>;
       discountTypeList[0].isSelected = true;
       yield state.copyWith(discountTypeList: discountTypeList);
+      print('CreateCouponDefault After');
     }
 
     if (event is CouponTypeInput) {

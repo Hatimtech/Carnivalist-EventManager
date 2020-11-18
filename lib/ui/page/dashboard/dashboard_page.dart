@@ -16,6 +16,7 @@ import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_filter.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_list.dart';
 import 'package:eventmanagement/utils/extensions.dart';
+import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -128,70 +129,103 @@ class _DashboardState extends State<DashboardPage>
         ),
         body: Column(children: <Widget>[
           _buildErrorReceiverEmptyBloc(),
-          Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
-              child: Row(children: <Widget>[
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      _pageNavBloc.currentPage(PAGE_COUPONS);
-                    },
-                    child: _category(
-                      CarnivalistIcons.discount,
-                      AppLocalizations
-                          .of(context)
-                          .labelCoupons
-                          .toUpperCase(),
-                      size: 16.0,
+          Container(
+            color: Colors.black,
+            child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
+                child: Row(children: <Widget>[
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+//                      String downloadPath =
+//                          "${await getSystemDirPath()}/downloads/";
+//                      Directory downloadDir = Directory(downloadPath);
+//                      if (!downloadDir.existsSync())
+//                        downloadDir.createSync(recursive: true);
+//                      await FlutterDownloader.enqueue(
+//                        url:
+//                            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+//                        savedDir: downloadPath,
+//                        showNotification: true,
+//                        // show download progress in status bar (for Android)
+//                        openFileFromNotification:
+//                            true, // click on notification to open downloaded file (for Android)
+//                      );
+                        await Logger.log('Dashboard Coupon Clicked');
+                        _pageNavBloc.currentPage(PAGE_COUPONS);
+                      },
+                      child: Container(
+                        color: Colors.blue,
+                        child: _category(
+                          CarnivalistIcons.discount,
+                          AppLocalizations
+                              .of(context)
+                              .labelCoupons
+                              .toUpperCase(),
+                          size: 16.0,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      _pageNavBloc.currentPage(PAGE_ADDONS);
-                    },
-                    child: _category(
-                      CarnivalistIcons.addon_filled,
-                      AppLocalizations
-                          .of(context)
-                          .labelAddons
-                          .toUpperCase(),
-                      size: 16.0,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        await Logger.log('Dashboard Addon Clicked');
+                        _pageNavBloc.currentPage(PAGE_ADDONS);
+                      },
+                      child: Container(
+                        color: Colors.red,
+                        child: _category(
+                          CarnivalistIcons.addon_filled,
+                          AppLocalizations
+                              .of(context)
+                              .labelAddons
+                              .toUpperCase(),
+                          size: 16.0,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      _pageNavBloc.currentPage(PAGE_REPORTS);
-                    },
-                    child: _category(
-                      Icons.poll,
-                      AppLocalizations
-                          .of(context)
-                          .labelReports
-                          .toUpperCase(),
-                      size: 16.0,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        await Logger.log('Dashboard Reports Clicked');
+                        _pageNavBloc.currentPage(PAGE_REPORTS);
+                      },
+                      child: Container(
+                        color: Colors.blue,
+                        child: _category(
+                          Icons.poll,
+                          AppLocalizations
+                              .of(context)
+                              .labelReports
+                              .toUpperCase(),
+                          size: 16.0,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      _pageNavBloc.currentPage(PAGE_STAFF);
-                    },
-                    child: _category(
-                      Icons.people,
-                      AppLocalizations
-                          .of(context)
-                          .labelStaff
-                          .toUpperCase(),
-                      size: 16.0,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        await Logger.log('Dashboard Staff Clicked');
+                        _pageNavBloc.currentPage(PAGE_STAFF);
+                      },
+                      child: Container(
+                        color: Colors.red,
+                        child: _category(
+                          Icons.people,
+                          AppLocalizations
+                              .of(context)
+                              .labelStaff
+                              .toUpperCase(),
+                          size: 16.0,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ])),
+                ])),
+          ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
@@ -218,10 +252,6 @@ class _DashboardState extends State<DashboardPage>
                                       prevState.paymentSummary !=
                                           newState.paymentSummary,
                                       builder: (_, state) {
-                                        print(
-                                            "Online Ticket Sold--->${state
-                                                .paymentSummary?.quantity
-                                                ?.toString()}");
                                         return _categoryCounter(
                                             AppLocalizations
                                                 .of(context)
@@ -293,6 +323,7 @@ class _DashboardState extends State<DashboardPage>
 
   _category(IconData iconData, String name, {double size = 18}) =>
       Card(
+          margin: const EdgeInsets.all(16.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.0))),
           child: Padding(

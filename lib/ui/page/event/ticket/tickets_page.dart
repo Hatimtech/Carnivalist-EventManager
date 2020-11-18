@@ -91,14 +91,17 @@ class _TicketsState extends State<TicketsPage> {
     await showDialog(
       context: context,
       builder: (BuildContext context) =>
-          BlocProvider(
-            create: (context) =>
-                CreateTicketBloc(
-                  basicBloc.eventDataId,
-                  _ticketsBloc,
-                  ticketId: ticketId,
-                ),
-            child: CreateTicketsDialog(),
+          BlocProvider.value(
+            value: basicBloc,
+            child: BlocProvider(
+              create: (context) =>
+                  CreateTicketBloc(
+                    basicBloc.eventDataId,
+                    _ticketsBloc,
+                    ticketId: ticketId,
+                  ),
+              child: CreateTicketsDialog(),
+            ),
           ),
     );
     basicBloc = null;
@@ -151,6 +154,24 @@ class _TicketsState extends State<TicketsPage> {
                                             .body1
                                             .copyWith(
                                             fontWeight: FontWeight.w500),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '${AppLocalizations
+                                            .of(context)
+                                            .labelTicketSold} ${(ticket
+                                            .initialOriginalQuantity ?? 0) -
+                                            (ticket.quantity ?? 0)}/${(ticket
+                                            .initialOriginalQuantity ?? 0)}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme
+                                            .of(context)
+                                            .textTheme
+                                            .body1
+                                            .copyWith(
+                                          fontSize: 12.0,
+                                        ),
                                       ),
                                       const SizedBox(height: 5),
                                       Text(

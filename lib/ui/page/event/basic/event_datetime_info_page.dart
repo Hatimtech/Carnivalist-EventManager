@@ -266,7 +266,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
             ),
           ),
         );
-//        return widget.inputFieldRectangle(_eventStartTimeController,
+//        return widget.inputFieldRectangle(context, _eventStartTimeController,
 //              onChanged: _basicBloc.eventStartTimeInput,
 //              hintText: AppLocalizations.of(context).inputHintTime,
 //              labelStyle: Theme.of(context).textTheme.body1);
@@ -297,7 +297,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
             ),
           ),
         );
-//        return widget.inputFieldRectangle(_eventEventEndDateController,
+//        return widget.inputFieldRectangle(context, _eventEventEndDateController,
 //              onChanged: _basicBloc.eventEndDateInput,
 //              hintText: AppLocalizations.of(context).inputHintDate,
 //              labelStyle: Theme.of(context).textTheme.body1);
@@ -335,7 +335,7 @@ class _EventDateTimeInfoPageState extends State<EventDateTimeInfoPage> {
             ),
           ),
         );
-//        return widget.inputFieldRectangle(_eventEventEndTimeController,
+//        return widget.inputFieldRectangle(context, _eventEventEndTimeController,
 //              onChanged: _basicBloc.eventEndTimeInput,
 //              hintText: AppLocalizations.of(context).inputHintTime,
 //              labelStyle: Theme.of(context).textTheme.body1);
