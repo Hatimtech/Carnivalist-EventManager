@@ -18,6 +18,7 @@ import 'package:eventmanagement/model/event/gallery/gallery_response.dart';
 import 'package:eventmanagement/model/event/gallery/media_upload_response.dart';
 import 'package:eventmanagement/model/event/settings/setting_response.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
+import 'package:eventmanagement/model/event/settings/stripe_response.dart';
 import 'package:eventmanagement/model/event/staff_event_response.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
@@ -57,6 +58,7 @@ class NetworkService extends NetworkType implements APIService {
   final _createTicketsUrl = _baseUrl + _subUrl + 'tickets';
   final _updateTicketsUrl = _baseUrl + _subUrl + 'ticket';
   final _basicUrl = _baseUrl + _subUrl + 'events';
+  final _stripeConnectedUrl = _baseUrl + _subUrl + 'stripe/connect/get-id';
   final _carnivalListUrl =
       _baseUrl + _subUrl + 'website-settings/show-categories';
 
@@ -371,14 +373,31 @@ class NetworkService extends NetworkType implements APIService {
   }
 
   @override
+  checkStripeConnected(String authToken) async {
+    var headers = {
+      'Authorization': authToken,
+      "Content-Type": "application/json"
+    };
+
+    var result = await rest.get<StripeResponse>(_stripeConnectedUrl, headers);
+
+    if (result.networkServiceResponse.responseCode == ok200) {
+      var res = StripeResponse.fromJson(json.decode(result.mappedResult));
+      result.networkServiceResponse.response = res;
+    }
+
+    return result.networkServiceResponse;
+  }
+
+  @override
   getAllEvents(String authToken, String userId) async {
     var headers = {
       'Authorization': authToken,
       "Content-Type": "application/json"
     };
 
-    var result = await rest.get<EventResponse>(
-        '$_eventsListUrl$userId', headers);
+    var result =
+    await rest.get<EventResponse>('$_eventsListUrl$userId', headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = EventResponse.fromJson(json.decode(result.mappedResult));
@@ -414,13 +433,12 @@ class NetworkService extends NetworkType implements APIService {
     var hashMap = HashMap<String, String>();
     hashMap.putIfAbsent("eventId", () => "ns");
     hashMap.putIfAbsent("time", () => "ns");
-    var result =
-    await rest.post<PaymentSummaryResponse>(
-        _paymentSummaryUrl, headers: headers, body: json.encode(hashMap));
+    var result = await rest.post<PaymentSummaryResponse>(_paymentSummaryUrl,
+        headers: headers, body: json.encode(hashMap));
 
     if (result.networkServiceResponse.responseCode == ok200) {
-      var res = PaymentSummaryResponse.fromJson(
-          json.decode(result.mappedResult));
+      var res =
+      PaymentSummaryResponse.fromJson(json.decode(result.mappedResult));
       result.networkServiceResponse.response = res;
     }
     return result.networkServiceResponse;
@@ -535,8 +553,8 @@ class NetworkService extends NetworkType implements APIService {
       "Content-Type": "application/json"
     };
 
-    var result = await rest.post<AddonResponse>(
-        '$_deleteAddonUrl$addonId', headers: headers);
+    var result = await rest.post<AddonResponse>('$_deleteAddonUrl$addonId',
+        headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = AddonResponse.fromJson(json.decode(result.mappedResult));
@@ -586,7 +604,8 @@ class NetworkService extends NetworkType implements APIService {
     };
 
     var result = await rest.post<CouponActionResponse>(
-        '$_deleteCouponUrl$couponId', headers: headers);
+        '$_deleteCouponUrl$couponId',
+        headers: headers);
 
     if (result.networkServiceResponse.responseCode == ok200) {
       var res = CouponActionResponse.fromJson(json.decode(result.mappedResult));

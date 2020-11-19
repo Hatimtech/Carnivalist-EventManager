@@ -101,20 +101,30 @@ class _AttendeeListPageState extends State<AttendeeListPage>
           return Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              _attendeesList(state.eventDetailListByFilter),
+              if (state.eventDetailList?.isNotEmpty ?? false)
+                _attendeesList(state.eventDetailListByFilter),
               if (state.loading) const PlatformProgressIndicator(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: ScaleTransition(
-                    scale: _hideFabAnimation,
-                    child: FloatingActionButton(
-                        child: Icon(Icons.filter_list, color: Colors.white),
-                        onPressed: _showFilterBottomSheet),
-                  ),
+              if (!state.loading && (state.eventDetailList?.isEmpty ?? true))
+                buildNoDataView(
+                  context,
+                  AppLocalizations
+                      .of(context)
+                      .noAttendeesToShow,
+                      () => _eventDetailBloc.getEventDetail(),
                 ),
-              )
+              if (state.eventDetailList?.isNotEmpty ?? false)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: ScaleTransition(
+                      scale: _hideFabAnimation,
+                      child: FloatingActionButton(
+                          child: Icon(Icons.filter_list, color: Colors.white),
+                          onPressed: _showFilterBottomSheet),
+                    ),
+                  ),
+                )
             ],
           );
         });

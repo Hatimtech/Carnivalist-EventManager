@@ -7,6 +7,7 @@ import 'package:eventmanagement/model/event/settings/gst_charge.dart';
 import 'package:eventmanagement/model/event/settings/payment_and_taxes.dart';
 import 'package:eventmanagement/model/event/settings/setting_response.dart';
 import 'package:eventmanagement/model/event/settings/settings_data.dart';
+import 'package:eventmanagement/model/event/settings/stripe_response.dart';
 import 'package:eventmanagement/model/event/settings/website_setting.dart';
 import 'package:eventmanagement/model/menu_custom.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
@@ -394,23 +395,52 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     print('uploadSettingsApi: eventDataId--->$eventDataId');
 
     apiProvider
-        .uploadSettings(state.authToken, settingDataToUpload,
-        eventDataId: eventDataId)
+        .checkStripeConnected(state.authToken)
         .then((networkServiceResponse) {
       if (networkServiceResponse.responseCode == ok200) {
-        final settingResponse =
-        networkServiceResponse.response as SettingResponse;
-        if (settingResponse.code == apiCodeSuccess) {
-          state.uploadRequired = false;
-          add(SettingDataUploadResult(true,
-              uiMsg: isUpdating
-                  ? SUCCESS_EVENT_UPDATED
-                  : SUCCESS_EVENT_CREATED));
-          event.callback(settingResponse);
+        final stripeResponse =
+        networkServiceResponse.response as StripeResponse;
+        if (stripeResponse.code == apiCodeSuccess) {
+          bool stripeConnected = false;
+          if (stripeResponse.stripeID != null &&
+              stripeResponse.stripeID.isNotEmpty) {
+            stripeConnected = true;
+          }
+          apiProvider
+              .uploadSettings(
+              state.authToken, settingDataToUpload(stripeConnected),
+              eventDataId: eventDataId)
+              .then((networkServiceResponse) {
+            if (networkServiceResponse.responseCode == ok200) {
+              final settingResponse =
+              networkServiceResponse.response as SettingResponse;
+              if (settingResponse.code == apiCodeSuccess) {
+                state.uploadRequired = false;
+                if (!stripeConnected)
+                  settingResponse.message = 'STRIPE_NOT_CONNECTED';
+                settingResponse.isUpdating = isUpdating;
+                event.callback(settingResponse);
+              } else {
+                add(SettingDataUploadResult(false,
+                    uiMsg:
+                    settingResponse.message ?? ERR_SOMETHING_WENT_WRONG));
+                event.callback(settingResponse.message);
+              }
+            } else {
+              add(SettingDataUploadResult(false,
+                  uiMsg: networkServiceResponse.error ??
+                      ERR_SOMETHING_WENT_WRONG));
+              event.callback(networkServiceResponse.error);
+            }
+          }).catchError((error) {
+            print('Error in uploadSettingsApi--->$error');
+            add(SettingDataUploadResult(false,
+                uiMsg: ERR_SOMETHING_WENT_WRONG));
+            event.callback(ERR_SOMETHING_WENT_WRONG);
+          });
         } else {
-          add(SettingDataUploadResult(false,
-              uiMsg: settingResponse.message ?? ERR_SOMETHING_WENT_WRONG));
-          event.callback(settingResponse.message);
+          add(SettingDataUploadResult(false, uiMsg: ERR_SOMETHING_WENT_WRONG));
+          event.callback(ERR_SOMETHING_WENT_WRONG);
         }
       } else {
         add(SettingDataUploadResult(false,
@@ -442,9 +472,9 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     return 0;
   }
 
-  SettingData get settingDataToUpload =>
+  SettingData settingDataToUpload(bool stripeConnected) =>
       SettingData(
-          status: 'ACTIVE',
+          status: stripeConnected ? 'ACTIVE' : 'DRAFT',
           userContractCheck: state.tnc,
           paymentAndTaxes: PaymentAndTaxes(
               gstCharge: GSTCharge.defaultInstance(),

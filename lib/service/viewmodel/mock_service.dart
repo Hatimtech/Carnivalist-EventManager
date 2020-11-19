@@ -81,6 +81,11 @@ class MockService implements APIService {
   }
 
   @override
+  checkStripeConnected(String authToken) {
+    return null;
+  }
+
+  @override
   getAllEvents(String authToken, String userId) {
     return null;
   }

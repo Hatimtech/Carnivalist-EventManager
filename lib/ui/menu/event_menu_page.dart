@@ -525,7 +525,18 @@ class _EventMenuState extends State<EventMenuPage>
       if (results is SettingResponse) {
         if (results.code == apiCodeSuccess) {
           refreshList = true;
-          Navigator.of(context).pop(refreshList);
+          if (results.message == 'STRIPE_NOT_CONNECTED') {
+            showStripeNotConnectedPopup(results.isUpdating);
+          } else {
+            context.toast(results.isUpdating
+                ? AppLocalizations
+                .of(context)
+                .successEventUpdated
+                : AppLocalizations
+                .of(context)
+                .successEventCreated);
+            Navigator.of(context).pop(refreshList);
+          }
         }
       }
     });
@@ -592,5 +603,54 @@ class _EventMenuState extends State<EventMenuPage>
     }
 
     return true;
+  }
+
+  void showStripeNotConnectedPopup(bool isUpdating) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(
+        AppLocalizations
+            .of(context)
+            .stripeNotConnectedTitle,
+        style: Theme
+            .of(context)
+            .textTheme
+            .title,
+      ),
+      content: Text(
+        AppLocalizations
+            .of(context)
+            .stripeNotConnectedMsg,
+        style: Theme
+            .of(context)
+            .textTheme
+            .title
+            .copyWith(
+          fontSize: 16.0,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.toast(isUpdating
+                  ? AppLocalizations
+                  .of(context)
+                  .successEventUpdated
+                  : AppLocalizations
+                  .of(context)
+                  .successEventCreated);
+              Navigator.of(context).pop(refreshList);
+            },
+            child: Text(AppLocalizations
+                .of(context)
+                .btnOK)),
+      ],
+    );
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => alertDialog);
   }
 }

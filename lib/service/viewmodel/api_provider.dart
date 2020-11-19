@@ -86,6 +86,10 @@ class ApiProvider {
         eventDataId: eventDataId);
   }
 
+  Future<NetworkServiceResponse> checkStripeConnected(String authToken) async {
+    return await apiService.checkStripeConnected(authToken);
+  }
+
   Future<NetworkServiceResponse> getAllEvents(String authToken,
       String userId) async {
     return await apiService.getAllEvents(authToken, userId);

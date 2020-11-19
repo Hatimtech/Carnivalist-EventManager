@@ -84,27 +84,40 @@ class _CouponState extends State<CouponPage> with TickerProviderStateMixin {
       ),
       body: NotificationListener(
         onNotification: _handleScrollNotification,
-        child: Column(children: <Widget>[
-          _buildErrorReceiverEmptyBloc(),
-          Expanded(
-              child: BlocBuilder<CouponBloc, CouponState>(
-                  cubit: _couponBloc,
-                  buildWhen: (prevState, newState) {
-                    return (prevState.loading != newState.loading) ||
-                        (prevState.couponList != newState.couponList ||
-                            prevState.couponList.length !=
-                                newState.couponList.length);
-                  },
-                  builder: (context, CouponState state) {
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        couponList(state.couponsByDescending),
-                        if (state.loading) const PlatformProgressIndicator(),
-                      ],
-                    );
-                  })),
-        ]),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _buildErrorReceiverEmptyBloc(),
+              Expanded(
+                  child: BlocBuilder<CouponBloc, CouponState>(
+                      cubit: _couponBloc,
+                      buildWhen: (prevState, newState) {
+                        return (prevState.loading != newState.loading) ||
+                            (prevState.couponList != newState.couponList ||
+                                prevState.couponList.length !=
+                                    newState.couponList.length);
+                      },
+                      builder: (context, CouponState state) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            if (state.couponList?.isNotEmpty ?? false)
+                              couponList(state.couponsByDescending),
+                            if (state.loading)
+                              const PlatformProgressIndicator(),
+                            if (!state.loading &&
+                                (state.couponList?.isEmpty ?? true))
+                              buildNoDataView(
+                                context,
+                                AppLocalizations
+                                    .of(context)
+                                    .noCouponsToShow,
+                                    () => _couponBloc.getAllCoupons(),
+                              ),
+                          ],
+                        );
+                      })),
+            ]),
       ),
     );
   }

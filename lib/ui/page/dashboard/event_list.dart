@@ -1,5 +1,6 @@
 import 'package:eventmanagement/bloc/event/event/event_bloc.dart';
 import 'package:eventmanagement/bloc/event/event/event_state.dart';
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_list_item.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
 import 'package:eventmanagement/utils/vars.dart';
@@ -58,19 +59,45 @@ class _EventListState extends State<EventList> {
       cubit: _eventBloc,
       builder: (context, state) {
         final eventDataList = state.data;
-        return SliverFixedExtentList(
-          itemExtent: 136.0,
-          delegate: SliverChildBuilderDelegate(
-                (context, position) {
-              return EventListItem(
-                  key: ValueKey(eventDataList[position].id),
-                  id: eventDataList[position].id,
-                  systemPath: systemPath);
-            },
-            childCount: eventDataList?.length ?? 0,
-          ),
-        );
+        if (eventDataList?.isNotEmpty ?? false)
+          return SliverFixedExtentList(
+            itemExtent: 136.0,
+            delegate: SliverChildBuilderDelegate(
+                  (context, position) {
+                return EventListItem(
+                    key: ValueKey(eventDataList[position].id),
+                    id: eventDataList[position].id,
+                    systemPath: systemPath);
+              },
+              childCount: eventDataList?.length ?? 0,
+            ),
+          );
+        else
+          return SliverFillRemaining(
+              child: !state.loading
+                  ? buildNoDataView(
+                context,
+                getNoDataToShowMsg(state.eventCurrentFilter),
+                    () => _eventBloc.getAllEvents(),
+              )
+                  : SizedBox.shrink());
       },
     );
+  }
+
+  String getNoDataToShowMsg(String filter) {
+    var eventFilterItemList = _eventBloc.state.eventFilterItemList;
+    if (filter == eventFilterItemList[0].name)
+      return AppLocalizations
+          .of(context)
+          .noCurrentEventsToShow;
+    else if (filter == eventFilterItemList[1].name)
+      return AppLocalizations
+          .of(context)
+          .noDraftEventsToShow;
+    else
+      return AppLocalizations
+          .of(context)
+          .noPastEventsToShow;
   }
 }

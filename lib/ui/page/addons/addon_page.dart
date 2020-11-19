@@ -97,29 +97,42 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
           : null,
       body: NotificationListener(
         onNotification: _handleScrollNotification,
-        child: Column(children: <Widget>[
-          _buildErrorReceiverEmptyBloc(),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _buildErrorReceiverEmptyBloc(),
 //          _buildAddonTypeRadioButton(),
-          Expanded(
-              child: BlocBuilder<AddonBloc, AddonState>(
-                  cubit: _addonBloc,
-                  buildWhen: (prevState, newState) {
-                    return (prevState.loading != newState.loading) ||
-                        /*(prevState.showPublic != newState.showPublic) ||*/
-                        (prevState.addonList != newState.addonList ||
-                            prevState.addonList.length !=
-                                newState.addonList.length);
-                  },
-                  builder: (context, AddonState state) {
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        addonList(state.addonsByDescending),
-                        if (state.loading) const PlatformProgressIndicator(),
-                      ],
-                    );
-                  })),
-        ]),
+              Expanded(
+                  child: BlocBuilder<AddonBloc, AddonState>(
+                      cubit: _addonBloc,
+                      buildWhen: (prevState, newState) {
+                        return (prevState.loading != newState.loading) ||
+                            /*(prevState.showPublic != newState.showPublic) ||*/
+                            (prevState.addonList != newState.addonList ||
+                                prevState.addonList.length !=
+                                    newState.addonList.length);
+                      },
+                      builder: (context, AddonState state) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            if (state.addonList?.isNotEmpty ?? false)
+                              addonList(state.addonsByDescending),
+                            if (state.loading)
+                              const PlatformProgressIndicator(),
+                            if (!state.loading &&
+                                (state.addonList?.isEmpty ?? true))
+                              buildNoDataView(
+                                context,
+                                AppLocalizations
+                                    .of(context)
+                                    .noAddonsToShow,
+                                    () => _addonBloc.getAllAddons(),
+                              ),
+                          ],
+                        );
+                      })),
+            ]),
       ),
     );
   }
@@ -383,9 +396,10 @@ class _AddonState extends State<AddonPage> with TickerProviderStateMixin {
           ),
           Text(AppLocalizations.of(context).labelAddonSaleEnd,
               style: Theme.of(context).textTheme.body2),
-          Text(saleEnd != null
-              ? DateFormat.yMMMd().format(saleEnd.toLocal())
-              : '--',
+          Text(
+              saleEnd != null
+                  ? DateFormat.yMMMd().format(saleEnd.toLocal())
+                  : '--',
               style: Theme.of(context).textTheme.body2)
         ]);
   }

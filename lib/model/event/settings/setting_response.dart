@@ -1,6 +1,7 @@
 class SettingResponse {
   int code;
   String message;
+  bool isUpdating = false;
 
   SettingResponse({this.code, this.message});
 

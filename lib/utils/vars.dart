@@ -604,3 +604,37 @@ bool get isInDebugMode {
 
   return inDebugMode;
 }
+
+Widget buildNoDataView(BuildContext context, String noDataMsg,
+    Function handler) {
+  final appLocalizations = AppLocalizations.of(context);
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Text(
+        noDataMsg,
+        textAlign: TextAlign.center,
+        style: Theme
+            .of(context)
+            .textTheme
+            .subtitle2,
+      ),
+      const SizedBox(
+        height: 8.0,
+      ),
+      RaisedButton(
+        onPressed: handler,
+        child: Text(
+          appLocalizations.refreshButton,
+          style: Theme
+              .of(context)
+              .textTheme
+              .button
+              .copyWith(
+            color: Colors.white,
+          ),
+        ),
+      )
+    ],
+  );
+}

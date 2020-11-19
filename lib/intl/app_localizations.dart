@@ -403,6 +403,9 @@ class AppLocalizations {
   String get btnCancel =>
       Intl.message('Cancel', name: "btnCancel", locale: _localeName);
 
+  String get btnOK =>
+      Intl.message('Ok', name: "btnOK", locale: _localeName);
+
   String get btnPrevious =>
       Intl.message('Previous', name: "btnPrevious", locale: _localeName);
 
@@ -1618,6 +1621,54 @@ class AppLocalizations {
   String get eventCity =>
       Intl.message('City: ',
           name: "eventCity", locale: _localeName);
+
+  String get ticketPrice =>
+      Intl.message('Ticket Price',
+          name: "ticketPrice", locale: _localeName);
+
+  String get startDateToEndDate =>
+      Intl.message('Start Date - End Date',
+          name: "startDateToEndDate", locale: _localeName);
+
+  String get refreshButton =>
+      Intl.message("Refresh", name: "refreshButton", locale: _localeName);
+
+  String get noAttendeesToShow =>
+      Intl.message("No attendees data to show\nPlease try refreshing the page.",
+          name: "noAttendeesToShow", locale: _localeName);
+
+  String get noCouponsToShow =>
+      Intl.message("No coupons data to show\nPlease try refreshing the page.",
+          name: "noCouponsToShow", locale: _localeName);
+
+  String get noAddonsToShow =>
+      Intl.message("No addons data to show\nPlease try refreshing the page.",
+          name: "noAddonsToShow", locale: _localeName);
+
+  String get noStaffToShow =>
+      Intl.message("No staff data to show\nPlease try refreshing the page.",
+          name: "noStaffToShow", locale: _localeName);
+
+  String get noCurrentEventsToShow =>
+      Intl.message("No CURRENT events to show\nPlease try refreshing the page.",
+          name: "noCurrentEventsToShow", locale: _localeName);
+
+  String get noDraftEventsToShow =>
+      Intl.message("No DRAFT events to show\nPlease try refreshing the page.",
+          name: "noDraftEventsToShow", locale: _localeName);
+
+  String get noPastEventsToShow =>
+      Intl.message("No PAST events to show\nPlease try refreshing the page.",
+          name: "noPastEventsToShow", locale: _localeName);
+
+  String get stripeNotConnectedTitle =>
+      Intl.message("Stripe Not Connected", name: "stripeNotConnectedTitle",
+          locale: _localeName);
+
+  String get stripeNotConnectedMsg =>
+      Intl.message(
+          "You aren't connected to a stripe account yet, hence your event will not be published and will be saved as a draft.",
+          name: "stripeNotConnectedMsg", locale: _localeName);
 }
 
 class AppTranslationsDelegate extends LocalizationsDelegate<AppLocalizations> {

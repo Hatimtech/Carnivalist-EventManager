@@ -81,26 +81,40 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
       ),
       body: NotificationListener(
         onNotification: _handleScrollNotification,
-        child: Column(children: <Widget>[
-          _buildErrorReceiverEmptyBloc(),
-          Expanded(
-              child: BlocBuilder<StaffBloc, StaffState>(
-                  cubit: _staffBloc,
-                  buildWhen: (prevState, newState) {
-                    return (prevState.loading != newState.loading) ||
-                        (prevState.staffs != newState.staffs ||
-                            prevState.staffs.length != newState.staffs.length);
-                  },
-                  builder: (context, StaffState state) {
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: <Widget>[
-                        staffs(state.staffs),
-                        if (state.loading) const PlatformProgressIndicator(),
-                      ],
-                    );
-                  })),
-        ]),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _buildErrorReceiverEmptyBloc(),
+              Expanded(
+                  child: BlocBuilder<StaffBloc, StaffState>(
+                      cubit: _staffBloc,
+                      buildWhen: (prevState, newState) {
+                        return (prevState.loading != newState.loading) ||
+                            (prevState.staffs != newState.staffs ||
+                                prevState.staffs.length !=
+                                    newState.staffs.length);
+                      },
+                      builder: (context, StaffState state) {
+                        return Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            if (state.staffs?.isNotEmpty ?? false)
+                              staffs(state.staffs),
+                            if (state.loading)
+                              const PlatformProgressIndicator(),
+                            if (!state.loading &&
+                                (state.staffs?.isEmpty ?? true))
+                              buildNoDataView(
+                                context,
+                                AppLocalizations
+                                    .of(context)
+                                    .noStaffToShow,
+                                    () => _staffBloc.getAllStaffs(),
+                              ),
+                          ],
+                        );
+                      })),
+            ]),
       ),
     );
   }
@@ -166,7 +180,9 @@ class _StaffState extends State<StaffPage> with TickerProviderStateMixin {
             const SizedBox(width: 8.0),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 8.0,),
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                ),
                 child: _buildUserInfoView(
                   staff.name ?? '--',
                   staff.username ?? '--',

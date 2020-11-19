@@ -36,6 +36,8 @@ abstract class APIService {
   uploadSetting(String authToken, SettingData settingData,
       {String eventDataId});
 
+  checkStripeConnected(String authToken);
+
   getAllEvents(String authToken, String userId);
 
   getAllEventsForStaff(String authToken);

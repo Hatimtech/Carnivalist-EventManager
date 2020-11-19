@@ -164,7 +164,7 @@ class _EventInfoPageState extends State<EventInfoPage> {
           Expanded(flex: 1, child: _buildPriceOnwardsText()),
           const SizedBox(
               width: 56.0,
-              height: 18.0,
+              height: 32.0,
               child: const VerticalDivider(
                 color: Colors.black,
                 indent: 4.0,
@@ -179,16 +179,31 @@ class _EventInfoPageState extends State<EventInfoPage> {
   }
 
   Widget _buildPriceOnwardsText() {
-    return Text(
-      getMinTicketPrice(),
-      style: Theme
-          .of(context)
-          .textTheme
-          .body1
-          .copyWith(
-        fontWeight: FontWeight.bold,
-        color: Colors.red,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations
+              .of(context)
+              .ticketPrice,
+          style: Theme
+              .of(context)
+              .textTheme
+              .subtitle1
+              .copyWith(fontSize: 14.0),
+        ),
+        Text(
+          getMinTicketPrice(),
+          style: Theme
+              .of(context)
+              .textTheme
+              .body1
+              .copyWith(
+            fontWeight: FontWeight.w600,
+            color: Colors.red,
+          ),
+        ),
+      ],
     );
   }
 
@@ -216,12 +231,27 @@ class _EventInfoPageState extends State<EventInfoPage> {
   }
 
   Widget _buildStartEndDateText() {
-    return Text(
-      getStartEndDateText(),
-      style: Theme
-          .of(context)
-          .textTheme
-          .body1,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations
+              .of(context)
+              .startDateToEndDate,
+          style: Theme
+              .of(context)
+              .textTheme
+              .subtitle1
+              .copyWith(fontSize: 14.0),
+        ),
+        Text(
+          getStartEndDateText(),
+          style: Theme
+              .of(context)
+              .textTheme
+              .body1,
+        ),
+      ],
     );
   }
 
