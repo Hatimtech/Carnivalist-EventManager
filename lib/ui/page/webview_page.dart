@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
-import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -137,21 +134,21 @@ class _WebViewPageState extends State<WebViewPage> {
                     //in Run/LogCat window of android studio
                     print(message.message);
 
-                    if (message.message?.isNotEmpty ?? false) {
-                      String downloadPath =
-                          "${await getSystemDirPath()}/downloads/";
-                      Directory downloadDir = Directory(downloadPath);
-                      if (!downloadDir.existsSync())
-                        downloadDir.createSync(recursive: true);
-                      await FlutterDownloader.enqueue(
-                        url: message.message,
-                        savedDir: "${await getSystemDirPath()}/downloads/",
-                        showNotification: true,
-                        // show download progress in status bar (for Android)
-                        openFileFromNotification:
-                        true, // click on notification to open downloaded file (for Android)
-                      );
-                    }
+//                    if (message.message?.isNotEmpty ?? false) {
+//                      String downloadPath =
+//                          "${await getSystemDirPath()}/downloads/";
+//                      Directory downloadDir = Directory(downloadPath);
+//                      if (!downloadDir.existsSync())
+//                        downloadDir.createSync(recursive: true);
+//                      await FlutterDownloader.enqueue(
+//                        url: message.message,
+//                        savedDir: "${await getSystemDirPath()}/downloads/",
+//                        showNotification: true,
+//                        // show download progress in status bar (for Android)
+//                        openFileFromNotification:
+//                        true, // click on notification to open downloaded file (for Android)
+//                      );
+//                    }
                   })
             ]),
           ),

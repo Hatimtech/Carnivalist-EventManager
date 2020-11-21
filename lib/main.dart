@@ -22,7 +22,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'bloc/event/basic/basic_bloc.dart';
@@ -60,9 +59,9 @@ void main() async {
   await Logger.initializeLogging(canonFilename);
   await Logger.log('ENTERED main() ...');
 
-  await FlutterDownloader.initialize(
-      debug: true // optional: set false to disable printing logs to console
-  );
+//  await FlutterDownloader.initialize(
+//      debug: true // optional: set false to disable printing logs to console
+//  );
 
   runApp(MyApp());
 }
