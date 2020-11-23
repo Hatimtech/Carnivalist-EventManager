@@ -19,6 +19,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     add(LastNameInput(lastName: lastName));
   }
 
+  void domainNameInput(domainName) {
+    add(DomainNameInput(domainName: domainName));
+  }
+
   void mobileInput(mobile) {
     add(MobileInput(mobile: mobile));
   }
@@ -49,6 +53,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     if (event is LastNameInput) {
       yield state.copyWith(lastName: event.lastName);
+    }
+
+    if (event is DomainNameInput) {
+      yield state.copyWith(domain: event.domainName);
     }
 
     if (event is MobileInput) {
@@ -88,6 +96,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     param.putIfAbsent('email', () => state.email);
     param.putIfAbsent('mobile', () => state.mobile);
     param.putIfAbsent('password', () => state.password);
+    param.putIfAbsent('domainName', () => state.domain);
     param.putIfAbsent('userType', () => 'manager');
 
     apiProvider.getSignUp(param).then((networkServiceResponse) {

@@ -458,6 +458,10 @@ class AppLocalizations {
       Intl.message('Last Name',
           name: "inputHintLastName", locale: _localeName);
 
+  String get inputHintDomainName =>
+      Intl.message('Custom Domain',
+          name: "inputHintDomainName", locale: _localeName);
+
   String get inputHintPhoneNo =>
       Intl.message('Phone No', name: "inputHintPhoneNo", locale: _localeName);
 
@@ -1561,6 +1565,12 @@ class AppLocalizations {
           'Last name must be a-z and A-Z', name: "errorLastNameValid",
           locale: _localeName);
 
+  String get errorDomainNameValid =>
+      Intl.message(
+          'Domain name should not start with admin/event/manager/consumer',
+          name: "errorDomainNameValid",
+          locale: _localeName);
+
   String get logoutTitle =>
       Intl.message('Logout', name: "logoutTitle", locale: _localeName);
 
@@ -1621,6 +1631,14 @@ class AppLocalizations {
   String get eventCity =>
       Intl.message('City: ',
           name: "eventCity", locale: _localeName);
+
+  String get eventApproved =>
+      Intl.message('Event has been approved',
+          name: "eventApproved", locale: _localeName);
+
+  String get eventPendingApproval =>
+      Intl.message('Pending approval from admin',
+          name: "eventPendingApproval", locale: _localeName);
 
   String get ticketPrice =>
       Intl.message('Ticket Price',

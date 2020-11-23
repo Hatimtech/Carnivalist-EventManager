@@ -25,12 +25,14 @@ class _SignUpState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _domainNameController = TextEditingController();
 
   final _focusNodeLastName = FocusNode();
   final _focusNodePhone = FocusNode();
   final _focusNodeEmail = FocusNode();
   final _focusNodePassword = FocusNode();
   final _focusNodeConfirmPassword = FocusNode();
+  final _focusNodeDomainName = FocusNode();
 
   bool _validate = false;
   bool visible = true;
@@ -91,7 +93,13 @@ class _SignUpState extends State<SignUpPage> {
                         _emailInput(),
                         _passwordInput(),
                         _confirmPasswordInput(),
-                        SizedBox(height: 15),
+                        _domainNameInput(),
+//                        const SizedBox(height: 4),
+//                        Align(
+//                          alignment: Alignment.centerLeft,
+//                          child: _exampleDomain(),
+//                        ),
+                        const SizedBox(height: 15),
                         _signUpButton(),
                         RawMaterialButton(
                             padding: EdgeInsets.all(10),
@@ -299,11 +307,39 @@ class _SignUpState extends State<SignUpPage> {
                     .of(context)
                     .errorConfirmPasswordMatch;
               },
+              textInputAction: TextInputAction.next,
+              nextFocusNode: _focusNodeDomainName,
               maxLength: 20,
               inkWell: InkWell(
                   child: Icon(
                       visible ? Icons.visibility_off : Icons.visibility),
                   onTap: () => setState(() => visible = !visible))));
+
+  _domainNameInput() =>
+      Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
+          child: widget.inputField(
+            _domainNameController,
+            labelText: AppLocalizations
+                .of(context)
+                .inputHintDomainName,
+            labelStyle: Theme
+                .of(context)
+                .textTheme
+                .body1,
+            onChanged: _signUpBloc.domainNameInput,
+//            validation: (value) =>
+//                validateDomainName(value, AppLocalizations.of(context)),
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            focusNode: _focusNodeDomainName,
+          ));
+
+  _exampleDomain() =>
+      Text(
+        'Example: https://james.carnivalist.tk/events',
+        style: const TextStyle(color: Colors.blue, fontSize: 12.0),
+      );
 
   _signUpButton() => GestureDetector(
       onTap: () => _signUpValidate(),

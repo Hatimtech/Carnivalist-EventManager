@@ -223,6 +223,13 @@ String validateLastName(String value, AppLocalizations appLocalizations) {
   return null;
 }
 
+String validateDomainName(String value, AppLocalizations appLocalizations) {
+  if (value.startsWith('admin/event/manager/consumer')) {
+    return appLocalizations.errorDomainNameValid;
+  }
+  return null;
+}
+
 bool isValid(String value) =>
     value != null && value
         .trim()

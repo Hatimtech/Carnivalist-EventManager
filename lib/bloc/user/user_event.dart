@@ -22,6 +22,12 @@ class SaveUserId extends UserEvent {
   SaveUserId({this.userId});
 }
 
+class SaveDomainName extends UserEvent {
+  final String domainName;
+
+  SaveDomainName({this.domainName});
+}
+
 class SavAuthToken extends UserEvent {
   final String authToken;
   SavAuthToken({this.authToken});
@@ -73,18 +79,19 @@ class UpdateUserDetails extends UserEvent {
   final String lastName;
   final String email;
   final String mobile;
+  final String domainName;
   final String profilePic;
   final Function callback;
 
   UpdateUserDetails(
-      {this.name, this.lastName, this.email, this.mobile, this.profilePic, this.callback});
+      {this.name, this.lastName, this.email, this.mobile, this.domainName, this.profilePic, this.callback});
 }
 
 class UpdateUserResult extends UserEvent {
   final bool success;
   final dynamic uiMsg;
-  final String name, lastName, mobile, profilePic;
+  final String name, lastName, mobile, domainName, profilePic;
 
   UpdateUserResult(this.success,
-      {this.uiMsg, this.name, this.lastName, this.mobile, this.profilePic});
+      {this.uiMsg, this.name, this.lastName, this.mobile, this.domainName, this.profilePic});
 }

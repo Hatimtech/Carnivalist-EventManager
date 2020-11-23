@@ -5,7 +5,6 @@ import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/service/viewmodel/mock_data.dart';
-import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -196,6 +195,30 @@ class _EventListItemState extends State<EventListItem> {
                         '${AppLocalizations
                             .of(context)
                             .eventCity} ${_eventData.place?.city ?? '--'}',
+                        maxLines: 1,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .body2
+                            .copyWith(
+                          color: colorTextSubhead,
+                        ),
+                      )
+                    ]),
+                    const SizedBox(height: 8.0),
+                    Row(children: <Widget>[
+                      Icon(Icons.approval, size: 15.0, color: colorIcon),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        (_eventData.isApprovedBySuperAdmin ?? false)
+                            ? '${AppLocalizations
+                            .of(context)
+                            .eventApproved}'
+                            : '${AppLocalizations
+                            .of(context)
+                            .eventPendingApproval}',
                         maxLines: 1,
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,

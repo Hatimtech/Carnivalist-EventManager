@@ -145,7 +145,7 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
           },
           child: ListView.builder(
             padding: const EdgeInsets.all(0.0),
-            itemExtent: 136.0,
+            itemExtent: 148.0,
             itemCount: eventDataList?.length ?? 0,
             itemBuilder: (context, position) {
               return EventListItem(

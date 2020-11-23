@@ -204,6 +204,7 @@ extension WidgetExtensions on Widget {
           focusNode: focusNode,
           textInputAction: textInputAction,
           onFieldSubmitted: (_) {
+            print('onFieldSubmitted');
             if (focusNode != null) focusNode.unfocus();
             if (nextFocusNode != null)
               FocusScope.of(context).requestFocus(nextFocusNode);

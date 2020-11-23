@@ -145,6 +145,9 @@ class _EventMenuState extends State<EventMenuPage>
     if (_eventData != null) {
       _settingBloc.populateExistingEvent(_eventData);
       _settingBloc.eventDataId = _eventData.id;
+    } else {
+      _settingBloc.isApprovedBySuperAdmin =
+          _eventBloc.state.isAnyApprovedBySuperAdmin();
     }
   }
 

@@ -21,6 +21,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   final ApiProvider apiProvider = ApiProvider();
   String eventDataId;
   bool isUpdating = false;
+  bool isApprovedBySuperAdmin;
 
   SettingBloc() : super(initialState);
 
@@ -476,6 +477,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       SettingData(
           status: stripeConnected ? 'ACTIVE' : 'DRAFT',
           userContractCheck: state.tnc,
+          isApprovedBySuperAdmin: isApprovedBySuperAdmin,
           paymentAndTaxes: PaymentAndTaxes(
               gstCharge: GSTCharge.defaultInstance(),
               convenienceCharge: ConvenienceCharge(

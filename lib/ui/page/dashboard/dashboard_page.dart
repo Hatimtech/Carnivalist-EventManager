@@ -128,7 +128,7 @@ class _DashboardState extends State<DashboardPage>
               )),
         ),
         body: Column(children: <Widget>[
-          _buildErrorReceiverEmptyBloc(),
+          IgnorePointer(child: _buildErrorReceiverEmptyBloc()),
           Container(
             color: Colors.black,
             child: Padding(
@@ -239,77 +239,79 @@ class _DashboardState extends State<DashboardPage>
                 child: CustomScrollView(
                   slivers: <Widget>[
                     SliverToBoxAdapter(
-                      child: Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          child: Column(children: <Widget>[
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  BlocBuilder<DashboardBloc, DashboardState>(
-                                      cubit: _dashboardBloc,
-                                      buildWhen: (prevState, newState) =>
-                                      prevState.paymentSummary !=
-                                          newState.paymentSummary,
-                                      builder: (_, state) {
-                                        return _categoryCounter(
-                                            AppLocalizations
-                                                .of(context)
-                                                .labelTicketsSold,
-                                            state.paymentSummary?.quantity
-                                                ?.toString() ??
-                                                '00');
-                                      }),
-                                  SizedBox(width: 10),
-                                  BlocBuilder<EventBloc, EventState>(
-                                      cubit: _eventBloc,
-                                      buildWhen: (prevState, newState) =>
-                                      prevState.eventDataList !=
-                                          newState.eventDataList,
-                                      builder: (_, state) {
-                                        return _categoryCounter(
-                                            AppLocalizations
-                                                .of(context)
-                                                .labelUpcomingEvent,
-                                            state.upcomingEventsCount
-                                                .toString());
-                                      })
-                                ]),
-                            const SizedBox(height: 5),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  BlocBuilder<CouponBloc, CouponState>(
-                                      cubit: _couponBloc,
-                                      buildWhen: (prevState, newState) =>
-                                      prevState.couponList !=
-                                          newState.couponList,
-                                      builder: (_, state) {
-                                        return _categoryCounter(
-                                            AppLocalizations
-                                                .of(context)
-                                                .labelCoupons,
-                                            state.couponList?.length
-                                                ?.toString() ??
-                                                '00');
-                                      }),
-                                  SizedBox(width: 10),
-                                  BlocBuilder<AddonBloc, AddonState>(
-                                      cubit: _addonBloc,
-                                      buildWhen: (prevState, newState) =>
-                                      prevState.addonList !=
-                                          newState.addonList,
-                                      builder: (_, state) {
-                                        return _categoryCounter(
-                                            AppLocalizations
-                                                .of(context)
-                                                .labelAddons,
-                                            state.addonList?.length
-                                                ?.toString() ??
-                                                '00');
-                                      })
-                                ])
-                          ])),
+                      child: IgnorePointer(
+                        child: Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: Column(children: <Widget>[
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    BlocBuilder<DashboardBloc, DashboardState>(
+                                        cubit: _dashboardBloc,
+                                        buildWhen: (prevState, newState) =>
+                                        prevState.paymentSummary !=
+                                            newState.paymentSummary,
+                                        builder: (_, state) {
+                                          return _categoryCounter(
+                                              AppLocalizations
+                                                  .of(context)
+                                                  .labelTicketsSold,
+                                              state.paymentSummary?.quantity
+                                                  ?.toString() ??
+                                                  '00');
+                                        }),
+                                    SizedBox(width: 10),
+                                    BlocBuilder<EventBloc, EventState>(
+                                        cubit: _eventBloc,
+                                        buildWhen: (prevState, newState) =>
+                                        prevState.eventDataList !=
+                                            newState.eventDataList,
+                                        builder: (_, state) {
+                                          return _categoryCounter(
+                                              AppLocalizations
+                                                  .of(context)
+                                                  .labelUpcomingEvent,
+                                              state.upcomingEventsCount
+                                                  .toString());
+                                        })
+                                  ]),
+                              const SizedBox(height: 5),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    BlocBuilder<CouponBloc, CouponState>(
+                                        cubit: _couponBloc,
+                                        buildWhen: (prevState, newState) =>
+                                        prevState.couponList !=
+                                            newState.couponList,
+                                        builder: (_, state) {
+                                          return _categoryCounter(
+                                              AppLocalizations
+                                                  .of(context)
+                                                  .labelCoupons,
+                                              state.couponList?.length
+                                                  ?.toString() ??
+                                                  '00');
+                                        }),
+                                    SizedBox(width: 10),
+                                    BlocBuilder<AddonBloc, AddonState>(
+                                        cubit: _addonBloc,
+                                        buildWhen: (prevState, newState) =>
+                                        prevState.addonList !=
+                                            newState.addonList,
+                                        builder: (_, state) {
+                                          return _categoryCounter(
+                                              AppLocalizations
+                                                  .of(context)
+                                                  .labelAddons,
+                                              state.addonList?.length
+                                                  ?.toString() ??
+                                                  '00');
+                                        })
+                                  ])
+                            ])),
+                      ),
                     ),
                     EventFilter(),
                     EventList(),

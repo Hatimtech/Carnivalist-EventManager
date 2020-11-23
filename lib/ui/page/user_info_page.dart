@@ -29,11 +29,13 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   final _focusNodeLastName = FocusNode();
   final _focusNodePhone = FocusNode();
+  final _focusNodeDomain = FocusNode();
 
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNoController = TextEditingController();
+  final TextEditingController _domainNameController = TextEditingController();
 
   final GlobalKey<FormState> _key = GlobalKey();
 
@@ -45,6 +47,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
     _lastNameController.text = _userBloc.state.lastName;
     _emailController.text = _userBloc.state.email;
     _phoneNoController.text = _userBloc.state.mobile;
+    _domainNameController.text = _userBloc.state.domainName;
     avatar = _userBloc.state.profilePicture;
     _futureSystemPath = getSystemDirPath();
   }
@@ -73,6 +76,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       _phoneNoInput(),
                       const SizedBox(height: 16.0),
                       _emailInput(),
+                      const SizedBox(height: 16.0),
+                      _domainNameInput(),
                     ],
                   ),
                 ),
@@ -201,6 +206,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
             validateMobile(value, AppLocalizations.of(context)),
         keyboardType: TextInputType.phone,
         focusNode: _focusNodePhone,
+    nextFocusNode: _focusNodeDomain,
+    textInputAction: TextInputAction.next,
       );
 
   _emailInput() => widget.inputField(
@@ -211,6 +218,23 @@ class _UserInfoPageState extends State<UserInfoPage> {
             validateEmail(value, AppLocalizations.of(context)),
         keyboardType: TextInputType.emailAddress,
         enabled: false,
+      );
+
+  _domainNameInput() =>
+      widget.inputField(
+        _domainNameController,
+        labelText: AppLocalizations
+            .of(context)
+            .inputHintDomainName,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
+        validation: (value) =>
+            validateDomainName(value, AppLocalizations.of(context)),
+        keyboardType: TextInputType.text,
+        focusNode: _focusNodeDomain,
+        textInputAction: TextInputAction.done,
       );
 
   _buildUpdateAndLogoutButton() {
@@ -411,6 +435,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
           _lastNameController.text,
           _emailController.text,
           _phoneNoController.text,
+          _domainNameController.text,
           avatar, (results) {
         context.hideProgress(context);
         if (results is LoginDetailResponse) {

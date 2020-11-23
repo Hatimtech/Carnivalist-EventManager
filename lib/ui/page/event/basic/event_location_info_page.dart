@@ -119,8 +119,8 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
         nextFocusNode: _focusNodeCity,
       );
 
-  _eventCityInput() =>
-      widget.inputFieldRectangle(context,
+  _eventCityInput() {
+    return widget.inputFieldRectangle(context,
         _eventCityController,
         onChanged: _basicBloc.eventCityInput,
         hintText: AppLocalizations.of(context).labelTypeCityName,
@@ -130,6 +130,7 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
         focusNode: _focusNodeCity,
         nextFocusNode: _focusNodePostal,
       );
+  }
 
   _eventPostalCodeInput() =>
       widget.inputFieldRectangle(context,

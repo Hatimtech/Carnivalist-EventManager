@@ -157,4 +157,12 @@ class EventState {
       orElse: () => null,
     );
   }
+
+  bool isAnyApprovedBySuperAdmin() {
+    return eventDataList.firstWhere(
+          (eventData) => (eventData.isApprovedBySuperAdmin ?? false),
+      orElse: () => null,
+    ) !=
+        null;
+  }
 }

@@ -32,6 +32,8 @@ class EventData {
   PaymentAndTaxes paymentAndTaxes;
   WebsiteSetting websiteSettings;
 
+  bool isApprovedBySuperAdmin;
+
   EventData({
     this.id,
     this.title,
@@ -56,6 +58,7 @@ class EventData {
     this.cancellationPolicy,
     this.paymentAndTaxes,
     this.websiteSettings,
+    this.isApprovedBySuperAdmin,
   });
 
   EventData.fromJson(Map<String, dynamic> json) {
@@ -96,6 +99,7 @@ class EventData {
     websiteSettings = json['websiteSettings'] != null
         ? new WebsiteSetting.fromJson(json['websiteSettings'])
         : null;
+    isApprovedBySuperAdmin = json['isApprovedBySuperAdmin'];
   }
 
   Map<String, dynamic> toJson() {
@@ -148,7 +152,8 @@ class EventData {
     if (this.websiteSettings != null) {
       data['websiteSettings'] = this.websiteSettings.toJson();
     }
-
+    if (this.isApprovedBySuperAdmin != null)
+      data['isApprovedBySuperAdmin'] = this.isApprovedBySuperAdmin;
     return data;
   }
 }

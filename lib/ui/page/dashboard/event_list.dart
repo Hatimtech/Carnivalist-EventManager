@@ -61,7 +61,7 @@ class _EventListState extends State<EventList> {
         final eventDataList = state.data;
         if (eventDataList?.isNotEmpty ?? false)
           return SliverFixedExtentList(
-            itemExtent: 136.0,
+            itemExtent: 148.0,
             delegate: SliverChildBuilderDelegate(
                   (context, position) {
                 return EventListItem(

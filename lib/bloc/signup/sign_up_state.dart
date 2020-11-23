@@ -7,6 +7,7 @@ class SignUpState {
   final String mobile;
   final String password;
   final String confirmPassword;
+  final String domain;
   bool loading;
   dynamic uiMsg;
 
@@ -17,6 +18,7 @@ class SignUpState {
     @required this.mobile,
     @required this.password,
     @required this.confirmPassword,
+    this.domain,
     this.loading,
     this.uiMsg,
   });
@@ -30,6 +32,7 @@ class SignUpState {
       mobile: null,
       password: null,
       confirmPassword: null,
+      domain: null,
       uiMsg: null,
     );
   }
@@ -42,6 +45,7 @@ class SignUpState {
     String mobile,
     String password,
     String confirmPassword,
+    String domain,
     dynamic uiMsg,
   }) {
     return SignUpState(
@@ -52,6 +56,7 @@ class SignUpState {
       mobile: mobile ?? this.mobile,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
+      domain: domain ?? this.domain,
       uiMsg: uiMsg,
     );
   }

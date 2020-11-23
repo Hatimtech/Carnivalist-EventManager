@@ -20,6 +20,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     add(SaveUserId(userId: userId));
   }
 
+  void saveDomainName(domainName) {
+    add(SaveDomainName(domainName: domainName));
+  }
+
   void savAuthToken(authToken) {
     add(SavAuthToken(authToken: authToken));
   }
@@ -64,12 +68,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     add(ClearLoginDetails());
   }
 
-  void updateLoginDetails(name, lastName, email, mobile, profilePic, callback) {
+  void updateLoginDetails(name, lastName, email, mobile, domainName, profilePic,
+      callback) {
     add(UpdateUserDetails(
         name: name,
         lastName: lastName,
         email: email,
         mobile: mobile,
+        domainName: domainName,
         profilePic: profilePic,
         callback: callback));
   }
@@ -101,6 +107,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (event is SaveUserId) {
       pref = await SharedPreferences.getInstance();
       pref.setString("userId", event.userId);
+    }
+
+    if (event is SaveDomainName) {
+      pref = await SharedPreferences.getInstance();
+      pref.setString("domainName", event.domainName);
     }
 
     if (event is SavAuthToken) {
@@ -139,6 +150,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           authToken: pref.getString('authToken'),
           email: pref.getString('email'),
           address: pref.getString('address'),
+          domainName: pref.getString('domainName'),
           eventStaff: pref.getBool('eventStaff'),
           profilePicture: pref.getString('profilePicture'),
           isLogin: pref.getBool('isLogin'));
@@ -160,6 +172,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         pref.setString("username", event.name);
         pref.setString("lastName", event.lastName);
         pref.setString("mobile", event.mobile);
+        pref.setString("domainName", event.domainName);
         pref.setString("profilePicture", event.profilePic);
         yield state.copyWith(
           mobile: pref.getString('mobile'),
@@ -169,13 +182,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           authToken: pref.getString('authToken'),
           email: pref.getString('email'),
           address: pref.getString('address'),
+          domainName: pref.getString('domainName'),
           eventStaff: pref.getBool('bandStaff'),
           profilePicture: pref.getString('profilePicture'),
           isLogin: pref.getBool('isLogin'),
           uiMsg: event.uiMsg,
         );
       } else {
-        yield state.copyWith(uiMsg: event.uiMsg);
+        yield state.copyWithUiMsg(event.uiMsg);
       }
     }
   }
@@ -212,6 +226,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     param.putIfAbsent('name', () => event.name);
     param.putIfAbsent('lastName', () => event.lastName);
     param.putIfAbsent('mobileNumber', () => event.mobile);
+    param.putIfAbsent('domainName', () => event.domainName);
 
     _apiProvider
         .updateUserDetails(state.authToken, param)
@@ -250,6 +265,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             name: loginDetailResponse.loginDetail.name,
             lastName: loginDetailResponse.loginDetail.lastName,
             mobile: loginDetailResponse.loginDetail.mobileNumber,
+            domainName: loginDetailResponse.loginDetail.domainName,
             profilePic: loginDetailResponse.loginDetail.avatar,
           ));
           event.callback(loginDetailResponse);

@@ -5,6 +5,7 @@ import 'package:eventmanagement/model/event/settings/website_setting.dart';
 class SettingData {
   String status;
   bool userContractCheck;
+  bool isApprovedBySuperAdmin;
   PaymentAndTaxes paymentAndTaxes;
   CancellationPolicy cancellationPolicy;
   WebsiteSetting websiteSettings;
@@ -12,6 +13,7 @@ class SettingData {
   SettingData({
     this.status,
     this.userContractCheck,
+    this.isApprovedBySuperAdmin,
     this.paymentAndTaxes,
     this.cancellationPolicy,
     this.websiteSettings,
@@ -20,6 +22,7 @@ class SettingData {
   SettingData.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     userContractCheck = json['userContractCheck'];
+    isApprovedBySuperAdmin = json['isApprovedBySuperAdmin'];
 
     paymentAndTaxes = json['paymentAndTaxes'] != null
         ? new PaymentAndTaxes.fromJson(json['paymentAndTaxes'])
@@ -39,6 +42,8 @@ class SettingData {
     if (this.status != null) data['status'] = this.status;
     if (this.userContractCheck != null)
       data['userContractCheck'] = this.userContractCheck;
+    if (this.isApprovedBySuperAdmin != null)
+      data['isApprovedBySuperAdmin'] = this.isApprovedBySuperAdmin;
     if (this.paymentAndTaxes != null)
       data['paymentAndTaxes'] = this.paymentAndTaxes.toJson();
     if (this.cancellationPolicy != null)

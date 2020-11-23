@@ -252,6 +252,7 @@ class _LoginState extends State<LoginPage> {
           _userBloc.saveMobile(loginDetailResponse.loginDetail.mobileNumber);
           _userBloc.saveProfilePicture(loginDetailResponse.loginDetail.avatar);
           _userBloc.saveUserId(loginDetailResponse.loginDetail.userId);
+          _userBloc.saveDomainName(loginDetailResponse.loginDetail.domainName);
           _userBloc.saveEventStaff(_loginBloc.state.eventStaffLogin);
           _userBloc.savAuthToken(authToken);
           _userBloc.saveIsLogin(true);

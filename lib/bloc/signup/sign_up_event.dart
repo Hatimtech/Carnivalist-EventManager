@@ -14,6 +14,12 @@ class LastNameInput extends SignUpEvent {
   LastNameInput({this.lastName});
 }
 
+class DomainNameInput extends SignUpEvent {
+  final String domainName;
+
+  DomainNameInput({this.domainName});
+}
+
 class MobileInput extends SignUpEvent {
   final String mobile;
 
