@@ -94,11 +94,11 @@ class _SignUpState extends State<SignUpPage> {
                         _passwordInput(),
                         _confirmPasswordInput(),
                         _domainNameInput(),
-//                        const SizedBox(height: 4),
-//                        Align(
-//                          alignment: Alignment.centerLeft,
-//                          child: _exampleDomain(),
-//                        ),
+                        const SizedBox(height: 4),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: _exampleDomain(),
+                        ),
                         const SizedBox(height: 15),
                         _signUpButton(),
                         RawMaterialButton(
@@ -338,7 +338,7 @@ class _SignUpState extends State<SignUpPage> {
   _exampleDomain() =>
       Text(
         'Example: https://james.carnivalist.tk/events',
-        style: const TextStyle(color: Colors.blue, fontSize: 12.0),
+        style: const TextStyle(color: Color(0xFF0000EE), fontSize: 12.0),
       );
 
   _signUpButton() => GestureDetector(

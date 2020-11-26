@@ -130,7 +130,6 @@ class _DashboardState extends State<DashboardPage>
         body: Column(children: <Widget>[
           IgnorePointer(child: _buildErrorReceiverEmptyBloc()),
           Container(
-            color: Colors.black,
             child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 4.0),
                 child: Row(children: <Widget>[
@@ -154,16 +153,13 @@ class _DashboardState extends State<DashboardPage>
                         await Logger.log('Dashboard Coupon Clicked');
                         _pageNavBloc.currentPage(PAGE_COUPONS);
                       },
-                      child: Container(
-                        color: Colors.blue,
-                        child: _category(
-                          CarnivalistIcons.discount,
-                          AppLocalizations
-                              .of(context)
-                              .labelCoupons
-                              .toUpperCase(),
-                          size: 16.0,
-                        ),
+                      child: _category(
+                        CarnivalistIcons.discount,
+                        AppLocalizations
+                            .of(context)
+                            .labelCoupons
+                            .toUpperCase(),
+                        size: 16.0,
                       ),
                     ),
                   ),
@@ -173,16 +169,13 @@ class _DashboardState extends State<DashboardPage>
                         await Logger.log('Dashboard Addon Clicked');
                         _pageNavBloc.currentPage(PAGE_ADDONS);
                       },
-                      child: Container(
-                        color: Colors.red,
-                        child: _category(
-                          CarnivalistIcons.addon_filled,
-                          AppLocalizations
-                              .of(context)
-                              .labelAddons
-                              .toUpperCase(),
-                          size: 16.0,
-                        ),
+                      child: _category(
+                        CarnivalistIcons.addon_filled,
+                        AppLocalizations
+                            .of(context)
+                            .labelAddons
+                            .toUpperCase(),
+                        size: 16.0,
                       ),
                     ),
                   ),
@@ -192,16 +185,13 @@ class _DashboardState extends State<DashboardPage>
                         await Logger.log('Dashboard Reports Clicked');
                         _pageNavBloc.currentPage(PAGE_REPORTS);
                       },
-                      child: Container(
-                        color: Colors.blue,
-                        child: _category(
-                          Icons.poll,
-                          AppLocalizations
-                              .of(context)
-                              .labelReports
-                              .toUpperCase(),
-                          size: 16.0,
-                        ),
+                      child: _category(
+                        Icons.poll,
+                        AppLocalizations
+                            .of(context)
+                            .labelReports
+                            .toUpperCase(),
+                        size: 16.0,
                       ),
                     ),
                   ),
@@ -211,16 +201,13 @@ class _DashboardState extends State<DashboardPage>
                         await Logger.log('Dashboard Staff Clicked');
                         _pageNavBloc.currentPage(PAGE_STAFF);
                       },
-                      child: Container(
-                        color: Colors.red,
-                        child: _category(
-                          Icons.people,
-                          AppLocalizations
-                              .of(context)
-                              .labelStaff
-                              .toUpperCase(),
-                          size: 16.0,
-                        ),
+                      child: _category(
+                        Icons.people,
+                        AppLocalizations
+                            .of(context)
+                            .labelStaff
+                            .toUpperCase(),
+                        size: 16.0,
                       ),
                     ),
                   ),
@@ -325,32 +312,38 @@ class _DashboardState extends State<DashboardPage>
 
   _category(IconData iconData, String name, {double size = 18}) =>
       Card(
-          margin: const EdgeInsets.all(16.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.0))),
           child: Padding(
               padding: new EdgeInsets.all(10.0),
-              child: Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: 18,
-                        height: 18,
-                        child:
-                        Icon(iconData, size: size, color: colorIconSecondary),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        name,
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .subhead,
-                      )
-                    ]),
+              child: IgnorePointer(
+                child: Container(
+                  child: IgnorePointer(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          IgnorePointer(
+                            child: Container(
+                              width: 18,
+                              height: 18,
+                              child:
+                              Icon(iconData, size: size,
+                                  color: colorIconSecondary),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            name,
+                            overflow: TextOverflow.fade,
+                            maxLines: 1,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .subhead,
+                          )
+                        ]),
+                  ),
+                ),
               )));
 
   _category1(IconData iconData, String name, Color color, Function handler,

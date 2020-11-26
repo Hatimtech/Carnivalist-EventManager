@@ -14,6 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:path/path.dart' as Path;
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserInfoPage extends StatefulWidget {
   const UserInfoPage({Key key}) : super(key: key);
@@ -39,6 +41,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   final GlobalKey<FormState> _key = GlobalKey();
 
+  ValueNotifier<String> domainValue = ValueNotifier("");
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +54,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
     _domainNameController.text = _userBloc.state.domainName;
     avatar = _userBloc.state.profilePicture;
     _futureSystemPath = getSystemDirPath();
+
+    domainValue.value = _userBloc.state.domainName;
+
+    _domainNameController.addListener(() {
+      if (domainValue.value != _domainNameController.value.text) {
+        domainValue.value = _domainNameController.value.text;
+      }
+    });
   }
 
   @override
@@ -78,6 +90,11 @@ class _UserInfoPageState extends State<UserInfoPage> {
                       _emailInput(),
                       const SizedBox(height: 16.0),
                       _domainNameInput(),
+                      const SizedBox(height: 12.0),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: _yourDomain(),
+                      ),
                     ],
                   ),
                 ),
@@ -236,6 +253,23 @@ class _UserInfoPageState extends State<UserInfoPage> {
         focusNode: _focusNodeDomain,
         textInputAction: TextInputAction.done,
       );
+
+  _yourDomain() {
+    return ValueListenableProvider<String>.value(
+      value: domainValue,
+      child: Consumer<String>(
+        builder: (_, value, __) {
+          return InkWell(
+            child: Text(
+              'Your Domain: https://$value.carnivalist.tk/events',
+              style: const TextStyle(color: Color(0xFF0000EE), fontSize: 12.0),
+            ),
+            onTap: () => launch('https://$value.carnivalist.tk/events'),
+          );
+        },
+      ),
+    );
+  }
 
   _buildUpdateAndLogoutButton() {
     return Row(children: <Widget>[
