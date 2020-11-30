@@ -7,6 +7,7 @@ import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/gallery/gallery_data.dart';
 import 'package:eventmanagement/ui/page/event/gallery/video_thumbnail.dart';
+import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_scroll_bar.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
@@ -17,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:network_to_file_image/network_to_file_image.dart';
 import 'package:path/path.dart' as Path;
+import 'package:video_compress/video_compress.dart';
 
 class GalleryPage extends StatefulWidget {
   @override
@@ -57,6 +59,19 @@ class _GalleryState extends State<GalleryPage> {
           Align(
               alignment: Alignment.bottomCenter,
               child: _buildUploadGalleryRow()),
+          Align(
+            child: BlocBuilder(
+                cubit: _galleryBloc,
+                buildWhen: (prevState, newState) {
+                  return prevState.loading != newState.loading;
+                },
+                builder: (context, state) {
+                  if (state.loading)
+                    return PlatformProgressIndicator();
+                  else
+                    return SizedBox.shrink();
+                }),
+          )
         ],
       ),
     );
@@ -457,10 +472,13 @@ class _GalleryState extends State<GalleryPage> {
     var image;
 
     if (video)
-      image = await ImagePicker.pickVideo(source: ImageSource.camera);
+      image = await ImagePicker.pickVideo(
+        source: ImageSource.camera,
+        maxDuration: const Duration(minutes: 15),
+      );
     else
       image = await ImagePicker.pickImage(
-          source: ImageSource.camera, imageQuality: 80);
+          source: ImageSource.camera, imageQuality: 60);
 
     print('Camera Image/Video Path--->${image?.path}');
     if (image != null) {
@@ -468,10 +486,21 @@ class _GalleryState extends State<GalleryPage> {
         await _deleteExistingBanner();
         _galleryBloc.addBanner(image.path);
       } else {
+        if (video) {
+          _galleryBloc.compressingVideo(true);
+          MediaInfo mediaInfo = await VideoCompress.compressVideo(
+            image.path,
+            quality: VideoQuality.DefaultQuality,
+            deleteOrigin: true, // It's false by default
+          );
+          image = mediaInfo.path;
+          _galleryBloc.compressingVideo(false);
+        } else
+          image = image.path;
         _galleryBloc.addGalleryItem(
           GalleryData(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
-            localFilePath: image.path,
+            localFilePath: image,
             type: video ? 'video' : 'image',
             uploadRequired: true,
             ownedByApp: true,
@@ -486,11 +515,12 @@ class _GalleryState extends State<GalleryPage> {
     var image;
     if (video) {
       extensions = ['3gp', 'mp4', 'webm', 'mkv', 'mov', 'mp4', 'm4v'];
-//      image = await ImagePicker.pickVideo(source: ImageSource.gallery);
+//      image = await ImagePicker.pickVideo(source: ImageSource.gallery,
+//        maxDuration: const Duration(minutes: 15),);
     } else {
       extensions = ['jpg', 'jpeg', 'png', 'bmp', 'webp', 'tiff'];
 //      image = await ImagePicker.pickImage(
-//          source: ImageSource.gallery, imageQuality: 80);
+//          source: ImageSource.gallery, imageQuality: 60);
     }
 
     if (banner)

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/utils/vars.dart';
@@ -29,6 +30,19 @@ class _SplashState extends State<SplashPage> {
     t2 = new Timer(five, () => _loginGo());
   }
 
+  void _deleteOldPdfFiles() async {
+    Directory dir = new Directory('${await getSystemDirPath()}/user_downloads');
+    if (dir.existsSync()) {
+      List contents = dir.listSync();
+      for (var fileOrDir in contents) {
+        if (fileOrDir is File) {
+          print(fileOrDir.path);
+          fileOrDir.deleteSync();
+        }
+      }
+    }
+  }
+
   @override
   void dispose() {
     if (this.mounted) super.dispose();
@@ -47,6 +61,7 @@ class _SplashState extends State<SplashPage> {
   }
 
   _loginGo() {
+    _deleteOldPdfFiles();
     _userBloc.state.isLogin == true
         ? ((_userBloc.state.eventStaff ?? false)
         ? Navigator.pushReplacementNamed(context, bandStaffHomeRoute)

@@ -45,6 +45,10 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     add(RemoveGalleryItem(galleryData: galleryData));
   }
 
+  void compressingVideo(bool compressing) {
+    add(CompressingVideo(compressing: compressing));
+  }
+
   void uploadGallery(Function callback) {
     add(UploadGallery(callback: callback));
   }
@@ -94,6 +98,12 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
       yield state.copyWith(
         galleryList: galleryList,
         uploadRequired: true,
+      );
+    }
+
+    if (event is CompressingVideo) {
+      yield state.copyWith(
+        loading: event.compressing,
       );
     }
 

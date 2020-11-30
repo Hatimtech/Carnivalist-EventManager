@@ -39,6 +39,12 @@ class RemoveGalleryItem extends GalleryEvent {
   RemoveGalleryItem({this.galleryData});
 }
 
+class CompressingVideo extends GalleryEvent {
+  final bool compressing;
+
+  CompressingVideo({this.compressing});
+}
+
 class UploadGallery extends GalleryEvent {
   final Function callback;
 

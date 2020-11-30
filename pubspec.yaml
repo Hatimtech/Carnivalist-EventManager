@@ -35,6 +35,8 @@ dependencies:
   barcode_scan: ^2.0.1
   flutter_nfc_reader: ^0.1.0
   synchronized: 2.1.0+1
+  video_compress: ^2.1.1
+  open_file: ^3.0.3
 #  flutter_downloader: ^1.5.2
 
 dev_dependencies:

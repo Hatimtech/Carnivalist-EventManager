@@ -1,8 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
+import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -78,10 +84,6 @@ class _WebViewPageState extends State<WebViewPage> {
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);
             },
-//      gestureRecognizers: [
-//        Factory(() => PlatformViewVerticalGestureRecognizer()),
-//      ].toSet(),
-
             navigationDelegate: (NavigationRequest request) {
               print('navigationDelegate--->$request');
               if (widget.mockNativeView) {
@@ -133,22 +135,26 @@ class _WebViewPageState extends State<WebViewPage> {
                     //like here, the message is just being printed
                     //in Run/LogCat window of android studio
                     print(message.message);
-
-//                    if (message.message?.isNotEmpty ?? false) {
-//                      String downloadPath =
-//                          "${await getSystemDirPath()}/downloads/";
-//                      Directory downloadDir = Directory(downloadPath);
-//                      if (!downloadDir.existsSync())
-//                        downloadDir.createSync(recursive: true);
-//                      await FlutterDownloader.enqueue(
-//                        url: message.message,
-//                        savedDir: "${await getSystemDirPath()}/downloads/",
-//                        showNotification: true,
-//                        // show download progress in status bar (for Android)
-//                        openFileFromNotification:
-//                        true, // click on notification to open downloaded file (for Android)
-//                      );
-//                    }
+                    if (message.message != null &&
+                        message.message.isNotEmpty &&
+                        message.message.startsWith('http')) {
+                      setState(() {
+                        webviewLoading = true;
+                      });
+                      File downloadFile = await _downloadFile(message.message);
+                      if (downloadFile != null) {
+                        OpenFile.open(downloadFile.path);
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: AppLocalizations
+                              .of(context)
+                              .downloadFailure,
+                        );
+                      }
+                      setState(() {
+                        webviewLoading = false;
+                      });
+                    }
                   })
             ]),
           ),
@@ -159,6 +165,33 @@ class _WebViewPageState extends State<WebViewPage> {
           ),
       ],
     );
+  }
+
+  Future<File> _downloadFile(String url) async {
+    try {
+      http.Client client = new http.Client();
+      http.Response response = await client.get(Uri.parse(url));
+      Map<String, String> headers = response.headers;
+
+      String fileName;
+      if (headers != null && headers['content-disposition'] != null) {
+        List<String> nameSplit =
+        headers['content-disposition'].split('filename=');
+        if (nameSplit.length > 1) fileName = nameSplit.last.replaceAll('"', '');
+      } else
+        fileName = '${DateTime.now()}.pdf';
+
+      print('fileName--->$fileName');
+      var bytes = response.bodyBytes;
+      String dir = await getSystemDirPath();
+      Directory directory = Directory('$dir/user_downloads');
+      if (!directory.existsSync()) directory.createSync();
+      File file = new File('${directory.path}/$fileName');
+      await file.writeAsBytes(bytes);
+      return file;
+    } catch (e) {
+      return null;
+    }
   }
 
   void _launchURL(String url) async {

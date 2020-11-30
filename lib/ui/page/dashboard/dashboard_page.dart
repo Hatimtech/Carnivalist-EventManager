@@ -16,7 +16,6 @@ import 'package:eventmanagement/ui/carnivalist_icons_icons.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_filter.dart';
 import 'package:eventmanagement/ui/page/dashboard/event_list.dart';
 import 'package:eventmanagement/utils/extensions.dart';
-import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +134,7 @@ class _DashboardState extends State<DashboardPage>
                 child: Row(children: <Widget>[
                   Expanded(
                     child: GestureDetector(
-                      onTap: () async {
+                      onTap: () {
 //                      String downloadPath =
 //                          "${await getSystemDirPath()}/downloads/";
 //                      Directory downloadDir = Directory(downloadPath);
@@ -150,7 +149,7 @@ class _DashboardState extends State<DashboardPage>
 //                        openFileFromNotification:
 //                            true, // click on notification to open downloaded file (for Android)
 //                      );
-                        await Logger.log('Dashboard Coupon Clicked');
+//                        await Logger.log('Dashboard Coupon Clicked');
                         _pageNavBloc.currentPage(PAGE_COUPONS);
                       },
                       child: _category(
@@ -165,8 +164,8 @@ class _DashboardState extends State<DashboardPage>
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () async {
-                        await Logger.log('Dashboard Addon Clicked');
+                      onTap: () {
+//                        await Logger.log('Dashboard Addon Clicked');
                         _pageNavBloc.currentPage(PAGE_ADDONS);
                       },
                       child: _category(
@@ -181,8 +180,8 @@ class _DashboardState extends State<DashboardPage>
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () async {
-                        await Logger.log('Dashboard Reports Clicked');
+                      onTap: () {
+//                        await Logger.log('Dashboard Reports Clicked');
                         _pageNavBloc.currentPage(PAGE_REPORTS);
                       },
                       child: _category(
@@ -197,8 +196,8 @@ class _DashboardState extends State<DashboardPage>
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () async {
-                        await Logger.log('Dashboard Staff Clicked');
+                      onTap: () {
+//                        await Logger.log('Dashboard Staff Clicked');
                         _pageNavBloc.currentPage(PAGE_STAFF);
                       },
                       child: _category(

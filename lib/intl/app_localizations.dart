@@ -1596,6 +1596,10 @@ class AppLocalizations {
       Intl.message("Press back again to exit",
           name: "exitWarning", locale: _localeName);
 
+  String get downloadFailure =>
+      Intl.message("Unable to download the file",
+          name: "downloadFailure", locale: _localeName);
+
   String get successEventCreated =>
       Intl.message('Event Created',
           name: "successEventCreated", locale: _localeName);

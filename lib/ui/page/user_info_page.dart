@@ -418,7 +418,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
     var image;
 
     image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 80);
+        source: ImageSource.camera, imageQuality: 60);
 
     print('Camera Image/Video Path--->${image?.path}');
     if (image != null) {
@@ -432,7 +432,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   Future<void> _openGallery() async {
     var image;
     image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 80);
+        source: ImageSource.gallery, imageQuality: 60);
 
     print('Gallery Image/Video Path--->${image?.path}');
     if (image != null) {
