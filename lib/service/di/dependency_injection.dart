@@ -9,6 +9,7 @@ enum Flavor { Testing, Network }
 class Injector {
   static final Injector _singleton = new Injector._internal();
   static Flavor _flavor;
+  static NetworkService _networkService;
 
   static void configure(Flavor flavor) async {
     _flavor = flavor;
@@ -23,7 +24,9 @@ class Injector {
       case Flavor.Testing:
         return MockService();
       default:
-        return NetworkService(new RestClient());
+        if (_networkService == null)
+          _networkService = NetworkService(new RestClient());
+        return _networkService;
     }
   }
 }

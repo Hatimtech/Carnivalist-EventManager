@@ -1597,8 +1597,12 @@ class AppLocalizations {
           name: "exitWarning", locale: _localeName);
 
   String get downloadFailure =>
-      Intl.message("Unable to download the file",
+      Intl.message("Unable to download the file.",
           name: "downloadFailure", locale: _localeName);
+
+  String get downloadFailureInvalidLocation =>
+      Intl.message("Invalid file location. Unable to start the download.",
+          name: "downloadFailureInvalidLocation", locale: _localeName);
 
   String get successEventCreated =>
       Intl.message('Event Created',

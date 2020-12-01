@@ -154,6 +154,12 @@ class _WebViewPageState extends State<WebViewPage> {
                       setState(() {
                         webviewLoading = false;
                       });
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: AppLocalizations
+                            .of(context)
+                            .downloadFailureInvalidLocation,
+                      );
                     }
                   })
             ]),

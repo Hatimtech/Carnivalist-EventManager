@@ -1,18 +1,31 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:eventmanagement/model/api_response.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 
 import 'network_service_response.dart';
 
 class RestClient {
+
+  IOClient _ioClient;
+
+  RestClient() {
+    print('Creating REST CLIENT');
+    final httpClient = HttpClient();
+    httpClient.connectionTimeout = const Duration(seconds: 15);
+    httpClient.idleTimeout = const Duration(seconds: 15);
+    _ioClient = IOClient(httpClient);
+  }
+
   Future<MappedNetworkServiceResponse<T>> get<T>(String url,
       Map headers) async {
     print('Get Url--->$url');
 
     try {
-      var response = await http.get(url, headers: headers);
+      var response = await _ioClient.get(url, headers: headers);
       printWrapped('Response Body--->${response.body}');
       return processResponse<T>(response);
     } catch (e) {
@@ -30,7 +43,7 @@ class RestClient {
     print('Post Url--->$url');
 
     try {
-      var response = await http.get(url);
+      var response = await _ioClient.get(url);
       printWrapped('Response Body--->${response.body}');
       return processResponse<T>(response);
     } catch (e) {
@@ -48,9 +61,9 @@ class RestClient {
     printWrapped('Json to upload--->$body');
 
     try {
-      var response = await http.post(url,
+      var response = await _ioClient.post(url,
           headers: headers, body: body, encoding: encoding);
-//      print('Response Body--->${response.body}');
+      print('Response Body--->${response.body}');
       return processResponse<T>(response);
     } catch (e) {
       print(e.toString());
@@ -78,8 +91,7 @@ class RestClient {
             var parsedResponse = json.decode(responseString);
             return new MappedNetworkServiceResponse<T>(
                 networkServiceResponse: new NetworkServiceResponse<T>(
-                    error:
-                    ApiResponse
+                    error: ApiResponse
                         .fromJson(parsedResponse)
                         .responseMessage,
                     responseCode: response.statusCode));
@@ -115,8 +127,7 @@ class RestClient {
           var parsedResponse = json.decode(response.body);
           return new MappedNetworkServiceResponse<T>(
               networkServiceResponse: new NetworkServiceResponse<T>(
-                  error:
-                  ApiResponse
+                  error: ApiResponse
                       .fromJson(parsedResponse)
                       .responseMessage,
                   responseCode: response.statusCode));
