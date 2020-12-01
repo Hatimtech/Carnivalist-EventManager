@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:eventmanagement/bloc/event/eventdetail/event_detail_event.dart';
@@ -176,7 +177,18 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
       requestBody.putIfAbsent('userId', () => event.tag);
       requestBody.putIfAbsent('eventId', () => eventId);
     } else {
-      requestBody.putIfAbsent('_id', () => event.tag);
+      try {
+        var jsonDecode = json.decode(event.tag);
+        requestBody.putIfAbsent('orderId', () => jsonDecode['orderId']);
+        requestBody.putIfAbsent('ticketNo', () => jsonDecode['ticketId']);
+      } catch (e) {
+        add(TagScannedEventResult(
+          false,
+          uiMsg: "Invalid QR Code",
+        ));
+        event.callback(null);
+        return;
+      }
     }
     apiProvider
         .uploadTagScanned(state.authToken, requestBody, event.isNFC)

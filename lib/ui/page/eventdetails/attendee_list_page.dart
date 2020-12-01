@@ -417,7 +417,8 @@ class _AttendeeListPageState extends State<AttendeeListPage>
                   .labelAttendeesMarkAttended,
                   () {
                 context.showProgress(context);
-                _eventDetailBloc.uploadNewScannedTag(eventDetail.id, false,
+                _eventDetailBloc.uploadNewScannedTag(
+                    eventDetail.user[0].id, true,
                         (response) {
                       context.hideProgress(context);
                     });
@@ -495,7 +496,7 @@ class _AttendeeListPageState extends State<AttendeeListPage>
                   .of(context)
                   .labelAttendeesMarkAttended, () {
             context.showProgress(context);
-            _eventDetailBloc.uploadNewScannedTag(eventDetail.id, false,
+            _eventDetailBloc.uploadNewScannedTag(eventDetail.user[0].id, true,
                     (response) {
                   context.hideProgress(context);
                 });
