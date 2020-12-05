@@ -98,15 +98,17 @@ class _EventDescriptionInfoPageState extends State<EventDescriptionInfoPage> {
 
   _eventDescriptionInput() {
     return InkWell(
-      onTap: () =>
-          widget.showHtmlEditorDialog(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        widget.showHtmlEditorDialog(
               context,
               keyEditor,
               _basicBloc.state.eventDescription,
               AppLocalizations
                   .of(context)
                   .inputHintDescription,
-              _basicBloc.eventDescriptionInput),
+            _basicBloc.eventDescriptionInput);
+      },
       child: BlocBuilder<BasicBloc, BasicState>(
         cubit: _basicBloc,
         buildWhen: (prevState, newState) {

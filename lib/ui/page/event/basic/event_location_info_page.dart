@@ -96,11 +96,12 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
   }
 
   _eventLocationInput() =>
-      widget.inputFieldRectangle(context,
+      widget.inputFieldRectangle(
+        context,
         _eventLocationController,
         onChanged: _basicBloc.eventLocationInput,
         hintText: AppLocalizations.of(context).inputHintTypeYourLocation,
-    maxLength: 500,
+        maxLength: 500,
         labelStyle: Theme.of(context).textTheme.body1,
         textInputAction: TextInputAction.next,
         focusNode: _focusNodeLocation,
@@ -108,11 +109,12 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
       );
 
   _eventStateInput() =>
-      widget.inputFieldRectangle(context,
+      widget.inputFieldRectangle(
+        context,
         _eventStateController,
         onChanged: _basicBloc.eventStateInput,
         hintText: AppLocalizations.of(context).labelSelectState,
-    maxLength: 100,
+        maxLength: 100,
         labelStyle: Theme.of(context).textTheme.body1,
         textInputAction: TextInputAction.next,
         focusNode: _focusNodeState,
@@ -120,25 +122,32 @@ class _EventLocationInfoPageState extends State<EventLocationInfoPage> {
       );
 
   _eventCityInput() {
-    return widget.inputFieldRectangle(context,
-        _eventCityController,
-        onChanged: _basicBloc.eventCityInput,
-        hintText: AppLocalizations.of(context).labelTypeCityName,
-    maxLength: 100,
-        labelStyle: Theme.of(context).textTheme.body1,
-        textInputAction: TextInputAction.next,
-        focusNode: _focusNodeCity,
-        nextFocusNode: _focusNodePostal,
-      );
+    return widget.inputFieldRectangle(
+      context,
+      _eventCityController,
+      onChanged: _basicBloc.eventCityInput,
+      hintText: AppLocalizations
+          .of(context)
+          .labelTypeCityName,
+      maxLength: 100,
+      labelStyle: Theme
+          .of(context)
+          .textTheme
+          .body1,
+      textInputAction: TextInputAction.next,
+      focusNode: _focusNodeCity,
+      nextFocusNode: _focusNodePostal,
+    );
   }
 
   _eventPostalCodeInput() =>
-      widget.inputFieldRectangle(context,
+      widget.inputFieldRectangle(
+        context,
         _eventPostalCodeController,
         keyboardType: TextInputType.number,
         onChanged: _basicBloc.eventPostalCodeInput,
         hintText: AppLocalizations.of(context).labelTypePostalCode,
-    maxLength: 10,
+        maxLength: 10,
         labelStyle: Theme.of(context).textTheme.body1,
         focusNode: _focusNodePostal,
       );

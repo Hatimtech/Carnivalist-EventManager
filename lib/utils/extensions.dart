@@ -203,12 +203,14 @@ extension WidgetExtensions on Widget {
           inputFormatters: inputFormatters,
           focusNode: focusNode,
           textInputAction: textInputAction,
-          onFieldSubmitted: (_) {
-            print('onFieldSubmitted');
+          onFieldSubmitted: (text) {
+            print('onFieldSubmitted--->$text');
+            onChanged(text);
             if (focusNode != null) focusNode.unfocus();
             if (nextFocusNode != null)
               FocusScope.of(context).requestFocus(nextFocusNode);
           },
+          onEditingComplete: () => print('onEditingComplete'),
           autofocus: false,
           enabled: enabled,
           decoration: InputDecoration(
