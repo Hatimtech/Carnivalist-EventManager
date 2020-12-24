@@ -524,14 +524,15 @@ class _GalleryState extends State<GalleryPage> {
     }
 
     if (banner)
-      image = await FilePicker.getFilePath(
+      image = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: extensions,
       );
     else
-      image = await FilePicker.getMultiFilePath(
+      image = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: extensions,
+        allowMultiple: true,
       );
 
     if (image != null) {

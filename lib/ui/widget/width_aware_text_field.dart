@@ -8,7 +8,8 @@ class WidthAwareTextField extends StatefulWidget {
   final bool showHint;
 
   const WidthAwareTextField(
-      {this.onActionDone, this.focusNode, this.showHint = true});
+      {Key key, this.onActionDone, this.focusNode, this.showHint = true})
+      : super(key: key);
 
   @override
   _WidthAwareTextFieldState createState() => _WidthAwareTextFieldState();
@@ -16,7 +17,7 @@ class WidthAwareTextField extends StatefulWidget {
 
 class _WidthAwareTextFieldState extends State<WidthAwareTextField> {
   final TextEditingController _textEditingController = TextEditingController();
-  double minTagFieldWidth = 116;
+  double minTagFieldWidth = 132;
   double maxTagFieldWidth, currentFieldWidth;
 
   @override
@@ -26,6 +27,13 @@ class _WidthAwareTextFieldState extends State<WidthAwareTextField> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       maxTagFieldWidth = MediaQuery.of(context).size.width - 30;
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant WidthAwareTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_textEditingController.text?.isEmpty ?? true)
+      _textEditingController.clear();
   }
 
   @override
@@ -63,12 +71,15 @@ class _WidthAwareTextFieldState extends State<WidthAwareTextField> {
               });
           },
           onFieldSubmitted: (value) {
-            if (value != null && value.isNotEmpty && value.trim().isNotEmpty) {
-              _textEditingController.clear();
+            if (value != null && value.isNotEmpty && value
+                .trim()
+                .isNotEmpty) {
+              setState(() => _textEditingController.text = '');
               currentFieldWidth = minTagFieldWidth;
               if (widget.onActionDone != null) widget.onActionDone(value);
             }
           },
+          onEditingComplete: () => print('On Editing Complete'),
         ),
       ),
     );

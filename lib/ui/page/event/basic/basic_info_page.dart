@@ -507,6 +507,7 @@ class _BasicInfoPageState extends State<BasicInfoPage> {
 
                 chips.add(
                   WidthAwareTextField(
+//                    key: ValueKey(state.eventTags.length),
                     focusNode: _focusNode,
                     showHint: state.eventTags.length == 0 ? true : false,
                     onActionDone: (value) {

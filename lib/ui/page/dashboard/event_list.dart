@@ -41,9 +41,8 @@ class _EventListState extends State<EventList> {
         } else {
           return FutureBuilder(
               future: _futureSystemPath,
-              builder: (_, snapshot) =>
-              snapshot.connectionState ==
-                  ConnectionState.waiting
+              builder: (_, snapshot) => snapshot.connectionState ==
+                      ConnectionState.waiting
                   ? SliverToBoxAdapter(child: const SizedBox.shrink())
                   : _buildEventSliverListView(snapshot.data ?? fallbackPath));
         }
@@ -65,7 +64,18 @@ class _EventListState extends State<EventList> {
             delegate: SliverChildBuilderDelegate(
                   (context, position) {
                 return EventListItem(
-                    key: ValueKey(eventDataList[position].id),
+                    key: ValueKey(
+                        '${eventDataList[position].id} ${eventDataList[position]
+                            .title} '
+                            '${eventDataList[position]
+                            .status} ${eventDataList[position].banner} '
+                            '${eventDataList[position]
+                            .startDateTime} ${eventDataList[position].type} '
+                            '${eventDataList[position].place
+                            ?.city} ${eventDataList[position]
+                            .isApprovedBySuperAdmin} '
+                            '${eventDataList[position]
+                            .ticketDetailsQuantityAndPrice}'),
                     id: eventDataList[position].id,
                     systemPath: systemPath);
               },

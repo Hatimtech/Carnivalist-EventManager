@@ -159,17 +159,12 @@ class _EventDetailRootPageState extends State<EventDetailRootPage>
 
   Future<void> _scanQRCode() async {
     try {
-      String qrCode = await BarcodeScanner.scan();
-      print("Scanned QR Code--->$qrCode");
-      _uploadScannedTag(qrCode, false);
+      ScanResult scanResult = await BarcodeScanner.scan();
+      print("Scanned QR Code--->${scanResult.rawContent}");
+      if (scanResult != null && scanResult.type == ResultType.Barcode)
+        _uploadScannedTag(scanResult.rawContent, false);
     } on FormatException catch (fe) {
       print(fe.message);
-    } on PlatformException catch (ex) {
-      if (ex.code == BarcodeScanner.CameraAccessDenied) {
-        print("Camera Permission Denied");
-      } else {
-        print("Unknown Error: $ex");
-      }
     } catch (ex) {
       print("Unknown Error: $ex");
     }

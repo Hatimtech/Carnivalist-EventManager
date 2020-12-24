@@ -473,19 +473,20 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     return 0;
   }
 
-  SettingData settingDataToUpload(bool stripeConnected) =>
-      SettingData(
-          status: stripeConnected ? 'ACTIVE' : 'DRAFT',
-          userContractCheck: state.tnc,
-          isApprovedBySuperAdmin: isApprovedBySuperAdmin,
-          paymentAndTaxes: PaymentAndTaxes(
-              gstCharge: GSTCharge.defaultInstance(),
-              convenienceCharge: ConvenienceCharge(
-                percentValue: isValid(state.percentValue)
-                    ? double.tryParse(state.percentValue)
-                    : null,
-                value: isValid(state.convenienceAmount)
-                    ? double.tryParse(state.convenienceAmount)
+  SettingData settingDataToUpload(bool stripeConnected) {
+    print('state.transferBooking--->${state.transferBooking}');
+    return SettingData(
+        status: stripeConnected ? 'ACTIVE' : 'DRAFT',
+        userContractCheck: state.tnc,
+        isApprovedBySuperAdmin: isApprovedBySuperAdmin,
+        paymentAndTaxes: PaymentAndTaxes(
+            gstCharge: GSTCharge.defaultInstance(),
+            convenienceCharge: ConvenienceCharge(
+              percentValue: isValid(state.percentValue)
+                  ? double.tryParse(state.percentValue)
+                  : null,
+              value: isValid(state.convenienceAmount)
+                  ? double.tryParse(state.convenienceAmount)
                     : null,
                 enable: state.convenienceFee ?? false,
                 precentage: false,
@@ -516,4 +517,5 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
             showLocation: true,
             showPrice: true,
           ));
+  }
 }

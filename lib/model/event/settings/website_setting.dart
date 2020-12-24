@@ -58,7 +58,8 @@ class WebsiteSetting {
     if (this.showDateTime != null) data['showDateTime'] = this.showDateTime;
     if (this.showPrice != null) data['showPrice'] = this.showPrice;
     if (this.showLocation != null) data['showLocation'] = this.showLocation;
-    if (this.transferBooking != null) data['precentage'] = this.transferBooking;
+    if (this.transferBooking != null)
+      data['transferBooking'] = this.transferBooking;
     if (this.facebookLink != null) data['facebookLink'] = this.facebookLink;
     if (this.twitterLink != null) data['twitterLink'] = this.twitterLink;
     if (this.linkdinLink != null) data['linkdinLink'] = this.linkdinLink;

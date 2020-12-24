@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:eventmanagement/model/event/createticket/create_ticket_response.dart';
+import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/event/tickets/ticket_action_response.dart';
 import 'package:eventmanagement/model/event/tickets/tickets.dart';
 import 'package:eventmanagement/service/viewmodel/api_provider.dart';
@@ -10,7 +11,7 @@ import 'tickets_state.dart';
 
 class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
   final ApiProvider apiProvider = ApiProvider();
-  String eventDataId;
+  EventData eventData;
 
   TicketsBloc() : super(initialState);
 
@@ -60,6 +61,7 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
 
     if (event is AddTicket) {
       state.ticketsList.add(event.ticket);
+      eventData.tickets.add(event.ticket);
       yield state.copyWith(ticketsList: List.of(state.ticketsList));
     }
 
@@ -68,6 +70,12 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
           .indexWhere((ticket) => ticket.sId == event.ticket.sId);
       state.ticketsList.removeAt(removeIndex);
       state.ticketsList.insert(removeIndex, event.ticket);
+
+      int removeIndexEventData = eventData.tickets
+          .indexWhere((ticket) => ticket.sId == event.ticket.sId);
+      eventData.tickets.removeAt(removeIndexEventData);
+      eventData.tickets.insert(removeIndexEventData, event.ticket);
+
       yield state.copyWith(ticketsList: List.of(state.ticketsList));
     }
 
@@ -78,6 +86,8 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
     if (event is DeleteTicketResult) {
       if (event.success) {
         state.ticketsList.removeWhere((ticket) => ticket.sId == event.ticketId);
+
+        eventData.tickets.removeWhere((ticket) => ticket.sId == event.ticketId);
 
         yield state.copyWith(
             ticketsList: List.of(state.ticketsList),
@@ -97,6 +107,10 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
         final ticket = state.ticketsList
             .firstWhere((ticket) => ticket.sId == event.ticketId);
         ticket.active = event.active;
+
+        final ticketEventData = eventData.tickets
+            .firstWhere((ticket) => ticket.sId == event.ticketId);
+        ticketEventData.active = event.active;
 
         yield state.copyWith(
             ticketsList: List.of(state.ticketsList),
@@ -126,6 +140,12 @@ class TicketsBloc extends Bloc<TicketsEvent, TicketsState> {
             .indexWhere((ticket) => ticket.sId == event.ticket.sId);
         state.ticketsList.removeAt(removeIndex);
         state.ticketsList.insert(removeIndex, event.ticket);
+
+        int removeIndexEventData = eventData.tickets
+            .indexWhere((ticket) => ticket.sId == event.ticket.sId);
+        eventData.tickets.removeAt(removeIndexEventData);
+        eventData.tickets.insert(removeIndexEventData, event.ticket);
+
         yield state.copyWith(
             ticketsList: List.of(state.ticketsList),
             loading: false,

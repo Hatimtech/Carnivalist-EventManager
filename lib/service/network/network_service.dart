@@ -87,6 +87,7 @@ class NetworkService extends NetworkType implements APIService {
   final _activeInactiveCouponUrl = _baseUrl + _subUrl + 'active-toggle/';
   final _deleteCouponUrl = _baseUrl + _subUrl + 'delete-coupon/';
   final _couponUploadUrl = _baseUrl + _subUrl + 'save-new-coupon/';
+  final _couponUpdateUrl = _baseUrl + _subUrl + 'update-coupons/';
 
   final _eventDetailUrl = _baseUrl + _subUrl + 'ticketreports/';
   final _resendTicketUrl = _baseUrl + _subUrl + 'resend-ticket/';
@@ -95,7 +96,7 @@ class NetworkService extends NetworkType implements APIService {
   final _uploadProfilePic = _baseUrl + _subUrl + 'user/change-profile-pic';
   final _updateProfileUrl = _baseUrl + _subUrl + 'user/change-profile-info';
 
-  final _qrCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-order-id/';
+  final _qrCodeScannedUrl = _baseUrl + _subUrl + 'attended-EventBy-TicketId/';
   final _nfcCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-user-id/';
 
   final _staffListUrl = _baseUrl + _subUrl + 'user/get-event-staffs';
@@ -222,9 +223,7 @@ class NetworkService extends NetworkType implements APIService {
     };
 
     var result = await rest.post<CreateTicketResponse>(
-        '${ticketId != null
-            ? _updateTicketsUrl
-            : _createTicketsUrl}${ticketId != null ? '/$ticketId' : ''}',
+        '${ticketId != null ? _updateTicketsUrl : _createTicketsUrl}${ticketId != null ? '/$ticketId' : ''}',
         body: json.encode(param),
         encoding: Encoding.getByName("utf-8"),
         headers: headers);
@@ -621,7 +620,10 @@ class NetworkService extends NetworkType implements APIService {
       "Content-Type": "application/json"
     };
 
-    var result = await rest.post<CouponResponse>(_couponUploadUrl,
+    var result = await rest.post<CouponResponse>(
+        coupon.couponId != null
+            ? '$_couponUpdateUrl${coupon.couponId}'
+            : _couponUploadUrl,
         body: json.encode(coupon),
         encoding: Encoding.getByName("utf-8"),
         headers: headers);

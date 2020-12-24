@@ -343,7 +343,7 @@ class _SettingState extends State<SettingPage> {
                       );
                     },
                   ),
-                  Row(
+                  /*Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(AppLocalizations
@@ -368,7 +368,7 @@ class _SettingState extends State<SettingPage> {
                             );
                           },
                         )
-                      ]),
+                      ]),*/
                   /*Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[

@@ -149,7 +149,12 @@ class _EventStaffHomePageState extends State<EventStaffHomePage> {
             itemCount: eventDataList?.length ?? 0,
             itemBuilder: (context, position) {
               return EventListItem(
-                key: ValueKey(eventDataList[position].id),
+                key: ValueKey(
+                    '${eventDataList[position].id} ${eventDataList[position].title} '
+                    '${eventDataList[position].status} ${eventDataList[position].banner} '
+                    '${eventDataList[position].startDateTime} ${eventDataList[position].type} '
+                    '${eventDataList[position].place?.city} ${eventDataList[position].isApprovedBySuperAdmin} '
+                    '${eventDataList[position].ticketDetailsQuantityAndPrice}'),
                 id: eventDataList[position].id,
                 systemPath: systemPath,
                 viewOnly: true,

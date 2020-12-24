@@ -72,9 +72,9 @@ class EventData {
     endDateTime = json['endDateTime'];
     daily = json['daily'] != null ? new Daily.fromJson(json['daily']) : null;
     weekly =
-    json['weekly'] != null ? new Weekly.fromJson(json['weekly']) : null;
+        json['weekly'] != null ? new Weekly.fromJson(json['weekly']) : null;
     custom =
-    json['custom'] != null ? new Custom.fromJson(json['custom']) : null;
+        json['custom'] != null ? new Custom.fromJson(json['custom']) : null;
     place = json['place'] != null ? new Place.fromJson(json['place']) : null;
     eventPrivacy = json['eventPrivacy'];
     timeZone = json['timeZone'];
@@ -155,6 +155,14 @@ class EventData {
     if (this.isApprovedBySuperAdmin != null)
       data['isApprovedBySuperAdmin'] = this.isApprovedBySuperAdmin;
     return data;
+  }
+
+  String get ticketDetailsQuantityAndPrice {
+    return tickets
+        ?.map<String>((e) =>
+    '${(e.initialOriginalQuantity ?? 0) + (e.quantity ?? 0) + (e.price ?? 0)}')
+        ?.toList()
+        ?.toString();
   }
 }
 
@@ -267,14 +275,13 @@ class Place {
   String state;
   String name;
 
-  Place(
-      {this.lat,
-        this.lng,
-        this.address,
-        this.pincode,
-        this.city,
-        this.state,
-        this.name});
+  Place({this.lat,
+    this.lng,
+    this.address,
+    this.pincode,
+    this.city,
+    this.state,
+    this.name});
 
   Place.fromJson(Map<String, dynamic> json) {
     lat = json['lat'];

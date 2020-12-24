@@ -128,7 +128,7 @@ class EventState {
             DateTime.parse(event.endDateTime).isAfter(dateTimeNow) &&
             event.status == 'ACTIVE' &&
             event.tickets.firstWhere((element) => (element.price ?? 0) > 0,
-                orElse: null) !=
+                    orElse: null) !=
                 null;
       } catch (error) {
         return false;
@@ -160,7 +160,10 @@ class EventState {
 
   bool isAnyApprovedBySuperAdmin() {
     return eventDataList.firstWhere(
-          (eventData) => (eventData.isApprovedBySuperAdmin ?? false),
+          (eventData) =>
+      (eventData.status != 'DRAFT' &&
+          eventData.isApprovedBySuperAdmin ??
+          false),
       orElse: () => null,
     ) !=
         null;

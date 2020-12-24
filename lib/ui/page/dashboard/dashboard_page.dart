@@ -135,20 +135,6 @@ class _DashboardState extends State<DashboardPage>
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-//                      String downloadPath =
-//                          "${await getSystemDirPath()}/downloads/";
-//                      Directory downloadDir = Directory(downloadPath);
-//                      if (!downloadDir.existsSync())
-//                        downloadDir.createSync(recursive: true);
-//                      await FlutterDownloader.enqueue(
-//                        url:
-//                            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-//                        savedDir: downloadPath,
-//                        showNotification: true,
-//                        // show download progress in status bar (for Android)
-//                        openFileFromNotification:
-//                            true, // click on notification to open downloaded file (for Android)
-//                      );
 //                        await Logger.log('Dashboard Coupon Clicked');
                         _pageNavBloc.currentPage(PAGE_COUPONS);
                       },

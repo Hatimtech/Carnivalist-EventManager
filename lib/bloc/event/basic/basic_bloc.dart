@@ -483,23 +483,23 @@ class BasicBloc extends Bloc<BasicEvent, BasicState> {
       final String eventFrequency = state.eventFreqList
           .firstWhere(
               (frequency) => frequency.value == existingData.eventFrequency,
-          orElse: () => state.eventFreqList[0])
+              orElse: () => state.eventFreqList[0])
           .name;
       String eventPrivacy = state.eventPrivacyList
           .firstWhere((privacy) => privacy.value == state.eventPrivacy,
-          orElse: () => state.eventPrivacyList[0])
+              orElse: () => state.eventPrivacyList[0])
           .name;
 
       final String eventName = existingData.title;
       final String eventType = existingData.type;
       final String eventTimeZone = existingData.timeZone;
-      final List<String> eventTags = existingData.tags;
+      final List<String> eventTags = List.of(existingData.tags);
 
       DateTime eventStartDate;
       TimeOfDay eventStartTime;
       if (isValid(existingData.startDateTime)) {
-        final startDateTime = DateTime.parse(existingData.startDateTime)
-            .toLocal();
+        final startDateTime =
+            DateTime.parse(existingData.startDateTime).toLocal();
         eventStartDate = DateTime(
             startDateTime.year, startDateTime.month, startDateTime.day);
         eventStartTime =

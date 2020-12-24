@@ -57,7 +57,6 @@ class _EventMenuState extends State<EventMenuPage>
     _tabController.addListener(() {
       _basicBloc.selectedTabChange(_tabController.index);
     });
-
     _userBloc = BlocProvider.of<UserBloc>(context);
 
     _eventBloc = BlocProvider.of<EventBloc>(context);
@@ -97,13 +96,10 @@ class _EventMenuState extends State<EventMenuPage>
 
   void initTicketBloc() {
     _ticketsBloc
-        .authTokenSave(BlocProvider
-        .of<UserBloc>(context)
-        .state
-        .authToken);
+        .authTokenSave(BlocProvider.of<UserBloc>(context).state.authToken);
     if (_eventData != null) {
       _ticketsBloc.populateExistingEvent(_eventData.tickets);
-      _ticketsBloc.eventDataId = _eventData.id;
+      _ticketsBloc.eventData = _eventData;
     }
   }
 
@@ -420,8 +416,9 @@ class _EventMenuState extends State<EventMenuPage>
 
   void shareEventDataWithOtherBlocs() {
     if (widget.eventId == null) {
-      if (!isValid(_ticketsBloc.eventDataId))
-        _ticketsBloc.eventDataId = _basicBloc.eventDataId;
+      if (_ticketsBloc.eventData == null)
+        _ticketsBloc.eventData =
+            EventData(id: _basicBloc.eventDataId, tickets: []);
 
       if (!isValid(_formBloc.eventDataId)) {
         _formBloc.eventDataId = _basicBloc.eventDataId;
