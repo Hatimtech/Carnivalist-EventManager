@@ -9,9 +9,9 @@ class StaffEventResponse {
   StaffEventResponse.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     events = json['events'] != null
-        ? (json['events']['selectedEvents'] as List)
-            ?.map((e) => EventData.fromJson(e))
-            ?.toList()
+        ? (json['events'] as List)
+        ?.map((e) => EventData.fromJson(e))
+        ?.toList()
         : null;
   }
 }

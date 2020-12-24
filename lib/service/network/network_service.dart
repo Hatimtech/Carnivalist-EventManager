@@ -96,7 +96,8 @@ class NetworkService extends NetworkType implements APIService {
   final _uploadProfilePic = _baseUrl + _subUrl + 'user/change-profile-pic';
   final _updateProfileUrl = _baseUrl + _subUrl + 'user/change-profile-info';
 
-  final _qrCodeScannedUrl = _baseUrl + _subUrl + 'attended-EventBy-TicketId/';
+  final _qrCodeScannedUrl =
+      _baseUrl + _subUrl + 'event/' + 'attended-EventBy-TicketId/';
   final _nfcCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-user-id/';
 
   final _staffListUrl = _baseUrl + _subUrl + 'user/get-event-staffs';
