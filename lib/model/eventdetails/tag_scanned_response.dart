@@ -8,7 +8,6 @@ class TagScannedResponse {
   TagScannedResponse.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     message = json['message'];
-    eventDetailId =
-    json['orderData'] != null ? json['orderData']['_id'] : null;
+    eventDetailId = json['order'] != null ? json['order']['_id'] : null;
   }
 }
