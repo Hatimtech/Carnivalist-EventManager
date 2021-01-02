@@ -89,7 +89,7 @@ class NetworkService extends NetworkType implements APIService {
   final _couponUploadUrl = _baseUrl + _subUrl + 'save-new-coupon/';
   final _couponUpdateUrl = _baseUrl + _subUrl + 'update-coupons/';
 
-  final _eventDetailUrl = _baseUrl + _subUrl + 'ticketreports/';
+  final _eventDetailUrl = _baseUrl + _subUrl + 'ticketreport/';
   final _resendTicketUrl = _baseUrl + _subUrl + 'resend-ticket/';
   final _sendMailUrl = _baseUrl + _subUrl + 'send-announcement/';
 

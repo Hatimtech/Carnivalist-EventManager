@@ -65,7 +65,7 @@ class RestClient {
           headers: headers, body: body, encoding: encoding);
 
       print('Response Code--->${response.statusCode}');
-      print('Response Body--->${response.body}');
+      printWrapped('Response Body--->${response.body}');
       return processResponse<T>(response);
     } catch (e) {
       print(e.toString());

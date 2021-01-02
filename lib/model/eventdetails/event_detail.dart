@@ -1,3 +1,4 @@
+import 'package:eventmanagement/model/eventdetails/form_payload_answers.dart';
 import 'package:eventmanagement/model/eventdetails/payment_response.dart';
 import 'package:eventmanagement/model/eventdetails/ticket_detail.dart';
 import 'package:eventmanagement/model/eventdetails/user_detail.dart';
@@ -9,6 +10,7 @@ class EventDetail {
   List<TicketDetail> tickets;
   PaymentResponse paymentResponse;
   bool isEventAttended;
+  List<FormPayloadAnswers> formPayloadAnswers;
 
 //  List<EventData> eventDetails;
 
@@ -19,6 +21,7 @@ class EventDetail {
     this.paymentResponse,
     this.tickets,
     this.isEventAttended,
+    this.formPayloadAnswers,
 //    this.eventDetails,
   });
 
@@ -34,6 +37,9 @@ class EventDetail {
         ?.map((e) => TicketDetail.fromJson(e))
         ?.toList();
     isEventAttended = json['isEventAttended'];
+    formPayloadAnswers = (json['formPayloadAnswers'] as List)
+        ?.map((e) => FormPayloadAnswers.fromJson(e))
+        ?.toList();
 //    eventDetails = (json['eventDetails'] as List)
 //        ?.map((e) => EventData.fromJson(e))
 //        ?.toList();
@@ -53,6 +59,8 @@ class EventDetail {
 
     if (this.isEventAttended != null)
       data['isEventAttended'] = this.isEventAttended;
+    if (this.formPayloadAnswers != null)
+      data['formPayloadAnswers'] = this.formPayloadAnswers;
 //    if (this.eventDetails != null)
 //      data['eventDetails'] =
 //          this.eventDetails.map((eventData) => eventData.toJson())?.toList();

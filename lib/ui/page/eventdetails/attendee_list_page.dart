@@ -9,6 +9,7 @@ import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/event/event_data.dart';
 import 'package:eventmanagement/model/eventdetails/event_detail.dart';
+import 'package:eventmanagement/model/eventdetails/form_payload_answers.dart';
 import 'package:eventmanagement/model/eventdetails/user_detail.dart';
 import 'package:eventmanagement/ui/page/eventdetails/send_mail_dialog.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_progress_indicator.dart';
@@ -78,8 +79,7 @@ class _AttendeeListPageState extends State<AttendeeListPage>
   }
 
   void initSelectedEventData() {
-    _eventData = BlocProvider
-        .of<EventBloc>(context)
+    _eventData = BlocProvider.of<EventBloc>(context)
         .state
         .eventDataList
         .firstWhere(
@@ -155,8 +155,8 @@ class _AttendeeListPageState extends State<AttendeeListPage>
   }
 
   Widget _buildEventDetailListItem(EventDetail eventDetail) {
-    final user =
-    (eventDetail.user?.length ?? 0) > 0 ? eventDetail.user[0] : null;
+    // final user =
+    //     (eventDetail.user?.length ?? 0) > 0 ? eventDetail.user[0] : null;
     final paymentResponse = eventDetail.paymentResponse;
     int ticketCount = 0;
     eventDetail.tickets?.forEach((ticket) {
@@ -184,6 +184,21 @@ class _AttendeeListPageState extends State<AttendeeListPage>
         : AppLocalizations
         .of(context)
         .notAvailable;
+
+    String firstName, lastName, phoneNumber, email;
+    List<FormPayloadAnswers> formPayloadAnswers =
+        eventDetail.formPayloadAnswers;
+    formPayloadAnswers?.forEach((element) {
+      if (element.questionName == 'First Name') {
+        firstName = element.answer;
+      } else if (element.questionName == 'Last Name') {
+        lastName = element.answer;
+      } else if (element.questionName == 'Phone Number') {
+        phoneNumber = element.answer;
+      } else if (element.questionName == 'Email') {
+        email = element.answer;
+      }
+    });
     return GestureDetector(
       onTap: () => showAttendeesActions(eventDetail),
       child: Card(
@@ -205,7 +220,8 @@ class _AttendeeListPageState extends State<AttendeeListPage>
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                  child: _buildUserInfoView(user),
+                  child: _buildUserInfoView(
+                      firstName, lastName, phoneNumber, email),
                 ),
               ),
               Padding(
@@ -220,28 +236,26 @@ class _AttendeeListPageState extends State<AttendeeListPage>
     );
   }
 
-  Widget _buildUserInfoView(UserDetail user) {
-    if (user != null)
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            user?.name ?? AppLocalizations
-                .of(context)
-                .notAvailable,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme
-                .of(context)
-                .textTheme
-                .body1
-                .copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+  Widget _buildUserInfoView(String firstName, String lastName,
+      String phoneNumber, String email) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          '${firstName ?? ''} ${lastName ?? ''}',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme
+              .of(context)
+              .textTheme
+              .body1
+              .copyWith(
+            fontWeight: FontWeight.w500,
+          ),
           ),
           const SizedBox(height: 4.0),
           Text(
-            user?.username ?? AppLocalizations
+            email ?? AppLocalizations
                 .of(context)
                 .notAvailable,
             maxLines: 1,
@@ -256,7 +270,7 @@ class _AttendeeListPageState extends State<AttendeeListPage>
           ),
           const SizedBox(height: 4.0),
           Text(
-            user?.mobileNumber ?? AppLocalizations
+            phoneNumber ?? AppLocalizations
                 .of(context)
                 .notAvailable,
             maxLines: 1,
@@ -269,10 +283,8 @@ class _AttendeeListPageState extends State<AttendeeListPage>
               fontSize: 12.0,
             ),
           ),
-        ],
-      );
-    else
-      return SizedBox.shrink();
+      ],
+    );
   }
 
   Widget _buildEventInfoView(int ticketCount, String paymentStatus,
@@ -294,9 +306,7 @@ class _AttendeeListPageState extends State<AttendeeListPage>
         ),
         const SizedBox(height: 4.0),
         Text(
-          '${AppLocalizations
-              .of(context)
-              .labelEventDetailTicket} $ticketCount',
+          paymentStatus,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: Theme
@@ -305,46 +315,57 @@ class _AttendeeListPageState extends State<AttendeeListPage>
               .body1
               .copyWith(
             fontSize: 12.0,
+            fontWeight: FontWeight.bold,
+            color: paymentStatus ==
+                AppLocalizations
+                    .of(context)
+                    .labelEventDetailStatusSuccess
+                ? Colors.green
+                : Colors.red,
           ),
         ),
         const SizedBox(height: 4.0),
-        Row(
+        Text(
+          date,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme
+              .of(context)
+              .textTheme
+              .body1
+              .copyWith(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        /*Row(
           children: <Widget>[
             Text(
               date,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .body1
-                  .copyWith(
-                fontSize: 12.0,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.body1.copyWith(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             const SizedBox(width: 8.0),
             Text(
               paymentStatus,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .body1
-                  .copyWith(
-                fontSize: 12.0,
-                fontWeight: FontWeight.bold,
-                color: paymentStatus ==
-                    AppLocalizations
-                        .of(context)
-                        .labelEventDetailStatusSuccess
-                    ? Colors.green
-                    : Colors.red,
-              ),
+              style: Theme.of(context).textTheme.body1.copyWith(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.bold,
+                    color: paymentStatus ==
+                            AppLocalizations.of(context)
+                                .labelEventDetailStatusSuccess
+                        ? Colors.green
+                        : Colors.red,
+                  ),
             ),
           ],
-        ),
+        ),*/
       ],
     );
   }
@@ -418,10 +439,9 @@ class _AttendeeListPageState extends State<AttendeeListPage>
                   () {
                 context.showProgress(context);
                 _eventDetailBloc.uploadNewScannedTag(
-                    eventDetail.user[0].id, true,
-                        (response) {
-                      context.hideProgress(context);
-                    });
+                    eventDetail.user[0].id, true, (response) {
+                  context.hideProgress(context);
+                });
               },
               showDivider: false,
             ),

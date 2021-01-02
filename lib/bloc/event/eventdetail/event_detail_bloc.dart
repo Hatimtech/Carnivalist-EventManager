@@ -84,23 +84,28 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
 
     if (event is TagScannedEventResult) {
       if (event.success) {
-        if (event.eventDetailId != null) {
-          final item = state.eventDetailList.firstWhere(
-                  (element) => element.id == event.eventDetailId,
-              orElse: () => null);
-
-          print('TagScannedEventResult item--->$item');
-          if (item != null) {
-            item.isEventAttended = true;
-          }
-          state.eventDetailList.remove(item);
-          state.eventDetailList.insert(0, item);
-        }
         yield state.copyWith(
           loading: false,
           uiMsg: event.uiMsg,
-          eventDetailList: List.of(state.eventDetailList),
+          // eventDetailList: List.of(state.eventDetailList),
         );
+        // if (event.eventDetailId != null) {
+        //   final item = state.eventDetailList.firstWhere(
+        //           (element) => element.id == event.eventDetailId,
+        //       orElse: () => null);
+        //
+        //   print('TagScannedEventResult item--->$item');
+        //   if (item != null) {
+        //     item.isEventAttended = true;
+        //   }
+        //   state.eventDetailList.remove(item);
+        //   state.eventDetailList.insert(0, item);
+        // }
+        // yield state.copyWith(
+        //   loading: false,
+        //   uiMsg: event.uiMsg,
+        // eventDetailList: List.of(state.eventDetailList),
+        // );
       } else {
         yield state.copyWith(loading: false, uiMsg: event.uiMsg);
       }
@@ -201,6 +206,7 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
           add(TagScannedEventResult(true,
               uiMsg: eventActionResponse.message,
               eventDetailId: eventActionResponse.eventDetailId));
+          add(GetEventDetail());
           event.callback(eventActionResponse);
         } else {
           add(TagScannedEventResult(
