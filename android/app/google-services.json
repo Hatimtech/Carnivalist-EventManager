@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "47588360004",
+    "project_id": "carnivalist-event-management",
+    "storage_bucket": "carnivalist-event-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47588360004:android:8f5350f44acd0bb200e111",
+        "android_client_info": {
+          "package_name": "com.carnivalist.eventmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47588360004-f5474tnqdc46vaemehi3o17qvn2h4sqf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1rhxaqvqPqInjnefClJxPiSWJe-gw_Ao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47588360004-f5474tnqdc46vaemehi3o17qvn2h4sqf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
