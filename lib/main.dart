@@ -17,7 +17,6 @@ import 'package:eventmanagement/ui/page/dashboard/event_staff_home.dart';
 import 'package:eventmanagement/ui/page/eventdetails/event_detail_root_page.dart';
 import 'package:eventmanagement/ui/page/user_info_page.dart';
 import 'package:eventmanagement/ui/platform/widget/platform_app.dart';
-import 'package:eventmanagement/utils/logger.dart';
 import 'package:eventmanagement/utils/orientation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,21 +54,21 @@ void main() async {
 
   Injector.configure(Flavor.Network);
 
-  var docsDir = await getSystemDirPath();
-  String canonFilename = '$docsDir/$_logFilename';
-  await Logger.initializeLogging(canonFilename);
-  await Logger.log('ENTERED main() ...');
+  // var docsDir = await getSystemDirPath();
+  // String canonFilename = '$docsDir/$_logFilename';
+  // await Logger.initializeLogging(canonFilename);
+  // await Logger.log('ENTERED main() ...');
 
   // await Firebase.initializeApp();
 
   // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = (flutterErrorDetails) async {
-    // FirebaseCrashlytics.instance.recordFlutterError(flutterErrorDetails);
-    await Logger.log(
-        '\nSTART ERROR FlutterError\n${flutterErrorDetails?.toString()}\nEND ERROR\n\n');
-    await Logger.log(
-        '\nCONTINUE\n${flutterErrorDetails?.stack?.toString()}\nEND ERROR\n\n');
-  };
+  // FlutterError.onError = (flutterErrorDetails) async {
+  // FirebaseCrashlytics.instance.recordFlutterError(flutterErrorDetails);
+  // await Logger.log(
+  //     '\nSTART ERROR FlutterError\n${flutterErrorDetails?.toString()}\nEND ERROR\n\n');
+  // await Logger.log(
+  //     '\nCONTINUE\n${flutterErrorDetails?.stack?.toString()}\nEND ERROR\n\n');
+  // };
 
   runZonedGuarded<Future<void>>(
     () async {
@@ -78,9 +77,9 @@ void main() async {
     (object, stacktrace) async {
       print('runZonedGuarded--->${object.toString()}');
       // FirebaseCrashlytics.instance.recordError(object, stacktrace);
-      await Logger.log(
-          '\nSTART ERROR runZonedGuarded\n${object?.toString()}\nEND ERROR\n\n');
-      await Logger.log('\nCONTINUE\n${stacktrace?.toString()}\nEND ERROR\n\n');
+      // await Logger.log(
+      //     '\nSTART ERROR runZonedGuarded\n${object?.toString()}\nEND ERROR\n\n');
+      // await Logger.log('\nCONTINUE\n${stacktrace?.toString()}\nEND ERROR\n\n');
     },
   );
 }
