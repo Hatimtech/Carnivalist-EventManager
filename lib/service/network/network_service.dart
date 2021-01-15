@@ -41,70 +41,71 @@ import '../network_type.dart';
 import '../restclient.dart';
 
 class NetworkService extends NetworkType implements APIService {
-  static final _baseUrl = 'https://backend.carnivalist.tk';
-  static final baseUrlWebview = 'https://event.carnivalist.tk';
+  static final exampleDomain = 'carnivalist.com';
+  static final baseUrl = 'https://backend.carnivalist.com';
+  static final baseUrlWebview = 'https://event.carnivalist.com';
 
   /*'https://backend.aktv.life';*/
 
   static final _subUrl = '/api/';
-  final _loginUrl = _baseUrl + _subUrl + 'user/login';
-  final _loginUrlStaff = _baseUrl + _subUrl + 'user/section-leader-login';
-  final _loginDetailUrl = _baseUrl + _subUrl + 'user/get-user-details';
-  final _signUpUrl = _baseUrl + _subUrl + 'user/register';
-  final _forgotPasswordUrl = _baseUrl + _subUrl + 'user/forgot-password';
+  final _loginUrl = baseUrl + _subUrl + 'user/login';
+  final _loginUrlStaff = baseUrl + _subUrl + 'user/section-leader-login';
+  final _loginDetailUrl = baseUrl + _subUrl + 'user/get-user-details';
+  final _signUpUrl = baseUrl + _subUrl + 'user/register';
+  final _forgotPasswordUrl = baseUrl + _subUrl + 'user/forgot-password';
 
   //TODO EVENT
-  final _ticketsListUrl = _baseUrl + _subUrl + 'tickets';
-  final _createTicketsUrl = _baseUrl + _subUrl + 'tickets';
-  final _updateTicketsUrl = _baseUrl + _subUrl + 'ticket';
-  final _basicUrl = _baseUrl + _subUrl + 'events';
-  final _stripeConnectedUrl = _baseUrl + _subUrl + 'stripe/connect/get-id';
+  final _ticketsListUrl = baseUrl + _subUrl + 'tickets';
+  final _createTicketsUrl = baseUrl + _subUrl + 'tickets';
+  final _updateTicketsUrl = baseUrl + _subUrl + 'ticket';
+  final _basicUrl = baseUrl + _subUrl + 'events';
+  final _stripeConnectedUrl = baseUrl + _subUrl + 'stripe/connect/get-id';
   final _carnivalListUrl =
-      _baseUrl + _subUrl + 'website-settings/show-categories';
+      baseUrl + _subUrl + 'website-settings/show-categories';
 
   final _activeInactiveTicketUrl =
-      _baseUrl + _subUrl + 'toggle-active-tickets/';
+      baseUrl + _subUrl + 'toggle-active-tickets/';
 
-  final _deleteTicketUrl = _baseUrl + _subUrl + 'tickets/delete-tickets/';
+  final _deleteTicketUrl = baseUrl + _subUrl + 'tickets/delete-tickets/';
 
-  final _uploadMediaUrl = _baseUrl + _subUrl + 'upload-media';
-  final _eventsListUrl = _baseUrl + _subUrl + 'get-events-for-managers/';
-  final _staffEventsListUrl = _baseUrl + _subUrl + 'get-events-for-eventstaff';
+  final _uploadMediaUrl = baseUrl + _subUrl + 'upload-media';
+  final _eventsListUrl = baseUrl + _subUrl + 'get-events-for-managers/';
+  final _staffEventsListUrl = baseUrl + _subUrl + 'get-events-for-eventstaff';
 
-  final _paymentSummaryUrl = _baseUrl + _subUrl + 'payment-summary';
+  final _paymentSummaryUrl = baseUrl + _subUrl + 'payment-summary';
 
-  final _activeInactiveEventUrl = _baseUrl + _subUrl + 'toggle-active';
-  final _deleteEventUrl = _baseUrl + _subUrl + 'delete-event/';
+  final _activeInactiveEventUrl = baseUrl + _subUrl + 'toggle-active';
+  final _deleteEventUrl = baseUrl + _subUrl + 'delete-event/';
 
-  final _addonListUrl = _baseUrl + _subUrl + 'view-addons/';
-  final _addonTicketListUrl = _baseUrl + _subUrl + 'get-addons-for-tickets/';
-  final _addonUploadUrl = _baseUrl + _subUrl + 'create-addons/';
+  final _addonListUrl = baseUrl + _subUrl + 'view-addons/';
+  final _addonTicketListUrl = baseUrl + _subUrl + 'get-addons-for-tickets/';
+  final _addonUploadUrl = baseUrl + _subUrl + 'create-addons/';
 
-  final _deleteAddonUrl = _baseUrl + _subUrl + 'delete-addon/';
+  final _deleteAddonUrl = baseUrl + _subUrl + 'delete-addon/';
 
-  final _couponListUrl = _baseUrl + _subUrl + 'get-coupons/';
+  final _couponListUrl = baseUrl + _subUrl + 'get-coupons/';
 
-  final _activeInactiveCouponUrl = _baseUrl + _subUrl + 'active-toggle/';
-  final _deleteCouponUrl = _baseUrl + _subUrl + 'delete-coupon/';
-  final _couponUploadUrl = _baseUrl + _subUrl + 'save-new-coupon/';
-  final _couponUpdateUrl = _baseUrl + _subUrl + 'update-coupons/';
+  final _activeInactiveCouponUrl = baseUrl + _subUrl + 'active-toggle/';
+  final _deleteCouponUrl = baseUrl + _subUrl + 'delete-coupon/';
+  final _couponUploadUrl = baseUrl + _subUrl + 'save-new-coupon/';
+  final _couponUpdateUrl = baseUrl + _subUrl + 'update-coupons/';
 
-  final _eventDetailUrl = _baseUrl + _subUrl + 'ticketreport/';
-  final _resendTicketUrl = _baseUrl + _subUrl + 'resend-ticket/';
-  final _sendMailUrl = _baseUrl + _subUrl + 'send-announcement/';
+  final _eventDetailUrl = baseUrl + _subUrl + 'ticketreport/';
+  final _resendTicketUrl = baseUrl + _subUrl + 'resend-ticket/';
+  final _sendMailUrl = baseUrl + _subUrl + 'send-announcement/';
 
-  final _uploadProfilePic = _baseUrl + _subUrl + 'user/change-profile-pic';
-  final _updateProfileUrl = _baseUrl + _subUrl + 'user/change-profile-info';
+  final _uploadProfilePic = baseUrl + _subUrl + 'user/change-profile-pic';
+  final _updateProfileUrl = baseUrl + _subUrl + 'user/change-profile-info';
 
   final _qrCodeScannedUrl =
-      _baseUrl + _subUrl + 'event/' + 'attended-EventBy-TicketId/';
-  final _nfcCodeScannedUrl = _baseUrl + _subUrl + 'attended-event-by-user-id/';
+      baseUrl + _subUrl + 'event/' + 'attended-EventBy-TicketId/';
+  final _nfcCodeScannedUrl = baseUrl + _subUrl + 'attended-event-by-user-id/';
 
-  final _staffListUrl = _baseUrl + _subUrl + 'user/get-event-staffs';
-  final _activeInactiveStaffUrl = _baseUrl + _subUrl + 'user/toggle-enable/';
+  final _staffListUrl = baseUrl + _subUrl + 'user/get-event-staffs';
+  final _activeInactiveStaffUrl = baseUrl + _subUrl + 'user/toggle-enable/';
 
-  final _staffCreateUrl = _baseUrl + _subUrl + 'user/save-new-staff';
-  final _staffEditUrl = _baseUrl + _subUrl + 'user/edit-event-staffs/';
+  final _staffCreateUrl = baseUrl + _subUrl + 'user/save-new-staff';
+  final _staffEditUrl = baseUrl + _subUrl + 'user/edit-event-staffs/';
 
   NetworkService(RestClient rest) : super(rest);
 

@@ -3,6 +3,7 @@ import 'package:eventmanagement/bloc/signup/sign_up_state.dart';
 import 'package:eventmanagement/bloc/user/user_bloc.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/model/login/login_response.dart';
+import 'package:eventmanagement/service/network/network_service.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -337,7 +338,7 @@ class _SignUpState extends State<SignUpPage> {
 
   _exampleDomain() =>
       Text(
-        'Example: https://james.carnivalist.tk/events',
+        'Example: https://james.${NetworkService.exampleDomain}/events',
         style: const TextStyle(color: Color(0xFF0000EE), fontSize: 12.0),
       );
 

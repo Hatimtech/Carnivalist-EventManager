@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:eventmanagement/intl/app_localizations.dart';
+import 'package:eventmanagement/service/network/network_service.dart';
 import 'package:eventmanagement/utils/hexacolor.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +14,7 @@ int ok200 = 200;
 int apiCodeSuccess = 1;
 int apiCodeError = 0;
 
-const String redirectUrlValue =
-    'https://manager.carnivalist.tk/login/forgotpassword';
+String redirectUrlValue = '${NetworkService.baseUrl}/login/forgotpassword';
 
 const String emailParam = 'email';
 const String redirectParam = 'redirectUri';

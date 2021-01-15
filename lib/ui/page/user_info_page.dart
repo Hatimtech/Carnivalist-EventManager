@@ -6,6 +6,7 @@ import 'package:eventmanagement/bloc/user/user_state.dart';
 import 'package:eventmanagement/intl/app_localizations.dart';
 import 'package:eventmanagement/main.dart';
 import 'package:eventmanagement/model/logindetail/login_detail_response.dart';
+import 'package:eventmanagement/service/network/network_service.dart';
 import 'package:eventmanagement/utils/extensions.dart';
 import 'package:eventmanagement/utils/vars.dart';
 import 'package:flutter/cupertino.dart';
@@ -111,8 +112,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   Widget _buildErrorReceiverEmptyBloc() => BlocBuilder<UserBloc, UserState>(
-    cubit: _userBloc,
-    buildWhen: (prevState, newState) => newState.uiMsg != null,
+        cubit: _userBloc,
+        buildWhen: (prevState, newState) => newState.uiMsg != null,
         builder: (context, state) {
           if (state.uiMsg != null) {
             String errorMsg = state.uiMsg is int
@@ -185,16 +186,22 @@ class _UserInfoPageState extends State<UserInfoPage> {
         )));
   }
 
-  _firstNameInput() => widget.inputField(
+  _firstNameInput() =>
+      widget.inputField(
         _firstNameController,
-        labelText: AppLocalizations.of(context).inputHintFirstName,
-        labelStyle: Theme.of(context).textTheme.body1,
+        labelText: AppLocalizations
+            .of(context)
+            .inputHintFirstName,
+        labelStyle: Theme
+            .of(context)
+            .textTheme
+            .body1,
         validation: (value) =>
             validateName(value, AppLocalizations.of(context)),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
-    nextFocusNode: _focusNodeLastName,
-  );
+        nextFocusNode: _focusNodeLastName,
+      );
 
   _lastNameInput() =>
       widget.inputField(
@@ -215,14 +222,19 @@ class _UserInfoPageState extends State<UserInfoPage> {
       );
 
   _phoneNoInput() => widget.inputField(
-        _phoneNoController,
-        labelText: AppLocalizations.of(context).inputHintPhoneNo,
-        labelStyle: Theme.of(context).textTheme.body1,
-        maxLength: 13,
-        validation: (value) =>
-            validateMobile(value, AppLocalizations.of(context)),
-        keyboardType: TextInputType.phone,
-        focusNode: _focusNodePhone,
+    _phoneNoController,
+    labelText: AppLocalizations
+        .of(context)
+        .inputHintPhoneNo,
+    labelStyle: Theme
+        .of(context)
+        .textTheme
+        .body1,
+    maxLength: 13,
+    validation: (value) =>
+        validateMobile(value, AppLocalizations.of(context)),
+    keyboardType: TextInputType.phone,
+    focusNode: _focusNodePhone,
     nextFocusNode: _focusNodeDomain,
     textInputAction: TextInputAction.next,
       );
@@ -259,13 +271,19 @@ class _UserInfoPageState extends State<UserInfoPage> {
       value: domainValue,
       child: Consumer<String>(
         builder: (_, value, __) {
-          return InkWell(
+          return (value?.isNotEmpty ?? false)
+              ? InkWell(
             child: Text(
-              'Your Domain: https://$value.carnivalist.tk/events',
-              style: const TextStyle(color: Color(0xFF0000EE), fontSize: 12.0),
+              'Your Domain: https://$value.${NetworkService
+                  .exampleDomain}/events',
+              style: const TextStyle(
+                  color: Color(0xFF0000EE), fontSize: 12.0),
             ),
-            onTap: () => launch('https://$value.carnivalist.tk/events'),
-          );
+            onTap: () =>
+                launch(
+                    'https://$value.${NetworkService.exampleDomain}/events'),
+          )
+              : SizedBox.shrink();
         },
       ),
     );

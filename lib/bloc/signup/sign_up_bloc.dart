@@ -96,7 +96,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     param.putIfAbsent('email', () => state.email);
     param.putIfAbsent('mobile', () => state.mobile);
     param.putIfAbsent('password', () => state.password);
-    param.putIfAbsent('domainName', () => state.domain);
+    if (state.domain?.isNotEmpty ?? false)
+      param.putIfAbsent('domainName', () => state.domain);
     param.putIfAbsent('userType', () => 'manager');
 
     apiProvider.getSignUp(param).then((networkServiceResponse) {
