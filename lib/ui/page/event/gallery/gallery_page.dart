@@ -512,7 +512,7 @@ class _GalleryState extends State<GalleryPage> {
 
   Future<void> _openGallery(bool banner, bool video) async {
     List<String> extensions;
-    var image;
+    FilePickerResult image;
     if (video) {
       extensions = ['3gp', 'mp4', 'webm', 'mkv', 'mov', 'mp4', 'm4v'];
 //      image = await ImagePicker.pickVideo(source: ImageSource.gallery,
@@ -535,16 +535,14 @@ class _GalleryState extends State<GalleryPage> {
         allowMultiple: true,
       );
 
-    if (image != null) {
+    if (image != null && (image.paths?.isNotEmpty ?? false)) {
       if (banner) {
         await _deleteExistingBanner();
-        _galleryBloc.addBanner(image);
-      } else if (image is Map) {
-        int millis = DateTime
-            .now()
-            .millisecondsSinceEpoch;
+        _galleryBloc.addBanner(image.paths[0]);
+      } else {
+        int millis = DateTime.now().millisecondsSinceEpoch;
         List<GalleryData> galleryDataList = [];
-        image.forEach((key, value) {
+        image.paths.forEach((value) {
           if (!_galleryBloc.state.isGalleryItemExist(value))
             galleryDataList.add(
               GalleryData(
